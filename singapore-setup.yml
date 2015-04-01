@@ -17,36 +17,29 @@
     apt: name=juju-core=1.20.11-0ubuntu0.14.04.1 update_cache=yes
 
   - name: Install packages
-    apt: name={{ item.name }} state=latest
+    apt: name={{ item }} state=latest
     with_items:
-    - name: ansible
-    - name: uvtool
+    - ansible
+    - uvtool
+    - git
 
   - name: Get juju-ansible git repo
+    sudo: no
     git: repo=https://github.com/cmars/juju-ansible.git
-      dest=/home/ubuntu/juju-ansible
+      dest={{ ansible_env['PWD'] }}/juju-ansible
 
   - name: Set up juju-ansible symlink
     file: dest=/usr/local/bin/juju-ansible
-      src=/home/ubuntu/juju-ansible
+      src={{ ansible_env['PWD'] }}/juju-ansible
       state=link
 
   - name: Set up juju-ansible-playbook symlink
     file: dest=/usr/local/bin/juju-ansible-playbook
-      src=/home/ubuntu/juju-ansible
+      src={{ ansible_env['PWD'] }}/juju-ansible
       state=link
 
   - name: Generate key to use in VMs
     user: name=ubuntu generate_ssh_key=yes
-
-  - name: Get new key
-    sudo: no
-    shell: cat /home/ubuntu/.ssh/id_rsa.pub
-    register: sshkey
-
-  - name: Add to authorized_keys
-    authorized_key: user=ubuntu
-      key="{{ sshkey.stdout }}"
 
   - name: Get trusty image for uvtool
     shell: uvt-simplestreams-libvirt sync release=trusty arch=amd64
@@ -70,20 +63,20 @@
   - name: Copy ansible.cfg to disable host key checking
     sudo: no
     copy: src=files/ansible.cfg
-      dest=/home/ubuntu/.ansible.cfg
+      dest={{ ansible_env['PWD'] }}/.ansible.cfg
 
   - name: Touch ~/.ssh/config
     sudo: no
-    file: path=/home/ubuntu/.ssh/config state=touch
+    file: path={{ ansible_env['PWD'] }}/.ssh/config state=touch
 
   - name: Disable host key checking in SSH
     sudo: no
-    lineinfile: dest=/home/ubuntu/.ssh/config
+    lineinfile: dest={{ ansible_env['PWD'] }}/.ssh/config
       line="StrictHostKeyChecking no"
 
   - name: Test that we can log into every VM
     sudo: no
-    shell: ansible services -m ping
+    shell: ansible services -m ping -u ubuntu
 
 # Play: Install services using Juju
 - hosts: singapore-head
@@ -91,7 +84,7 @@
   - name: Initialize Juju
     sudo: no
     shell: juju generate-config
-      creates=/home/ubuntu/.juju/environments.yaml
+      creates={{ ansible_env['PWD'] }}/.juju/environments.yaml
 
   - shell: uvt-kvm ip juju
     register: juju_ip
@@ -99,19 +92,19 @@
   - name: Juju config file
     sudo: no
     template: src=templates/environments.yaml.j2
-      dest=/home/ubuntu/.juju/environments.yaml
+      dest={{ ansible_env['PWD'] }}/.juju/environments.yaml
 
   - name: Bootstrap Juju
     sudo: no
     shell: juju bootstrap
-      creates=/home/ubuntu/.juju/environments/manual.jenv
+      creates={{ ansible_env['PWD'] }}/.juju/environments/manual.jenv
 
   # - pause: Break here and try rebooting Juju VM
 
   - name: Copy openstack.cfg for Juju 
     sudo: no
     copy: src=files/openstack.cfg 
-      dest=/home/ubuntu/openstack.cfg
+      dest={{ ansible_env['PWD'] }}/openstack.cfg
 
   - name: Deploy OpenStack services with Juju
     script: scripts/juju-setup.py
@@ -171,13 +164,13 @@
 
   - name: Create credentials
     template: src=templates/admin-openrc.sh.j2
-     dest=/home/ubuntu/admin-openrc.sh
+     dest={{ ansible_env['PWD'] }}/admin-openrc.sh
 
   - name: Copy credentials to nova-cloud-controller
-    shell: "scp admin-openrc.sh nova-cloud-controller:"
+    shell: "scp admin-openrc.sh ubuntu@nova-cloud-controller:"
 
   - name: Get public key
-    shell: cat /home/ubuntu/.ssh/id_rsa.pub
+    shell: cat {{ ansible_env['PWD'] }}/.ssh/id_rsa.pub
     register: sshkey
 
 - hosts: singapore-compute
@@ -201,11 +194,3 @@
   - name: run /etc/rc.local
     shell: /etc/rc.local
 
-# Whaat's left
-# - Adding compute nodes
-#   - Add machine
-#   - Deploy charm
-#   - Remove virbr0
-# 
-# - Creating br-ex and br-nat networks
-# - But this should perhaps be done by OpenCloud?
