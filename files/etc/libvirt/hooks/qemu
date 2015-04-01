@@ -1,0 +1,40 @@
+#!/bin/sh
+
+SHELL="/bin/bash"
+
+NIC=$( route|grep default|awk '{print$8}' )
+PORTAL=$( dig +short portal.opencloud.us )
+
+NAME="${1}"
+OP="${2}"
+SUBOP="${3}"
+ARGS="${4}"
+
+add_rule() {
+    ARGS=$1
+    iptables -C FORWARD $ARGS
+    if [ "$?" -ne 0 ]
+    then
+        iptables -I FORWARD 1 $ARGS
+    fi
+}
+
+add_local_access_rules() {
+    SUBNET=$( ip addr show $NIC|grep "inet "|awk '{print $2}' )
+    add_rule "-s $SUBNET -j ACCEPT"
+}
+
+add_portal_access_rules() {
+    add_rule "-s $PORTAL -j ACCEPT"
+}
+
+add_web_access_rules() {
+    add_rule "-p tcp --dport 80 -j ACCEPT"
+}
+
+if [ "$OP" = "start" ]
+then
+	add_local_access_rules
+	add_portal_access_rules
+	add_web_access_rules
+fi	
