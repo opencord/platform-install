@@ -4,7 +4,7 @@ import subprocess
 import json
 import socket
 
-jujuconfig="openstack.cfg"
+jujuconfig="/usr/local/src/openstack.cfg"
 
 # Assumption: VMs have same hostname as service that runs inside
 machines = ["mysql", "rabbitmq-server", "keystone", "glance", "nova-cloud-controller",

@@ -4,7 +4,7 @@ import subprocess
 import json
 import time
 
-jujuconfig="/home/ubuntu/openstack.cfg"
+jujuconfig="/usr/local/src/openstack.cfg"
 
 services = {
     "nova-compute" : "--config=%s cs:~andybavier/trusty/nova-compute" % jujuconfig,
