@@ -24,18 +24,17 @@
     - git
 
   - name: Get juju-ansible git repo
-    sudo: no
     git: repo=https://github.com/cmars/juju-ansible.git
-      dest={{ ansible_env['PWD'] }}/juju-ansible
+      dest=/usr/local/src/juju-ansible
 
   - name: Set up juju-ansible symlink
     file: dest=/usr/local/bin/juju-ansible
-      src={{ ansible_env['PWD'] }}/juju-ansible
+      src=/usr/local/src/juju-ansible/juju-ansible
       state=link
 
   - name: Set up juju-ansible-playbook symlink
     file: dest=/usr/local/bin/juju-ansible-playbook
-      src={{ ansible_env['PWD'] }}/juju-ansible
+      src=/usr/local/src/juju-ansible/juju-ansible
       state=link
 
   - name: Generate key to use in VMs
@@ -55,6 +54,8 @@
   - name: Add VMs to /etc/hosts
     template: src=templates/etc/hosts.j2
       dest=/etc/hosts
+    notify:
+    - Reload dnsmasq
 
   - name: Set up /etc/ansible/hosts
     template: src=templates/etc/ansible/hosts.j2
@@ -77,6 +78,10 @@
   - name: Test that we can log into every VM
     sudo: no
     shell: ansible services -m ping -u ubuntu
+
+  handlers:
+  - name: Reload dnsmasq
+    shell: killall -HUP dnsmasq
 
 # Play: Install services using Juju
 - hosts: singapore-head
@@ -102,9 +107,9 @@
   # - pause: Break here and try rebooting Juju VM
 
   - name: Copy openstack.cfg for Juju 
-    sudo: no
+    sudo: yes
     copy: src=files/openstack.cfg 
-      dest={{ ansible_env['PWD'] }}/openstack.cfg
+      dest=/usr/local/src/openstack.cfg
 
   - name: Deploy OpenStack services with Juju
     script: scripts/juju-setup.py
@@ -169,6 +174,15 @@
   - name: Copy credentials to nova-cloud-controller
     shell: "scp admin-openrc.sh ubuntu@nova-cloud-controller:"
 
+  - name: Copy network setup script
+    sudo: yes
+    copy: src=scripts/network-setup.sh
+      dest=/usr/local/src/network-setup.sh
+      mode=0644
+
+  - name: Run network setup script
+    shell: ansible nova-cloud-controller -m script -u ubuntu -a "/usr/local/src/network-setup.sh"
+
   - name: Get public key
     shell: cat {{ ansible_env['PWD'] }}/.ssh/id_rsa.pub
     register: sshkey
@@ -177,8 +191,11 @@
   sudo: yes
   vars: 
     control_net: 192.168.122.0/24
-    gateway: 198.71.44.85
+    gateway: "{{ hostvars['opencloud3.sing.internet2.edu']['ansible_eth0']['ipv4']['address'] }}"
   tasks:
+  - name: Install package needed by Juju
+    apt: name=python-yaml state=present
+
   - name: Add route via /etc/rc.local
     template: src=templates/etc/rc.local
       dest=/etc/rc.local
@@ -187,7 +204,7 @@
     - run /etc/rc.local
 
   - name: Add key
-    authorized_key: user=ubuntu
+    authorized_key: user="{{ ansible_env['SUDO_USER'] }}"
       key="{{ hostvars['opencloud3.sing.internet2.edu']['sshkey']['stdout'] }}"
 
   handlers:

@@ -14,13 +14,6 @@
 
   - pause: "Wait until relations are added"
 
-  - name: Copy network setup script
-    copy: src=scripts/network-setup.sh
-      dest=/home/ubuntu/network-setup.sh
-
-  - name: Run network setup script
-    shell: ansible nova-cloud-controller -m script -a "/home/ubuntu/network-setup.sh"
-
 # Play: set up ansible-pull for OpenCloud-specific files on nova-compute nodes
 - hosts: singapore-compute
   sudo: yes
@@ -47,6 +40,10 @@
 
   - name: Install ansible
     apt: name=ansible state=installed
+
+  - name: Basic ansible inventory
+    template: src=templates/etc/ansible/hosts.j2
+      dest=/etc/ansible/hosts
 
   - name: Create local directory to work from
     file: path={{workdir}} state=directory owner=root group=root mode=0751
