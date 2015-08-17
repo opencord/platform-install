@@ -1,0 +1,21 @@
+# Enable virtualization on Dell R410s
+---
+- hosts: onlab-compute
+  sudo: yes
+  tasks:
+  - name: Update files
+    copy: src=files/etc/apt/sources.list.d/linux.dell.com.sources.list
+      dest=/etc/apt/sources.list.d/linux.dell.com.sources.list
+
+  - shell: gpg --keyserver pool.sks-keyservers.net --recv-key 1285491434D8786F
+
+  - shell: gpg -a --export 1285491434D8786F | sudo apt-key add -
+
+  - name: Update apt cache
+    apt: upgrade=yes update_cache=yes
+
+  - name: Install packages
+    apt: name=dtk-scripts state=present
+
+  - name: Enable virtualization in BIOS
+    shell: /opt/dell/toolkit/bin/syscfg --virtualization=enable

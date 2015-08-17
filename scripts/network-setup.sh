@@ -2,25 +2,39 @@
 
 source ~/admin-openrc.sh
 
-# Create nat-net network
-neutron net-show nat-net 2>&1 > /dev/null
-if [ "$?" -ne 0 ]
-then
-    neutron net-create --provider:physical_network=nat --provider:network_type=flat --shared nat-net
-fi
+function create-flat-net {
+    NAME=$1
+    neutron net-show $NAME-net 2>&1 > /dev/null
+    if [ "$?" -ne 0 ]
+    then
+	neutron net-create --provider:physical_network=$NAME --provider:network_type=flat --shared $NAME-net
+    fi
+}
 
-# Create nat-net subnet
-neutron subnet-show nat-net 2>&1 > /dev/null
-if [ "$?" -ne 0 ]
-then
-    neutron subnet-create nat-net --name nat-net 172.16.0.0/16 --gateway=172.16.0.1 --enable-dhcp=false
-fi
+function create-subnet {
+    NAME=$1
+    CIDR=$2
+    GW=$3
 
-# Create nat-net network
-neutron net-show ext-net 2>&1 > /dev/null
-if [ "$?" -ne 0 ]
-then
-    neutron net-create --provider:physical_network=ext --provider:network_type=flat --shared ext-net
-fi
+    neutron subnet-show $NAME-net 2>&1 > /dev/null
+    if [ "$?" -ne 0 ]
+    then
+	neutron subnet-create $NAME-net --name $NAME-net $CIDR --gateway=$GW --enable-dhcp=false
+    fi
+}
 
+function create-subnet-no-gateway {
+    NAME=$1
+    CIDR=$2
 
+    neutron subnet-show $NAME-net 2>&1 > /dev/null
+    if [ "$?" -ne 0 ]
+    then
+	neutron subnet-create $NAME-net --name $NAME-net $CIDR --no-gateway --enable-dhcp=false
+    fi
+}
+
+create-flat-net nat
+create-subnet nat 172.16.0.0/16 172.16.0.1
+
+create-flat-net ext

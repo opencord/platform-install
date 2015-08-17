@@ -9,6 +9,7 @@ function create-vm {
 	if [ "$?" -ne "0" ]
 	then
 		uvt-kvm create $NAME --cpu=$CPU --memory=$MEM_MB --disk=$DISK_GB
+		uvt-kvm wait --insecure $NAME
 	fi
 }
 

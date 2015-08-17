@@ -1,0 +1,65 @@
+---
+- hosts: cloudlab-head
+  sudo: no
+  tasks:
+  - pause: "Install nova-compute on all unused machines managed by Juju"
+
+  - name: Deploy nova-compute
+    script: scripts/juju-compute-setup.py
+
+  - name: Make sure we're using KVM
+    shell: juju set nova-compute virt-type=kvm
+
+  - pause: "Wait until services have started"
+
+  - name: Add nova-compute relations
+    script: scripts/juju-compute-relations.py
+
+  - pause: "Wait until relations are added"
+
+# Play: set up ansible-pull for OpenCloud-specific files on nova-compute nodes
+- hosts: cloudlab-compute
+  sudo: yes
+  vars:
+
+    # schedule is fed directly to cron
+    schedule: '*/15 * * * *'
+
+    # User to run ansible-pull as from cron
+    cron_user: root
+
+    # File that ansible will use for logs
+    logfile: /var/log/ansible-pull.log
+
+    # Directory to where repository will be cloned
+    workdir: /var/lib/ansible/local
+
+    # Repository to check out
+    # repo must contain a local.yml file at top level
+    #repo_url: git://github.com/sfromm/ansible-playbooks.git
+    repo_url: git://github.com/andybavier/opencloud-nova-compute-ansible.git
+
+    # Branch or tag to checkout
+    #repo_version: onlab
+
+  tasks:
+
+  - name: Set up extra space on CloudLab nodes
+    shell: /usr/testbed/bin/mkextrafs /var/lib/libvirt/images
+      creates=/var/lib/libvirt/images/lost+found
+
+  - name: Install ansible
+    apt: name=ansible state=installed
+
+  - name: Basic ansible inventory
+    template: src=templates/etc/ansible/hosts.j2
+      dest=/etc/ansible/hosts
+
+  - name: Create local directory to work from
+    file: path={{workdir}} state=directory owner=root group=root mode=0751
+
+  - name: Create crontab entry to clone/pull git repository
+    template: src=templates/etc/cron.d/ansible-pull.j2 dest=/etc/cron.d/ansible-pull owner=root group=root mode=0644
+
+  - name: Create logrotate entry for ansible-pull.log
+    template: src=templates/etc/logrotate.d/ansible-pull.j2 dest=/etc/logrotate.d/ansible-pull owner=root group=root mode=0644
