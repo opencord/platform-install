@@ -6,10 +6,11 @@
 {{ keystone_ip.stdout }} keystone
 {{ glance_ip.stdout }} glance
 {{ novacc_ip.stdout }} nova-cloud-controller
-{{ quantum_ip.stdout }} quantum-gateway
+{{ neutron_ip.stdout }} neutron-gateway
 {{ horizon_ip.stdout }} openstack-dashboard
 {{ ceilometer_ip.stdout }} ceilometer
 {{ nagios_ip.stdout }} nagios
+{{ neutron_api_ip.stdout}} neutron-api
 
 # The following lines are desirable for IPv6 capable hosts
 ::1     localhost ip6-localhost ip6-loopback

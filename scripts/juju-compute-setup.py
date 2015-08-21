@@ -7,7 +7,8 @@ import time
 jujuconfig="/usr/local/src/openstack.cfg"
 
 services = {
-    "nova-compute" : "--config=%s cs:~andybavier/trusty/nova-compute" % jujuconfig,
+#    "nova-compute" : "--config=%s cs:~andybavier/trusty/nova-compute" % jujuconfig,
+    "nova-compute" : "--config=%s nova-compute" % jujuconfig,
 }
 
 def get_free_machines(status):
@@ -28,14 +29,14 @@ def get_free_machines(status):
             free[machine] = mchinfo
 
     return free
-                
+
 
 def deploy(status, service, cmd):
     # Deploy nova-compute to all free machines
     machines = get_free_machines(status)
-    
+
     for (machine, mchinfo) in machines.iteritems():
-        if service in status['services']: 
+        if service in status['services']:
             print "Adding unit %s on %s" % (service, mchinfo['dns-name'])
             subprocess.check_call("juju add-unit --to=%s %s" % (machine, service), shell=True)
         else:

@@ -11,6 +11,7 @@ relations = [
     "nova-compute:amqp rabbitmq-server:amqp",
     "nova-compute glance",
     "nova-compute nova-cloud-controller",
+    "nova-compute neutron-openvswitch",
     "ntp nova-compute",
     "nova-compute nagios",
     "nova-compute nrpe",
@@ -31,7 +32,7 @@ def addrelations():
             time.sleep(sleep_interval)
         except:
             pass
-            
+
 def destroyrelations():
     for relation in relations:
         print "Destroying relation %s" % relation
@@ -51,6 +52,6 @@ def main():
         destroyrelations()
     else:
         addrelations()
-        
+
 if  __name__ =='__main__':
     main()
