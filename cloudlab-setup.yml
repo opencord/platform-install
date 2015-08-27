@@ -132,21 +132,6 @@
   - name: Deploy OpenStack services with Juju
     script: scripts/juju-setup.py
 
-#  - pause: prompt="Hit return when all services have started successfully"
-
-  - name: Set MTU for GRE tunneling
-    shell: "juju set neutron-gateway instance-mtu=1400"
-
-# Disable all HTTPS for time being
-  - name: Use HTTPS for keystone authentication
-    shell: 'juju set keystone use-https=no'
-
-  - name: Use HTTPS for all service endpoints
-    shell: 'juju set keystone https-service-endpoints=False'
-
-  - name: Use SSL for rabbitmq
-    shell: 'juju set rabbitmq-server ssl=off'
-
   - name: Add all Juju relations between services
     script: scripts/juju-relations.py
 
@@ -199,8 +184,8 @@
       dest=/usr/local/src/network-setup.sh
       mode=0644
 
-#  - name: Run network setup script
-#    shell: ansible nova-cloud-controller -m script -u ubuntu -a "/usr/local/src/network-setup.sh"
+  - name: Run network setup script
+    shell: ansible nova-cloud-controller -m script -u ubuntu -a "/usr/local/src/network-setup.sh"
 
   - name: Get public key
     shell: cat {{ ansible_env['PWD'] }}/.ssh/id_rsa.pub
