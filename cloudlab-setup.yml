@@ -50,7 +50,9 @@
       creates=/var/lib/uvtool/libvirt/images/lost+found
 
   - name: Add myself to libvirtd group
-    shell: usermod -aG libvirtd {{ ansible_env['SUDO_USER'] }}
+    user: name={{ ansible_env['SUDO_USER'] }}
+      groups=libvirtd
+      append=yes
 
   - name: Get trusty image for uvtool
     shell: uvt-simplestreams-libvirt sync --source http://cloud-images.ubuntu.com/daily release=trusty arch=amd64
