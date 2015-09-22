@@ -40,7 +40,7 @@
     repo_url: git://github.com/andybavier/opencloud-nova-compute-ansible.git
 
     # Branch or tag to checkout
-    #repo_version: onlab
+    repo_version: kilo
 
   tasks:
 
