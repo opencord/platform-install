@@ -5,7 +5,7 @@
   sudo: yes
   tasks:
 
-  - apt: name={{ item }}
+  - apt: name={{ item }} update_cache=yes
     with_items:
     - python-pycurl
     - software-properties-common
