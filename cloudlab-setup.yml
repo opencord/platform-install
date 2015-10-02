@@ -27,6 +27,10 @@
     - git
     - bzr
     - juju-core
+    - python-novaclient
+    - python-neutronclient
+    - python-keystoneclient
+    - python-glanceclient
 
   - name: Get juju-ansible git repo
     git: repo=https://github.com/cmars/juju-ansible.git
@@ -177,6 +181,14 @@
     template: src=templates/admin-openrc.sh.j2
      dest={{ ansible_env['PWD'] }}/admin-openrc.sh
 
+  - name: CloudLab: Make sure that /root/setup exists
+    file: path=/root/setup state=directory
+    sudo: yes
+
+  - name: CloudLab: Copy credentials to /root/setup
+    shell: scp admin-openrc.sh /root/setup
+    sudo: yes
+
   - name: Copy credentials to nova-cloud-controller
     shell: "scp admin-openrc.sh ubuntu@nova-cloud-controller:"
 
@@ -192,6 +204,15 @@
   - name: Get public key
     shell: cat {{ ansible_env['PWD'] }}/.ssh/id_rsa.pub
     register: sshkey
+
+  - name: Copy CA certificate
+    shell: juju scp nova-cloud-controller/0:/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt /usr/local/share/ca-certificates
+      creates=/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt
+    sudo: yes
+
+  - name: Update CA ca-certificates
+    shell: update-ca-certificates
+    sudo: yes
 
 - hosts: cloudlab-compute
   sudo: yes
