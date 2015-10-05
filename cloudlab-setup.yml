@@ -122,8 +122,6 @@
     shell: juju bootstrap
       creates={{ ansible_env['PWD'] }}/.juju/environments/manual.jenv
 
-  # - pause: Break here and try rebooting Juju VM
-
   - name: Copy openstack.cfg for Juju
     sudo: yes
     copy: src=files/openstack.cfg
@@ -141,7 +139,8 @@
   - name: Add all Juju relations between services
     script: scripts/juju-relations.py
 
-  - pause: prompt="Wait for relations to be fully added"
+  - name: Wait for relations to be fully added
+    script: scripts/wait-for-services.sh
 
 # Play: Use libvirt hooks to set up iptables
 - hosts: cloudlab-head
@@ -206,9 +205,8 @@
     register: sshkey
 
   - name: Copy CA certificate
-    shell: juju scp nova-cloud-controller/0:/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt /usr/local/share/ca-certificates
+    shell: sudo juju scp nova-cloud-controller/0:/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt /usr/local/share/ca-certificates
       creates=/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt
-    sudo: yes
 
   - name: Update CA ca-certificates
     shell: update-ca-certificates

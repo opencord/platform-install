@@ -10,12 +10,11 @@
   - name: Make sure we're using KVM
     shell: juju set nova-compute virt-type=kvm
 
-  - pause: "Wait until services have started"
-
   - name: Add nova-compute relations
     script: scripts/juju-compute-relations.py
 
-  - pause: "Wait until relations are added"
+  - name: Wait until relations are added
+    script: scripts/wait-for-services.sh
 
 # Play: set up ansible-pull for OpenCloud-specific files on nova-compute nodes
 - hosts: cloudlab-compute
