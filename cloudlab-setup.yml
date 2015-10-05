@@ -49,7 +49,7 @@
   - name: Generate key to use in VMs
     user: name={{ ansible_env['SUDO_USER'] }} generate_ssh_key=yes
 
-  - name: Set up extra space on CloudLab nodes
+  - name: (CloudLab) Set up extra disk space
     shell: /usr/testbed/bin/mkextrafs /var/lib/uvtool/libvirt/images
       creates=/var/lib/uvtool/libvirt/images/lost+found
 
@@ -181,11 +181,11 @@
     template: src=templates/admin-openrc.sh.j2
      dest={{ ansible_env['PWD'] }}/admin-openrc.sh
 
-  - name: CloudLab: Make sure that /root/setup exists
+  - name: (CloudLab) Make sure that /root/setup exists
     file: path=/root/setup state=directory
     sudo: yes
 
-  - name: CloudLab: Copy credentials to /root/setup
+  - name: (CloudLab) Copy credentials to /root/setup
     shell: scp admin-openrc.sh /root/setup
     sudo: yes
 
@@ -237,7 +237,7 @@
   - name: Touch ~/.ssh/config
     file: path=/var/lib/nova state=directory
 
-  - name: Set up extra space on CloudLab nodes
+  - name: (CloudLab) Set up extra disk space
     shell: /usr/testbed/bin/mkextrafs /var/lib/nova
       creates=/var/lib/nova/lost+found
 
