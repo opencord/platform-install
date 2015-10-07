@@ -61,6 +61,9 @@
   - name: Get trusty image for uvtool
     shell: uvt-simplestreams-libvirt sync --source http://cloud-images.ubuntu.com/daily release=trusty arch=amd64
 
+  - name: Change the subnet of virbr0 to 192.168.100.0/24
+    shell: sed -i 's/192.168.122/192.168.100/g' /etc/libvirt/qemu/networks/default.xml
+
   - name: Create VMs to host OpenCloud services
     sudo: no
     script: scripts/create-vms.sh
