@@ -5,6 +5,8 @@
   sudo: yes
   tasks:
 
+  - apt: update_cache=yes
+
   - apt: name={{ item }}
     with_items:
     - python-pycurl
