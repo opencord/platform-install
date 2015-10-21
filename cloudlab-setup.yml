@@ -218,7 +218,7 @@
 - hosts: cloudlab-compute
   sudo: yes
   vars:
-    control_net: 192.168.122.0/24
+    control_net: "{{ hostvars['ctl.install.xos-pg0.clemson.cloudlab.us']['ansible_virbr0']['ipv4']['network'] }}/24"
     gateway: "{{ hostvars['ctl.install.xos-pg0.clemson.cloudlab.us']['ansible_default_ipv4']['address'] }}"
   tasks:
   - name: Install package needed by Juju
