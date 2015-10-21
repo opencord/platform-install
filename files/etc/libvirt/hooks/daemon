@@ -2,7 +2,7 @@
 
 SHELL="/bin/bash"
 
-NIC=$( route|grep default|awk '{print$8}' )
+NIC=$( route|grep default|awk '{print $NF}' )
 
 NAME="${1}"
 OP="${2}"
@@ -13,12 +13,12 @@ add_port_fwd_rule() {
     DPORT=$1
     VM=$2
     TOPORT=$3
-    
+
     VMIP=$( getent ahosts $VM|head -1|awk '{print $1}' )
     iptables -t nat -C PREROUTING -p tcp -i $NIC --dport $DPORT -j DNAT --to-destination $VMIP:$TOPORT
     if [ "$?" -ne 0 ]
     then
-	iptables -t nat -A PREROUTING -p tcp -i $NIC --dport $DPORT -j DNAT --to-destination $VMIP:$TOPORT
+        iptables -t nat -A PREROUTING -p tcp -i $NIC --dport $DPORT -j DNAT --to-destination $VMIP:$TOPORT
     fi
 }
 
@@ -29,7 +29,7 @@ then
     add_port_fwd_rule 4990 keystone 4990
     add_port_fwd_rule 5000 keystone 5000
     add_port_fwd_rule 8774 nova-cloud-controller 8774
-    add_port_fwd_rule 9696 nova-cloud-controller 9696
+    add_port_fwd_rule 9696 neutron-api 9696
     add_port_fwd_rule 9292 glance 9292
     add_port_fwd_rule 8080 openstack-dashboard 80
     add_port_fwd_rule 3128 nagios 80
@@ -37,4 +37,4 @@ then
 
     # Also flush the filter table before rules re-added
     iptables -F
-fi	
+fi

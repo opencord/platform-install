@@ -17,8 +17,8 @@
 - shell: uvt-kvm ip nova-cloud-controller
   register: novacc_ip
 
-- shell: uvt-kvm ip quantum-gateway
-  register: quantum_ip
+- shell: uvt-kvm ip neutron-gateway
+  register: neutron_ip
 
 - shell: uvt-kvm ip openstack-dashboard
   register: horizon_ip
@@ -28,3 +28,6 @@
 
 - shell: uvt-kvm ip ceilometer
   register: ceilometer_ip
+
+- shell: uvt-kvm ip neutron-api
+  register: neutron_api_ip

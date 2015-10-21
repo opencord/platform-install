@@ -19,7 +19,8 @@ create-vm rabbitmq-server 2 4096 40
 create-vm keystone 2 4096 40
 create-vm glance 2 4096 160
 create-vm nova-cloud-controller 2 4096 40
-create-vm quantum-gateway 2 4096 40
+create-vm neutron-gateway 2 4096 40
+create-vm neutron-api 2 4096 40
 create-vm openstack-dashboard 1 2048 20
 create-vm ceilometer 1 2048 20
 create-vm nagios 1 2048 20

@@ -13,26 +13,34 @@ relations = ["keystone mysql",
              "nova-cloud-controller keystone",
              "glance mysql",
              "glance keystone",
-             "quantum-gateway mysql",
-             "quantum-gateway rabbitmq-server",
-             "quantum-gateway nova-cloud-controller",
+             "neutron-gateway neutron-api",
+             "neutron-gateway:amqp rabbitmq-server:amqp",
+             "neutron-gateway nova-cloud-controller",
+             "neutron-gateway mysql",
+             "neutron-api keystone",
+             "neutron-api neutron-openvswitch",
+             "neutron-api mysql",
+             "neutron-api rabbitmq-server",
+             "neutron-api nova-cloud-controller",
+             "neutron-openvswitch rabbitmq-server",
              "openstack-dashboard keystone",
-             "ntp nova-cloud-controller",
-             "mysql nagios",
-             "rabbitmq-server nagios",
-             "keystone nagios",
-             "glance nagios",
-             "nova-cloud-controller nagios",
-             "quantum-gateway nagios",
-             "openstack-dashboard nagios",
+#             "mysql nagios",
+#             "rabbitmq-server nagios",
+#             "keystone nagios",
+#             "glance nagios",
+#             "nova-cloud-controller nagios",
+#             "neutron-gateway nagios",
+#             "openstack-dashboard nagios",
+#             "neutron-api nagios",
              "nagios nrpe",
-             "mysql nrpe",
+             "mysql:juju-info nrpe:general-info",
              "rabbitmq-server nrpe",
              "keystone nrpe",
              "glance nrpe",
              "nova-cloud-controller nrpe",
-             "quantum-gateway nrpe",
+             "neutron-gateway nrpe",
              "openstack-dashboard nrpe",
+             "neutron-api nrpe",
              "ceilometer mongodb",
              "ceilometer rabbitmq-server",
              "ceilometer:identity-service keystone:identity-service",
@@ -55,7 +63,7 @@ def addrelations():
             time.sleep(sleep_interval)
         except:
             pass
-            
+
 def destroyrelations():
     for relation in relations:
         print "Destroying relation %s" % relation
@@ -75,6 +83,6 @@ def main():
         destroyrelations()
     else:
         addrelations()
-        
+
 if  __name__ =='__main__':
     main()

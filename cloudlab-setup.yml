@@ -5,9 +5,7 @@
   sudo: yes
   tasks:
 
-  - apt: update_cache=yes
-
-  - apt: name={{ item }}
+  - apt: name={{ item }} update_cache=yes
     with_items:
     - python-pycurl
     - software-properties-common
@@ -18,8 +16,8 @@
   - name: Add Ansible repository
     apt_repository: repo="ppa:ansible/ansible"
 
-  - name: Install older version of Juju due to bug in 1.22
-    apt: name=juju-core
+  - name: Update Ansible cache
+    apt: update_cache=yes
 
   - name: Install packages
     apt: name={{ item }} state=latest
@@ -28,6 +26,11 @@
     - uvtool
     - git
     - bzr
+    - juju-core
+    - python-novaclient
+    - python-neutronclient
+    - python-keystoneclient
+    - python-glanceclient
 
   - name: Get juju-ansible git repo
     git: repo=https://github.com/cmars/juju-ansible.git
@@ -46,21 +49,24 @@
   - name: Generate key to use in VMs
     user: name={{ ansible_env['SUDO_USER'] }} generate_ssh_key=yes
 
-  - name: Set up extra space on CloudLab nodes
+  - name: (CloudLab) Set up extra disk space
     shell: /usr/testbed/bin/mkextrafs /var/lib/uvtool/libvirt/images
       creates=/var/lib/uvtool/libvirt/images/lost+found
 
   - name: Add myself to libvirtd group
-    shell: usermod -aG libvirtd {{ ansible_env['SUDO_USER'] }}
+    user: name={{ ansible_env['SUDO_USER'] }}
+      groups=libvirtd
+      append=yes
 
   - name: Get trusty image for uvtool
     shell: uvt-simplestreams-libvirt sync --source http://cloud-images.ubuntu.com/daily release=trusty arch=amd64
 
+  - name: Change the subnet of virbr0 to 192.168.100.0/24
+    shell: sed -i 's/192.168.122/192.168.100/g' /etc/libvirt/qemu/networks/default.xml
+
   - name: Create VMs to host OpenCloud services
     sudo: no
     script: scripts/create-vms.sh
-
-#  - pause: prompt="Hit return when all VMs have IP addresses"
 
   - include: tasks/vm-ips.yml
 
@@ -119,8 +125,6 @@
     shell: juju bootstrap
       creates={{ ansible_env['PWD'] }}/.juju/environments/manual.jenv
 
-  # - pause: Break here and try rebooting Juju VM
-
   - name: Copy openstack.cfg for Juju
     sudo: yes
     copy: src=files/openstack.cfg
@@ -135,24 +139,11 @@
   - name: Deploy OpenStack services with Juju
     script: scripts/juju-setup.py
 
-#  - pause: prompt="Hit return when all services have started successfully"
-
-  - name: Set MTU for GRE tunneling
-    shell: "juju set quantum-gateway instance-mtu=1400"
-
-  - name: Use HTTPS for keystone authentication
-    shell: 'juju set keystone use-https=yes'
-
-  - name: Use HTTPS for all service endpoints
-    shell: 'juju set keystone https-service-endpoints=True'
-
-  - name: Use SSL for rabbitmq
-    shell: 'juju set rabbitmq-server ssl=on'
-
   - name: Add all Juju relations between services
     script: scripts/juju-relations.py
 
-  - pause: prompt="Wait for relations to be fully added"
+  - name: Wait for relations to be fully added
+    script: scripts/wait-for-services.sh
 
 # Play: Use libvirt hooks to set up iptables
 - hosts: cloudlab-head
@@ -192,6 +183,14 @@
     template: src=templates/admin-openrc.sh.j2
      dest={{ ansible_env['PWD'] }}/admin-openrc.sh
 
+  - name: (CloudLab) Make sure that /root/setup exists
+    file: path=/root/setup state=directory
+    sudo: yes
+
+  - name: (CloudLab) Copy credentials to /root/setup
+    shell: scp admin-openrc.sh /root/setup
+    sudo: yes
+
   - name: Copy credentials to nova-cloud-controller
     shell: "scp admin-openrc.sh ubuntu@nova-cloud-controller:"
 
@@ -208,14 +207,26 @@
     shell: cat {{ ansible_env['PWD'] }}/.ssh/id_rsa.pub
     register: sshkey
 
+  - name: Copy CA certificate
+    shell: sudo juju scp nova-cloud-controller/0:/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt /usr/local/share/ca-certificates
+      creates=/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt
+
+  - name: Update CA ca-certificates
+    shell: update-ca-certificates
+    sudo: yes
+
 - hosts: cloudlab-compute
   sudo: yes
   vars:
     control_net: 192.168.122.0/24
-    gateway: 130.127.133.105
+    gateway: "{{ hostvars['ctl.install.xos-pg0.clemson.cloudlab.us']['ansible_default_ipv4']['address'] }}"
   tasks:
   - name: Install package needed by Juju
     apt: name=python-yaml state=present
+
+  - name: Add key
+    authorized_key: user="{{ ansible_env['SUDO_USER'] }}"
+      key="{{ hostvars['ctl.install.xos-pg0.clemson.cloudlab.us']['sshkey']['stdout'] }}"
 
   - name: Add route via /etc/rc.local
     template: src=templates/etc/rc.local.cloudlab
@@ -224,9 +235,12 @@
     notify:
     - run /etc/rc.local
 
-  - name: Add key
-    authorized_key: user="{{ ansible_env['SUDO_USER'] }}"
-      key="{{ hostvars['ctl.acb-qv8253.xos-pg0.clemson.cloudlab.us']['sshkey']['stdout'] }}"
+  - name: Touch ~/.ssh/config
+    file: path=/var/lib/nova state=directory
+
+  - name: (CloudLab) Set up extra disk space
+    shell: /usr/testbed/bin/mkextrafs /var/lib/nova
+      creates=/var/lib/nova/lost+found
 
   handlers:
   - name: run /etc/rc.local

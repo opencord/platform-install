@@ -19,7 +19,7 @@ function create-subnet {
     neutron subnet-show $NAME-net 2>&1 > /dev/null
     if [ "$?" -ne 0 ]
     then
-	neutron subnet-create $NAME-net --name $NAME-net $CIDR --gateway=$GW --enable-dhcp=false
+	neutron subnet-create $NAME-net --name $NAME-net $CIDR --gateway=$GW --disable-dhcp
     fi
 }
 
@@ -30,7 +30,7 @@ function create-subnet-no-gateway {
     neutron subnet-show $NAME-net 2>&1 > /dev/null
     if [ "$?" -ne 0 ]
     then
-	neutron subnet-create $NAME-net --name $NAME-net $CIDR --no-gateway --enable-dhcp=false
+	neutron subnet-create $NAME-net --name $NAME-net $CIDR --no-gateway --disable-dhcp
     fi
 }
 
