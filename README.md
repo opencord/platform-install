@@ -24,7 +24,7 @@ $ juju add-machine ssh:ubuntu@compute-node
 ```
 * To install the *nova-compute* service on the compute nodes that were added to Juju, run on the control machine:
 ```
-$ ansible-playbook foo-compute.yaml
+$ ansible-playbook -i foo-hosts foo-compute.yaml
 ```
 
 ## Things to note
