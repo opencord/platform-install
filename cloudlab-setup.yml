@@ -1,7 +1,7 @@
 ---
 # Play: set up head node
 # Assumes basic /etc/ansible/hosts file
-- hosts: cloudlab-head
+- hosts: head
   sudo: yes
   tasks:
 
@@ -103,7 +103,7 @@
     shell: killall -HUP dnsmasq
 
 # Play: Install services using Juju
-- hosts: cloudlab-head
+- hosts: head
   vars:
     charm_src: /usr/local/src/charms/trusty
   tasks:
@@ -146,7 +146,7 @@
     script: scripts/wait-for-services.sh
 
 # Play: Use libvirt hooks to set up iptables
-- hosts: cloudlab-head
+- hosts: head
   sudo: yes
   tasks:
   - name: Enable port forwarding for services
@@ -168,7 +168,7 @@
     shell: /etc/libvirt/hooks/qemu start start
 
 # Play: Create credentials, set up some basic OpenStack
-- hosts: cloudlab-head
+- hosts: head
   sudo: no
   tasks:
 
@@ -215,11 +215,11 @@
     shell: update-ca-certificates
     sudo: yes
 
-- hosts: cloudlab-compute
+- hosts: compute
   sudo: yes
   vars:
-    control_net: "{{ hostvars['ctl.install.xos-pg0.clemson.cloudlab.us']['ansible_virbr0']['ipv4']['network'] }}/24"
-    gateway: "{{ hostvars['ctl.install.xos-pg0.clemson.cloudlab.us']['ansible_default_ipv4']['address'] }}"
+    control_net: "{{ hostvars['head']['ansible_virbr0']['ipv4']['network'] }}/24"
+    gateway: "{{ hostvars['head']['ansible_default_ipv4']['address'] }}"
   tasks:
   - name: Install package needed by Juju
     apt: name=python-yaml state=present
