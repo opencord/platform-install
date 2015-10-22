@@ -55,6 +55,7 @@
   - name: (CloudLab) Set up extra disk space
     shell: /usr/testbed/bin/mkextrafs /var/lib/uvtool/libvirt/images
       creates=/var/lib/uvtool/libvirt/images/lost+found
+    when: cloudlab
 
   - name: Add myself to libvirtd group
     user: name={{ ansible_env['SUDO_USER'] }}
@@ -200,10 +201,12 @@
   - name: (CloudLab) Make sure that /root/setup exists
     file: path=/root/setup state=directory
     sudo: yes
+    when: cloudlab
 
   - name: (CloudLab) Copy credentials to /root/setup
     shell: scp admin-openrc.sh /root/setup
     sudo: yes
+    when: cloudlab
 
   - name: Copy credentials to nova-cloud-controller
     shell: "scp admin-openrc.sh ubuntu@nova-cloud-controller:"
@@ -246,6 +249,15 @@
     template: src=templates/etc/rc.local.cloudlab
       dest=/etc/rc.local
       mode=0755
+    when: cloudlab
+    notify:
+    - run /etc/rc.local
+
+  - name: Add route via /etc/rc.local
+    template: src=templates/etc/rc.local
+      dest=/etc/rc.local
+      mode=0755
+    when: not cloudlab
     notify:
     - run /etc/rc.local
 
@@ -255,6 +267,7 @@
   - name: (CloudLab) Set up extra disk space
     shell: /usr/testbed/bin/mkextrafs /var/lib/nova
       creates=/var/lib/nova/lost+found
+    when: cloudlab
 
   handlers:
   - name: run /etc/rc.local
