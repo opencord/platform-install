@@ -1,0 +1,10 @@
+<network>
+  <name>default</name>
+  <bridge name="virbr0"/>
+  <forward/>
+  <ip address="{{ mgmt_net_prefix }}.1" netmask="255.255.255.0">
+    <dhcp>
+      <range start="{{ mgmt_net_prefix }}.2" end="{{ mgmt_net_prefix }}.254"/>
+    </dhcp>
+  </ip>
+</network>

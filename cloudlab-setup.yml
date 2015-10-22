@@ -3,6 +3,9 @@
 # Assumes basic /etc/ansible/hosts file
 - hosts: head
   sudo: yes
+  vars:
+    # Each OpenCloud cluster needs a unique mgmt_net_prefix
+    mgmt_net_prefix: 192.168.100
   tasks:
 
   - apt: name={{ item }} update_cache=yes
@@ -61,9 +64,20 @@
   - name: Get trusty image for uvtool
     shell: uvt-simplestreams-libvirt sync --source http://cloud-images.ubuntu.com/daily release=trusty arch=amd64
 
-  - name: Change the subnet of virbr0 to 192.168.100.0/24
-    shell: sed -i 's/192.168.122/192.168.100/g' /etc/libvirt/qemu/networks/default.xml
+  - name: Change the virbr0 subnet to {{ mgmt_net_prefix }}.0/24
+    template: src=templates/etc/libvirt/qemu/networks/default.xml.j2
+      dest=/etc/libvirt/qemu/networks/default.xml
+    notify:
+    - recreate default net
 
+  handlers:
+  - name: recreate default net
+    shell: virsh net-destroy default; virsh net-create /etc/libvirt/qemu/networks/default.xml
+
+# Play: create VMs to host OpenStack services
+- hosts: head
+  sudo: yes
+  tasks:
   - name: Create VMs to host OpenCloud services
     sudo: no
     script: scripts/create-vms.sh
