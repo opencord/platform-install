@@ -226,7 +226,7 @@
 
   - name: Add key
     authorized_key: user="{{ ansible_env['SUDO_USER'] }}"
-      key="{{ hostvars['ctl.install.xos-pg0.clemson.cloudlab.us']['sshkey']['stdout'] }}"
+      key="{{ hostvars['head']['sshkey']['stdout'] }}"
 
   - name: Add route via /etc/rc.local
     template: src=templates/etc/rc.local.cloudlab
