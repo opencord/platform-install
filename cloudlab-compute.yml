@@ -1,5 +1,5 @@
 ---
-- hosts: cloudlab-head
+- hosts: head
   sudo: no
   tasks:
   - pause: "Install nova-compute on all unused machines managed by Juju"
@@ -17,7 +17,7 @@
     script: scripts/wait-for-services.sh
 
 # Play: set up ansible-pull for OpenCloud-specific files on nova-compute nodes
-- hosts: cloudlab-compute
+- hosts: compute
   sudo: yes
   vars:
 
