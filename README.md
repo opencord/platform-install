@@ -4,12 +4,23 @@ for use in [OpenCloud](http://guide.opencloud.us).  All of the OpenStack control
 single "head node" and connected by an isolated private network. [Juju](http://www.ubuntu.com/cloud/tools/juju) is used
 to install and configure the OpenStack services.
 
+## Prerequisites
+
+* *Set up control machine:* The install playbooks in this repository are designed to be run on a
+  separate control machine (e.g., a laptop).
+  * Install a recent version of Ansible (Ansible 1.9.x on Mac OS X or Ubuntu should work).
+  * Be able to login to all of the cluster servers from the control machine using SSH.
+* *Set up servers:* One server in the cluster will be the "head" node, running the OpenStack
+  services.  The rest will be "compute" nodes.  
+ * Install Ubuntu 14.04 LTS on all servers.
+ * The user account used to login from the control machine must have *sudo* access.
+ * Each server should have a single active NIC (preferably eth0) with connectivity to the
+   Internet.
+
 ## How to use it
 
-The playbook is designed to be run on a separate control machine that has a recent version of Ansible installed (e.g., a laptop).
-Here are the basic steps for installing a new OpenCloud cluster named 'foo':
+Once the prerequisites are satisfied, here are the basic steps for installing a new OpenCloud cluster named 'foo':
 
-* Install Ubuntu 14.04 LTS on the head and compute nodes.
 * Create *foo-setup.yml* and *foo-compute.yml* files using *cloudlab-setup.yml* and *cloudlab-compute.yml* as templates.  Create a *foo-hosts* file with the DNS names of your nodes based on *cloudlab-hosts*.
 * If you are **not** installing on CloudLab, edit *group_vars/all*.  Change *cloudlab: true* to *cloudlab: false*.
 * If you are installing a cluster for inclusion in the **public OpenCloud**, change *mgmt_net_prefix* in *foo-setup.yml* to be unique across all OpenCloud clusters.
