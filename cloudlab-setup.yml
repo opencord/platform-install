@@ -73,7 +73,7 @@
 
   handlers:
   - name: recreate default net
-    shell: virsh net-destroy default; virsh net-create /etc/libvirt/qemu/networks/default.xml
+    script: scripts/recreate-virbr0.sh
 
 # Play: create VMs to host OpenStack services
 - hosts: head
