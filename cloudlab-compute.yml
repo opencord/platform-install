@@ -2,16 +2,26 @@
 - hosts: head
   sudo: no
   tasks:
-  - pause: "Install nova-compute on all unused machines managed by Juju"
+  - name: Remind user what is going to happen
+    pause: prompt="Install nova-compute on all unused machines managed by Juju"
 
   - name: Deploy nova-compute
     script: scripts/juju-compute-setup.py
+
+  - name: Try to avoid race condition
+    pause: seconds=5
+
+  - name: Wait until nova-compute is deployed
+    script: scripts/wait-for-services.sh
 
   - name: Make sure we're using KVM
     shell: juju set nova-compute virt-type=kvm
 
   - name: Add nova-compute relations
     script: scripts/juju-compute-relations.py
+
+  - name: Try to avoid race condition
+    pause: seconds=5
 
   - name: Wait until relations are added
     script: scripts/wait-for-services.sh
