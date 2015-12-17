@@ -1,7 +1,7 @@
 # openstack-cluster-setup
 This repository contains [Ansible](http://docs.ansible.com) playbooks for installing and configuring an OpenStack Kilo cluster
 for use with XOS. This is how build clusters for [OpenCloud](http://opencloud.us), but it should work for any XOS-managed
-deployment (e.g., [CORD](http://cord.onosproject.org). 
+deployment (e.g., [CORD](http://cord.onosproject.org)). 
 
 All of the OpenStack controller services are installed in VMs on a
 single "head node" and connected by an isolated private network. [Juju](http://www.ubuntu.com/cloud/tools/juju) is used
