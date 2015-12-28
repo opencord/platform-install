@@ -78,6 +78,7 @@
 
 # Play: create VMs to host OpenStack services
 - hosts: head
+  user: ubuntu
   sudo: yes
   tasks:
   - name: Create VMs to host OpenCloud services
@@ -120,6 +121,7 @@
 
 # Play: Install services using Juju
 - hosts: head
+  user: ubuntu
   vars:
     charm_src: /usr/local/src/charms/trusty
   tasks:
@@ -163,6 +165,7 @@
 
 # Play: Use libvirt hooks to set up iptables
 - hosts: head
+  user: ubuntu
   sudo: yes
   tasks:
   - name: Enable port forwarding for services
@@ -185,6 +188,7 @@
 
 # Play: Create credentials, set up some basic OpenStack
 - hosts: head
+  user: ubuntu
   sudo: no
   tasks:
 
@@ -234,6 +238,7 @@
     sudo: yes
 
 - hosts: compute
+  user: ubuntu
   sudo: yes
   vars:
     control_net: "{{ hostvars['head']['ansible_virbr0']['ipv4']['network'] }}/24"
