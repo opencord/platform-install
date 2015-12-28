@@ -2,6 +2,7 @@
 # Play: set up head node
 # Assumes basic /etc/ansible/hosts file
 - hosts: head
+  user: ubuntu
   sudo: yes
   vars:
     # Each OpenCloud cluster needs a unique mgmt_net_prefix
