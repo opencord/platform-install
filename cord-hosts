@@ -1,0 +1,7 @@
+head    ansible_ssh_host=node1.juju2.xos-pg0.clemson.cloudlab.us
+
+[compute]
+node2.juju2.xos-pg0.clemson.cloudlab.us
+
+[all:vars]
+cloudlab=true
