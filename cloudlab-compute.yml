@@ -1,6 +1,7 @@
 ---
 - hosts: head
   sudo: no
+  user: ubuntu
   tasks:
   - name: Remind user what is going to happen
     pause: prompt="Install nova-compute on all unused machines managed by Juju"
@@ -29,6 +30,7 @@
 # Play: set up ansible-pull for OpenCloud-specific files on nova-compute nodes
 - hosts: compute
   sudo: yes
+  user: ubuntu
   vars:
 
     # schedule is fed directly to cron
