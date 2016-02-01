@@ -1,19 +1,19 @@
 head    ansible_ssh_host=node1.stanford.vicci.org       ansible_ssh_private_key_file=../vicci_root.rsa
 
 [compute]
-node2.stanford.vicci.org
-node3.stanford.vicci.org
-node5.stanford.vicci.org
-node6.stanford.vicci.org
-node7.stanford.vicci.org
-node8.stanford.vicci.org
-node9.stanford.vicci.org
-node10.stanford.vicci.org
-node11.stanford.vicci.org
-node12.stanford.vicci.org
+node2.stanford.vicci.org 
+node3.stanford.vicci.org 
+node5.stanford.vicci.org 
+node6.stanford.vicci.org 
+node7.stanford.vicci.org 
+node8.stanford.vicci.org 
+node9.stanford.vicci.org 
+node10.stanford.vicci.org 
+node11.stanford.vicci.org 
+node12.stanford.vicci.org 
 node13.stanford.vicci.org
-node14.stanford.vicci.org
-node15.stanford.vicci.org
+node14.stanford.vicci.org 
+node15.stanford.vicci.org 
 node16.stanford.vicci.org
 node17.stanford.vicci.org
 node18.stanford.vicci.org
@@ -24,7 +24,7 @@ node22.stanford.vicci.org
 node23.stanford.vicci.org
 node24.stanford.vicci.org
 node25.stanford.vicci.org
-node26.stanford.vicci.org
+node26.stanford.vicci.org 
 node27.stanford.vicci.org
 node28.stanford.vicci.org
 node29.stanford.vicci.org
@@ -48,7 +48,7 @@ node47.stanford.vicci.org
 node48.stanford.vicci.org
 node49.stanford.vicci.org
 node50.stanford.vicci.org
-node52.stanford.vicci.org
+node52.stanford.vicci.org 
 node54.stanford.vicci.org
 node55.stanford.vicci.org
 node57.stanford.vicci.org
