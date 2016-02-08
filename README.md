@@ -1,7 +1,7 @@
 # openstack-cluster-setup
 This repository contains [Ansible](http://docs.ansible.com) playbooks for installing and configuring an OpenStack Kilo cluster
 for use with XOS. This is how we build clusters for [OpenCloud](http://opencloud.us), but it should serve as a rough guide
-for any XOS-managed deployment (e.g., [CORD](http://cord.onosproject.org)). 
+for any XOS-managed deployment (e.g., [CORD](http://cord.onosproject.org)).
 
 All of the OpenStack controller services are installed in VMs on a
 single "head node" and connected by an isolated private network. [Juju](http://www.ubuntu.com/cloud/tools/juju) is used
@@ -25,7 +25,8 @@ to install and configure the OpenStack services.
 Once the prerequisites are satisfied, here are the basic steps for installing a new OpenCloud cluster named 'foo':
 
 * Create *foo-setup.yml* and *foo-compute.yml* files using *cloudlab-setup.yml* and *cloudlab-compute.yml* as templates.  Create a *foo-hosts* file with the DNS names of your nodes based on *cloudlab-hosts*.
-* If you are **not** installing on CloudLab, edit *group_vars/all*.  Change *cloudlab: true* to *cloudlab: false*.
+* If you are **not** installing on CloudLab, edit *foo-hosts* and add *cloudlab=False*
+under *[all:vars]*.  
 * If you are installing a cluster for inclusion in the **public OpenCloud**, change *mgmt_net_prefix* in *foo-setup.yml* to be unique across all OpenCloud clusters.
 * To set up Juju, use it to install the OpenStack services on the head node, and prep the compute nodes, run on the head node:
 ```
