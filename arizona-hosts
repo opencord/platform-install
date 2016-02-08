@@ -1,10 +1,10 @@
-head    ansible_ssh_host=arizona1.cs.arizona.edu
+head    ansible_ssh_host=node1.cs.arizona.edu
 
 [compute]
-arizona2.cs.arizona.edu
-arizona3.cs.arizona.edu
-arizona4.cs.arizona.edu
-arizona5.cs.arizona.edu
+node2.cs.arizona.edu
+node3.cs.arizona.edu
+node4.cs.arizona.edu
+node5.cs.arizona.edu
 
 [all:vars]
 cloudlab=false
