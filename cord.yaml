@@ -198,6 +198,7 @@ services:
     charm: cs:trusty/nova-cloud-controller-64
     num_units: 1
     options:
+      config-flags: "force_config_drive = always"
       console-access-protocol: novnc
       network-manager: Neutron
       openstack-origin: cloud:trusty-kilo

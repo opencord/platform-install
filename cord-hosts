@@ -1,7 +1,10 @@
-head    ansible_ssh_host=node1.juju2.xos-pg0.clemson.cloudlab.us
+head    ansible_ssh_host=10.90.0.2
 
 [compute]
-node2.juju2.xos-pg0.clemson.cloudlab.us
+10.90.0.64
+10.90.0.65
+10.90.0.66
 
 [all:vars]
-cloudlab=true
+cloudlab=False
+ansible_ssh_user=cord
