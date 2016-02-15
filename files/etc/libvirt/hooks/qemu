@@ -3,7 +3,7 @@
 SHELL="/bin/bash"
 
 NIC=$( route|grep default|awk '{print $NF}' )
-PORTAL=$( dig +short portal.opencloud.us )
+PORTAL=$( dig +short portal.opencloud.us | tail -1 )
 
 NAME="${1}"
 OP="${2}"
