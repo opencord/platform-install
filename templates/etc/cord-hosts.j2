@@ -1,0 +1,22 @@
+127.0.0.1	localhost
+127.0.1.1	ubuntu
+{{ juju_ip.stdout }} juju
+{{ mysql_ip.stdout }} mysql
+{{ rabbitmq_ip.stdout }} rabbitmq-server
+{{ keystone_ip.stdout }} keystone
+{{ glance_ip.stdout }} glance
+{{ novacc_ip.stdout }} nova-cloud-controller
+{{ horizon_ip.stdout }} openstack-dashboard
+{{ ceilometer_ip.stdout }} ceilometer
+{{ nagios_ip.stdout }} nagios
+{{ neutron_api_ip.stdout}} neutron-api
+{{ xos_ip.stdout }} xos
+{{ onos_cord_ip.stdout }} onos-cord
+{% if test_setup is defined %}
+{{ nova_compute_ip.stdout }} nova-compute 
+{% endif %}
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
