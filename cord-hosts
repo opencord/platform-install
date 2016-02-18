@@ -1,9 +1,9 @@
-head    ansible_ssh_host=10.90.0.2
+head    ansible_ssh_host=localhost connection=local
 
 [compute]
-10.90.0.64
-10.90.0.65
-10.90.0.66
+node1
+node2
+node3
 
 [all:vars]
 ansible_ssh_user=cord
