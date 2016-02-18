@@ -1,0 +1,7 @@
+head    ansible_ssh_host=localhost connection=local
+
+[compute]
+nova-compute ansible_ssh_user=ubuntu
+
+[all:vars]
+test_setup=true 
