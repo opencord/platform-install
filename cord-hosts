@@ -6,5 +6,4 @@ head    ansible_ssh_host=10.90.0.2
 10.90.0.66
 
 [all:vars]
-cloudlab=False
 ansible_ssh_user=cord
