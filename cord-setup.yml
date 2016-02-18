@@ -15,7 +15,7 @@
   - name: Add Ansible repository
     apt_repository: repo="ppa:ansible/ansible"
 
-  - name: Update Ansible cache
+  - name: Update apt cache
     apt: update_cache=yes
 
   - name: Install packages
@@ -57,10 +57,21 @@
     authorized_key: user="{{ ansible_env['SUDO_USER'] }}"
       key="{{ sshkey.stdout }}"
 
+  - name: Copy keypair to /tmp
+    shell: cp -f {{ ansible_env['PWD'] }}/.ssh/{{ item }} /tmp; chmod +r /tmp/{{ item }}
+    with_items:
+    - id_rsa
+    - id_rsa.pub
+
+  - name: Check whether we're on CloudLab
+    shell: ls /usr/testbed/bin/mkextrafs
+    ignore_errors: true
+    register: is_cloudlab
+
   - name: (CloudLab) Set up extra disk space
     shell: /usr/testbed/bin/mkextrafs -f /var/lib/uvtool/libvirt/images
       creates=/var/lib/uvtool/libvirt/images/lost+found
-    when: cloudlab is defined and cloudlab
+    when: is_cloudlab | success
 
   - name: Add myself to libvirtd group
     user: name={{ ansible_env['SUDO_USER'] }}
@@ -74,20 +85,26 @@
 - hosts: head
   sudo: yes
   tasks:
-  - name: Create VMs to host OpenCloud services
+  - name: Create VMs to host OpenCloud services on mgmtbr
     sudo: no
     script: scripts/create-vms-cord.sh
+    when: test_setup is not defined
 
-  - include: tasks/vm-ips.yml
+  - name: Create VMs to host OpenCloud services on virbr0
+    sudo: no
+    script: scripts/create-vms-cord.sh --testing
+    when: test_setup is defined
+
+  - include: tasks/vm-ips-cord.yml
 
   - name: Add VMs to /etc/hosts
-    template: src=templates/etc/hosts.j2
+    template: src=templates/etc/cord-hosts.j2
       dest=/etc/hosts
     notify:
     - Reload dnsmasq
 
   - name: Set up /etc/ansible/hosts
-    template: src=templates/etc/ansible/hosts.j2
+    template: src=templates/etc/ansible/cord-hosts.j2
       dest=/etc/ansible/hosts
 
   - name: Copy ansible.cfg to disable host key checking
@@ -127,14 +144,19 @@
     authorized_key: user="root"
       key="{{ hostvars['head']['sshkey']['stdout'] }}"
 
+  - name: Check whether we're on CloudLab
+    shell: ls /usr/testbed/bin/mkextrafs
+    ignore_errors: true
+    register: is_cloudlab
+
   - name: Make sure that /var/lib/nova exists
     file: path=/var/lib/nova state=directory
-    when: cloudlab is defined and cloudlab
+    when: is_cloudlab | success
 
   - name: (CloudLab) Set up extra disk space
     shell: /usr/testbed/bin/mkextrafs -f /var/lib/nova
       creates=/var/lib/nova/lost+found
-    when: cloudlab is defined and cloudlab
+    when: is_cloudlab | success
 
 # Play: Install services using Juju
 - hosts: head
@@ -166,8 +188,12 @@
     shell: juju add-machine ssh:{{ item }}
     with_items: "{{ groups['compute'] }}"
 
+  - name: Get onos-cord IP
+    shell: uvt-kvm ip onos-cord
+    register: onos_cord_ip
+
   - name: Copy cord.yaml bundle
-    copy: src=cord.yaml dest={{ ansible_env['PWD'] }}/cord.yaml
+    template: src=templates/cord.yaml dest={{ ansible_env['PWD'] }}/cord.yaml
 
   - name: Deploy OpenStack services with Juju
     shell: juju quickstart cord.yaml
@@ -184,5 +210,29 @@
     template: src=templates/admin-openrc-cord.sh.j2
      dest={{ ansible_env['PWD'] }}/admin-openrc.sh
 
+  - name: Copy credentials to /tmp
+    shell: cp -f {{ ansible_env['PWD'] }}/admin-openrc.sh /tmp
+
   - name: Copy credentials to nova-cloud-controller
     shell: "scp admin-openrc.sh ubuntu@nova-cloud-controller:"
+
+- hosts: head
+  sudo: no
+  tasks:
+
+  - name: Copy over VM setup files
+    copy: src=files/tmp/{{ item }}
+      dest=/tmp
+    with_items:
+    - set-up-xos.yml
+    - set-up-onos.yml
+
+  - name: Copy over ONOS docker-compose.yml
+    copy: src=files/onos/docker-compose.yml
+      dest=/tmp
+
+  - name: Set up xos VM
+    shell: ansible-playbook /tmp/set-up-xos.yml
+
+  - name: Set up onos-cord VM
+    shell: ansible-playbook /tmp/set-up-onos.yml

@@ -1,5 +1,21 @@
 #!/bin/bash
 
+TESTING=false
+
+while [[ $# > 0 ]]
+do
+key="$1"
+
+case $key in
+    --testing)
+    TESTING=true
+    ;;
+    *)
+    ;;
+esac
+shift
+done
+
 function create-vm {
 	NAME=$1
 	CPU=$2
@@ -8,7 +24,13 @@ function create-vm {
 	uvt-kvm list | grep $1
 	if [ "$?" -ne "0" ]
 	then
-		uvt-kvm create $NAME --cpu=$CPU --memory=$MEM_MB --disk=$DISK_GB --bridge mgmtbr
+		if $TESTING
+		then
+			# Don't use mgmtbr for testing
+			uvt-kvm create $NAME --cpu=$CPU --memory=$MEM_MB --disk=$DISK_GB
+		else
+			uvt-kvm create $NAME --cpu=$CPU --memory=$MEM_MB --disk=$DISK_GB --bridge mgmtbr
+		fi
 		uvt-kvm wait --insecure $NAME
 	fi
 }
@@ -19,8 +41,14 @@ create-vm rabbitmq-server 2 4096 40
 create-vm keystone 2 4096 40
 create-vm glance 2 4096 160
 create-vm nova-cloud-controller 2 4096 40
-create-vm neutron-gateway 2 4096 40
 create-vm neutron-api 2 4096 40
 create-vm openstack-dashboard 1 2048 20
 create-vm ceilometer 1 2048 20
 create-vm nagios 1 2048 20
+
+create-vm xos 2 4096 40
+create-vm onos-cord 2 4096 40
+if $TESTING
+then
+	create-vm nova-compute 2 4096 100
+fi

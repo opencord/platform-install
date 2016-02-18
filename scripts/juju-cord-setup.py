@@ -6,7 +6,7 @@ import socket
 
 # Assumption: VMs have same hostname as service that runs inside
 machines = ["mysql", "rabbitmq-server", "keystone", "glance", "nova-cloud-controller",
-            "neutron-gateway", "openstack-dashboard", "ceilometer", "nagios", "neutron-api"]
+            "openstack-dashboard", "ceilometer", "nagios", "neutron-api"]
 
 
 # Figure out Juju ID of machine we should install on
