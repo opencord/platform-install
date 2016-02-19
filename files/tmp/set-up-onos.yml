@@ -22,4 +22,5 @@
       - id_rsa
       - docker-compose.yml
 
-  # To do: add docker-compose.yml file to cord/ directory
+  - file: path={{ ansible_env['PWD'] }}/cord/id_rsa
+      mode=0600

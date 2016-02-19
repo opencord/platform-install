@@ -30,6 +30,9 @@
     - id_rsa
     - id_rsa.pub
 
+  - file: path={{ ansible_env['PWD'] }}/xos/xos/configurations/cord-pod/id_rsa
+      mode=0600
+
   - copy: src={{ homedir }}/admin-openrc.sh
       dest={{ ansible_env['PWD'] }}/xos/xos/configurations/cord-pod
 
