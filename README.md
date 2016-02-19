@@ -31,7 +31,7 @@ to VMs; if you need to set up `dnsmasq` to do this, take a look at [this example
 Then follow these steps:
 
 * Edit *cord-hosts* with the DNS names of your compute nodes, and update the *ansible_ssh_user* variable appropriately.
-  Before proceeding any farther, this needs to work: `ansible -i cord-hosts compute -m ping`
+  Before proceeding, this needs to work on the head node: `ansible -i cord-hosts compute -m ping`
 * Run: `ansible-playbook -i cord-hosts cord-setup.yml`
 * After the playbook finishes, wait for the OpenStack services to come up.  You can check on their progress
   using `juju status --format=tabular`
@@ -41,6 +41,10 @@ Then follow these steps:
 This will bring up various OpenStack services, including Neutron with the VTN plugin.  It will also create
 two VMs called *xos* and *onos-cord* and prep them. Configuring and running XOS and ONOS in these VMs is beyond
 the scope of this README.
+
+### Caveats
+
+* The goal is to configure HA for the OpenStack services, but this is not yet implemented.
 
 ## How to install an OpenCloud cluster
 
@@ -63,7 +67,7 @@ $ juju add-machine ssh:ubuntu@compute-node
 $ ansible-playbook -i foo-hosts foo-compute.yaml
 ```
 
-### Things to note
+### Caveats
 
 * The installation configures port forwarding so that the OpenStack services can be accessed from outside the private network. Some OpenCloud-specific firewalling is also introduced, which will likely require modification for other setups.  See: [files/etc/libvirt/hooks/qemu](https://github.com/andybavier/opencloud-cluster-setup/blob/master/files/etc/libvirt/hooks/qemu).
 * By default the compute nodes are controlled and updated automatically using *ansible-pull* from [this repo](https://github.com/andybavier/opencloud-nova-compute-ansible).  You may want to change this.
