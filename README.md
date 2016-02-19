@@ -22,14 +22,16 @@ to install and configure the OpenStack services.
 
 ## How to install a CORD POD
 
-In addition to the prerequisites above, the CORD POD installation procedure assumes that 
-there is a bridge called *mgmtbr* on the head node that is connected to the management
+The CORD POD install assumes that the "head node" of the cluster is also used as the control machine
+for the install.  As mentioned above, install Ansible on the head node and check out this repository.
+
+The CORD POD installation procedure assumes a bridge called *mgmtbr* on the head node is connected to the management
 network.  Also there must be a DHCP server on the management network to hand out IP addresses
-to VMs; if you need to set up dnsmasq to do this, take a look at [this example](files/etc/dnsmasq.d/cord).
+to VMs; if you need to set up `dnsmasq` to do this, take a look at [this example](files/etc/dnsmasq.d/cord).
 Then follow these steps:
 
 * Edit *cord-hosts* with the DNS names of your compute nodes, and update the *ansible_ssh_user* variable appropriately.
-  This needs to work: `ansible -i cord-hosts compute -m ping`
+  Before proceeding any farther, this needs to work: `ansible -i cord-hosts compute -m ping`
 * Run: `ansible-playbook -i cord-hosts cord-setup.yml`
 * After the playbook finishes, wait for the OpenStack services to come up.  You can check on their progress
   using `juju status --format=tabular`
@@ -38,7 +40,7 @@ Then follow these steps:
 
 This will bring up various OpenStack services, including Neutron with the VTN plugin.  It will also create
 two VMs called *xos* and *onos-cord* and prep them. Configuring and running XOS and ONOS in these VMs is beyond
-the scope of this document.
+the scope of this README.
 
 ## How to install an OpenCloud cluster
 
