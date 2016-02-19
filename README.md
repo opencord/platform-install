@@ -22,10 +22,10 @@ to install and configure the OpenStack services.
 
 ## How to install a CORD POD
 
-The CORD POD install assumes that the "head node" of the cluster is also used as the control machine
+The CORD POD install procedure uses the "head node" of the cluster as the control machine
 for the install.  As mentioned above, install Ansible on the head node and check out this repository.
 
-The CORD POD installation procedure assumes a bridge called *mgmtbr* on the head node is connected to the management
+The playbooks assume that a bridge called *mgmtbr* on the head node is connected to the management
 network.  Also there must be a DHCP server on the management network to hand out IP addresses
 to VMs; if you need to set up `dnsmasq` to do this, take a look at [this example](files/etc/dnsmasq.d/cord).
 Then follow these steps:
