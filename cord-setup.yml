@@ -32,6 +32,10 @@
     - python-keystoneclient
     - python-glanceclient
 
+  - name: Patch uvt-kvm
+    copy: src=files/usr/lib/python2.7/dist-packages/uvtool/libvirt/__init__.py
+      dest=/usr/lib/python2.7/dist-packages/uvtool/libvirt/__init__.py
+
   - name: Get juju-ansible git repo
     git: repo=https://github.com/cmars/juju-ansible.git
       dest=/usr/local/src/juju-ansible
