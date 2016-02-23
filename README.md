@@ -26,8 +26,9 @@ The CORD POD install procedure uses the "head node" of the cluster as the contro
 for the install.  As mentioned above, install Ansible on the head node and check out this repository.
 
 The playbooks assume that a bridge called *mgmtbr* on the head node is connected to the management
-network.  Also there must be a DHCP server on the management network to hand out IP addresses
-to VMs; if you need to set up `dnsmasq` to do this, take a look at [this example](files/etc/dnsmasq.d/cord).
+network.  Also there must be a DHCP server on the management network that can hand out IP addresses
+to VMs, and can resolve VM names to IP addresses; if you need to set up `dnsmasq` to do this, 
+take a look at [this example](files/etc/dnsmasq.d/cord).
 Then follow these steps:
 
 * Edit *cord-hosts* with the DNS names of your compute nodes, and update the *ansible_ssh_user* variable appropriately.
