@@ -176,7 +176,10 @@
 
   - name: Check that 'juju status' works
     sudo: no
-    shell: juju status 
+    shell: juju status
+
+  - name: Pause for 15 seconds (problem with mysql VM not being added to Juju)
+    pause: seconds=15
 
   - name: Add virtual machines to Juju's control
     shell: juju add-machine ssh:{{ item }}
