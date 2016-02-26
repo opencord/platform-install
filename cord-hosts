@@ -1,5 +1,19 @@
 head    ansible_ssh_host=localhost connection=local
 
+[openstack]
+mysql
+rabbitmq-server
+keystone
+glance
+nova-cloud-controller
+openstack-dashboard
+ceilometer
+nagios
+neutron-api
+
+[openstack:vars]
+ansible_ssh_user=ubuntu
+
 [compute]
 node1
 node2

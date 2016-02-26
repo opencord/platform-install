@@ -26,12 +26,17 @@ The CORD POD install procedure uses the "head node" of the cluster as the contro
 for the install.  As mentioned above, install Ansible on the head node and check out this repository.
 
 The playbooks assume that a bridge called *mgmtbr* on the head node is connected to the management
-network.  Also there must be a DHCP server on the management network to hand out IP addresses
-to VMs; if you need to set up `dnsmasq` to do this, take a look at [this example](files/etc/dnsmasq.d/cord).
+network.  Note that also there must be a DHCP server on the management network that:
+ 1. hands out IP addresses to VMs connected to *mgmtbr*
+ 2. resolves VM names to IP addresses
+ 3. is configured as a resolver on the head and compute nodes
+
+If you need to set up `dnsmasq` to do this, 
+take a look at [this example](files/etc/dnsmasq.d/cord).
 Then follow these steps:
 
 * Edit *cord-hosts* with the DNS names of your compute nodes, and update the *ansible_ssh_user* variable appropriately.
-  Before proceeding, this needs to work on the head node: `ansible -i cord-hosts compute -m ping`
+  Before proceeding, this needs to work on the head node: `ansible -i cord-hosts all -m ping`
 * Run: `ansible-playbook -i cord-hosts cord-setup.yml`
 * After the playbook finishes, wait for the OpenStack services to come up.  You can check on their progress
   using `juju status --format=tabular`

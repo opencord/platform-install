@@ -31,8 +31,13 @@ function create-vm {
 		else
 			uvt-kvm create $NAME --cpu=$CPU --memory=$MEM_MB --disk=$DISK_GB --bridge mgmtbr
 		fi
-		uvt-kvm wait --insecure $NAME
+		# uvt-kvm wait --insecure $NAME
 	fi
+}
+
+function wait-for-vm {
+	NAME=$1
+	uvt-kvm wait --insecure $NAME
 }
 
 create-vm juju 1 2048 20
@@ -51,4 +56,23 @@ create-vm onos-cord 2 4096 40
 if $TESTING
 then
 	create-vm nova-compute 2 4096 100
+fi
+
+# Wait for everything to get set up
+wait-for-vm juju
+wait-for-vm mysql
+wait-for-vm rabbitmq-server
+wait-for-vm keystone
+wait-for-vm glance
+wait-for-vm nova-cloud-controller
+wait-for-vm neutron-api
+wait-for-vm openstack-dashboard
+wait-for-vm ceilometer
+wait-for-vm nagios
+
+wait-for-vm xos
+wait-for-vm onos-cord
+if $TESTING
+then
+	wait-for-vm nova-compute
 fi
