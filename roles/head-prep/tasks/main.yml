@@ -1,0 +1,76 @@
+---
+# file: roles/head-prep/tasks/main.yml
+
+- name:  Install prerequisites for using PPA repos
+  apt:
+    name={{ item }}
+  with_items:
+    - python-pycurl
+    - software-properties-common
+
+- name: Add Ansible/Juju repositories
+  apt_repository:
+    repo={{ item }}
+  with_items:
+     - "ppa:juju/stable"
+     - "ppa:ansible/ansible"
+
+- name: Install packages
+  apt:
+    name={{ item }}
+    state=latest
+    update_cache=yes
+  with_items:
+    - ansible
+    - uvtool
+    - git
+    - bzr
+    - juju-core
+    - python-novaclient
+    - python-neutronclient
+    - python-keystoneclient
+    - python-glanceclient
+
+- name: Obtain the juju-ansible tool from github
+  git:
+    repo=https://github.com/cmars/juju-ansible.git
+    dest=/usr/local/src/juju-ansible
+    version="HEAD"
+
+- name: Create symlinks to the juju-ansible tool
+  file:
+    src=/usr/local/src/juju-ansible/juju-ansible
+    dest={{ item }}
+    state=link
+  with_items:
+    - "/usr/local/bin/juju-ansible"
+    - "/usr/local/bin/juju-ansible-playbook"
+
+- name: Prepare user account and generate SSH key
+  user:
+    name={{ ansible_env['SUDO_USER'] }}
+    generate_ssh_key=yes
+    groups="libvirtd" append=yes
+
+- name: Get public key
+  shell: cat {{ ansible_env['PWD'] }}/.ssh/id_rsa.pub
+  register: sshkey
+
+- name: Add key to this user account
+  authorized_key:
+    user={{ ansible_env['SUDO_USER'] }}
+    key="{{ sshkey.stdout }}"
+
+- name: Copy keypair to /tmp
+  shell: cp -f {{ ansible_user_dir }}/.ssh/{{ item }} /tmp; chmod +r /tmp/{{ item }}
+  with_items:
+    - id_rsa
+    - id_rsa.pub
+
+- name: Get ubuntu image for uvtool
+  shell: uvt-simplestreams-libvirt sync --source http://cloud-images.ubuntu.com/daily release={{ ansible_distribution_release }} arch=amd64
+
+
+
+
+

@@ -1,0 +1,5 @@
+[head]
+node11.opencloud.cs.arizona.edu ansible_ssh_user=ubuntu
+
+[compute]
+node12.opencloud.cs.arizona.edu ansible_ssh_user=ubuntu

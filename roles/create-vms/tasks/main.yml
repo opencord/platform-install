@@ -1,0 +1,18 @@
+---
+# roles/create-vms/tasks/main.yml
+
+- name: create Virtual Machines with uvt-kvm
+  shell: uvt-kvm create {{ item.name }} --cpu={{ item.cpu }} --memory={{ item.memMB }} --disk={{ item.diskGB }}; \
+    uvt-kvm wait --insecure {{ item.name }}
+    creates=/var/lib/uvtool/libvirt/images/{{ item.name }}.qcow
+  with_items: head_vm_list
+
+- name: discover VM IP addresses
+  shell: uvt-kvm ip {{ item.name }}
+  with_items: head_vm_list
+  register: vm_ip
+
+- name: Create /etc/hosts with VM IP addresses
+  template:
+    src=hosts.j2
+    dest=/etc/hosts

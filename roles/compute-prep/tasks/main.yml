@@ -1,0 +1,8 @@
+---
+# file: roles/compute-prep/tasks/main.yml
+
+- name:  Install packages
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items:
+    - python-yaml
+

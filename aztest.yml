@@ -1,0 +1,16 @@
+---
+# aztest playbook, for installing OpenCloud
+
+- hosts: head
+  become: yes
+  roles:
+    #    - common-prep
+    - head-prep
+    - create-vms
+
+- hosts: compute
+  become: yes
+  roles:
+    #    - common-prep
+    - compute-prep
+
