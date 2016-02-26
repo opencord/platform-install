@@ -1,0 +1,33 @@
+---
+# roles/juju-setup/main/tasks.yml
+
+- name: Verify that we can log into every VM
+  command: ansible services -m ping -u ubuntu
+
+- name: Initialize Juju
+  command: juju generate-config
+    creates={{ ansible_env['PWD'] }}/.juju/environments.yaml
+
+- name: Juju config file
+  template:
+    src=environments.yaml.j2
+    dest={{ ansible_env['PWD'] }}/.juju/environments.yaml
+
+- name: Bootstrap Juju
+  command: juju bootstrap
+    creates={{ ansible_env['PWD'] }}/.juju/environments/manual.jenv
+
+- name: Copy openstack.cfg for Juju
+  become: yes
+  copy:
+    src=openstack.cfg
+    dest=/usr/local/src/openstack.cfg
+
+- name: Get Juju machine status
+  command: juju status --format=json
+  register: juju_status_json
+
+- name: Add Juju status to ansible facts
+  set_fact: juju_status="{{ juju_status_json.stdout | from_json }}"
+
+

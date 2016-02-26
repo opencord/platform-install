@@ -1,0 +1,7 @@
+default: manual
+environments:
+    manual:
+        type: manual
+        bootstrap-host: juju
+        bootstrap-user: ubuntu
+        default-series: {{ ansible_distribution_release }}

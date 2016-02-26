@@ -1,0 +1,8 @@
+[localhost]
+127.0.0.1 hostname={{ ansible_fqdn }}
+
+[services]
+{% for vm in head_vm_list -%}
+{{ vm.name }}
+{% endfor -%}
+

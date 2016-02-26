@@ -13,6 +13,14 @@
   register: vm_ip
 
 - name: Create /etc/hosts with VM IP addresses
+  become: yes
   template:
     src=hosts.j2
     dest=/etc/hosts
+
+- name: Create /etc/ansible/hosts file
+  become: yes
+  template:
+    src=ansible_hosts.j2
+    dest=/etc/ansible/hosts
+

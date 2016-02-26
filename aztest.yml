@@ -4,13 +4,15 @@
 - hosts: head
   become: yes
   roles:
-    #    - common-prep
+    - common-prep
     - head-prep
-    - create-vms
+    - { become: no, role: create-vms }
+    - { beocme: no, role: juju-user-prep }
+    - { become: no, role: juju }
 
 - hosts: compute
   become: yes
   roles:
-    #    - common-prep
-    - compute-prep
+    - common-prep
+    - head-prep
 
