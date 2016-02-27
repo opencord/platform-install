@@ -30,4 +30,5 @@
 - name: Add Juju status to ansible facts
   set_fact: juju_status="{{ juju_status_json.stdout | from_json }}"
 
-
+- name: Add machines to Juju
+  with_items: head_vm_list

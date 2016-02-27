@@ -48,17 +48,17 @@
 
 - name: Prepare user account and generate SSH key
   user:
-    name={{ ansible_env['SUDO_USER'] }}
+    name={{ ansible_user_id }}
     generate_ssh_key=yes
     groups="libvirtd" append=yes
 
 - name: Get public key
-  shell: cat {{ ansible_env['PWD'] }}/.ssh/id_rsa.pub
+  shell: cat {{ ansible_user_dir }}/.ssh/id_rsa.pub
   register: sshkey
 
 - name: Add key to this user account
   authorized_key:
-    user={{ ansible_env['SUDO_USER'] }}
+    user={{ ansible_user_id }}
     key="{{ sshkey.stdout }}"
 
 - name: Copy keypair to /tmp

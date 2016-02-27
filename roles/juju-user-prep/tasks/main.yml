@@ -3,7 +3,7 @@
 
 - name: Disable host key checking in ~/.ssh/config
   lineinfile:
-    dest={{ ansible_env['PWD'] }}/.ssh/config
+    dest={{ ansible_user_dir }}/.ssh/config
     line="StrictHostKeyChecking no"
     create=yes
     mode=0600
@@ -11,5 +11,5 @@
 - name: Disable host key checking in ~/.ansible.cfg
   copy:
     src=ansible.cfg
-    dest={{ ansible_env['PWD'] }}/.ansible.cfg
+    dest={{ ansible_user_dir }}/.ansible.cfg
 

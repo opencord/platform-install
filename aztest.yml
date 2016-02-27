@@ -2,17 +2,16 @@
 # aztest playbook, for installing OpenCloud
 
 - hosts: head
-  become: yes
   roles:
-    - common-prep
-    - head-prep
-    - { become: no, role: create-vms }
-    - { beocme: no, role: juju-user-prep }
-    - { become: no, role: juju }
+    - { role: common-prep, become: yes }
+    - { role: head-prep, become: yes }
+    - create-vms
+    - juju-user-prep
+    - juju-setup
 
 - hosts: compute
   become: yes
   roles:
-    - common-prep
-    - head-prep
+    - { role: common-prep, become: yes }
+    - { role: compute-prep, become: yes }
 
