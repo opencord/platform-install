@@ -6,16 +6,16 @@
 
 - name: Initialize Juju
   command: juju generate-config
-    creates={{ ansible_env['PWD'] }}/.juju/environments.yaml
+    creates={{ ansible_user_dir }}/.juju/environments.yaml
 
-- name: Juju config file
+- name: Create Juju config file from template
   template:
-     src=environments.yaml.j2
-     dest={{ ansible_env['PWD'] }}/.juju/environments.yaml
+    src=environments.yaml.j2
+    dest={{ ansible_user_dir }}/.juju/environments.yaml
 
 - name: Bootstrap Juju
   command: juju bootstrap
-    creates={{ ansible_env['PWD'] }}/.juju/environments/manual.jenv
+    creates={{ ansible_user_dir }}/.juju/environments/manual.jenv
 
 - name: Copy openstack.cfg for Juju
   become: yes
@@ -23,11 +23,15 @@
     src=openstack.cfg
     dest=/usr/local/src/openstack.cfg
 
+# Code for juju_facts this is in library/juju_facts.py
+
 - name: Obtain Juju Facts
   juju_facts:
 
+# For setwise operations on desired vs Juju state:
 # list of VM names head_vm_list dict: head_vm_list | map(attribute='name') | list
 # list of active juju_machines names: juju_machines.keys()
+# list of active juju_services names: juju_services.keys()
 
 - name: Add machines to Juju
   command: "juju add-machine ssh:{{ item }}"
