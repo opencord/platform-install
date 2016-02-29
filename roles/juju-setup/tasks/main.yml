@@ -1,6 +1,29 @@
 ---
 # roles/juju-setup/main/tasks.yml
 
+- name: create Virtual Machines with uvt-kvm
+  shell: uvt-kvm create {{ item.name }} --cpu={{ item.cpu }} --memory={{ item.memMB }} --disk={{ item.diskGB }}; \
+    uvt-kvm wait --insecure {{ item.name }}
+    creates=/var/lib/uvtool/libvirt/images/{{ item.name }}.qcow
+  with_items: head_vm_list
+
+- name: discover VM IP addresses
+  shell: uvt-kvm ip {{ item.name }}
+  with_items: head_vm_list
+  register: vm_ip
+
+- name: Create /etc/hosts with VM IP addresses
+  become: yes
+  template:
+    src=hosts.j2
+    dest=/etc/hosts
+
+- name: Create /etc/ansible/hosts file
+  become: yes
+  template:
+    src=ansible_hosts.j2
+    dest=/etc/ansible/hosts
+
 - name: Verify that we can log into every VM
   command: ansible services -m ping -u ubuntu
 
@@ -17,23 +40,34 @@
   command: juju bootstrap
     creates={{ ansible_user_dir }}/.juju/environments/manual.jenv
 
-- name: Copy openstack.cfg for Juju
+- name: Create openstack.cfg for Juju from template
   become: yes
-  copy:
-    src=openstack.cfg
-    dest=/usr/local/src/openstack.cfg
+  template:
+    src=openstack.cfg.j2
+    dest={{ openstack_cfg_path }}
 
-# Code for juju_facts this is in library/juju_facts.py
-
+# Code for this is in library/juju_facts.py
 - name: Obtain Juju Facts
   juju_facts:
 
 # For setwise operations on desired vs Juju state:
-# list of VM names head_vm_list dict: head_vm_list | map(attribute='name') | list
+# list of VM names in head_vm_list dict: head_vm_list | map(attribute='name') | list
 # list of active juju_machines names: juju_machines.keys()
 # list of active juju_services names: juju_services.keys()
 
 - name: Add machines to Juju
   command: "juju add-machine ssh:{{ item }}"
-  with_items: "{{ head_vm_list | map(attribute='name') | list | difference( juju_machines.keys()) }}"
+  with_items: "{{ head_vm_list | map(attribute='name') | list | difference( juju_machines.keys() ) }}"
+
+- name: Deploy services that are hosted in their own VM
+  command: "juju deploy {{ item }} --to {{ juju_machines[item]['machine_id'] }} --config={{ openstack_cfg_path }}"
+  with_items: "{{ vm_service_list | difference( juju_services.keys() ) }}"
+
+- name: Deploy mongodb to ceilometer VM
+  command: "juju deploy mongodb --to {{ juju_machines['ceilometer']['machine_id'] }} --config={{ openstack_cfg_path }}"
+  when: juju_services['mongodb'] is undefined
+
+- name: Deploy services that don't have their own VM
+  command: "juju deploy {{ item }} --config={{ openstack_cfg_path }}"
+  with_items: "{{ standalone_service_list | difference( juju_services.keys() ) }}"
 

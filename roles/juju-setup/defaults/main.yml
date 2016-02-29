@@ -1,0 +1,42 @@
+---
+# roles/juju-setup/defaults/main.yml
+
+head_vm_list:
+  - { name: "juju", cpu: "1", memMB: "2048", diskGB: "20" }
+  - { name: "ceilometer", cpu: "1", memMB: "2048", diskGB: "20" }
+  - { name: "glance", cpu: "2", memMB: "4096", diskGB: "160" }
+  - { name: "keystone", cpu: "2", memMB: "4096", diskGB: "40" }
+  - { name: "mysql", cpu: "2", memMB: "4096", diskGB: "40" }
+  - { name: "nagios", cpu: "1", memMB: "2048", diskGB: "20" }
+  - { name: "neutron-api", cpu: "2", memMB: "4096", diskGB: "40" }
+  - { name: "neutron-gateway", cpu: "2", memMB: "4096", diskGB: "40" }
+  - { name: "nova-cloud-controller", cpu: "2", memMB: "4096", diskGB: "40" }
+  - { name: "openstack-dashboard", cpu: "1", memMB: "2048", diskGB: "20" }
+  - { name: "rabbitmq-server", cpu: "2", memMB: "4096", diskGB: "40" }
+
+vm_service_list:
+  - ceilometer
+  - glance
+  - keystone 
+  - mysql
+  - nagios
+  - neutron-api
+  - neutron-gateway
+  - nova-cloud-controller
+  - openstack-dashboard
+  - rabbitmq-server 
+
+standalone_service_list:
+  - ntp
+  - nrpe
+  - ceilometer-agent
+  - neutron-openvswitch
+
+service_relations:
+  - keystone: [ "mysql" ]
+  - nova-cloud-controller: [ "mysql", "rabbitmq-server", "glance", "keystone" ]
+
+openstack_version: kilo
+openstack_cfg_path: /usr/local/src/openstack.cfg
+
+

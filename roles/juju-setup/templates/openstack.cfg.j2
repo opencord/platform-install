@@ -1,0 +1,39 @@
+ceilometer:
+ceilometer-agent:
+glance:
+   openstack-origin: "cloud:trusty-kilo"
+keystone:
+   admin-password: ""
+   https-service-endpoints: "True"
+   openstack-origin: "cloud:trusty-kilo"
+   use-https: "yes"
+mysql:
+mongodb:
+nagios:
+neutron-api:
+   flat-network-providers: "*"
+   openstack-origin: "cloud:trusty-kilo"
+   vlan-ranges: "physnet1:1000:2000 nat"
+neutron-gateway:
+   bridge-mappings: "physnet1:br-data nat:br-nat"
+   flat-network-providers: "*"
+   instance-mtu: "1400"
+   openstack-origin: "cloud:trusty-kilo"
+   vlan-ranges: "physnet1:1000:2000 nat"
+neutron-openvswitch:
+   bridge-mappings: "physnet1:br-data nat:br-nat"
+   disable-security-groups: "True"
+   flat-network-providers: "*"
+   vlan-ranges: "physnet1:1000:2000 nat"
+nova-cloud-controller:
+   console-access-protocol: "novnc"
+   network-manager: "Neutron"
+   openstack-origin: "cloud:trusty-kilo"
+ntp:
+   source: "0.ubuntu.pool.ntp.org 1.ubuntu.pool.ntp.org 2.ubuntu.pool.ntp.org 3.ubuntu.pool.ntp.org"
+nrpe:
+openstack-dashboard:
+   openstack-origin: "cloud:trusty-kilo"
+rabbitmq-server:
+  ssl: "on"
+
