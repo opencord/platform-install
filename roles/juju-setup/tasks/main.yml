@@ -10,8 +10,8 @@
 
 - name: Juju config file
   template:
-    src=environments.yaml.j2
-    dest={{ ansible_env['PWD'] }}/.juju/environments.yaml
+     src=environments.yaml.j2
+     dest={{ ansible_env['PWD'] }}/.juju/environments.yaml
 
 - name: Bootstrap Juju
   command: juju bootstrap
@@ -23,12 +23,13 @@
     src=openstack.cfg
     dest=/usr/local/src/openstack.cfg
 
-- name: Get Juju machine status
-  command: juju status --format=json
-  register: juju_status_json
+- name: Obtain Juju Facts
+  juju_facts:
 
-- name: Add Juju status to ansible facts
-  set_fact: juju_status="{{ juju_status_json.stdout | from_json }}"
+# list of VM names head_vm_list dict: head_vm_list | map(attribute='name') | list
+# list of active juju_machines names: juju_machines.keys()
 
 - name: Add machines to Juju
-  with_items: head_vm_list
+  command: "juju add-machine ssh:{{ item }}"
+  with_items: "{{ head_vm_list | map(attribute='name') | list | difference( juju_machines.keys()) }}"
+
