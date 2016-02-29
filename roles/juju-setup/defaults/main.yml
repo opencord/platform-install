@@ -1,6 +1,9 @@
 ---
 # roles/juju-setup/defaults/main.yml
 
+openstack_version: kilo
+openstack_cfg_path: /usr/local/src/openstack.cfg
+
 head_vm_list:
   - { name: "juju", cpu: "1", memMB: "2048", diskGB: "20" }
   - { name: "ceilometer", cpu: "1", memMB: "2048", diskGB: "20" }
@@ -17,14 +20,14 @@ head_vm_list:
 vm_service_list:
   - ceilometer
   - glance
-  - keystone 
+  - keystone
   - mysql
   - nagios
   - neutron-api
   - neutron-gateway
   - nova-cloud-controller
   - openstack-dashboard
-  - rabbitmq-server 
+  - rabbitmq-server
 
 standalone_service_list:
   - ntp
@@ -33,10 +36,32 @@ standalone_service_list:
   - neutron-openvswitch
 
 service_relations:
-  - keystone: [ "mysql" ]
-  - nova-cloud-controller: [ "mysql", "rabbitmq-server", "glance", "keystone" ]
-
-openstack_version: kilo
-openstack_cfg_path: /usr/local/src/openstack.cfg
-
+  - name: keystone
+    relations: [ "mysql", "nrpe", ]
+  - name: nova-cloud-controller
+    relations: [ "mysql", "rabbitmq-server", "glance", "keystone", "nrpe", ]
+  - name: glance
+    relations: [ "mysql", "keystone", "nrpe", ]
+  - name: neutron-gateway
+    relations: [ "neutron-api", "nova-cloud-controller", "mysql", "nrpe", ]
+  - name: "neutron-gateway:amqp"
+    relations: [ "rabbitmq-server:amqp", ]
+  - name: neutron-api
+    relations: [ "keystone", "neutron-openvswitch", "mysql", "rabbitmq-server", "nova-cloud-controller", "nrpe", ]
+  - name: neutron-openvswitch
+    relations: [ "rabbitmq-server", ]
+  - name: openstack-dashboard
+    relations: [ "keystone", "nrpe", ]
+  - name: nagios
+    relations: [ "nrpe", ]
+  - name: "mysql:juju-info"
+    relations: [ "nrpe:general-info", ]
+  - name: rabbitmq-server
+    relations: [ "nrpe", ]
+  - name: ceilometer
+    relations: [ "mongodb", "rabbitmq-server", "nagios", "nrpe", ]
+  - name: "ceilometer:identity-service"
+    relations: [ "keystone:identity-service", ]
+  - name: "ceilometer:ceilometer-service"
+    relations: [ "ceilometer-agent:ceilometer-service", ]
 
