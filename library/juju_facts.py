@@ -14,18 +14,14 @@ juju_machines = {}
 for index, data in juju_status['machines'].iteritems():
     data_underscore = dict_keys_dash_to_underscore(data)
     juju_machines[data_underscore["dns_name"]] = data_underscore
-
-juju_services = {}
-for index, data in juju_status['services'].iteritems():
-    data_underscore = dict_keys_dash_to_underscore(data)
-    juju_services[data_underscore["dns-name"]] = data_underscore
+    juju_machines[data_underscore["dns_name"]]["machine_id"] = index
 
 print json.dumps({
     "changed": True,
     "ansible_facts" : {
         "juju_enviromnment": juju_status['environment'],
         "juju_machines": juju_machines,
-        "juju_services": juju_services,
+        "juju_services": juju_status['services'],
     },
 })
 
