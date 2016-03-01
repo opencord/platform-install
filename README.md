@@ -31,25 +31,66 @@ network.  Note that also there must be a DHCP server on the management network t
  2. resolves VM names to IP addresses
  3. is configured as a resolver on the head and compute nodes
 
-If you need to set up `dnsmasq` to do this, 
-take a look at [this example](files/etc/dnsmasq.d/cord).
+If you need to set up `dnsmasq` to do this,
+take a look at [this example configuration](files/etc/dnsmasq.d/cord).
 Then follow these steps:
 
-* Edit *cord-hosts* with the DNS names of your compute nodes, and update the *ansible_ssh_user* variable appropriately.
-  Before proceeding, this needs to work on the head node: `ansible -i cord-hosts all -m ping`
-* Run: `ansible-playbook -i cord-hosts cord-setup.yml`
+* Run the `bootstrap.sh` script to install Ansible and set up keys for login via `localhost`
+* Edit *cord-hosts* with the DNS names of your compute nodes, and update the *ansible_ssh_user*
+variable appropriately.  Before proceeding, these commands needs to work on the head node:
+```
+$ ansible -i cord-hosts head -m ping
+$ ansible -i cord-hosts compute -m ping
+```
+* Run:
+```
+ansible-playbook -i cord-hosts cord-setup.yml
+```
 * After the playbook finishes, wait for the OpenStack services to come up.  You can check on their progress
   using `juju status --format=tabular`
-* Once the services are up, you can use the `admin-openrc.sh` credentials in the home directory to 
+* Once the services are up, you can use the `admin-openrc.sh` credentials in the home directory to
   interact with OpenStack.  You can SSH to any VM using `ssh ubuntu@<vm-name>`
 
 This will bring up various OpenStack services, including Neutron with the VTN plugin.  It will also create
 two VMs called *xos* and *onos-cord* and prep them. Configuring and running XOS and ONOS in these VMs is beyond
 the scope of this README.
 
+*NOTE:* The install process only brings up a single nova-compute node.  To bring up more nodes
+as compute nodes, perform these steps on the head node:
+```
+$ juju add-machine ssh:<user>@<compute-host>
+$ juju add-unit nova-compute --to <juju-machine-id>
+```
+Refer to the [Juju documentation](https://jujucharms.com/docs/stable/config-manual)
+for more information.
+
 ### Caveats
 
 * The goal is to configure HA for the OpenStack services, but this is not yet implemented.
+
+## How to install a single-node CORD test environment on CloudLab
+
+The process for setting up a CORD test environment on CloudLab is similar (but
+not identical) to the one for setting up a CORD POD above.
+
+* Start a CloudLab experiment using profile *OnePC-Ubuntu14.04.3*
+* Run the `bootstrap.sh` script to install Ansible and set up keys for login via `localhost`
+* Run:
+```
+ansible-playbook -i cord-test-hosts cord-setup.yml
+```
+
+This will bring up various OpenStack services, including Neutron with the VTN plugin.  It will also create
+two VMs called *xos* and *onos-cord* and prep them.  It creates a single nova-compute
+node running inside a VM.  
+
+It should be possible to use this method on any server running Ubuntu 14.04, as long as it has
+sufficient CPU cores and disk space.
+
+*NOTE:* Currently VMs can be created using this configuration and logged into over the
+VTN-supplied management network.  However without the CORD fabric they don't have external
+connectivity, and as a result a vSG cannot be spun up.  A workaround for this issue
+should be in place shortly.
 
 ## How to install an OpenCloud cluster
 
