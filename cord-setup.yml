@@ -93,6 +93,16 @@
       line="nameserver 192.168.122.1"
     when: test_setup is defined
 
+  - name: Touch .ssh/config
+    sudo: no
+    file: path={{ ansible_env['PWD'] }}/.ssh/config
+      state=touch
+
+  - name: Disable host key checking in SSH
+    sudo: no
+    lineinfile: dest={{ ansible_env['PWD'] }}/.ssh/config
+      line="StrictHostKeyChecking no"
+
   - name: Create VMs to host OpenCloud services on mgmtbr
     sudo: no
     script: scripts/create-vms-cord.sh
@@ -116,12 +126,7 @@
     sudo: no
     file: path={{ ansible_env['PWD'] }}/.ssh/config state=touch
 
-  - name: Disable host key checking in SSH
-    sudo: no
-    lineinfile: dest={{ ansible_env['PWD'] }}/.ssh/config
-      line="StrictHostKeyChecking no"
-
-  - name: Test that we can log into every VM
+  - name: Test that we can log into every VM using Ansible
     sudo: no
     shell: ansible services -m ping -u ubuntu
 
