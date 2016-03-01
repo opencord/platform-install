@@ -36,8 +36,11 @@ function create-vm {
 }
 
 function wait-for-vm {
-	NAME=$1
-	uvt-kvm wait --insecure $NAME
+  NAME=$1
+  until dig $NAME && ssh ubuntu@$NAME "ls"
+  do
+    sleep 1
+  done
 }
 
 create-vm juju 1 2048 20
@@ -53,6 +56,7 @@ create-vm nagios 1 2048 20
 
 create-vm xos 2 4096 40
 create-vm onos-cord 2 4096 40
+create-vm onos-fabric 2 4096 40
 if $TESTING
 then
 	create-vm nova-compute 2 4096 100
@@ -72,6 +76,7 @@ wait-for-vm nagios
 
 wait-for-vm xos
 wait-for-vm onos-cord
+wait-for-vm onos-fabric
 if $TESTING
 then
 	wait-for-vm nova-compute
