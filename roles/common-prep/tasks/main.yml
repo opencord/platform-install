@@ -3,6 +3,9 @@
 
 - name: Upgrade system to current using apt
   apt: update_cache=yes upgrade=dist
+  notify:
+    - restart machine
+    - wait for machine
 
 - name: Install standard packages
   apt:  pkg={{ item }} state=present
@@ -14,3 +17,4 @@
   lineinfile: dest=/etc/vim/vimrc
     regexp="^\s*syntax on"
     line="syntax on"
+
