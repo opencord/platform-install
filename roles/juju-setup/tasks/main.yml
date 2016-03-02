@@ -7,7 +7,11 @@
     creates=/var/lib/uvtool/libvirt/images/{{ item.name }}.qcow
   with_items: "{{ head_vm_list }}"
 
-- name: discover VM IP addresses
+- name: Have VMs autostart on reboot
+  command: virsh autostart {{ item.name }}
+  with_items: "{{ head_vm_list }}"
+
+- name: Discover VM IP addresses
   shell: "uvt-kvm ip {{ item.name }}"
   with_items: "{{ head_vm_list }}"
   register: vm_ip
@@ -82,3 +86,18 @@
     - relations
 
 # Need to wait for services to come up here
+# Possibly do so by using wait_for and wating on forwarded ports after next step?
+
+- name: Have libvirt enable port forwarding to VM's
+  become: yes
+  copy:
+    src={{ item }}
+    dest=/etc/libvirt/hooks/{{ item }}
+    mode=0755 owner=root
+  with_items:
+    - daemon
+    - qemu
+  notify:
+    - reload libvirt-bin
+    - run qemu hook
+

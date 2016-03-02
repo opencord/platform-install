@@ -1,0 +1,12 @@
+---
+# roles/juju-setup/handlers/tasks.yml
+
+- name: reload libvirt-bin
+  service:
+    name=libvirt-bin
+    state=reloaded
+
+- name: run qemu hook
+  command: /etc/libvirt/hooks/qemu start start
+
+
