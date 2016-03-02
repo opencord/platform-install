@@ -5,7 +5,6 @@
   roles:
     - { role: common-prep, become: yes }
     - { role: head-prep, become: yes }
-    - create-vms
     - juju-user-prep
     - juju-setup
 
