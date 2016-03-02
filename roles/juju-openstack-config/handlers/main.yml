@@ -1,0 +1,7 @@
+---
+# roles/juju-openstack-config/handlers/tasks.yml
+
+- name: update-ca-certificates
+  become: yes
+  command: update-ca-certificates
+

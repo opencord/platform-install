@@ -1,0 +1,36 @@
+---
+# roles/juju-openstack-config/main/tasks.yml
+
+- name: Obtain keystone admin password
+  command: "juju run --unit={{ juju_services['keystone']['units'].keys()[0] }} 'sudo cat /var/lib/keystone/keystone.passwd'"
+  register: keystone_password
+
+- name: Obtain keystone IP address
+  command: uvt-kvm ip keystone
+  register: keystone_ip
+
+- name: Create admin-openrc.sh credentials file
+  template:
+   src=admin-openrc.sh.j2
+   dest={{ ansible_user_dir }}/admin-openrc.sh
+
+- name: Copy credentials file to nova-cloud-controller
+  command: "scp {{ ansible_user_dir }}/admin-openrc.sh ubuntu@nova-cloud-controller:"
+
+- name: Copy network setup script
+  become: yes
+  copy:
+    src=network-setup.sh
+    dest=/usr/local/src/network-setup.sh
+    mode=0644 owner=root
+
+- name: Run network setup script
+  command: ansible nova-cloud-controller -m script -u ubuntu -a "/usr/local/src/network-setup.sh"
+
+- name: Copy nova-cloud-controller CA certificate to local
+  become: yes
+  command: juju scp {{ juju_services['nova-cloud-controller']['units'].keys()[0] }}:/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt \
+    /usr/local/share/ca-certificates
+    creates=/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt
+  notify: update-ca-certificates
+

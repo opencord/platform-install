@@ -7,6 +7,7 @@
     - { role: head-prep, become: yes }
     - juju-user-prep
     - juju-setup
+    - juju-openstack-config
 
 - hosts: compute
   become: yes
