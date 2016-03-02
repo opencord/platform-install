@@ -1,0 +1,24 @@
+[all:vars]
+ansible_ssh_user=ubuntu
+test_setup=true
+
+[head]
+localhost connection=local
+
+[compute]
+nova-compute
+
+[openstack]
+mysql
+rabbitmq-server
+keystone
+glance
+nova-cloud-controller
+openstack-dashboard
+ceilometer
+nagios
+neutron-api
+
+[openstack:vars]
+ansible_ssh_user=ubuntu
+

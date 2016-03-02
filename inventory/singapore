@@ -1,0 +1,11 @@
+[all:vars]
+ansible_ssh_user=ubuntu
+
+[head]
+opencloud0.sing.internet2.edu
+
+[compute]
+opencloud1.sing.internet2.edu
+opencloud2.sing.internet2.edu
+opencloud3.sing.internet2.edu
+
