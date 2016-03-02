@@ -1,16 +1,16 @@
-**Introduction**
+## Introduction
 
-The following steps areis required in order to bring up a new opencloud sites.
+The following steps are required in order to bring up a new OpenCloud sites.
 
 1. Allocate servers
 
-2. (Re)IInstall Uubuntu
+2. Install Uubuntu
 
-3. Install openstack controller & compute nodes
+3. Install OpenStack controller & compute nodes
 
-4. Add site’s openstack controller to xos
+4. Add site’s OpenStack controller to xos
 
-**Allocate Servers**
+## Allocate Servers
 
 **It may happen that for different reasons that few servers are offline. **Allocating servers involves finding those nodes that are offline and bringing them back online. In most cases just rebooting the nodes will bring them back online. Sometimes they may be offline for hardware malfunctions or maintenance. In that case someone would need to provide help, locally from the facility.
 
@@ -18,7 +18,7 @@ NOffline nodes can be rebooted either manually (accessing through ssh to the nod
 
 Note: For example, for the Stanford cluster, the script should be located I’ve installed the ipmi-cmd.sh on node4.stanford.vicci.org. You should be able to reboot nodes from there.
 
-**Install Ubuntu**
+## Install Ubuntu
 
 Opencloud nodes are expected to be Ubuntu 14.x.
 
@@ -41,6 +41,14 @@ Below, the main steps needed to install Ubuntu on the cluster machines are repor
 * Through the IPMI script (see "Rebooting machines remotely", below)
 
 After reboot, the machine should go through the Ubuntu installation automatically. At the end of the process, the ones registered as administrators should be notified of the successfully installation. If you’re not an official opencloud.us administrator, just try to log into the machines again after 20-30 mins form the reboot.
+
+3. Update Ubuntu
+
+```
+sudo apt-get update
+sudo apt-get dist-upgrade
+```
+
 
 **Install Openstack**
 
