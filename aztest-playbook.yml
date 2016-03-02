@@ -1,17 +1,23 @@
 ---
 # aztest playbook, for installing OpenCloud
 
+# Prepare the head node and install juju
 - hosts: head
   roles:
     - { role: common-prep, become: yes }
     - { role: head-prep, become: yes }
     - juju-user-prep
     - juju-setup
-    - juju-openstack-config
 
+# prepare the compute nodes
 - hosts: compute
   become: yes
   roles:
     - { role: common-prep, become: yes }
     - { role: compute-prep, become: yes }
+
+# Finish the openstack config on head (needs compute nodes up to finish)
+- hosts: head
+  roles:
+    - juju-openstack-config
 
