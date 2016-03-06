@@ -32,6 +32,12 @@
     - python-keystoneclient
     - python-glanceclient
 
+  # On some systems ansible complains that the "/usr/share/ansible/source_control/git directory
+  # does not exist when there is an attempt to get juju-ansible. To work around this issue
+  # we precreate the directory
+  - name: Work Around - source_control directory creation
+    file: path="/usr/share/ansible/source_control/git" state=directory
+
   - name: Get juju-ansible git repo
     git: repo=https://github.com/cmars/juju-ansible.git
       dest=/usr/local/src/juju-ansible
@@ -63,15 +69,18 @@
     - id_rsa
     - id_rsa.pub
 
-  - name: Check whether we're on CloudLab
-    shell: ls /usr/testbed/bin/mkextrafs
-    ignore_errors: true
-    register: is_cloudlab
+  - name: Stat mkextrafs
+    stat: path="/usr/testbed/bin/mkextrafs"
+    register: is_mkextrafs
+
+  - name: Check whether we're on Cloudlab
+    set_fact:
+      is_cloudlab : "{{ is_mkextrafs.stat.exists }}"
 
   - name: (CloudLab) Set up extra disk space
     shell: /usr/testbed/bin/mkextrafs -f /var/lib/uvtool/libvirt/images
       creates=/var/lib/uvtool/libvirt/images/lost+found
-    when: is_cloudlab | success
+    when: is_cloudlab
 
   - name: Add myself to libvirtd group
     user: name={{ ansible_env['SUDO_USER'] }}
@@ -145,19 +154,22 @@
     authorized_key: user="root"
       key="{{ hostvars['head']['sshkey']['stdout'] }}"
 
-  - name: Check whether we're on CloudLab
-    shell: ls /usr/testbed/bin/mkextrafs
-    ignore_errors: true
-    register: is_cloudlab
+  - name: Stat mkextrafs
+    stat: path="/usr/testbed/bin/mkextrafs"
+    register: is_mkextrafs
+
+  - name: Check whether we're on Cloudlab
+    set_fact:
+      is_cloudlab : "{{ is_mkextrafs.stat.exists }}"
 
   - name: Make sure that /var/lib/nova exists
     file: path=/var/lib/nova state=directory
-    when: is_cloudlab | success
+    when: is_cloudlab
 
   - name: (CloudLab) Set up extra disk space
     shell: /usr/testbed/bin/mkextrafs -f /var/lib/nova
       creates=/var/lib/nova/lost+found
-    when: is_cloudlab | success
+    when: is_cloudlab
 
 # Play: Install services using Juju
 - hosts: head
