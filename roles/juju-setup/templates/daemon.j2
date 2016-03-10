@@ -1,0 +1,40 @@
+#!/bin/sh
+
+SHELL="/bin/bash"
+
+NIC=$( route|grep default|awk '{print $NF}' )
+
+NAME="${1}"
+OP="${2}"
+SUBOP="${3}"
+ARGS="${4}"
+
+add_port_fwd_rule() {
+    DPORT=$1
+    VM=$2
+    TOPORT=$3
+
+    VMIP=$( getent ahosts $VM|head -1|awk '{print $1}' )
+    iptables -t nat -C PREROUTING -p tcp -i $NIC --dport $DPORT -j DNAT --to-destination $VMIP:$TOPORT
+    if [ "$?" -ne 0 ]
+    then
+        iptables -t nat -A PREROUTING -p tcp -i $NIC --dport $DPORT -j DNAT --to-destination $VMIP:$TOPORT
+    fi
+}
+
+if [ "$OP" = "start" ] || [ "$OP" = "reload" ]
+then
+    iptables -t nat -F
+
+{% for vm in head_vm_list -%}
+{% if vm.forwarded_ports is defined -%}
+{% for port in vm.forwarded_ports -%}
+    add_port_fwd_rule {{ port.ext }} {{ vm.name }} {{ port.int }}
+{% endfor -%}
+{% endif -%}
+{% endfor -%}
+
+    # Also flush the filter table before rules re-added
+    iptables -F
+fi
+

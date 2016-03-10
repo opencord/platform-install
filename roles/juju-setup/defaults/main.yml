@@ -15,16 +15,24 @@ head_vm_list:
     cpu: "1"
     memMB: "2048"
     diskGB: "20"
+    forwarded_ports:
+      - { ext: 8777, int: 8777 }
 
   - name: "glance"
     cpu: "2"
     memMB: "4096"
     diskGB: "160"
+    forwarded_ports:
+      - { ext: 9292, int: 9292 }
 
   - name: "keystone"
     cpu: "2"
     memMB: "4096"
     diskGB: "40"
+    forwarded_ports:
+      - { ext: 35357, int: 35357 }
+      - { ext: 4990, int: 4990 }
+      - { ext: 5000, int: 5000 }
 
   - name: "mysql"
     cpu: "2"
@@ -35,11 +43,15 @@ head_vm_list:
     cpu: "1"
     memMB: "2048"
     diskGB: "20"
+    forwarded_ports:
+      - { ext: 3128, int: 80 }
 
   - name: "neutron-api"
     cpu: "2"
     memMB: "4096"
     diskGB: "40"
+    forwarded_ports:
+      - { ext: 9696, int: 9696 }
 
   - name: "neutron-gateway"
     cpu: "2"
@@ -50,11 +62,15 @@ head_vm_list:
     cpu: "2"
     memMB: "4096"
     diskGB: "40"
+    forwarded_ports:
+      - { ext: 8774, int: 8774 }
 
   - name: "openstack-dashboard"
     cpu: "1"
     memMB: "2048"
     diskGB: "20"
+    forwarded_ports:
+      - { ext: 8080, int: 80 }
 
   - name: "rabbitmq-server"
     cpu: "2"
