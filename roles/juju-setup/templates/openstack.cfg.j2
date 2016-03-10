@@ -29,6 +29,11 @@ nova-cloud-controller:
    console-access-protocol: "novnc"
    network-manager: "Neutron"
    openstack-origin: "cloud:trusty-kilo"
+nova-compute:
+   config-flags: "firewall_driver=nova.virt.firewall.NoopFirewallDriver"
+#   config-flags: "firewall_driver=nova.virt.firewall.NoopFirewallDriver,xos_api_url=http://portal.opencloud.us"
+   disable-neutron-security-groups: "True"
+   openstack-origin: "cloud:trusty-kilo"
 ntp:
    source: "0.ubuntu.pool.ntp.org 1.ubuntu.pool.ntp.org 2.ubuntu.pool.ntp.org 3.ubuntu.pool.ntp.org"
 nrpe:
