@@ -1,0 +1,27 @@
+---
+# file: roles/dell-virt/prep/tasks/main.yml
+
+- name: Trust the Dell apt repository
+  apt_key:
+    keyserver=pool.sks-keyservers.net
+    id=1285491434D8786F
+
+- name: Add Dell apt repo
+  apt_repository: 
+    repo="deb http://linux.dell.com/repo/community/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} openmanage"
+
+- name: Install BIOS configuration scripts
+  apt:
+    update_cache=yes
+    name=dtk-scripts
+
+# KVM virtualization is either "kvm_intel" or "kvm_amd" on amd64
+- name: Check to see if processor KVM virtualization module loaded in kernel
+  shell: lsmod | grep kvm_
+  ignore_errors: true
+  register: virtualization_enabled
+
+- name: Enable virtualization in BIOS
+  command: /opt/dell/toolkit/bin/syscfg --virtualization=enable
+  when: virtualization_enabled|failed
+
