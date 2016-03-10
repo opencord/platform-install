@@ -52,7 +52,7 @@
     generate_ssh_key=yes
     groups="libvirtd" append=yes
 
-- name: Get public key
+- name: Register public key
   shell: cat {{ ansible_user_dir }}/.ssh/id_rsa.pub
   register: sshkey
 
@@ -69,8 +69,4 @@
 
 - name: Get ubuntu image for uvtool
   shell: uvt-simplestreams-libvirt sync --source http://cloud-images.ubuntu.com/daily release={{ ansible_distribution_release }} arch=amd64
-
-
-
-
 
