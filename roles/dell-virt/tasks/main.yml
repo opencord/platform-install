@@ -7,7 +7,7 @@
     id=1285491434D8786F
 
 - name: Add Dell apt repo
-  apt_repository: 
+  apt_repository:
     repo="deb http://linux.dell.com/repo/community/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} openmanage"
 
 - name: Install BIOS configuration scripts
