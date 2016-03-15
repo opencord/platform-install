@@ -1,0 +1,7 @@
+# resolv.conf (ansible managed)
+{% for ns in dns_servers %}
+nameserver {{ ns }}
+{% endfor %}
+{% if dns_search is defined %}
+search{% for searchdom in dns_search %} {{ searchdom }}{% endfor %}
+{% endif %}
