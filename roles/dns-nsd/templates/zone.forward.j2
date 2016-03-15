@@ -1,0 +1,32 @@
+;## NSD authoritative only DNS
+;## FORWARD Zone
+
+$ORIGIN {{ item.name }}. ; default zone domain
+$TTL {{ item.ttl | default(dns_ttl) }} ; default time to live
+
+@ IN SOA {{ item.soa }}.{{ item.name }}. admin.{{ item.name }}. (
+         {{ item.serial | default(ansible_date_time.epoch) }}   ; Serial, must be incremented every time you change this file
+         3600        ; Refresh [1hr]
+         600         ; Retry [10m]
+         3600        ; Expire [1hr]
+         60          ; Min TTL [1m]
+         )
+         
+; Name Servers
+{% for ns in item.ns %}
+        IN      NS      {{ ns.name ~ '.' ~ item.name }}.
+{% endfor %}
+
+
+{% set nodes = vars[item.nodelist] %}
+
+;A and CNAME records
+{% for node in nodes %}
+{{ node.name }}    IN    A    {{ item.ipv4_first_octets ~ "." ~ node.ipv4_last_octet }}
+{% if node.aliases is defined %}
+{% for alias in node.aliases %}
+{{ alias }}    IN    CNAME    {{ node.name }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+

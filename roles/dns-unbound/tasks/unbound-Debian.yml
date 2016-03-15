@@ -1,0 +1,9 @@
+---
+
+- name: Install unbound
+  apt:
+    name={{ item }}
+    state=present
+  with_items:
+    - unbound
+

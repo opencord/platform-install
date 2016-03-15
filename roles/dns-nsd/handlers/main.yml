@@ -1,0 +1,5 @@
+---
+#file: roles/dns-nsd/handlers/main.yml
+
+- name: restart-nsd
+  service: name=nsd state=restarted
