@@ -16,12 +16,17 @@ for index, data in juju_status['machines'].iteritems():
     juju_machines[data_underscore["dns_name"]] = data_underscore
     juju_machines[data_underscore["dns_name"]]["machine_id"] = index
 
+juju_compute_nodes = {}
+for name, data in juju_status['services']['nova-compute']['units'].iteritems():
+   juju_compute_nodes[data['public-address']] = data
+
 print json.dumps({
     "changed": True,
     "ansible_facts" : {
-        "juju_enviromnment": juju_status['environment'],
+        "juju_environment": juju_status['environment'],
         "juju_machines": juju_machines,
         "juju_services": juju_status['services'],
+        "juju_compute_nodes": juju_compute_nodes,
     },
 })
 
