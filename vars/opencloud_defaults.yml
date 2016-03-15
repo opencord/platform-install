@@ -5,15 +5,17 @@ openstack_version: kilo
 openstack_cfg_path: /usr/local/src/openstack.cfg
 
 head_vm_list:
-  - name: "juju"
-    hostname: "juju-1"
+  - name: "juju-1"
+    aliases:
+       - "juju"
     ipv4_last_octet: 10
     cpu: 1
     memMB: 2048
     diskGB: 20
 
-  - name: "ceilometer"
-    hostname: "ceilometer-1"
+  - name: "ceilometer-1"
+    aliases:
+      - "ceilometer"
     ipv4_last_octet: 20
     cpu: 1
     memMB: 2048
@@ -21,8 +23,9 @@ head_vm_list:
     forwarded_ports:
       - { ext: 8777, int: 8777 }
 
-  - name: "glance"
-    hostname: "glance-1"
+  - name: "glance-1"
+    aliases:
+      - "glance"
     ipv4_last_octet: 30
     cpu: 2
     memMB: 4096
@@ -30,8 +33,9 @@ head_vm_list:
     forwarded_ports:
       - { ext: 9292, int: 9292 }
 
-  - name: "keystone"
-    hostname: "keystone-1"
+  - name: "keystone-1"
+    aliases:
+      - "keystone"
     ipv4_last_octet: 40
     cpu: 2
     memMB: 4096
@@ -41,15 +45,17 @@ head_vm_list:
       - { ext: 4990, int: 4990 }
       - { ext: 5000, int: 5000 }
 
-  - name: "mysql"
-    hostname: "mysql-1"
+  - name: "mysql-1"
+    aliases:
+      - "mysql"
     ipv4_last_octet: 50
     cpu: 2
     memMB: 4096
     diskGB: 40
 
-  - name: "nagios"
-    hostname: "nagios-1"
+  - name: "nagios-1"
+    aliases:
+      - "nagios"
     ipv4_last_octet: 60
     cpu: 1
     memMB: 2048
@@ -57,8 +63,9 @@ head_vm_list:
     forwarded_ports:
       - { ext: 3128, int: 80 }
 
-  - name: "neutron-api"
-    hostname: "neutron-api-1"
+  - name: "neutron-api-1"
+    aliases:
+      - "neutron-api"
     ipv4_last_octet: 70
     cpu: 2
     memMB: 4096
@@ -66,15 +73,17 @@ head_vm_list:
     forwarded_ports:
       - { ext: 9696, int: 9696 }
 
-  - name: "neutron-gateway"
-    hostname: "neutron-gateway-1"
+  - name: "neutron-gateway-1"
+    aliases:
+      - "neutron-gateway"
     ipv4_last_octet: 80
     cpu: 2
     memMB: 4096
     diskGB: 40
 
-  - name: "nova-cloud-controller"
-    hostname: "nova-cloud-controller-1"
+  - name: "nova-cloud-controller-1"
+    aliases:
+      - "nova-cloud-controller"
     ipv4_last_octet: 90
     cpu: 2
     memMB: 4096
@@ -82,18 +91,20 @@ head_vm_list:
     forwarded_ports:
       - { ext: 8774, int: 8774 }
 
-  - name: "openstack-dashboard"
-    hostname: "openstack-dashboard-1"
-    ipv4_last_octet: 90
+  - name: "openstack-dashboard-1"
+    aliases:
+      - "openstack-dashboard"
+    ipv4_last_octet: 100
     cpu: 1
     memMB: 2048
     diskGB: 20
     forwarded_ports:
       - { ext: 8080, int: 80 }
 
-  - name: "rabbitmq-server"
-    hostname: "rabbitmq-server-1"
-    ipv4_last_octet: 100
+  - name: "rabbitmq-server-1"
+    aliases:
+      - "rabbitmq-server"
+    ipv4_last_octet: 110
     cpu: 2
     memMB: 4096
     diskGB: 40

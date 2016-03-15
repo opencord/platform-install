@@ -1,0 +1,20 @@
+---
+# file: group_vars/aztest.yml
+
+# Prefix for DNS zones
+mgmt_net_prefix: 192.168.250
+
+# NSD/Unbound settings
+
+nsd_zones:
+  - name: aztest.infra.opencloud.us
+    ipv4_first_octets: 192.168.250
+    name_reverse_unbound: "168.192.in-addr.arpa"
+    soa: ns1
+    ns:
+      - { name: ns1 }
+    nodelist: head_vm_list
+
+unbound_interfaces:
+  #  - 192.168.250.1/24
+  - 206.207.253.10/28

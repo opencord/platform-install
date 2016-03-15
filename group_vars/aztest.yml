@@ -1,6 +1,0 @@
----
-# file: group_vars/aztest.yml
-
-mgmt_net_prefix: 192.168.250
-cloudlab: false
-

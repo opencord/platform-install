@@ -2,7 +2,9 @@
 ansible_ssh_user=ubuntu
 
 [head]
-node11.opencloud.cs.arizona.edu
+node09.opencloud.cs.arizona.edu
 
 [compute]
+node10.opencloud.cs.arizona.edu
+node11.opencloud.cs.arizona.edu
 node12.opencloud.cs.arizona.edu
