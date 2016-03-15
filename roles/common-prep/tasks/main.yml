@@ -2,10 +2,13 @@
 # file: roles/common-prep/tasks/main.yml
 
 - name: Upgrade system to current using apt
-  apt: update_cache=yes upgrade=dist
+  apt: 
+    upgrade=dist
+    update_cache=yes 
+    cache_valid_time=3600
   notify:
-    - restart machine
-    - wait for machine
+    - restart host
+    - wait for host
 
 - name: Install standard packages
   apt:  pkg={{ item }} state=present
