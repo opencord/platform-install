@@ -17,8 +17,9 @@ for index, data in juju_status['machines'].iteritems():
     juju_machines[data_underscore["dns_name"]]["machine_id"] = index
 
 juju_compute_nodes = {}
-for name, data in juju_status['services']['nova-compute']['units'].iteritems():
-   juju_compute_nodes[data['public-address']] = data
+if 'nova-compute' in juju_status['services']:
+    for name, data in juju_status['services']['nova-compute']['units'].iteritems():
+        juju_compute_nodes[data['public-address']] = data
 
 print json.dumps({
     "changed": True,
