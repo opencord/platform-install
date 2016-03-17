@@ -1,0 +1,19 @@
+<network>
+  <name>default</name>
+  <bridge name="virbr0"/>
+  <forward/>
+  <domain name="{{ site_suffix }}" localonly="no"/>
+  <dns>
+{% for ns in dns_servers %}
+  <forwarder addr="{{ ns }}"/>
+{% endfor %}
+  </dns>
+  <ip address="{{ mgmtbr_prefix }}.1" netmask="255.255.255.0">
+    <dhcp>
+      <range start="{{ mgmtbr_prefix }}.2" end="{{ mgmtbr_prefix }}.254"/>
+{% for vm in head_vm_list %}
+      <host name='{{ vm.name }}' ip='{{ mgmtbr_prefix }}.{{ vm.ipv4_last_octet }}'/>
+{% endfor %}
+    </dhcp>
+  </ip>
+</network>

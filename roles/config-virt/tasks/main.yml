@@ -1,0 +1,28 @@
+---
+# roles/config-virt/main/tasks.yml
+
+- name: Get ubuntu image for uvtool
+  command: uvt-simplestreams-libvirt sync --source http://cloud-images.ubuntu.com/daily \
+    release={{ ansible_distribution_release }} arch=amd64
+
+- name: Have libvirt enable port forwarding to VM's
+  become: yes
+  template:
+    src={{ item }}.j2
+    dest=/etc/libvirt/hooks/{{ item }}
+    mode=0755 owner=root
+  with_items:
+    - daemon
+    - qemu
+  notify:
+    - reload libvirt-bin
+    - run qemu hook
+
+- name: configure libvirt mgmtbr network DHCP range and IP assignments
+  virt_net:
+    command=define
+    name=default
+    xml='{{ lookup("template", "default.xml.j2") }}'
+    autostart=yes
+    state=active
+

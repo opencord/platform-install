@@ -1,11 +1,28 @@
 ---
 # file: roles/compute-prep/tasks/main.yml
 
-- name:  Install packages
+- name: Install packages
   apt:
     name={{ item }}
     state=latest
   with_items:
     - python-yaml
 
+- name: Add head node ubuntu user key
+  authorized_key:
+    user=ubuntu
+    key="{{ hostvars[groups['head'][0]]['head_ssh_pubkey']['stdout'] }}"
+
+- name: Add route via /etc/rc.local
+  template:
+    src=rc.local.j2
+    dest=/etc/rc.local
+    mode=0755
+  notify:
+    - run rc.local
+
+- name: Create /var/lib/nova dir
+  file:
+    path=/var/lib/nova
+    state=directory
 

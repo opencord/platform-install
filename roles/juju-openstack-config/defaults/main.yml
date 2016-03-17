@@ -1,0 +1,20 @@
+---
+# roles/juju-setup/defaults/main.yml
+
+openstack_version: kilo
+
+openstack_cfg_path: /usr/local/src/openstack.cfg
+
+compute_relations:
+  - name: nova-compute
+    relations: [ "glance", "nova-cloud-controller", "neutron-openvswitch", "nagios", "nrpe", ]
+
+  - name: "nova-compute:shared-db"
+    relations: [ "mysql:shared-db", ]
+
+  - name: "nova-compute:amqp"
+    relations: [ "rabbitmq-server:amqp", ]
+
+  - name: ntp
+    relations: [ "nova-compute", ]
+

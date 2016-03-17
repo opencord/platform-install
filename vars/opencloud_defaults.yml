@@ -6,6 +6,7 @@ openstack_cfg_path: /usr/local/src/openstack.cfg
 
 head_vm_list:
   - name: "juju-1"
+    service: "juju"
     aliases:
        - "juju"
     ipv4_last_octet: 10
@@ -14,6 +15,7 @@ head_vm_list:
     diskGB: 20
 
   - name: "ceilometer-1"
+    service: "ceilometer"
     aliases:
       - "ceilometer"
     ipv4_last_octet: 20
@@ -24,6 +26,7 @@ head_vm_list:
       - { ext: 8777, int: 8777 }
 
   - name: "glance-1"
+    service: "glance"
     aliases:
       - "glance"
     ipv4_last_octet: 30
@@ -34,6 +37,7 @@ head_vm_list:
       - { ext: 9292, int: 9292 }
 
   - name: "keystone-1"
+    service: "keystone"
     aliases:
       - "keystone"
     ipv4_last_octet: 40
@@ -46,6 +50,7 @@ head_vm_list:
       - { ext: 5000, int: 5000 }
 
   - name: "mysql-1"
+    service: "mysql"
     aliases:
       - "mysql"
     ipv4_last_octet: 50
@@ -54,6 +59,7 @@ head_vm_list:
     diskGB: 40
 
   - name: "nagios-1"
+    service: "nagios"
     aliases:
       - "nagios"
     ipv4_last_octet: 60
@@ -64,6 +70,7 @@ head_vm_list:
       - { ext: 3128, int: 80 }
 
   - name: "neutron-api-1"
+    service: "neutron-api"
     aliases:
       - "neutron-api"
     ipv4_last_octet: 70
@@ -74,6 +81,7 @@ head_vm_list:
       - { ext: 9696, int: 9696 }
 
   - name: "neutron-gateway-1"
+    service: "neutron-gateway"
     aliases:
       - "neutron-gateway"
     ipv4_last_octet: 80
@@ -82,6 +90,7 @@ head_vm_list:
     diskGB: 40
 
   - name: "nova-cloud-controller-1"
+    service: "nova-cloud-controller"
     aliases:
       - "nova-cloud-controller"
     ipv4_last_octet: 90
@@ -92,6 +101,7 @@ head_vm_list:
       - { ext: 8774, int: 8774 }
 
   - name: "openstack-dashboard-1"
+    service: "openstack-dashboard"
     aliases:
       - "openstack-dashboard"
     ipv4_last_octet: 100
@@ -102,6 +112,7 @@ head_vm_list:
       - { ext: 8080, int: 80 }
 
   - name: "rabbitmq-server-1"
+    service: "rabbitmq-server"
     aliases:
       - "rabbitmq-server"
     ipv4_last_octet: 110

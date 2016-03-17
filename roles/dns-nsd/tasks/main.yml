@@ -9,7 +9,7 @@
   when: ansible_os_family == 'Debian'
 
 - name: Ensure that zones directory exists
-  file: 
+  file:
     name={{ nsd_zonesdir }}
     state=directory
     mode=0755 owner=root group={{ nsd_group }}
@@ -20,7 +20,7 @@
     dest={{ nsd_conf }}
     mode=0644 owner=root group={{ nsd_group }}
   notify:
-    - restart-nsd
+    - reload-nsd
 
 - name: create forward zonefiles from template
   template:
@@ -29,7 +29,7 @@
     mode=0644 owner=root group={{ nsd_group }}
   with_items: '{{ nsd_zones }}'
   notify:
-    - restart-nsd
+    - reload-nsd
 
 - name: create reverse zonefiles from template
   template:
@@ -38,5 +38,5 @@
     mode=0644 owner=root group={{ nsd_group }}
   with_items: '{{ nsd_zones }}'
   notify:
-    - restart-nsd
+    - reload-nsd
 

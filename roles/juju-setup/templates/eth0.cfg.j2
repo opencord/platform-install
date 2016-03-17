@@ -1,0 +1,7 @@
+# The primary network interface
+auto eth0
+iface eth0 inet dhcp
+    dns-nameservers{% for ns in dns_servers %} {{ ns }}{% endfor %} 
+{% if dns_search is defined %}
+    dns-search{% for searchdom in dns_search %} {{ searchdom }}{% endfor %}
+{% endif %}

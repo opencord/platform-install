@@ -13,3 +13,9 @@
     src=ansible.cfg
     dest={{ ansible_user_dir }}/.ansible.cfg
 
+
+- name: Get public ssh key from head node ubuntu user
+  command: cat {{ ansible_user_dir }}/.ssh/id_rsa.pub
+  register: head_ssh_pubkey
+
+

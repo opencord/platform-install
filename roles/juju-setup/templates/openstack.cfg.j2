@@ -3,10 +3,9 @@ ceilometer-agent:
 glance:
    openstack-origin: "cloud:trusty-kilo"
 keystone:
-   admin-password: ""
+   use-https: "yes"
    https-service-endpoints: "True"
    openstack-origin: "cloud:trusty-kilo"
-   use-https: "yes"
 mysql:
 mongodb:
 nagios:
@@ -30,6 +29,7 @@ nova-cloud-controller:
    network-manager: "Neutron"
    openstack-origin: "cloud:trusty-kilo"
 nova-compute:
+   virt-type:kvm
    config-flags: "firewall_driver=nova.virt.firewall.NoopFirewallDriver"
 #   config-flags: "firewall_driver=nova.virt.firewall.NoopFirewallDriver,xos_api_url=http://portal.opencloud.us"
    disable-neutron-security-groups: "True"

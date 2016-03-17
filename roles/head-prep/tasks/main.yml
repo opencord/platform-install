@@ -30,6 +30,7 @@
     - python-neutronclient
     - python-keystoneclient
     - python-glanceclient
+    - virt-top
 
 - name: Obtain the juju-ansible tool from github
   git:
@@ -46,27 +47,18 @@
     - "/usr/local/bin/juju-ansible"
     - "/usr/local/bin/juju-ansible-playbook"
 
-- name: Prepare user account and generate SSH key
+- name: Prep user account by adding to libvirtd group and generating SSH key
   user:
     name={{ ansible_user_id }}
     generate_ssh_key=yes
     groups="libvirtd" append=yes
 
-- name: Register public key
+- name: Register public key in variable
   shell: cat {{ ansible_user_dir }}/.ssh/id_rsa.pub
   register: sshkey
 
-- name: Add key to this user account
+- name: Add public key to this user account
   authorized_key:
     user={{ ansible_user_id }}
     key="{{ sshkey.stdout }}"
-
-- name: Copy keypair to /tmp
-  shell: cp -f {{ ansible_user_dir }}/.ssh/{{ item }} /tmp; chmod +r /tmp/{{ item }}
-  with_items:
-    - id_rsa
-    - id_rsa.pub
-
-- name: Get ubuntu image for uvtool
-  shell: uvt-simplestreams-libvirt sync --source http://cloud-images.ubuntu.com/daily release={{ ansible_distribution_release }} arch=amd64
 

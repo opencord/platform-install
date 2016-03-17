@@ -11,10 +11,9 @@ ARGS="${4}"
 
 add_port_fwd_rule() {
     DPORT=$1
-    VM=$2
+    VMIP=$2
     TOPORT=$3
 
-    VMIP=$( getent ahosts $VM|head -1|awk '{print $1}' )
     iptables -t nat -C PREROUTING -p tcp -i $NIC --dport $DPORT -j DNAT --to-destination $VMIP:$TOPORT
     if [ "$?" -ne 0 ]
     then
@@ -29,7 +28,7 @@ then
 {% for vm in head_vm_list -%}
 {% if vm.forwarded_ports is defined -%}
 {% for port in vm.forwarded_ports -%}
-    add_port_fwd_rule {{ port.ext }} {{ vm.name }} {{ port.int }}
+    add_port_fwd_rule {{ port.ext }} "{{ mgmtbr_prefix }}.{{ vm.ipv4_last_octet }}" {{ port.int }}
 {% endfor -%}
 {% endif -%}
 {% endfor -%}

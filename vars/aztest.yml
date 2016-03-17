@@ -1,8 +1,11 @@
 ---
 # file: group_vars/aztest.yml
 
-# Prefix for DNS zones
-mgmt_net_prefix: 192.168.250
+# IP prefix for VMs
+mgmtbr_prefix: 192.168.250
+
+# site domain suffix
+site_suffix: aztest.infra.opencloud.us
 
 # NSD/Unbound settings
 
@@ -18,3 +21,13 @@ nsd_zones:
 unbound_interfaces:
   #  - 192.168.250.1/24
   - 206.207.253.10/28
+
+# resolv.conf settings
+dns_servers:
+  - 206.207.253.10
+
+dns_search:
+  - aztest.infra.opencloud.us
+  - opencloud.cs.arizona.edu
+
+

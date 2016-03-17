@@ -2,7 +2,7 @@
 # roles/juju-setup/main/tasks.yml
 
 - name: create Virtual Machines with uvt-kvm
-  shell: uvt-kvm create {{ item.name }} --cpu={{ item.cpu }} --memory={{ item.memMB }} --disk={{ item.diskGB }}; \
+  shell: uvt-kvm create {{ item.name }} --cpu={{ item.cpu }} --memory={{ item.memMB }} --disk={{ item.diskGB }} ; \
     uvt-kvm wait --insecure {{ item.name }}
     creates=/var/lib/uvtool/libvirt/images/{{ item.name }}.qcow
   with_items: "{{ head_vm_list }}"
@@ -10,17 +10,6 @@
 - name: Have VMs autostart on reboot
   command: virsh autostart {{ item.name }}
   with_items: "{{ head_vm_list }}"
-
-- name: Discover VM IP addresses
-  shell: "uvt-kvm ip {{ item.name }}"
-  with_items: "{{ head_vm_list }}"
-  register: vm_ip
-
-- name: Create /etc/hosts with VM IP addresses
-  become: yes
-  template:
-    src=hosts.j2
-    dest=/etc/hosts
 
 - name: Create /etc/ansible/hosts file
   become: yes
@@ -31,18 +20,19 @@
 - name: Verify that we can log into every VM
   command: ansible services -m ping -u ubuntu
 
-- name: Have libvirt enable port forwarding to VM's
-  become: yes
+- name: Update software in all the VMs
+  command: ansible services -m apt -b -u ubuntu -a "upgrade=dist update_cache=yes cache_valid_time=3600"
+
+- name: Create VM's eth0 interface config file for DNS config via resolvconf program
   template:
-    src={{ item }}.j2
-    dest=/etc/libvirt/hooks/{{ item }}
-    mode=0755 owner=root
-  with_items:
-    - daemon
-    - qemu
-  notify:
-    - reload libvirt-bin
-    - run qemu hook
+    src=eth0.cfg.j2
+    dest={{ ansible_user_dir }}/eth0.cfg
+
+- name: Copy eth0 interface config file to all VMs
+  command: ansible services -b -u ubuntu -m copy -a "src={{ ansible_user_dir }}/eth0.cfg dest=/etc/network/interfaces.d/eth0.cfg owner=root group=root mode=0644"
+
+- name: Restart eth0 interface on all VMs
+  command: ansible services -b -u ubuntu -m shell -a "ifdown eth0 ; ifup eth0"
 
 - name: Initialize Juju
   command: juju generate-config
@@ -64,7 +54,7 @@
     dest={{ openstack_cfg_path }}
 
 # Code for this is in library/juju_facts.py
-- name: Obtain Juju Facts
+- name: Obtain Juju Facts for creating machines
   juju_facts:
 
 # For setwise operations on desired vs Juju state:
@@ -74,7 +64,11 @@
 
 - name: Add machines to Juju
   command: "juju add-machine ssh:{{ item }}"
-  with_items: "{{ head_vm_list | map(attribute='name') | list | difference( juju_machines.keys() ) }}"
+  with_items: "{{ head_vm_list | map(attribute='service') | list | difference( juju_machines.keys() ) }}"
+
+# run this again, so machines will be in the juju_machines list
+- name: Obtain Juju Facts after machine creation
+  juju_facts:
 
 - name: Deploy services that are hosted in their own VM
   command: "juju deploy {{ item }} --to {{ juju_machines[item]['machine_id'] }} --config={{ openstack_cfg_path }}"
@@ -92,15 +86,39 @@
 # Previous method wasn't idempotent either
 - name: Create relations between services
   command: "juju add-relation '{{ item.0.name }}' '{{ item.1 }}'"
-  ignore_errors: True
+  register: juju_relation
+  failed_when: "juju_relation|failed and 'relation already exists' not in juju_relation.stderr"
   with_subelements:
     - "{{ service_relations }}"
     - relations
 
+# run another time, so services will be in juju_services list
+- name: Obtain Juju Facts after service creation
+  juju_facts:
+
 # This should be able to test for the VM's coming up, but not working right now
 #- name: Wait for juju services on VM's to come up
-#  wait_for: 
+#  wait_for:
 #    port={{ item.ext }}
 #    timeout=10
 #  with_items: "{{ head_vm_list | map(attribute='forwarded_ports') | reject('undefined') | list }}"
+
+# - name: Obtain keystone admin password
+#   command: "juju run --unit={{ juju_services['keystone']['units'].keys()[0] }} 'sudo cat /var/lib/keystone/keystone.passwd'"
+#   register: keystone_password
+
+- name: Create admin-openrc.sh credentials file
+  template:
+   src=admin-openrc.sh.j2
+   dest={{ ansible_user_dir }}/admin-openrc.sh
+
+- name: Copy nova-cloud-controller CA certificate to head
+  command: juju scp {{ juju_services['nova-cloud-controller']['units'].keys()[0] }}:/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt {{ ansible_user_dir }}
+    creates={{ ansible_user_dir }}/keystone_juju_ca_cert.crt
+
+- name: Move cert to system location
+  become: yes
+  command: mv {{ ansible_user_dir }}/keystone_juju_ca_cert.crt /usr/local/share/ca-certificates
+    creates=/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt
+  notify: update-ca-certificates
 

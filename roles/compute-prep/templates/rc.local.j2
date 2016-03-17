@@ -1,0 +1,19 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+
+{% set head_host = groups['head'][0] -%}
+{% set head_ip = hostvars[head_host]['ansible_default_ipv4']['address'] -%}
+{% set virt_network = hostvars[head_host]['ansible_virbr0']['ipv4']['network'] -%}
+{% set virt_netmask = hostvars[head_host]['ansible_virbr0']['ipv4']['netmask'] -%}
+
+route add -net {{ virt_network }} netmask {{ virt_netmask }} gw {{ head_ip }} || true
+
+exit 0
