@@ -1,0 +1,11 @@
+head    ansible_ssh_host=node13-syn.its.hawaii.edu
+
+[compute]
+node14-syn.its.hawaii.edu
+node15-syn.its.hawaii.edu
+node16-syn.its.hawaii.edu
+node17-syn.its.hawaii.edu
+node18-syn.its.hawaii.edu
+
+[all:vars]
+cloudlab=false
