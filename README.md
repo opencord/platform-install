@@ -42,12 +42,14 @@ variable appropriately.  Before proceeding, these commands needs to work on the 
 $ ansible -i cord-hosts head -m ping
 $ ansible -i cord-hosts compute -m ping
 ```
-* Run:
+* Run the following command.  Be patient!  Some tasks in this playbook can take a while to complete.  For example, 
+  the "Add virtual machines to Juju's control" task will take about 10 minutes (or more, if you have a 
+  slow Internet connection).
 ```
 ansible-playbook -i cord-hosts cord-setup.yml
 ```
 * After the playbook finishes, wait for the OpenStack services to come up.  You can check on their progress
-  using `juju status --format=tabular`
+  using `juju status --format=tabular`.  It should take about 30 minutes to install and configure all the OpenStack services.
 * Once the services are up, you can use the `admin-openrc.sh` credentials in the home directory to
   interact with OpenStack.  You can SSH to any VM using `ssh ubuntu@<vm-name>`
 
@@ -79,8 +81,10 @@ not identical) to the one for setting up a CORD POD above.
 ```
 ansible-playbook -i cord-test-hosts cord-setup.yml
 ```
+As mentioned above, be patient!  With a fast Internet connection, the entire process will take about
+one hour to complete.
 
-This will bring up various OpenStack services, including Neutron with the VTN plugin.  It will also create
+The install will bring up various OpenStack services, including Neutron with the VTN plugin.  It will also create
 two VMs called *xos* and *onos-cord* and prep them.  It creates a single nova-compute
 node running inside a VM.  
 
