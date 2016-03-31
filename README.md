@@ -42,12 +42,13 @@ variable appropriately.  Before proceeding, these commands needs to work on the 
 $ ansible -i cord-hosts head -m ping
 $ ansible -i cord-hosts compute -m ping
 ```
-* Run the following command.  Be patient!  Some tasks in this playbook can take a while to complete.  For example, 
-  the "Add virtual machines to Juju's control" task will take about 10 minutes (or more, if you have a 
-  slow Internet connection).
+* Run the following command:
 ```
 ansible-playbook -i cord-hosts cord-setup.yml
 ```
+* Be patient!  Some tasks in the above playbook can take a while to complete.  For example, 
+  the "Add virtual machines to Juju's control" task will take about 10 minutes (or more, if you have a 
+  slow Internet connection).
 * After the playbook finishes, wait for the OpenStack services to come up.  You can check on their progress
   using `juju status --format=tabular`.  It should take about 30 minutes to install and configure all the OpenStack services.
 * Once the services are up, you can use the `admin-openrc.sh` credentials in the home directory to
