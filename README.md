@@ -76,7 +76,7 @@ for more information.
 The process for setting up a CORD test environment on CloudLab is similar (but
 not identical) to the one for setting up a CORD POD above.
 
-* Start a CloudLab experiment using profile *OnePC-Ubuntu14.04.3*
+* Start a CloudLab experiment using profile *OnePC-Ubuntu14.04.4*
 * Run the `bootstrap.sh` script to install Ansible and set up keys for login via `localhost`
 * Run:
 ```
@@ -90,12 +90,8 @@ two VMs called *xos* and *onos-cord* and prep them.  It creates a single nova-co
 node running inside a VM.  
 
 It should be possible to use this method on any server running Ubuntu 14.04, as long as it has
-sufficient CPU cores and disk space.
+sufficient CPU cores and disk space.  A server with at least 12 cores and 48GB RAM is recommended.
 
-*NOTE:* Currently VMs can be created using this configuration and logged into over the
-VTN-supplied management network.  However without the CORD fabric they don't have external
-connectivity, and as a result a vSG cannot be spun up.  A workaround for this issue
-should be in place shortly.
 
 ## How to install an OpenCloud cluster
 
