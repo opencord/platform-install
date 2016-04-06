@@ -59,7 +59,7 @@ create-vm onos-cord 2 4096 40
 create-vm onos-fabric 2 4096 40
 if $TESTING
 then
-	create-vm nova-compute 2 4096 100
+	create-vm nova-compute 6 16384 240
 fi
 
 # Wait for everything to get set up
