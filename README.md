@@ -42,12 +42,15 @@ variable appropriately.  Before proceeding, these commands needs to work on the 
 $ ansible -i cord-hosts head -m ping
 $ ansible -i cord-hosts compute -m ping
 ```
-* Run:
+* Run the following command:
 ```
 ansible-playbook -i cord-hosts cord-setup.yml
 ```
+* Be patient!  Some tasks in the above playbook can take a while to complete.  For example, 
+  the "Add virtual machines to Juju's control" task will take about 10 minutes (or more, if you have a 
+  slow Internet connection).
 * After the playbook finishes, wait for the OpenStack services to come up.  You can check on their progress
-  using `juju status --format=tabular`
+  using `juju status --format=tabular`.  It should take about 30 minutes to install and configure all the OpenStack services.
 * Once the services are up, you can use the `admin-openrc.sh` credentials in the home directory to
   interact with OpenStack.  You can SSH to any VM using `ssh ubuntu@<vm-name>`
 
@@ -73,24 +76,22 @@ for more information.
 The process for setting up a CORD test environment on CloudLab is similar (but
 not identical) to the one for setting up a CORD POD above.
 
-* Start a CloudLab experiment using profile *OnePC-Ubuntu14.04.3*
+* Start a CloudLab experiment using profile *OnePC-Ubuntu14.04.4*
 * Run the `bootstrap.sh` script to install Ansible and set up keys for login via `localhost`
 * Run:
 ```
 ansible-playbook -i cord-test-hosts cord-setup.yml
 ```
+As mentioned above, be patient!  With a fast Internet connection, the entire process will take about
+one hour to complete.
 
-This will bring up various OpenStack services, including Neutron with the VTN plugin.  It will also create
+The install will bring up various OpenStack services, including Neutron with the VTN plugin.  It will also create
 two VMs called *xos* and *onos-cord* and prep them.  It creates a single nova-compute
 node running inside a VM.  
 
 It should be possible to use this method on any server running Ubuntu 14.04, as long as it has
-sufficient CPU cores and disk space.
+sufficient CPU cores and disk space.  A server with at least 12 cores and 48GB RAM is recommended.
 
-*NOTE:* Currently VMs can be created using this configuration and logged into over the
-VTN-supplied management network.  However without the CORD fabric they don't have external
-connectivity, and as a result a vSG cannot be spun up.  A workaround for this issue
-should be in place shortly.
 
 ## How to install an OpenCloud cluster
 
