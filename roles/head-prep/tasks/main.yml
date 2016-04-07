@@ -32,21 +32,6 @@
     - python-glanceclient
     - virt-top
 
-- name: Obtain the juju-ansible tool from github
-  git:
-    repo=https://github.com/cmars/juju-ansible.git
-    dest=/usr/local/src/juju-ansible
-    version="HEAD"
-
-- name: Create symlinks to the juju-ansible tool
-  file:
-    src=/usr/local/src/juju-ansible/juju-ansible
-    dest={{ item }}
-    state=link
-  with_items:
-    - "/usr/local/bin/juju-ansible"
-    - "/usr/local/bin/juju-ansible-playbook"
-
 - name: Prep user account by adding to libvirtd group and generating SSH key
   user:
     name={{ ansible_user_id }}
