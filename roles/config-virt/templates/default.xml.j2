@@ -1,6 +1,6 @@
 <network>
   <name>default</name>
-  <bridge name="virbr0"/>
+  <bridge name="{{ mgmtbr_name }}"/>
   <forward/>
   <domain name="{{ site_suffix }}" localonly="no"/>
   <dns>

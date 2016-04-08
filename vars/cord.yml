@@ -1,0 +1,31 @@
+---
+# file: group_vars/aztest.yml
+
+# IP prefix for VMs
+mgmtbr_prefix: 192.168.122
+
+# site domain suffix
+site_suffix: cordtest.opencloud.us
+
+# NSD/Unbound settings
+
+nsd_zones:
+  - name: cordtest.opencloud.us
+    ipv4_first_octets: 192.168.122
+    name_reverse_unbound: "168.192.in-addr.arpa"
+    soa: ns1
+    ns:
+      - { name: ns1 }
+    nodelist: head_vm_list
+
+unbound_interfaces:
+  - 128.104.222.180/23
+
+# resolv.conf settings
+dns_servers:
+  - 128.104.222.180
+
+dns_search:
+  - cordtest.opencloud.us
+
+

@@ -1,0 +1,38 @@
+---
+# CORD playbook, for installing a single-node CORD test-environment on cloudlab
+
+- name: Include Configuration
+  hosts: all
+  tasks:
+  - include_vars: vars/cord_defaults.yml
+  - include_vars: vars/cord.yml
+  - include_vars: vars/cord_keystone.yml
+
+- name: Prep systems
+  hosts: all
+  become: yes
+  roles:
+    - common-prep
+    - cloudlab-prep
+
+- name: DNS Server Setup
+  hosts: head
+  become: yes
+  roles:
+    - dns-nsd
+    - dns-unbound
+
+- name: Configure all hosts to use DNS server
+  hosts: all
+  become: yes
+  roles:
+    - dns-configure
+
+- name: Configure head node, create VM's, and start Juju setup
+  hosts: head
+  roles:
+    - { role: head-prep, become: yes }
+    - { role: config-virt, become: yes }
+    - juju-user-prep
+    - juju-setup
+

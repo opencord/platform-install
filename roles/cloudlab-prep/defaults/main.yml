@@ -1,0 +1,6 @@
+---
+# roles/cloudlab-prep/defaults/main.yml
+
+cloudlab_extrafs:
+  - /var/lib/nova
+  #  - /var/lib/uvtool/libvirt/images

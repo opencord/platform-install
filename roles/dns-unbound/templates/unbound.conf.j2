@@ -15,7 +15,7 @@ server:
 
   # allow from local networks
   {% for cidr_ipv4 in unbound_interfaces %}
-  access-control: {{ cidr_ipv4 | ipaddr('network') }}/28 allow
+  access-control: {{ cidr_ipv4 }} allow
   {% endfor %}
 
 {% if nsd_zones is defined %}

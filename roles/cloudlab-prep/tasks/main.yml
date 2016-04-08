@@ -1,7 +1,15 @@
 ---
 # roles/cloudlab-prep/tasks/main.yml
 
-- name:  Set up extra disk space
-  command: /usr/testbed/bin/mkextrafs -f /var/lib/uvtool/libvirt/images
-    creates=/var/lib/uvtool/libvirt/images/lost+found
+- name: create directories to mount extra filesystems
+  file: 
+    dest={{ item }}
+    state=directory
+  with_items: "{{ cloudlab_extrafs }}"
+
+
+- name: Set up extra disk space
+  command: /usr/testbed/bin/mkextrafs -f {{ item }}
+    creates={{ item }}/lost+found
+  with_items: "{{ cloudlab_extrafs }}"
 

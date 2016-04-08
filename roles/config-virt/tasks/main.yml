@@ -1,5 +1,5 @@
 ---
-# roles/config-virt/main/tasks.yml
+# roles/config-virt/tasks/main.yml
 
 - name: Get ubuntu image for uvtool
   command: uvt-simplestreams-libvirt sync --source http://cloud-images.ubuntu.com/daily \

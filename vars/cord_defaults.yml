@@ -1,0 +1,215 @@
+---
+# vars/opencloud_defaults.yml
+
+openstack_version: kilo
+openstack_cfg_path: /usr/local/src/openstack.cfg
+
+mgmtbr_name: mgmtbr
+
+head_vm_list:
+  - name: "juju-1"
+    service: "juju"
+    aliases:
+       - "juju"
+    ipv4_last_octet: 10
+    cpu: 1
+    memMB: 2048
+    diskGB: 20
+
+  - name: "ceilometer-1"
+    service: "ceilometer"
+    aliases:
+      - "ceilometer"
+    ipv4_last_octet: 20
+    cpu: 1
+    memMB: 2048
+    diskGB: 20
+    forwarded_ports:
+      - { ext: 8777, int: 8777 }
+
+  - name: "glance-1"
+    service: "glance"
+    aliases:
+      - "glance"
+    ipv4_last_octet: 30
+    cpu: 2
+    memMB: 4096
+    diskGB: 160
+    forwarded_ports:
+      - { ext: 9292, int: 9292 }
+
+  - name: "keystone-1"
+    service: "keystone"
+    aliases:
+      - "keystone"
+    ipv4_last_octet: 40
+    cpu: 2
+    memMB: 4096
+    diskGB: 40
+    forwarded_ports:
+      - { ext: 35357, int: 35357 }
+      - { ext: 4990, int: 4990 }
+      - { ext: 5000, int: 5000 }
+
+  - name: "mysql-1"
+    service: "mysql"
+    aliases:
+      - "mysql"
+    ipv4_last_octet: 50
+    cpu: 2
+    memMB: 4096
+    diskGB: 40
+
+  - name: "nagios-1"
+    service: "nagios"
+    aliases:
+      - "nagios"
+    ipv4_last_octet: 60
+    cpu: 1
+    memMB: 2048
+    diskGB: 20
+    forwarded_ports:
+      - { ext: 3128, int: 80 }
+
+  - name: "neutron-api-1"
+    service: "neutron-api"
+    aliases:
+      - "neutron-api"
+    ipv4_last_octet: 70
+    cpu: 2
+    memMB: 4096
+    diskGB: 40
+    forwarded_ports:
+      - { ext: 9696, int: 9696 }
+
+  - name: "nova-cloud-controller-1"
+    service: "nova-cloud-controller"
+    aliases:
+      - "nova-cloud-controller"
+    ipv4_last_octet: 80
+    cpu: 2
+    memMB: 4096
+    diskGB: 40
+    forwarded_ports:
+      - { ext: 8774, int: 8774 }
+
+  - name: "openstack-dashboard-1"
+    service: "openstack-dashboard"
+    aliases:
+      - "openstack-dashboard"
+    ipv4_last_octet: 90
+    cpu: 1
+    memMB: 2048
+    diskGB: 20
+    forwarded_ports:
+      - { ext: 8080, int: 80 }
+
+  - name: "rabbitmq-server-1"
+    service: "rabbitmq-server"
+    aliases:
+      - "rabbitmq-server"
+    ipv4_last_octet: 100
+    cpu: 2
+    memMB: 4096
+    diskGB: 40
+
+  - name: "onos-cord-1"
+    aliases:
+      - "onos-cord"
+    ipv4_last_octet: 110
+    cpu: 2
+    memMB: 4096
+    diskGB: 40
+
+  - name: "onos-fabric-1"
+    aliases:
+      - "onos-fabric"
+    ipv4_last_octet: 120
+    cpu: 2
+    memMB: 4096
+    diskGB: 40
+
+  - name: "xos-1"
+    aliases:
+      - "xos"
+    ipv4_last_octet: 130
+    cpu: 2
+    memMB: 4096
+    diskGB: 40
+
+  - name: "nova-compute-1"
+    service: "nova-compute"
+    aliases:
+      - "nova-compute"
+    ipv4_last_octet: 140
+    cpu: 6
+    memMB: 16384
+    diskGB: 240
+
+
+vm_service_list:
+  - ceilometer
+  - glance
+  - keystone
+  - mysql
+  - nagios
+  - neutron-api
+  - nova-cloud-controller
+  - openstack-dashboard
+  - rabbitmq-server
+  - nova-compute
+
+standalone_service_list:
+  - ntp
+  - nrpe
+  - ceilometer-agent
+
+service_relations:
+  - name: keystone
+    relations: [ "mysql", "nrpe", ]
+
+  - name: nova-cloud-controller
+    relations: [ "mysql", "rabbitmq-server", "glance", "keystone", "nrpe", ]
+
+  - name: glance
+    relations: [ "mysql", "keystone", "nrpe", ]
+
+  - name: neutron-api
+    relations: [ "keystone", "neutron-openvswitch", "mysql", "rabbitmq-server", "nova-cloud-controller", "nrpe", ]
+
+  - name: neutron-openvswitch
+    relations: [ "rabbitmq-server", ]
+
+  - name: openstack-dashboard
+    relations: [ "keystone", "nrpe", ]
+
+  - name: nagios
+    relations: [ "nrpe", ]
+
+  - name: "mysql:juju-info"
+    relations: [ "nrpe:general-info", ]
+
+  - name: rabbitmq-server
+    relations: [ "nrpe", ]
+
+  - name: ceilometer
+    relations: [ "mongodb", "rabbitmq-server", "nagios", "nrpe", ]
+
+  - name: "ceilometer:identity-service"
+    relations: [ "keystone:identity-service", ]
+
+  - name: "ceilometer:ceilometer-service"
+    relations: [ "ceilometer-agent:ceilometer-service", ]
+
+  - name: nova-compute
+    relations: [ "glance", "nova-cloud-controller", "nagios", "nrpe", ]
+
+  - name: "nova-compute:shared-db"
+    relations: [ "mysql:shared-db", ]
+
+  - name: "nova-compute:amqp"
+    relations: [ "rabbitmq-server:amqp", ]
+
+  - name: ntp
+    relations: [ "nova-compute", ]
+
