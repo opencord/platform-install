@@ -20,7 +20,7 @@
     dest={{ nsd_conf }}
     mode=0644 owner=root group={{ nsd_group }}
   notify:
-    - reload-nsd
+    - restart-nsd
 
 - name: create forward zonefiles from template
   template:
