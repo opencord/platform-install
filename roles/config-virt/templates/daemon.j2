@@ -27,8 +27,9 @@ then
 
 {% for vm in head_vm_list -%}
 {% if vm.forwarded_ports is defined -%}
+{% set vm_net = ( virt_nets | selectattr("head_vms", "defined") | first ) %}
 {% for port in vm.forwarded_ports -%}
-    add_port_fwd_rule {{ port.ext }} "{{ mgmtbr_prefix }}.{{ vm.ipv4_last_octet }}" {{ port.int }}
+    add_port_fwd_rule {{ port.ext }} "{{ vm_net.ipv4_prefix }}.{{ vm.ipv4_last_octet }}" {{ port.int }}
 {% endfor -%}
 {% endif -%}
 {% endfor -%}

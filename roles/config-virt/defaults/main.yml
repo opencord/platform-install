@@ -1,4 +1,6 @@
 ---
 # roles/config-virt/defaults/main.yml
 
-mgmtbr_name: virbr0
+virt_nets:
+  - mgmtbr
+
