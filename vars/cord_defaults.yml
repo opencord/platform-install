@@ -175,10 +175,7 @@ service_relations:
     relations: [ "mysql", "keystone", "nrpe", ]
 
   - name: neutron-api
-    relations: [ "keystone", "neutron-openvswitch", "mysql", "rabbitmq-server", "nova-cloud-controller", "nrpe", ]
-
-  - name: neutron-openvswitch
-    relations: [ "rabbitmq-server", ]
+    relations: [ "keystone",  "mysql", "rabbitmq-server", "nova-cloud-controller", "nrpe", ]
 
   - name: openstack-dashboard
     relations: [ "keystone", "nrpe", ]
