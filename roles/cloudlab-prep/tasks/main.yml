@@ -8,8 +8,9 @@
   with_items: "{{ cloudlab_extrafs }}"
 
 
+# FIXME: does not create lost+found, -q makes it fail without error...
 - name: Set up extra disk space
-  command: /usr/testbed/bin/mkextrafs -f {{ item }}
+  command: /usr/testbed/bin/mkextrafs -qf {{ item }}
     creates={{ item }}/lost+found
   with_items: "{{ cloudlab_extrafs }}"
 
