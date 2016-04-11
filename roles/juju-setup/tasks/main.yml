@@ -1,6 +1,11 @@
 ---
 # roles/juju-setup/main/tasks.yml
 
+- name: Get ubuntu image for uvtool
+  become: yes
+  command: uvt-simplestreams-libvirt sync --source http://cloud-images.ubuntu.com/daily \
+    release={{ ansible_distribution_release }} arch=amd64
+
 - name: create Virtual Machines with uvt-kvm
   shell: uvt-kvm create {{ item.name }} --cpu={{ item.cpu }} --memory={{ item.memMB }} --disk={{ item.diskGB }} ; \
     uvt-kvm wait --insecure {{ item.name }}

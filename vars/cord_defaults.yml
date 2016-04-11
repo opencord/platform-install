@@ -4,7 +4,7 @@
 openstack_version: kilo
 openstack_cfg_path: /usr/local/src/openstack.cfg
 
-mgmtbr_name: mgmtbr
+# mgmtbr_name: mgmtbr
 
 head_vm_list:
   - name: "juju-1"
