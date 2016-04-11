@@ -1,0 +1,11 @@
+head    ansible_ssh_host=rc-tsdn-01.its.unc.edu
+
+[compute]
+rc-tsdn-02.its.unc.edu
+rc-tsdn-03.its.unc.edu
+rc-tsdn-04.its.unc.edu
+rc-tsdn-05.its.unc.edu
+rc-tsdn-06.its.unc.edu
+
+[all:vars]
+cloudlab=false
