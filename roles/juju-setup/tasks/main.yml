@@ -107,16 +107,14 @@
 - name: Obtain Juju Facts after service creation
   juju_facts:
 
-# This should be able to test for the VM's coming up, but not working right now
-#- name: Wait for juju services on VM's to come up
-#  wait_for:
-#    port={{ item.ext }}
-#    timeout=10
-#  with_items: "{{ head_vm_list | map(attribute='forwarded_ports') | reject('undefined') | list }}"
-
-# - name: Obtain keystone admin password
-#   command: "juju run --unit={{ juju_services['keystone']['units'].keys()[0] }} 'sudo cat /var/lib/keystone/keystone.passwd'"
-#   register: keystone_password
+# 900s = 15m. Usually takes 10-12m on cloudlab for relations to come up
+# Only checks for first port in list.
+- name: Wait for juju services on VM's to come up
+  wait_for:
+    host={{ item.name }}
+    port={{ item.forwarded_ports[0].int }}
+    timeout=900
+  with_items: "{{ head_vm_list | selectattr('forwarded_ports', 'defined') | list }}"
 
 - name: Create admin-openrc.sh credentials file
   template:
