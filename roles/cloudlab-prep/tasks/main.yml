@@ -2,7 +2,7 @@
 # roles/cloudlab-prep/tasks/main.yml
 
 - name: create directories to mount extra filesystems
-  file: 
+  file:
     dest={{ item }}
     state=directory
   with_items: "{{ cloudlab_extrafs }}"
