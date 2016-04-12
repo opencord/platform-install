@@ -1,5 +1,5 @@
 ---
-# file: group_vars/aztest.yml
+# file: group_vars/cord.yml
 
 # VM networks/bridges on head
 virt_nets:
