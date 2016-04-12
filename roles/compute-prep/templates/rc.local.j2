@@ -11,8 +11,8 @@
 
 {% set head_host = groups['head'][0] -%}
 {% set head_ip = hostvars[head_host]['ansible_default_ipv4']['address'] -%}
-{% set virt_network = hostvars[head_host]['ansible_virbr0']['ipv4']['network'] -%}
-{% set virt_netmask = hostvars[head_host]['ansible_virbr0']['ipv4']['netmask'] -%}
+{% set virt_network = virt_nets[0]['ipv4_prefix'] ~ '.0' -%}
+{% set virt_netmask = "255.255.255.0" -%}
 
 route add -net {{ virt_network }} netmask {{ virt_netmask }} gw {{ head_ip }} || true
 
