@@ -36,3 +36,9 @@
     - juju-user-prep
     - juju-setup
 
+- name: Set up XOS and ONOS
+  hosts: head
+  roles:
+    - xos-vm-install
+    - onos-vm-install
+
