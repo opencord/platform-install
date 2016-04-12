@@ -1,0 +1,18 @@
+---
+# xos-vm-install/tasks/main.yml
+#
+# Install XOS on a sub vm by calling ansible
+
+- name: Create a vars file from template
+  template: 
+    src=xos-setup-vars.yml.j2
+    dest={{ ansible_user_dir }}/xos-setup-vars.yml
+
+- name: Copy over XOS ansible playbook
+  copy:
+    src=xos-setup-{{ xos_configuration }}-playbook.yml
+    dest={{ ansible_user_dir }}/xos-setup-playbook.yml
+
+- name: Run the XOS ansible playbook
+  command: ansible-playbook {{ ansible_user_dir }}/xos-setup-playbook.yml
+  

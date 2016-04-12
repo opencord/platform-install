@@ -1,0 +1,69 @@
+---
+- hosts: onos-cord-1
+  remote_user: ubuntu
+
+  tasks:
+    - name: Include configuration vars
+      include_vars: onos-setup-vars.yml
+
+    # https://docs.docker.com/engine/installation/linux/ubuntulinux/
+    - name: Prereqs and SSL support for apt for SSL
+      become: yes
+      apt:
+        name={{ item }}
+        update_cache=yes
+        cache_valid_time=3600
+      with_items:
+        - apt-transport-https
+        - ca-certificates
+        - python-pip
+
+    - name: Trust docker apt key
+      become: yes
+      apt_key:
+        keyserver=pool.sks-keyservers.net
+        id=58118E89F3A912897C070ADBF76221572C52609D
+
+    - name: Add docker apt repo
+      become: yes
+      apt_repository:
+        repo="deb https://apt.dockerproject.org/repo ubuntu-trusty main"
+
+    - name: Install docker
+      become: yes
+      apt:
+        update_cache=yes
+        cache_valid_time=3600
+        name=docker-engine
+
+    - name: Make user part of the Docker group
+      become: yes
+      user:
+        name={{ ansible_user_id }}
+        groups="docker" append=yes
+
+    # https://docs.docker.com/compose/install/#install-using-pip
+    - name: Install docker-compose from PyPi
+      become: yes
+      pip:
+        name=docker-compose
+
+    - name: Copy over SSH keys
+      copy:
+        src=~/.ssh/{{ item }}
+        dest={{ ansible_user_dir }}/cord/{{ item }}
+        owner={{ ansible_user_id }} mode=0600
+      with_items:
+       - id_rsa
+       - id_rsa.pub
+
+    - name: Create CORD directory
+      file:
+        path={{ ansible_user_dir }}/cord
+        state=directory
+
+    - name: Copy over docker-compose.yml files
+      copy:
+        src=~/docker-compose.yml
+        dest={{ ansible_user_dir }}/cord/docker-compose.yml
+

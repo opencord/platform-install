@@ -1,0 +1,65 @@
+---
+- hosts: xos-1
+  remote_user: ubuntu
+
+  tasks:
+    - name: Include configuration vars
+      include_vars: xos-setup-vars.yml
+
+    - name: Install prerequisites
+      apt:
+        name={{ item }}
+        update_cache=yes
+        cache_valid_time=3600
+      become: yes
+      with_items:
+       - git
+       - make
+       - python-novaclient
+       - python-neutronclient
+       - python-keystoneclient
+       - python-glanceclient
+
+    # force=yes because we're putting other files in the repo, which will cause
+    # this to fail in the future. Wipes out local changes.
+    - name: Clone XOS repo
+      git:
+        repo={{ xos_repo_url }}
+        dest={{ xos_repo_dest }}
+        version={{ xos_repo_branch }}
+        force=yes
+
+    - name: Make XOS prerequisites
+      command: make -f {{ xos_repo_dest }}/xos/configurations/common/Makefile.prereqs
+
+    - name: Copy over SSH keys
+      copy:
+        src=~/.ssh/{{ item }}
+        dest={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/
+        owner={{ ansible_user_id }} mode=0600
+      with_items:
+       - id_rsa
+       - id_rsa.pub
+
+    - name: copy over admin-openrc.sh
+      copy:
+        src=~/admin-openrc.sh
+        dest={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}
+
+    - name: copy over SSH key as node_key
+      copy:
+        src=~/.ssh/id_rsa
+        dest={{ xos_repo_dest }}//xos/configurations/{{ xos_configuration }}/node_key
+
+    - name: create images directory
+      file:
+        path={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/images
+        state=directory
+
+    - name: download software image
+      get_url:
+        url=http://www.vicci.org/opencloud/trusty-server-cloudimg-amd64-disk1.img
+        checksum=sha256:5fb160ea09649f9cebe5cfd7aaf3d1a341e8e0f9eca6e52e46eb6271155c48b0
+        dest={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/images/trusty-server-multi-nic.img
+
+
