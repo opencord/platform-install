@@ -22,6 +22,10 @@
     xml='{{ lookup("template", "virt_net.xml.j2") }}'
   with_items: '{{ virt_nets }}'
 
+- name: collect libvirt network facts after defining new network
+  virt_net:
+    command=facts
+
 - name: start libvirt networks
   when: ansible_libvirt_networks["xos-{{ item.name }}"].state != "active"
   virt_net:
