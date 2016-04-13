@@ -1,6 +1,10 @@
 ---
 # juju configuration file for OpenCloud deployments
 
+ceilometer: {}
+
+ceilometer-agent: {}
+
 glance:
   openstack-origin: "cloud:trusty-kilo"
 
@@ -8,6 +12,10 @@ keystone:
   use-https: "yes"
   https-service-endpoints: "True"
   openstack-origin: "cloud:trusty-kilo"
+
+mongodb: {}
+
+nagios: {}
 
 neutron-api:
   flat-network-providers: "*"
@@ -38,11 +46,15 @@ nova-compute:
   disable-neutron-security-groups: "True"
   openstack-origin: "cloud:trusty-kilo"
 
+nrpe: {}
+
 ntp:
   source: "0.ubuntu.pool.ntp.org 1.ubuntu.pool.ntp.org 2.ubuntu.pool.ntp.org 3.ubuntu.pool.ntp.org"
 
 openstack-dashboard:
   openstack-origin: "cloud:trusty-kilo"
+
+percona-cluster: {}
 
 rabbitmq-server:
   ssl: "on"

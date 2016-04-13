@@ -4,25 +4,30 @@
 ceilometer:
   openstack-origin: cloud:trusty-kilo
 
+ceilometer-agent: {}
+
 glance:
   ha-mcastport: 5402
   openstack-origin: cloud:trusty-kilo
 
 keystone:
   ha-mcastport: 5403
-  https-service-endpoints: False
+  https-service-endpoints: "False"
   openstack-origin: cloud:trusty-kilo
-  use-https: no
+  use-https: "no"
 
-mysql:
-   max-connections: 20000
+mongodb: {}
+
+nagios: {}
 
 neutron-api:
   neutron-plugin: onosvtn
   onos-vtn-ip: onos-cord
-  neutron-security-groups: true
+  neutron-security-groups: True
   openstack-origin: cloud:trusty-kilo
   overlay-network-type: vxlan
+
+neutron-openvswitch: {}
 
 nova-cloud-controller:
   config-flags: "force_config_drive=always"
@@ -35,9 +40,17 @@ nova-compute:
   disable-neutron-security-groups: True
   openstack-origin: cloud:trusty-kilo
 
+nrpe: {}
+
+ntp: {}
+
 openstack-dashboard:
   openstack-origin: cloud:trusty-kilo
 
+percona-cluster:
+   max-connections: 20000
+
 rabbitmq-server:
   ssl: 'off'
+
 
