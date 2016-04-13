@@ -59,11 +59,11 @@
   command: juju bootstrap
     creates={{ ansible_user_dir }}/.juju/environments/manual.jenv
 
-- name: Create openstack.cfg for Juju from template
+- name: Copy over juju-config.yml for configuring Juju services
   become: yes
   template:
-    src=openstack.cfg.j2
-    dest={{ openstack_cfg_path }}
+    src={{ juju_config_file }}
+    dest={{ juju_config_path }}
 
 # Code for this is in library/juju_facts.py
 - name: Obtain Juju Facts for creating machines
@@ -82,15 +82,15 @@
   juju_facts:
 
 - name: Deploy services that are hosted in their own VM
-  command: "juju deploy {{ item }} --to {{ juju_machines[item]['machine_id'] }} --config={{ openstack_cfg_path }}"
+  command: "juju deploy {{ charm_version[item] | default(item) }} --to {{ juju_machines[item]['machine_id'] }} --config={{ juju_config_path }}"
   with_items: "{{ vm_service_list | difference( juju_services.keys() ) }}"
 
 - name: Deploy mongodb to ceilometer VM
-  command: "juju deploy mongodb --to {{ juju_machines['ceilometer']['machine_id'] }} --config={{ openstack_cfg_path }}"
+  command: "juju deploy {{ charm_version['mongodb'] | default('mongodb') }} --to {{ juju_machines['ceilometer']['machine_id'] }} --config={{ juju_config_path }}"
   when: juju_services['mongodb'] is undefined
 
 - name: Deploy services that don't have their own VM
-  command: "juju deploy {{ item }} --config={{ openstack_cfg_path }}"
+  command: "juju deploy {{ charm_version[item] | default(item) }} --config={{ juju_config_path }}"
   with_items: "{{ standalone_service_list | difference( juju_services.keys() ) }}"
 
 # FIXME: ignoring errors when creating relationships.

@@ -1,10 +1,29 @@
 ---
-# vars/opencloud_defaults.yml
+# vars/cord_defaults.yml
 
 openstack_version: kilo
-openstack_cfg_path: /usr/local/src/openstack.cfg
+
+juju_config_file: cord_juju_config.yml
+juju_config_path: /usr/local/src/juju_config.yml
 
 xos_configuration: cord-pod
+
+charm_versions:
+  ceilometer: "cs:trusty/ceilometer-17"
+  ceilometer-agent: "cs:trusty/ceilometer-agent-13"
+  glance: "cs:trusty/glance-28"
+  keystone: "cs:trusty/keystone-33"
+  mongodb: "cs:trusty/mongodb-33"
+  mysql: "cs:trusty/percona-cluster-31"
+  nagios: "cs:trusty/nagios-10"
+  neutron-api: "cs:~cordteam/trusty/neutron-api-1"
+  nova-cloud-controller: "cs:trusty/nova-cloud-controller-64"
+  nova-compute: "cs:~cordteam/trusty/nova-compute-2"
+  nrpe: "cs:trusty/nrpe-4"
+  ntp: "cs:trusty/ntp-14"
+  openstack-dashboard: "cs:trusty/openstack-dashboard-19"
+  rabbitmq-server: "cs:trusty/rabbitmq-server-42"
+
 
 head_vm_list:
   - name: "juju-1"
@@ -159,10 +178,12 @@ vm_service_list:
   - rabbitmq-server
   - nova-compute
 
+
 standalone_service_list:
   - ntp
   - nrpe
   - ceilometer-agent
+
 
 service_relations:
   - name: keystone
@@ -199,7 +220,7 @@ service_relations:
     relations: [ "ceilometer-agent:ceilometer-service", ]
 
   - name: nova-compute
-    relations: [ "glance", "nova-cloud-controller", "nagios", "nrpe", ]
+    relations: [ "ceilometer-agent", "glance", "nova-cloud-controller", "nagios", "nrpe", ]
 
   - name: "nova-compute:shared-db"
     relations: [ "mysql:shared-db", ]

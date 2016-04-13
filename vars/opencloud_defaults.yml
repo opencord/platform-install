@@ -2,7 +2,11 @@
 # vars/opencloud_defaults.yml
 
 openstack_version: kilo
-openstack_cfg_path: /usr/local/src/openstack.cfg
+
+juju_config_file: opencloud_juju_config.yml
+juju_config_path: /usr/local/src/juju_config.yml
+
+charm_versions: {}
 
 head_vm_list:
   - name: "juju-1"
