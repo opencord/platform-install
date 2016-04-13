@@ -20,14 +20,11 @@
        - python-keystoneclient
        - python-glanceclient
 
-    # force=yes because we're putting other files in the repo, which will cause
-    # this to fail in the future. Wipes out local changes.
     - name: Clone XOS repo
       git:
         repo={{ xos_repo_url }}
         dest={{ xos_repo_dest }}
         version={{ xos_repo_branch }}
-        force=yes
 
     - name: Make XOS prerequisites
       command: make -f {{ xos_repo_dest }}/xos/configurations/common/Makefile.prereqs
@@ -50,11 +47,6 @@
       copy:
         src=~/.ssh/id_rsa
         dest={{ xos_repo_dest }}//xos/configurations/{{ xos_configuration }}/node_key
-
-    - name: create images directory
-      file:
-        path={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/images
-        state=directory
 
     - name: download software image
       get_url:
