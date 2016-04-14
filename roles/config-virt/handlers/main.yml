@@ -1,8 +1,5 @@
 ---
-# roles/juju-setup/handlers/tasks.yml
-
-- name: recreate default network
-  command: virsh net-destroy default ; virsh net-start default
+# roles/config-virt-net/handlers/tasks.yml
 
 - name: reload libvirt-bin
   service:
@@ -11,5 +8,4 @@
 
 - name: run qemu hook
   command: /etc/libvirt/hooks/qemu start start
-
 

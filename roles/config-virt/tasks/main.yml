@@ -1,5 +1,5 @@
 ---
-# roles/config-virt/tasks/main.yml
+# roles/config-virt-net/tasks/main.yml
 
 - name: collect libvirt network facts
   virt_net:
@@ -52,5 +52,4 @@
   notify:
     - reload libvirt-bin
     - run qemu hook
-
 

@@ -4,11 +4,11 @@
 - name: add compute nodes
   command: juju add-machine ssh:ubuntu@{{ item }}
   with_items: "{{ groups['compute'] | difference( juju_machines.keys() ) }}"
-  register: added-compute-nodes
+  register: added_compute_nodes
 
 # run this again, so add-machine items will be in the juju_compute_nodes list
 - name: Obtain Juju Facts after adding compute nodes
-  when: added-compute-nodes
+  when: added_compute_nodes
   juju_facts:
 
 # the crazy [ ] in the with-items is so that jinja compares arrays of strings,
@@ -16,20 +16,16 @@
 - name: add-unit nova-compute to first compute node
   command: "juju deploy nova-compute --to {{ juju_machines[item]['machine_id'] }} --config={{ openstack_cfg_path }}"
   with_items: "{{ [ groups['compute'][0] ] | difference( juju_compute_nodes.keys() ) }}"
-  register: added-first-nova-compute
+  register: added_first_nova_compute
 
 # run this again, so first nova compute will be in the juju_compute_nodes list
 - name: Obtain Juju Facts nova-compute deploy
   juju_facts:
-  when: added-first-nova-compute
+  when: added_first_nova_compute
 
 - name: add-unit nova-compute to other compute nodes
   command: "juju add-unit nova-compute --to {{ juju_machines[item]['machine_id'] }}"
   with_items: "{{ groups['compute'] | difference( juju_compute_nodes.keys() )  }}"
-
-# added this to openstack.cfg
-# - name: Have nova-compute use KVM as its virt-type
-#   command: juju set nova-compute virt-type=kvm
 
 - name: Create relations to compute
   command: "juju add-relation '{{ item.0.name }}' '{{ item.1 }}'"
@@ -52,5 +48,4 @@
 
 - name: Run network setup script
   command: ansible nova-cloud-controller-1 -m script -u ubuntu -a "/usr/local/src/network-setup.sh"
-
 

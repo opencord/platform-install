@@ -1,5 +1,5 @@
 ---
-# roles/juju-openstack-config/handlers/tasks.yml
+# roles/juju-setup/handlers/tasks.yml
 
 - name: update-ca-certificates
   become: yes
