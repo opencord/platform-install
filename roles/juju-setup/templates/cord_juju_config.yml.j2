@@ -1,0 +1,59 @@
+---
+# juju configuration file for CORD deployments
+
+ceilometer:
+  openstack-origin: "cloud:trusty-kilo"
+
+ceilometer-agent: {}
+
+glance:
+  openstack-origin: "cloud:trusty-kilo"
+  ha-mcastport: 5402
+
+keystone:
+  admin-password: "{{ keystone_admin_password }}"
+  os-public-hostname: "keystone.{{ site_suffix }}"
+  ha-mcastport: 5403
+  https-service-endpoints: "True"
+  openstack-origin: "cloud:trusty-kilo"
+  use-https: "yes"
+
+mongodb: {}
+
+nagios: {}
+
+neutron-api:
+  neutron-plugin: onosvtn
+  onos-vtn-ip: onos-cord
+  neutron-security-groups: "True"
+  openstack-origin: "cloud:trusty-kilo"
+  overlay-network-type: vxlan
+
+neutron-openvswitch: {}
+
+nova-cloud-controller:
+  config-flags: "force_config_drive=always"
+  console-access-protocol: novnc
+  network-manager: Neutron
+  openstack-origin: "cloud:trusty-kilo"
+
+nova-compute:
+  virt-type: kvm
+  config-flags: "firewall_driver=nova.virt.firewall.NoopFirewallDriver"
+  disable-neutron-security-groups: "True"
+  openstack-origin: "cloud:trusty-kilo"
+
+nrpe: {}
+
+ntp: {}
+
+openstack-dashboard:
+  openstack-origin: "cloud:trusty-kilo"
+
+percona-cluster:
+   max-connections: 20000
+
+rabbitmq-server:
+  ssl: "on"
+
+

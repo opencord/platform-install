@@ -1,2 +1,6 @@
 ---
 
+juju_config_name: opencloud
+juju_config_path: /usr/local/src/juju_config.yml
+
+charm_versions: {}

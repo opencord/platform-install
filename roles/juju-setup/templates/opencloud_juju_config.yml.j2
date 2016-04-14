@@ -9,6 +9,8 @@ glance:
   openstack-origin: "cloud:trusty-kilo"
 
 keystone:
+  admin-password: "{{ keystone_admin_password }}"
+  os-public-hostname: "keystone.{{ site_suffix }}"
   use-https: "yes"
   https-service-endpoints: "True"
   openstack-origin: "cloud:trusty-kilo"
