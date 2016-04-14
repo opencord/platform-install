@@ -3,8 +3,7 @@
 
 openstack_version: kilo
 
-juju_config_file: cord_juju_config.yml
-juju_config_path: /usr/local/src/juju_config.yml
+juju_config_name: cord
 
 xos_configuration: cord-pod
 
@@ -14,7 +13,7 @@ charm_versions:
   glance: "cs:trusty/glance-28"
   keystone: "cs:trusty/keystone-33"
   mongodb: "cs:trusty/mongodb-33"
-  mysql: "cs:trusty/percona-cluster-31"
+  percona-cluster: "cs:trusty/percona-cluster-31"
   nagios: "cs:trusty/nagios-10"
   neutron-api: "cs:~cordteam/trusty/neutron-api-1"
   nova-cloud-controller: "cs:trusty/nova-cloud-controller-64"
@@ -70,10 +69,10 @@ head_vm_list:
       - { ext: 4990, int: 4990 }
       - { ext: 5000, int: 5000 }
 
-  - name: "mysql-1"
-    service: "mysql"
+  - name: "percona-cluster-1"
+    service: "percona-cluster"
     aliases:
-      - "mysql"
+      - "percona-cluster"
     ipv4_last_octet: 50
     cpu: 2
     memMB: 4096
@@ -170,7 +169,7 @@ vm_service_list:
   - ceilometer
   - glance
   - keystone
-  - mysql
+  - percona-cluster
   - nagios
   - neutron-api
   - nova-cloud-controller
@@ -187,16 +186,16 @@ standalone_service_list:
 
 service_relations:
   - name: keystone
-    relations: [ "mysql", "nrpe", ]
+    relations: [ "percona-cluster", "nrpe", ]
 
   - name: nova-cloud-controller
-    relations: [ "mysql", "rabbitmq-server", "glance", "keystone", "nrpe", ]
+    relations: [ "percona-cluster", "rabbitmq-server", "glance", "keystone", "nrpe", ]
 
   - name: glance
-    relations: [ "mysql", "keystone", "nrpe", ]
+    relations: [ "percona-cluster", "keystone", "nrpe", ]
 
   - name: neutron-api
-    relations: [ "keystone",  "mysql", "rabbitmq-server", "nova-cloud-controller", "nrpe", ]
+    relations: [ "keystone",  "percona-cluster", "rabbitmq-server", "nova-cloud-controller", "nrpe", ]
 
   - name: openstack-dashboard
     relations: [ "keystone", "nrpe", ]
@@ -204,7 +203,7 @@ service_relations:
   - name: nagios
     relations: [ "nrpe", ]
 
-  - name: "mysql:juju-info"
+  - name: "percona-cluster:juju-info"
     relations: [ "nrpe:general-info", ]
 
   - name: rabbitmq-server
@@ -223,7 +222,7 @@ service_relations:
     relations: [ "ceilometer-agent", "glance", "nova-cloud-controller", "nagios", "nrpe", ]
 
   - name: "nova-compute:shared-db"
-    relations: [ "mysql:shared-db", ]
+    relations: [ "percona-cluster:shared-db", ]
 
   - name: "nova-compute:amqp"
     relations: [ "rabbitmq-server:amqp", ]

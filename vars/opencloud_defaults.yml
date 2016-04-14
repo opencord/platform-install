@@ -3,8 +3,7 @@
 
 openstack_version: kilo
 
-juju_config_file: opencloud_juju_config.yml
-juju_config_path: /usr/local/src/juju_config.yml
+juju_config_name: opencloud
 
 charm_versions: {}
 
@@ -53,10 +52,10 @@ head_vm_list:
       - { ext: 4990, int: 4990 }
       - { ext: 5000, int: 5000 }
 
-  - name: "mysql-1"
-    service: "mysql"
+  - name: "percona-cluster-1"
+    service: "percona-cluster"
     aliases:
-      - "mysql"
+      - "percona-cluster"
     ipv4_last_octet: 50
     cpu: 2
     memMB: 4096
@@ -128,38 +127,38 @@ vm_service_list:
   - ceilometer
   - glance
   - keystone
-  - mysql
   - nagios
   - neutron-api
   - neutron-gateway
   - nova-cloud-controller
   - openstack-dashboard
+  - percona-cluster
   - rabbitmq-server
 
 standalone_service_list:
-  - ntp
-  - nrpe
   - ceilometer-agent
   - neutron-openvswitch
+  - nrpe
+  - ntp
 
 service_relations:
   - name: keystone
-    relations: [ "mysql", "nrpe", ]
+    relations: [ "percona-cluster", "nrpe", ]
 
   - name: nova-cloud-controller
-    relations: [ "mysql", "rabbitmq-server", "glance", "keystone", "nrpe", ]
+    relations: [ "percona-cluster", "rabbitmq-server", "glance", "keystone", "nrpe", ]
 
   - name: glance
-    relations: [ "mysql", "keystone", "nrpe", ]
+    relations: [ "percona-cluster", "keystone", "nrpe", ]
 
   - name: neutron-gateway
-    relations: [ "neutron-api", "nova-cloud-controller", "mysql", "nrpe", ]
+    relations: [ "neutron-api", "nova-cloud-controller", "percona-cluster", "nrpe", ]
 
   - name: "neutron-gateway:amqp"
     relations: [ "rabbitmq-server:amqp", ]
 
   - name: neutron-api
-    relations: [ "keystone", "neutron-openvswitch", "mysql", "rabbitmq-server", "nova-cloud-controller", "nrpe", ]
+    relations: [ "keystone", "neutron-openvswitch", "percona-cluster", "rabbitmq-server", "nova-cloud-controller", "nrpe", ]
 
   - name: neutron-openvswitch
     relations: [ "rabbitmq-server", ]
@@ -170,7 +169,7 @@ service_relations:
   - name: nagios
     relations: [ "nrpe", ]
 
-  - name: "mysql:juju-info"
+  - name: "percona-cluster:juju-info"
     relations: [ "nrpe:general-info", ]
 
   - name: rabbitmq-server
