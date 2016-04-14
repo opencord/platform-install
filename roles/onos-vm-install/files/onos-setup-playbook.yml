@@ -48,6 +48,11 @@
       pip:
         name=docker-compose
 
+    - name: Create CORD directory
+      file:
+        path={{ ansible_user_dir }}/cord
+        state=directory
+
     - name: Copy over SSH keys
       copy:
         src=~/.ssh/{{ item }}
@@ -56,11 +61,6 @@
       with_items:
        - id_rsa
        - id_rsa.pub
-
-    - name: Create CORD directory
-      file:
-        path={{ ansible_user_dir }}/cord
-        state=directory
 
     - name: Copy over docker-compose.yml files
       copy:

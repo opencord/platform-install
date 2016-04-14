@@ -25,6 +25,7 @@
         repo={{ xos_repo_url }}
         dest={{ xos_repo_dest }}
         version={{ xos_repo_branch }}
+        force=yes
 
     - name: Make XOS prerequisites
       command: make -f {{ xos_repo_dest }}/xos/configurations/common/Makefile.prereqs
