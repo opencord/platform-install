@@ -27,9 +27,9 @@ function create-vm {
 		if $TESTING
 		then
 			# Don't use mgmtbr for testing
-			uvt-kvm create $NAME --cpu=$CPU --memory=$MEM_MB --disk=$DISK_GB
+			uvt-kvm create $NAME release=trusty --cpu=$CPU --memory=$MEM_MB --disk=$DISK_GB
 		else
-			uvt-kvm create $NAME --cpu=$CPU --memory=$MEM_MB --disk=$DISK_GB --bridge mgmtbr
+			uvt-kvm create $NAME release=trusty --cpu=$CPU --memory=$MEM_MB --disk=$DISK_GB --bridge mgmtbr
 		fi
 		# uvt-kvm wait --insecure $NAME
 	fi
