@@ -7,7 +7,8 @@
     release={{ ansible_distribution_release }} arch=amd64
 
 - name: create Virtual Machines with uvt-kvm
-  shell: uvt-kvm create {{ item.name }} --cpu={{ item.cpu }} --memory={{ item.memMB }} --disk={{ item.diskGB }} --bridge="mgmtbr"
+  shell: uvt-kvm create {{ item.name }} release={{ ansible_distribution_release }} \
+    --cpu={{ item.cpu }} --memory={{ item.memMB }} --disk={{ item.diskGB }} --bridge="mgmtbr"
     creates=/var/lib/uvtool/libvirt/images/{{ item.name }}.qcow
   with_items: "{{ head_vm_list }}"
 
