@@ -30,6 +30,7 @@
     - python-neutronclient
     - python-keystoneclient
     - python-glanceclient
+    - python-netaddr
     - virt-top
 
 - name: Prep user account by adding to libvirtd group and generating SSH key
