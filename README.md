@@ -76,12 +76,12 @@ for more information.
 The process for setting up a CORD test environment on CloudLab is similar (but
 not identical) to the one for setting up a CORD POD above.
 
-* Start a CloudLab experiment using profile *OnePC-Ubuntu14.04.4*
-* Run the `bootstrap.sh` script to install Ansible and set up keys for login via `localhost`
-* Run:
-```
-ansible-playbook -i cord-test-hosts cord-setup.yml
-```
+* Start a CloudLab experiment using profile *OnePC-Ubuntu14.04.4* and login to the node
+* Check out this repository
+* `~$ cd openstack-cluster-setup`
+* `~/openstack-cluster-setup$ ./bootstrap.sh`
+* `~/openstack-cluster-setup$ ansible-playbook -i cord-test-hosts cord-setup.yml`
+
 As mentioned above, be patient!  With a fast Internet connection, the entire process will take about
 one hour to complete.
 
