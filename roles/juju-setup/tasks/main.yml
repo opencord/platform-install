@@ -110,12 +110,21 @@
 
 # 900s = 15m. Usually takes 10-12m on cloudlab for relations to come up
 # Only checks for first port in list.
-- name: Wait for juju services on VM's to come up
+- name: Wait for juju services on VM's have open ports
   wait_for:
     host={{ item.name }}
     port={{ item.forwarded_ports[0].int }}
     timeout=900
   with_items: "{{ head_vm_list | selectattr('forwarded_ports', 'defined') | list }}"
+
+# secondary wait, as waiting on ports isn't enough. Probably only need one of these...
+# 10m max wait
+- name: Wait for juju services to start
+  action: command juju status --format=summary
+  register: juju_summary
+  until: juju_summary.stdout.find("pending:") == -1
+  retries: 40
+  delay: 15
 
 - name: Create admin-openrc.sh credentials file
   template:
