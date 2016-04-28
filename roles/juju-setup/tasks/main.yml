@@ -141,3 +141,8 @@
     creates=/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt
   notify: update-ca-certificates
 
+- name: Move cert to xos vm
+  command: ansible xos-1 -b -u ubuntu -m copy -a "src={{ ansible_user_dir }}/keystone_juju_ca_cert.crt dest=/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt owner=root group=root mode=0644"
+
+- name: update-ca-certificates on xos vm
+  command: ansible xos-1 -b -u ubuntu -m command -a "update-ca-certificates"
