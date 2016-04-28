@@ -47,6 +47,9 @@
 - name: Restart eth0 interface on all VMs
   command: ansible services -b -u ubuntu -m shell -a "ifdown eth0 ; ifup eth0"
 
+- name: Verify that we can log into every VM after restarting network interfaces
+  command: ansible services -m ping -u ubuntu
+
 - name: Initialize Juju
   command: juju generate-config
     creates={{ ansible_user_dir }}/.juju/environments.yaml
