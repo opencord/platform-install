@@ -2,5 +2,5 @@
 ansible_ssh_user=zdw
 
 [head]
-c220g2-011128.wisc.cloudlab.us
+localhost
 
