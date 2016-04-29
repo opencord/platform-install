@@ -2,6 +2,8 @@
 
 function bootstrap() {
     cd ~
+    sudo apt-get update
+    sudo apt-get -y install git
     git clone https://github.com/open-cloud/openstack-cluster-setup.git
     cd ~/openstack-cluster-setup
     ./bootstrap.sh
