@@ -73,13 +73,18 @@
 - name: Obtain Juju Facts for creating machines
   juju_facts:
 
+- name: Pause to let Juju settle before adding machines
+  pause:
+    prompt="Waiting for Juju..."
+    seconds=20
+
 # For setwise operations on desired vs Juju state:
 # list of active juju_machines names: juju_machines.keys()
 # list of active juju_services names: juju_services.keys()
 
 - name: Add machines to Juju
   command: "juju add-machine ssh:{{ item }}"
-  with_items: "{{ head_vm_list | map(attribute='service') | list | reject('undefined') | difference( juju_machines.keys() ) }}"
+  with_items: "{{ head_vm_list | map(attribute='service') | list | reject('undefined') | map('format_string', '%s.'~site_suffix ) | difference( juju_machines.keys() ) }}"
 
 # run this again, so machines will be in the juju_machines list
 - name: Obtain Juju Facts after machine creation
@@ -97,8 +102,6 @@
   command: "juju deploy {{ charm_versions[item] | default(item) }} --config={{ juju_config_path }}"
   with_items: "{{ standalone_service_list | difference( juju_services.keys() ) }}"
 
-# FIXME: ignoring errors when creating relationships.
-# Previous method wasn't idempotent either
 - name: Create relations between services
   command: "juju add-relation '{{ item.0.name }}' '{{ item.1 }}'"
   register: juju_relation
@@ -112,7 +115,7 @@
   juju_facts:
 
 # 900s = 15m. Usually takes 10-12m on cloudlab for relations to come up
-# Only checks for first port in list.
+# Only checks for first port in list
 - name: Wait for juju services on VM's have open ports
   wait_for:
     host={{ item.name }}
@@ -121,7 +124,7 @@
   with_items: "{{ head_vm_list | selectattr('forwarded_ports', 'defined') | list }}"
 
 # secondary wait, as waiting on ports isn't enough. Probably only need one of these...
-# 10m max wait
+# 40*15s = 600s = 10m max wait
 - name: Wait for juju services to start
   action: command juju status --format=summary
   register: juju_summary
@@ -149,3 +152,4 @@
 
 - name: update-ca-certificates on xos vm
   command: ansible xos-1 -b -u ubuntu -m command -a "update-ca-certificates"
+
