@@ -91,11 +91,11 @@
   juju_facts:
 
 - name: Deploy services that are hosted in their own VM
-  command: "juju deploy {{ charm_versions[item] | default(item) }} --to {{ juju_machines[item]['machine_id'] }} --config={{ juju_config_path }}"
+  command: "juju deploy {{ charm_versions[item] | default(item) }} --to {{ juju_machines[item~'.'~site_suffix]['machine_id'] }} --config={{ juju_config_path }}"
   with_items: "{{ vm_service_list | difference( juju_services.keys() ) }}"
 
 - name: Deploy mongodb to ceilometer VM
-  command: "juju deploy {{ charm_versions['mongodb'] | default('mongodb') }} --to {{ juju_machines['ceilometer']['machine_id'] }} --config={{ juju_config_path }}"
+  command: "juju deploy {{ charm_versions['mongodb'] | default('mongodb') }} --to {{ juju_machines['ceilometer.'~site_suffix]['machine_id'] }} --config={{ juju_config_path }}"
   when: juju_services['mongodb'] is undefined
 
 - name: Deploy services that don't have their own VM
