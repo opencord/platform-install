@@ -7,7 +7,7 @@ def genmac(value, prefix='', length=12):
     '''
 
     # from: http://serverfault.com/questions/40712/what-range-of-mac-addresses-can-i-safely-use-for-my-virtual-machines
-    if prefix == ''
+    if prefix == '' :
         mac_prefix = "0ac04d" # random "cord"-esque
 
     # deterministically generate a value
