@@ -45,6 +45,5 @@
     - xos-vm-install
     - onos-vm-install
     - docker-compose-pull
-    - simulate-fabric 
-
+    - simulate-fabric
 

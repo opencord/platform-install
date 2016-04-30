@@ -7,7 +7,7 @@
   with_items: "{{ docker_compose_pull_list }}"
 
 
-- name: 'docker-compose up' where specified
+- name: Run "docker-compose up" where specified
   command: ansible "{{ item.name }}" -b -u ubuntu -m command \
                     -a "docker up -d chdir={{ item.path }}"
   with_items: "{{ docker_compose_pull_list | selectattr('up') }}"

@@ -1,0 +1,14 @@
+---
+# simulate-fabric/defaults/main.yml
+
+simfabric_bridges:
+  - name: databr
+    ipaddr: "10.168.0.1/24"
+    nat: True
+    interfaces:
+      - veth0
+
+simfabric_interfaces:
+  - veth0
+  - veth1
+
