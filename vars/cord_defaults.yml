@@ -7,6 +7,10 @@ juju_config_name: cord
 
 xos_configuration: cord-pod
 
+docker_compose_pull_list:
+  - { name:'onos-cord-1', path:'~/cord', up:True}
+  - { name:'xos-1', path:'~//xos/xos/configurations/cord-pod', up:False }
+
 charm_versions:
   ceilometer: "cs:trusty/ceilometer-17"
   ceilometer-agent: "cs:trusty/ceilometer-agent-13"
@@ -23,12 +27,11 @@ charm_versions:
   openstack-dashboard: "cs:trusty/openstack-dashboard-19"
   rabbitmq-server: "cs:trusty/rabbitmq-server-42"
 
-
 head_vm_list:
   - name: "juju-1"
     service: "juju"
     aliases:
-       - "juju"
+      - "juju"
     ipv4_last_octet: 10
     cpu: 1
     memMB: 2048

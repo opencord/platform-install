@@ -3,6 +3,9 @@
 
 - name: Include Configuration
   hosts: all
+  vars:
+    - xos_repo_branch: "feature/role-setup"
+
   tasks:
   - include_vars: vars/cord_defaults.yml
   - include_vars: vars/cord.yml
@@ -41,4 +44,7 @@
   roles:
     - xos-vm-install
     - onos-vm-install
+    - docker-compose-pull
+    - simulate-fabric 
+
 

@@ -1,0 +1,14 @@
+---
+# docker-compose-pull/tasks/main.yml
+
+- name: Pull images from dockerhub with docker-compose
+  command: ansible "{{ item.name }}" -b -u ubuntu -m command \
+                    -a "docker pull chdir={{ item.path }}"
+  with_items: "{{ docker_compose_pull_list }}"
+
+
+- name: 'docker-compose up' where specified
+  command: ansible "{{ item.name }}" -b -u ubuntu -m command \
+                    -a "docker up -d chdir={{ item.path }}"
+  with_items: "{{ docker_compose_pull_list | selectattr('up') }}"
+
