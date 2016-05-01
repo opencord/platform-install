@@ -1,0 +1,27 @@
+---
+# roles/apt-cacher-ng/tasks
+
+- name: Install apt-cacher-ng with apt
+  apt:
+    name={{ item }}
+    update_cache=yes
+    cache_valid_time=3600
+  with_items:
+    - apt-cacher-ng
+
+- name: Configure apt-cacher-ng to pass through ssl repos
+  when: apt_ssl_sites is defined
+  lineinfile:
+    'dest=/etc/apt-cacher-ng/acng.conf
+    insertafter="^# PassThroughPattern"
+    regexp="^PassThroughPattern"
+    line="PassThroughPattern: ({{ apt_ssl_sites | join(\"|\")}}):443$"'
+  notify:
+    restart apt-cacher-ng
+
+- name: Configure local system to use apt-cacher-ng
+  template:
+    src=02apt-cacher-ng.j2
+    dest=/etc/apt/apt.conf.d/02apt-cacher-ng
+    mode=0644 owner=root group=root
+

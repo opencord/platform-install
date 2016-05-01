@@ -17,6 +17,7 @@
   roles:
     - common-prep
     - cloudlab-prep
+    - apt-cacher-ng
 
 - name: DNS Server Setup
   hosts: head

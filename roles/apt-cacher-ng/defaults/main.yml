@@ -1,0 +1,6 @@
+---
+# apt-cacher-ng/defaults/main.yml
+
+apt_cacher_ip: 127.0.0.1
+apt_cacher_port: 3142
+
