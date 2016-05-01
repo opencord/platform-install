@@ -31,11 +31,16 @@
   roles:
     - dns-configure
 
-- name: Configure head node, create VM's, and start Juju setup
+- name: Configure head node, create VM's
+  hosts: head
+  become: yes
+  roles:
+    - head-prep
+    - config-virt
+
+- name: Setup Juju 
   hosts: head
   roles:
-    - { role: head-prep, become: yes }
-    - { role: config-virt, become: yes }
     - juju-user-prep
     - juju-setup
 
