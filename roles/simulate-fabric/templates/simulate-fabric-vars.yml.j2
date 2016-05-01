@@ -1,5 +1,6 @@
 ---
 
-simfabric_bridges: {{ simfabric_bridges }}
-simfabric_interfaces: {{ simfabric_interfaces }}
+simfabric_bridges: {{ simfabric_bridges | to_yaml }}
+
+simfabric_interfaces: {{ simfabric_interfaces | to_yaml }}
 
