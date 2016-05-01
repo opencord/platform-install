@@ -3,12 +3,12 @@
 
 - name: Pull images from dockerhub with docker-compose
   command: ansible "{{ item.name }}" -b -u ubuntu -m command \
-                    -a "docker pull chdir={{ item.path }}"
+                    -a "docker-compose pull chdir={{ item.path | expanduser }}"
   with_items: "{{ docker_compose_pull_list }}"
 
 
 - name: Run "docker-compose up" where specified
   command: ansible "{{ item.name }}" -b -u ubuntu -m command \
-                    -a "docker up -d chdir={{ item.path }}"
+                    -a "docker-compose up -d chdir={{ item.path | expanduser }}"
   with_items: "{{ docker_compose_pull_list | selectattr('up') }}"
 

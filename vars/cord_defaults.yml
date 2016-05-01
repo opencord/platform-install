@@ -8,8 +8,14 @@ juju_config_name: cord
 xos_configuration: cord-pod
 
 docker_compose_pull_list:
-  - { name:'onos-cord-1', path:'~/cord', up:True}
-  - { name:'xos-1', path:'~//xos/xos/configurations/cord-pod', up:False }
+  - name: 'onos-cord-1'
+    path: '~/cord'
+    up: yes
+
+  - name: 'xos-1'
+    path: '~/xos/xos/configurations/cord-pod'
+    up: no
+
 
 charm_versions:
   ceilometer: "cs:trusty/ceilometer-17"
