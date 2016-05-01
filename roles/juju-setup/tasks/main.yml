@@ -7,12 +7,14 @@
     release={{ ansible_distribution_release }} arch=amd64
 
 - name: create Virtual Machines with uvt-kvm
+  become: yes
   shell: uvt-kvm create {{ item.name }} release={{ ansible_distribution_release }} \
     --cpu={{ item.cpu }} --memory={{ item.memMB }} --disk={{ item.diskGB }} --bridge="mgmtbr"
     creates=/var/lib/uvtool/libvirt/images/{{ item.name }}.qcow
   with_items: "{{ head_vm_list }}"
 
 - name: Have VMs autostart on reboot
+  become: yes
   virt:
     name={{ item.name }}
     command=autostart
