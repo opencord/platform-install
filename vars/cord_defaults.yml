@@ -9,11 +9,11 @@ xos_configuration: cord-pod
 
 docker_compose_pull_list:
   - name: 'onos-cord-1'
-    path: '~/cord'
+    path: 'cord'
     up: yes
 
   - name: 'xos-1'
-    path: '~/xos/xos/configurations/cord-pod'
+    path: 'xos/xos/configurations/cord-pod'
     up: no
 
 
