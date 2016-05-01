@@ -17,7 +17,7 @@
        - bridge-utils
 
     - name: Create bridges
-      when: "ansible_interfaces[item.name] is not defined"
+      when: "ansible_{{ item.name }} is not defined"
       command: brctl addbr "{{ item.name }}"
       with_items: "{{ simfabric_bridges }}"
 
