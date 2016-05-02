@@ -29,8 +29,8 @@
        - addresses
 
     - name: Start bridges
-      when: "ansible_{{ item.name }}.active is false"
-      command: "ip link set dev {{ item }} up"
+      when: "not ansible_{{ item.name }}.active"
+      command: "ip link set dev {{ item.name }} up"
       with_items: "{{ simfabric_bridges }}"
 
     - name: Create ip links
@@ -39,19 +39,19 @@
       with_items: "{{ simfabric_links }}"
 
     - name: Start interfaces
-      when: "ansible_{{ item.name }}.active is false"
+      when: "not ansible_{{ item }}.active"
       command: "ip link set dev {{ item }} up"
       with_items: "{{ simfabric_interfaces }}"
 
     - name: Add interfaces to bridges
-      when: "ansible_{{ item.0.name }}.interfaces is empty"
+      when: "ansible_{{ item.0.name }}.interfaces is not defined"
       command: "brctl addif {{ item.0.name }} {{ item.1 }}"
       with_subelements:
        - "{{ simfabric_bridges }}"
        - interfaces
 
     - name: Configure iptables
-      iptables: "table={{ item.table }} chain={{ item.chain }} source={{ item.source }} dest={{ item.dest }} jump={{ item.jump }}"
+      iptables: "table={{ item.table }} chain={{ item.chain }} source={{ item.source }} destination={{ item.dest }} jump={{ item.jump }}"
       with_items: "{{ simfabric_iptables }}"
 
     - name: Set kernel sysctl values

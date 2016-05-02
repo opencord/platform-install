@@ -11,6 +11,12 @@
   - include_vars: vars/cord.yml
   - include_vars: vars/cord_keystone.yml
 
+- name: Apt-Cache Setup
+  hosts: head
+  become: yes
+  roles:
+    - apt-cacher-ng
+  
 - name: Prep systems
   hosts: all
   become: yes
@@ -18,11 +24,10 @@
     - common-prep
     - cloudlab-prep
 
-- name: Cache and DNS Server Setup
+- name: DNS Server Setup
   hosts: head
   become: yes
   roles:
-    - apt-cacher-ng
     - dns-nsd
     - dns-unbound
 
