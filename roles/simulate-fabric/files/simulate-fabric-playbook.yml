@@ -21,3 +21,45 @@
       command: brctl addbr "{{ item.name }}"
       with_items: "{{ simfabric_bridges }}"
 
+    - name: Set IP addresses to bridges
+      when: "ansible_{{ item.0.name }} is not defined"
+      command: "ip addr add {{ item.1 }} dev {{ item.0.name }}"
+      with_subelements:
+       - "{{ simfabric_bridges }}"
+       - addresses
+
+    - name: Start bridges
+      when: "ansible_{{ item.name }}.active is false"
+      command: "ip link set dev {{ item }} up"
+      with_items: "{{ simfabric_bridges }}"
+
+    - name: Create ip links
+      when: "ansible_{{ item.name }}0 is not defined"
+      command: "ip link add address {{ item.mac }} type {{ item.name }}"
+      with_items: "{{ simfabric_links }}"
+
+    - name: Start interfaces
+      when: "ansible_{{ item.name }}.active is false"
+      command: "ip link set dev {{ item }} up"
+      with_items: "{{ simfabric_interfaces }}"
+
+    - name: Add interfaces to bridges
+      when: "ansible_{{ item.0.name }}.interfaces is empty"
+      command: "brctl addif {{ item.0.name }} {{ item.1 }}"
+      with_subelements:
+       - "{{ simfabric_bridges }}"
+       - interfaces
+
+    - name: Configure iptables
+      iptables: "table={{ item.table }} chain={{ item.chain }} source={{ item.source }} dest={{ item.dest }} jump={{ item.jump }}"
+      with_items: "{{ simfabric_iptables }}"
+
+    - name: Set kernel sysctl values
+      sysctl:
+        name="{{ item.name }}"
+        value="{{ item.value }}"
+        sysctl_set=yes
+        state=present
+        reload=yes
+      with_items: "{{ simfabric_sysctl }}"
+

@@ -17,12 +17,12 @@
   roles:
     - common-prep
     - cloudlab-prep
-    - apt-cacher-ng
 
-- name: DNS Server Setup
+- name: Cache and DNS Server Setup
   hosts: head
   become: yes
   roles:
+    - apt-cacher-ng
     - dns-nsd
     - dns-unbound
 
