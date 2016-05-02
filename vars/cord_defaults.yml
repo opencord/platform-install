@@ -7,6 +7,12 @@ juju_config_name: cord
 
 xos_configuration: cord-pod
 
+apt_cacher_name: apt-cache
+
+apt_ssl_sites:
+  - apt.dockerproject.org
+  - butler.opencloud.cs.arizona.edu
+
 docker_compose_pull_list:
   - name: 'onos-cord-1'
     path: 'cord'
@@ -15,7 +21,6 @@ docker_compose_pull_list:
   - name: 'xos-1'
     path: 'xos/xos/configurations/cord-pod'
     up: no
-
 
 charm_versions:
   ceilometer: "cs:trusty/ceilometer-17"

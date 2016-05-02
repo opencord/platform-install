@@ -11,12 +11,12 @@
   - include_vars: vars/cord.yml
   - include_vars: vars/cord_keystone.yml
 
-- name: Apt-Cache Setup
+- name: apt-cacher-ng Setup
   hosts: head
   become: yes
   roles:
     - apt-cacher-ng
-  
+
 - name: Prep systems
   hosts: all
   become: yes
@@ -40,7 +40,7 @@
 - name: Configure head node, create VM's, setup juju
   hosts: head
   roles:
-    - { role: head-prep, become: yes }		
+    - { role: head-prep, become: yes }
     - { role: config-virt, become: yes }
     - juju-user-prep
     - juju-setup
