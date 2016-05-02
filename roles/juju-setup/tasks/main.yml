@@ -35,7 +35,7 @@
   command: ansible services -m ping -u ubuntu
 
 - name: Have VM's use the apt-cache
-  command: ansible services -b -u ubuntu -m lineinfile -a "dest=/etc/apt/apt.conf.d/02apt-cacher-ng create=yes mode=0644 owner=root group=root regexp='^Acquire' line='Acquire::http { Proxy "http://{{ apt_cacher_name }}:{{ apt_cacher_port | default('3142') }}"; };'"
+  command: ansible services -b -u ubuntu -m lineinfile -a "dest=/etc/apt/apt.conf.d/02apt-cacher-ng create=yes mode=0644 owner=root group=root regexp='^Acquire' line='Acquire::http { Proxy \"http://{{ apt_cacher_name }}:{{ apt_cacher_port | default('3142') }}\"; };'"
 
 - name: Update software in all the VMs
   command: ansible services -m apt -b -u ubuntu -a "upgrade=dist update_cache=yes cache_valid_time=3600"
