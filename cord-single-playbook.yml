@@ -19,19 +19,18 @@
     - dns-unbound
     - apt-cacher-ng
 
+- name: Configure all hosts to use DNS server
+  hosts: all
+  become: yes
+  roles:
+    - dns-configure
+
 - name: Prep systems
   hosts: all
   become: yes
   roles:
     - common-prep
     - cloudlab-prep
-
-
-- name: Configure all hosts to use DNS server
-  hosts: all
-  become: yes
-  roles:
-    - dns-configure
 
 - name: Configure head node, create VM's, setup juju
   hosts: head
