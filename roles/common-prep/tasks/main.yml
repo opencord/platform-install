@@ -19,7 +19,11 @@
     - wait for host
 
 - name: Install standard packages
-  apt:  pkg={{ item }} state=present
+  apt:
+    pkg={{ item }}
+    state=present
+    update_cache=yes
+    cache_valid_time=3600
   with_items:
    - tmux
    - vim
