@@ -29,7 +29,7 @@
        - addresses
 
     - name: Start bridges
-      when: "not ansible_{{ item.name }}.active"
+      when: "ansible_{{ item.name }} is not defined and not ansible_{{ item.name }}.active"
       command: "ip link set dev {{ item.name }} up"
       with_items: "{{ simfabric_bridges }}"
 
@@ -39,7 +39,7 @@
       with_items: "{{ simfabric_links }}"
 
     - name: Start interfaces
-      when: "not ansible_{{ item }}.active"
+      when: "ansible_{{ item }}.defined is not defined and not ansible_{{ item }}.active"
       command: "ip link set dev {{ item }} up"
       with_items: "{{ simfabric_interfaces }}"
 
