@@ -209,8 +209,12 @@
   - name: Copy cord.yaml bundle
     template: src=templates/cord.yaml dest={{ ansible_env['PWD'] }}/cord.yaml
 
+  - name: Update root certificate database
+    sudo: yes
+    command: update-ca-certificates
+
   - name: Deploy OpenStack services with Juju
-    shell: juju quickstart cord.yaml
+    shell: juju quickstart --no-browser cord.yaml
 
 - hosts: head
   sudo: no
