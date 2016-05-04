@@ -1,5 +1,20 @@
 #!/bin/bash
 
+function cleanup_from_previous_test() {
+    VMS=$( sudo virsh list|grep running|awk '{print $2}' )
+    for VM in $VMS
+    do
+	sudo uvt-kvm destroy $VM
+    done
+
+    rm -rf ~/.juju
+    rm -f ~/.ssh/known_hosts
+    rm -rf ~/openstack-cluster-setup
+
+    sudo rm -f /var/lib/libvirt/dnsmasq/default.leases
+    sudo killall -HUP dnsmasq
+}
+
 function bootstrap() {
     cd ~
     sudo apt-get update
@@ -149,6 +164,11 @@ while getopts ":ht" opt; do
 done
 
 # What to do
+if [[ $RUN_TEST -eq 1 ]]
+then
+  cleanup_from_previous_test
+fi
+
 bootstrap
 setup_openstack
 pull_docker_images
