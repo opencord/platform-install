@@ -169,6 +169,8 @@ then
   cleanup_from_previous_test
 fi
 
+set -e
+
 bootstrap
 setup_openstack
 pull_docker_images
