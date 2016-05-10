@@ -81,7 +81,8 @@ Setting up a single-node CORD environment is simple.
   * With no options, the script installs the OpenStack services and a simulated fabric. It creates VMs for
     XOS and ONOS but does not start these services.
   * Adding the `-t` option will start XOS, bring up a vSG, install a test client, and run a simple E2E test.
-  * Adding the `-e` option will add the ExampleService to XOS (and test it if `-t` is also specified).
+  * Adding the `-e` option will add the [ExampleService](http://guide.xosproject.org/devguide/exampleservice/) 
+    to XOS (and test it if `-t` is also specified).
 
 As mentioned above, be patient!  With a fast Internet connection, the entire process will take at least
 one hour to complete.
