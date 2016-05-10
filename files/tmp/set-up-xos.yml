@@ -42,5 +42,5 @@
   - file: path={{ ansible_env['PWD'] }}/xos/xos/configurations/cord-pod/images
       state=directory
 
-  - get_url: url=http://www.vicci.org/opencloud/trusty-server-cloudimg-amd64-disk1.img
+  - get_url: url=http://128.112.139.30/opencloud/trusty-server-cloudimg-amd64-disk1.img
       dest={{ ansible_env['PWD'] }}/xos/xos/configurations/cord-pod/images/trusty-server-multi-nic.img
