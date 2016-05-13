@@ -170,8 +170,6 @@ function run_exampleservice_test () {
     source ~/admin-openrc.sh
 
     echo "*** Wait for exampleservice VM to come up."
-    echo "!!! NOTE that currently the VM will only be created after you login"
-    echo "!!! to XOS and manually create an ExampleService tenant."
     i=0
     until nova list --all-tenants|grep exampleservice.*ACTIVE > /dev/null
     do
