@@ -17,6 +17,7 @@ simfabric_interfaces:
   - veth0
   - veth1
 
+# see note in playbook, won't apply until ansible gets module support
 simfabric_iptables:
   - table: nat
     chain: POSTROUTING
