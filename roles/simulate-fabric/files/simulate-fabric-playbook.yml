@@ -58,12 +58,13 @@
        - interfaces
 
     - name: Check for iptables rule
-      command: "iptables -t nat -C POSTROUTING -s 10.168.0.0/16 \! -d 10.168.0.0/16 -j MASQUERADE"
+      command: "iptables -t nat -C POSTROUTING -s 10.168.0.0/16 ! -d 10.168.0.0/16 -j MASQUERADE"
       register: iptables_check
+      failed_when: "iptables_check|failed and 'No chain/target/match by that name' not in iptables_check.stderr"
 
     - name: Create iptables rule
       when: "iptables_check.rc != 0"
-      command: "iptables -t nat -C POSTROUTING -s 10.168.0.0/16 \! -d 10.168.0.0/16 -j MASQUERADE"
+      command: "iptables -t nat -A POSTROUTING -s 10.168.0.0/16 ! -d 10.168.0.0/16 -j MASQUERADE"
 
 # the below will likely work when this pull makes it into ansible:
 # https://github.com/ansible/ansible-modules-extras/pull/1685
