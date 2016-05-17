@@ -59,7 +59,7 @@
   register: sshkey
 
 - name: Enable root ssh login on VM's that need it
-  command: ansible {{ item.name }} -b -u ubuntu -m authorized_keys -a "user='root' key='{{ sshkey.stdout }}'"
+  command: ansible {{ item.name }} -b -u ubuntu -m authorized_key -a "user='root' key='{{ sshkey.stdout }}'"
   with_items: "{{ head_vm_list | selectattr('root_ssh_login', 'defined') | list }}"
 
 - name: Initialize Juju
