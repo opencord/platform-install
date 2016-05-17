@@ -54,6 +54,14 @@
 - name: Verify that we can log into every VM after restarting network interfaces
   command: ansible services -m ping -u ubuntu
 
+- name: Register public key in variable
+  shell: cat {{ ansible_user_dir }}/.ssh/id_rsa.pub
+  register: sshkey
+
+- name: Enable root ssh login on nova-compute VM's
+  command: ansible {{ item }} -b -u ubuntu -m authorized_keys -a "user='root' key='{{ sshkey.stdout }}'"
+  with_items: "{{ head_vm_list | selectattr('service','nova-compute') | list }}"
+
 - name: Initialize Juju
   command: juju generate-config
     creates={{ ansible_user_dir }}/.juju/environments.yaml
