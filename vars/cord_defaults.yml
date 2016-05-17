@@ -171,6 +171,7 @@ head_vm_list:
 
   - name: "nova-compute-1"
     service: "nova-compute"
+    root_ssh_login: true
     aliases:
       - "nova-compute"
     ipv4_last_octet: 140
