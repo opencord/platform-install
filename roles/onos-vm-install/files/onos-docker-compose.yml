@@ -1,0 +1,19 @@
+# ONOS with XOS features for docker-compose
+version: '2'
+
+services:
+
+   xos-onos:
+      build:
+       context: .
+       dockerfile: Dockerfile.xos-onos
+      image: xos/onos
+      expose:
+      - "6653"
+      - "8101"
+      - "8181"
+      - "9876"
+      network_mode: host
+      volumes:
+      - ./id_rsa:/root/node_key:ro
+

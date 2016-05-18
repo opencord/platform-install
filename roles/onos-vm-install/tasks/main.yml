@@ -14,7 +14,9 @@
     dest={{ ansible_user_dir }}/{{ item }}
   with_items:
     - onos-setup-playbook.yml
-    - docker-compose.yml
+    - onos-docker-compose.yml
+    - Dockerfile.xos-onos
+    - onos-service
 
 - name: Run the ONOS ansible playbook
   command: ansible-playbook {{ ansible_user_dir }}/onos-setup-playbook.yml

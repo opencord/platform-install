@@ -62,8 +62,20 @@
        - id_rsa
        - id_rsa.pub
 
+    - name: Copy SSL Certs so docker-compose can find it
+      command: "mv /usr/local/share/ca-certificates/keystone_juju_ca_cert.crt {{ ansible_user_dir }}/cord/xos-certs.crt"
+      creates: "{{ ansible_user_dir }}/cord/xos-certs.crt"
+
+    - name: Copy over files to build XOS variant of ONOS
+      copy:
+        src="~/{{ item }}"
+        dest="{{ ansible_user_dir }}/cord/{{ item }}"
+      with_items:
+       - Dockerfile.xos-onos
+       - onos-service
+
     - name: Copy over docker-compose.yml files
       copy:
-        src=~/docker-compose.yml
+        src=~/onos-docker-compose.yml
         dest={{ ansible_user_dir }}/cord/docker-compose.yml
 
