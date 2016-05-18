@@ -13,13 +13,15 @@ apt_ssl_sites:
   - apt.dockerproject.org
   - butler.opencloud.cs.arizona.edu
 
-docker_compose_pull_list:
+docker_compose_list:
   - name: 'onos-cord-1'
     path: 'cord'
+    build: yes
     up: yes
 
   - name: 'xos-1'
     path: 'xos/xos/configurations/cord-pod'
+    build: no
     up: no
 
 charm_versions:
