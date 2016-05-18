@@ -1,16 +1,17 @@
 ---
 # docker-compose-pull/tasks/main.yml
 
-- name: Pull images from dockerhub with docker-compose
-  command: ansible "{{ item.name }}" -b -u ubuntu -m command \
-                    -a "docker-compose pull chdir={{ item.path | expanduser }}"
-  with_items: "{{ docker_compose_list | selectattr('pull') | list}}"
-
+# Note: build/pull are mutually exclusive in this case
 
 - name: Build images from dockerhub with docker-compose
   command: ansible "{{ item.name }}" -b -u ubuntu -m command \
                     -a "docker-compose build chdir={{ item.path | expanduser }}"
   with_items: "{{ docker_compose_list | selectattr('build') | list}}"
+
+- name: Pull images from dockerhub with docker-compose
+  command: ansible "{{ item.name }}" -b -u ubuntu -m command \
+                    -a "docker-compose pull chdir={{ item.path | expanduser }}"
+  with_items: "{{ docker_compose_list | rejectattr('build') | list}}"
 
 - name: Run "docker-compose up" where required
   command: ansible "{{ item.name }}" -b -u ubuntu -m command \
