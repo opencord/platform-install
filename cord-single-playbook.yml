@@ -4,7 +4,7 @@
 - name: Include Configuration
   hosts: all
   vars:
-    - xos_repo_branch: "feature/role-setup"
+    - xos_repo_branch: "feature/container_ssl"
 
   tasks:
   - include_vars: vars/cord_defaults.yml
