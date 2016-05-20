@@ -10,7 +10,7 @@
 
 - name: Copy SSL Certs to ONOS so docker-compose can find it
   command: ansible onos-cord-1 -u ubuntu -m copy \
-    -a "src=/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt dest=~/onos/xos-certs.crt"
+    -a "src=/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt dest=~/cord/xos-certs.crt"
 
 - name: Build ONOS image with docker-compose
   command: ansible onos-cord-1 -u ubuntu -m command \
