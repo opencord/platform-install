@@ -51,5 +51,5 @@
         dest={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/node_key
 
     - name: Pull docker images for XOS
-      command: docker-compose pull chdir={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}
+      command: docker-compose pull chdir="{{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}"
 
