@@ -12,6 +12,6 @@ RUN openssl x509 -in /usr/local/share/ca-certificates/xos-certs.crt -outform der
 RUN keytool -import -noprompt -storepass 222222 -alias xos-certs -file /usr/local/share/ca-certificates/xos-certs.der -keystore /usr/local/share/ca-certificates/xos-certs.jks
 
 # Updated onos-service to use the jks
-COPY onos-service /root/bin/onos/onos-service
-RUN chmod 755 /root/bin/onos/onos-service
+COPY onos-service /root/onos/bin/onos-service
+RUN chmod 755 /root/onos/bin/onos-service
 
