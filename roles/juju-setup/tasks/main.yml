@@ -1,18 +1,6 @@
 ---
 # roles/juju-setup/main/tasks.yml
 
-- name: Disable host key checking in ~/.ssh/config
-  lineinfile:
-    dest={{ ansible_user_dir }}/.ssh/config
-    line="StrictHostKeyChecking no"
-    create=yes
-    mode=0600
-
-- name: Disable host key checking in ~/.ansible.cfg
-  copy:
-    src=ansible.cfg
-    dest={{ ansible_user_dir }}/.ansible.cfg
-
 # sshkey is registered in head-prep task
 - name: Enable root ssh login on VM's that need it
   command: ansible {{ item.name }} -b -u ubuntu -m authorized_key -a "user='root' key='{{ sshkey.stdout }}'"

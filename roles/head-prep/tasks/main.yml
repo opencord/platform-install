@@ -50,3 +50,16 @@
     user={{ ansible_user_id }}
     key="{{ sshkey.stdout }}"
 
+- name: Disable host key checking in ~/.ssh/config
+  lineinfile:
+    dest={{ ansible_user_dir }}/.ssh/config
+    line="StrictHostKeyChecking no"
+    create=yes
+    owner={{ ansible_user_id }} mode=0600
+
+- name: Disable host key checking in ~/.ansible.cfg
+  copy:
+    src=ansible.cfg
+    dest={{ ansible_user_dir }}/.ansible.cfg
+    owner={{ ansible_user_id }} mode=0644
+
