@@ -39,20 +39,17 @@
        - id_rsa
        - id_rsa.pub
 
-    - name: copy over admin-openrc.sh
-      copy:
-        src=~/admin-openrc.sh
-        dest={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}
-
-    - name: copy over SSH key as node_key
-      copy:
-        src=~/.ssh/id_rsa
-        dest={{ xos_repo_dest }}//xos/configurations/{{ xos_configuration }}/node_key
-
     - name: download software image
       get_url:
         url=http://www.vicci.org/opencloud/trusty-server-cloudimg-amd64-disk1.img
         checksum=sha256:5fb160ea09649f9cebe5cfd7aaf3d1a341e8e0f9eca6e52e46eb6271155c48b0
         dest={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/images/trusty-server-multi-nic.img
 
+    - name: copy over SSH key as node_key
+      copy:
+        src=~/.ssh/id_rsa
+        dest={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/node_key
+
+    - name: Pull docker images for XOS
+      command: docker-compose pull chdir={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}
 

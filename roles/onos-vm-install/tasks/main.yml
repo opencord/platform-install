@@ -20,4 +20,7 @@
 
 - name: Run the ONOS ansible playbook
   command: ansible-playbook {{ ansible_user_dir }}/onos-setup-playbook.yml
+  async: 1200
+  poll: 0
+  register: onos_setup_playbook
 

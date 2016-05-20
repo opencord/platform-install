@@ -32,19 +32,18 @@
     - common-prep
     - cloudlab-prep
 
-- name: Configure head node, create VM's, setup juju
+- name: Configure head node, create VM's
   hosts: head
   roles:
     - { role: head-prep, become: yes }
     - { role: config-virt, become: yes }
-    - juju-user-prep
-    - juju-setup
 
-- name: Set up XOS and ONOS
+- name: Set up VM's, juju, docker, simulate fabric
   hosts: head
   roles:
     - xos-vm-install
     - onos-vm-install
+    - juju-setup
     - docker-compose
     - simulate-fabric
 

@@ -1,20 +1,33 @@
 ---
-# docker-compose-pull/tasks/main.yml
+# docker-compose/tasks/main.yml
 
-# Note: build/pull are mutually exclusive in this case
+- name: Wait for onos_setup_playbook to complete
+  async_status: jid={{ onos_setup_playbook.ansible_job_id }}
+  register: onos_setup_playbook_result
+  until: onos_setup_playbook_result.finished
+  delay: 10
+  retries: 120
 
-- name: Build images from dockerhub with docker-compose
-  command: ansible "{{ item.name }}" -b -u ubuntu -m command \
-                    -a "docker-compose build chdir={{ item.path | expanduser }}"
-  with_items: "{{ docker_compose_list | selectattr('build') | list}}"
+- name: Copy SSL Certs to ONOS so docker-compose can find it
+  command: ansible onos-cord-1 -b -u ubuntu -m copy \
+    -a "src=/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt dest={{ ansible_user_dir }}/cord/xos-certs.crt"
 
-- name: Pull images from dockerhub with docker-compose
-  command: ansible "{{ item.name }}" -b -u ubuntu -m command \
-                    -a "docker-compose pull chdir={{ item.path | expanduser }}"
-  with_items: "{{ docker_compose_list | rejectattr('build') | list}}"
+- name: Build ONOS image with docker-compose
+  command: ansible onos-cord-1 -b -u ubuntu -m command \
+    -a "docker-compose build chdir=cord"
 
-- name: Run "docker-compose up" where required
-  command: ansible "{{ item.name }}" -b -u ubuntu -m command \
-                    -a "docker-compose up -d chdir={{ item.path | expanduser }}"
-  with_items: "{{ docker_compose_list | selectattr('up') | list}}"
+- name: Start ONOS
+  command: ansible onos-cord-1 -b -u ubuntu -m command \
+    -a "docker-compose up -d chdir=cord"
+
+- name: Wait for xos_setup_playbook to complete
+  async_status: jid={{ xos_setup_playbook.ansible_job_id }}
+  register: xos_setup_playbook_result
+  until: xos_setup_playbook_result.finished
+  delay: 10
+  retries: 120
+
+- name: Copy admin-openrc.sh into XOS container
+  command: ansible xos-1 -b -u ubuntu -m copy \
+    -a "src=~/admin-openrc.sh dest={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}"
 

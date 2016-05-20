@@ -13,7 +13,7 @@
 - name: Add head node ubuntu user key
   authorized_key:
     user=ubuntu
-    key="{{ hostvars[groups['head'][0]]['head_ssh_pubkey']['stdout'] }}"
+    key="{{ hostvars[groups['head'][0]]['sshkey']['stdout'] }}"
 
 - name: Add route via /etc/rc.local
   template:
