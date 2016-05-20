@@ -32,13 +32,10 @@ function setup_openstack() {
     ansible-playbook -i cord-test-hosts cord-setup.yml
 }
 
-function pull_docker_images() {
-    # Pull down the Docker images
+function pull_onos_docker_image() {
     echo ""
-    echo "Pull down the Docker images for ONOS and XOS"
-    echo "This can take 20 minutes or more, be patient!"
+    echo "Pull down the ONOS Docker image"
     ssh ubuntu@onos-cord "cd cord; sudo docker-compose up -d"
-    ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; sudo docker-compose pull"
 }
 
 function wait_for_openstack() {
@@ -68,11 +65,17 @@ function simulate_fabric() {
     ssh ubuntu@nova-compute "wget https://raw.githubusercontent.com/open-cloud/openstack-cluster-setup/master/scripts/$SCRIPT; sudo bash $SCRIPT"
 }
 
-function build_xos_with_exampleservice() {
+function build_xos_docker_images() {
     echo ""
-    echo "Adding exampleservice to XOS"
+    echo "Checking out XOS branch $BUILD_BRANCH"
     ssh ubuntu@xos "cd xos; git config --global user.email 'ubuntu@localhost'; git config --global user.name 'XOS ExampleService'"
-    ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; git cherry-pick 775e00549e535803522fbcd70152e5e1b0629c83"
+    ssh ubuntu@xos "cd xos; git checkout $BUILD_BRANCH"
+    if [[ $EXAMPLESERVICE -eq 1 ]]
+    then
+      echo ""
+      echo "Adding exampleservice to XOS"
+      ssh ubuntu@xos "cd xos; git cherry-pick 775e00549e535803522fbcd70152e5e1b0629c83"
+    fi
     echo ""
     echo "Rebuilding XOS containers"
     ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make local_containers"
@@ -170,6 +173,8 @@ function run_exampleservice_test () {
     source ~/admin-openrc.sh
 
     echo "*** Wait for exampleservice VM to come up."
+    echo "!!! NOTE that currently the VM will only be created after you login"
+    echo "!!! to XOS and manually create an ExampleService tenant."
     i=0
     until nova list --all-tenants|grep exampleservice.*ACTIVE > /dev/null
     do
@@ -206,20 +211,24 @@ function run_exampleservice_test () {
 # Parse options
 RUN_TEST=0
 EXAMPLESERVICE=0
-while getopts ":eht" opt; do
+BUILD_BRANCH=""
+while getopts "b:eht" opt; do
   case ${opt} in
-    h ) "echo Usage:"
-      echo "    $0            install OpenStack and prep XOS and ONOS VMs [default]"
-      echo "    $0 -e         add exampleservice to XOS"
-      echo "    $0 -h         display this help message"
-      echo "    $0 -t         do install, bring up cord-pod configuration, run E2E test"
+    b ) BUILD_BRANCH=$OPTARG
+      ;;
+    h ) echo "Usage:"
+      echo "    $0             install OpenStack and prep XOS and ONOS VMs [default]"
+      echo "    $0 -b <branch> build XOS containers based on GitHub <branch> instead of pulling them from Docker Hub"
+      echo "    $0 -e          add exampleservice to XOS"
+      echo "    $0 -h          display this help message"
+      echo "    $0 -t          do install, bring up cord-pod configuration, run E2E test"
       exit 0
       ;;
     t ) RUN_TEST=1
       ;;
     e ) EXAMPLESERVICE=1
       ;;
-    \? ) echo "Invalid option"
+    \? ) echo "Invalid option: -$OPTARG"
       exit 1
       ;;
   esac
@@ -235,15 +244,15 @@ set -e
 
 bootstrap
 setup_openstack
-pull_docker_images
+pull_onos_docker_image
 wait_for_openstack
 simulate_fabric
 
 if [[ $RUN_TEST -eq 1 ]]
 then
-  if [[ $EXAMPLESERVICE -eq 1 ]]
+  if [[ -n $BUILD_BRANCH || $EXAMPLESERVICE -eq 1 ]]
   then
-    build_xos_with_exampleservice
+    build_xos_docker_images
   fi
   setup_xos
   setup_test_client
