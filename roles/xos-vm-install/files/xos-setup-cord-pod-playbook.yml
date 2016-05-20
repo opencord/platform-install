@@ -50,7 +50,11 @@
         src=~/.ssh/id_rsa
         dest={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/node_key
 
+
+    # The become here is to work around `ubuntu` not being in the docker group
+    # until the next login, so become it again to reload group membership
     - name: Pull docker images for XOS
       become: yes
+      become_user: ubuntu
       command: docker-compose pull chdir="{{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}"
 
