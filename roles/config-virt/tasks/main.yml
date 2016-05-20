@@ -1,5 +1,5 @@
 ---
-# roles/config-virt-net/tasks/main.yml
+# roles/config-virt/tasks/main.yml
 
 - name: Get ubuntu image for uvtool
   command: uvt-simplestreams-libvirt sync --source http://cloud-images.ubuntu.com/daily \
@@ -60,3 +60,9 @@
     - reload libvirt-bin
     - run qemu hook
 
+- name: Wait for uvt-kvm image to be available
+  async_status: jid={{ uvt_sync.ansible_job_id }}
+  register: uvt_sync_result
+  until: uvt_sync_result.finished
+  delay: 10
+  retries: 120

@@ -1,13 +1,6 @@
 ---
 # file: create-vms/tasks/main.yml
 
-- name: Wait for uvt-kvm image to be available
-  async_status: jid={{ uvt_sync.ansible_job_id }}
-  register: uvt_sync_result
-  until: uvt_sync_result.finished
-  delay: 10
-  retries: 120
-
 - name: create Virtual Machines with uvt-kvm
   shell: uvt-kvm create {{ item.name }} release={{ ansible_distribution_release }} \
     --cpu={{ item.cpu }} --memory={{ item.memMB }} --disk={{ item.diskGB }} --bridge="mgmtbr"
