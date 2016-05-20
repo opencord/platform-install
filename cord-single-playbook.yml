@@ -1,11 +1,8 @@
 ---
 # CORD playbook, for installing a single-node CORD test-environment on cloudlab
 
-- name: Include Configuration
+- name: Include vars
   hosts: all
-  vars:
-    - xos_repo_branch: "feature/container_ssl"
-
   tasks:
   - include_vars: vars/cord_defaults.yml
   - include_vars: vars/cord.yml
@@ -39,7 +36,7 @@
     - { role: config-virt, become: yes }
     - create-vms
 
-- name: Set up VM's, juju, docker, simulate fabric
+- name: Set up VM's, juju, simulate fabric
   hosts: head
   roles:
     - xos-vm-install

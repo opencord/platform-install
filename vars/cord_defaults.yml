@@ -7,6 +7,8 @@ juju_config_name: cord
 
 xos_configuration: cord-pod
 
+xos_repo_branch: "feature/container_ssl"
+
 apt_cacher_name: apt-cache
 
 apt_ssl_sites:
