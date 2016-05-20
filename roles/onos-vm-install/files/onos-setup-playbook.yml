@@ -75,8 +75,10 @@
         src=~/onos-docker-compose.yml
         dest={{ ansible_user_dir }}/cord/docker-compose.yml
 
-    # become works around group issue
+    # The become here is to work around user not being in the docker group
+    # until the next login, so become it again to reload group membership
     - name: Pull docker image for ONOS
       become: yes
+      become_user: {{ ansible_user_id }}
       command: docker pull onosproject/onos
 
