@@ -1,11 +1,6 @@
 ---
 # roles/juju-setup/main/tasks.yml
 
-# sshkey is registered in head-prep task
-- name: Enable root ssh login on VM's that need it
-  command: ansible {{ item.name }} -b -u ubuntu -m authorized_key -a "user='root' key='{{ sshkey.stdout }}'"
-  with_items: "{{ head_vm_list | selectattr('root_ssh_login', 'defined') | list }}"
-
 - name: Initialize Juju
   command: juju generate-config
     creates={{ ansible_user_dir }}/.juju/environments.yaml
