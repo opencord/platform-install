@@ -79,6 +79,6 @@
     # until the next login, so become it again to reload group membership
     - name: Pull docker image for ONOS
       become: yes
-      become_user: {{ ansible_user_id }}
+      become_user: "{{ ansible_user_id }}"
       command: docker pull onosproject/onos
 

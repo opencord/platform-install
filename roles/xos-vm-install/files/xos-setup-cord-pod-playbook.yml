@@ -54,6 +54,6 @@
     # until the next login, so become it again to reload group membership
     - name: Pull docker images for XOS
       become: yes
-      become_user: {{ ansible_user_id }}
+      become_user: "{{ ansible_user_id }}"
       command: docker-compose pull chdir="{{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}"
 
