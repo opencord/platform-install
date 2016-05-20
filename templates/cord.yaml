@@ -149,7 +149,7 @@ services:
     annotations:
       gui-x: '500'
       gui-y: '500'
-    charm: cs:~cordteam/trusty/neutron-api-1
+    charm: cs:~cordteam/trusty/neutron-api-3
     num_units: 1
     options:
       neutron-plugin: onosvtn

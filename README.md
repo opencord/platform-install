@@ -73,16 +73,18 @@ for more information.
 
 ## How to install a single-node CORD test environment on CloudLab
 
-The process for setting up a CORD test environment on CloudLab is similar (but
-not identical) to the one for setting up a CORD POD above.
+Setting up a single-node CORD environment is simple.
 
-* Start a CloudLab experiment using profile *OnePC-Ubuntu14.04.4*
-* Run the `bootstrap.sh` script to install Ansible and set up keys for login via `localhost`
-* Run:
-```
-ansible-playbook -i cord-test-hosts cord-setup.yml
-```
-As mentioned above, be patient!  With a fast Internet connection, the entire process will take about
+* Start a CloudLab experiment using profile *OnePC-Ubuntu14.04.4* and login to the node
+* `wget https://raw.githubusercontent.com/open-cloud/openstack-cluster-setup/master/scripts/single-node-pod.sh`
+* `bash single-node-pod.sh [-t] [-e]`
+  * With no options, the script installs the OpenStack services and a simulated fabric. It creates VMs for
+    XOS and ONOS but does not start these services.
+  * Adding the `-t` option will start XOS, bring up a vSG, install a test client, and run a simple E2E test.
+  * Adding the `-e` option will add the [ExampleService](http://guide.xosproject.org/devguide/exampleservice/) 
+    to XOS (and test it if `-t` is also specified).
+
+As mentioned above, be patient!  With a fast Internet connection, the entire process will take at least
 one hour to complete.
 
 The install will bring up various OpenStack services, including Neutron with the VTN plugin.  It will also create
