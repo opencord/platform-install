@@ -75,12 +75,8 @@
         src=~/onos-docker-compose.yml
         dest={{ ansible_user_dir }}/cord/docker-compose.yml
 
-    - name: Make sure docker daemon is running
-      become: yes
-      service: 
-        name=docker
-        state=started
-
+    # become works around group issue
     - name: Pull docker image for ONOS
+      become: yes
       command: docker pull onosproject/onos
 
