@@ -6,3 +6,8 @@
 {{ vm.name }}
 {% endfor -%}
 
+[docker]
+{% for vm in head_vm_list | selectattr('docker_path', 'defined') -%}
+{{ vm.name }}
+{% endfor -%}
+

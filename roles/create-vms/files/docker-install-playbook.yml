@@ -2,39 +2,45 @@
 # Installs docker with apt, docker-compose with pip, adds user to group
 # Must be run as root
 
-# https://docs.docker.com/engine/installation/linux/ubuntulinux/
-- name: Prereqs and SSL support for apt for SSL
-  apt:
-    name={{ item }}
-    update_cache=yes
-    cache_valid_time=3600
-  with_items:
-    - apt-transport-https
-    - ca-certificates
-    - python-pip
+- hosts: docker
+  remote_user: ubuntu
+  become: yes
 
-- name: Trust docker apt key
-  apt_key:
-    keyserver=pool.sks-keyservers.net
-    id=58118E89F3A912897C070ADBF76221572C52609D
+  tasks:
 
-- name: Add docker apt repo
-  apt_repository:
-    repo="deb https://apt.dockerproject.org/repo ubuntu-trusty main"
+    # https://docs.docker.com/engine/installation/linux/ubuntulinux/
+    - name: Prereqs and SSL support for apt for SSL
+      apt:
+        name={{ item }}
+        update_cache=yes
+        cache_valid_time=3600
+      with_items:
+        - apt-transport-https
+        - ca-certificates
+        - python-pip
 
-- name: Install docker
-  apt:
-    update_cache=yes
-    cache_valid_time=3600
-    name=docker-engine
+    - name: Trust docker apt key
+      apt_key:
+        keyserver=pool.sks-keyservers.net
+        id=58118E89F3A912897C070ADBF76221572C52609D
 
-- name: Make user part of the Docker group
-  user:
-    name={{ ansible_user_id }}
-    groups="docker" append=yes
+    - name: Add docker apt repo
+      apt_repository:
+        repo="deb https://apt.dockerproject.org/repo ubuntu-trusty main"
 
-# https://docs.docker.com/compose/install/#install-using-pip
-- name: Install docker-compose from PyPi
-  pip:
-    name=docker-compose
+    - name: Install docker
+      apt:
+        update_cache=yes
+        cache_valid_time=3600
+        name=docker-engine
+
+    - name: Make user part of the Docker group
+      user:
+        name={{ ansible_user_id }}
+        groups="docker" append=yes
+
+    # https://docs.docker.com/compose/install/#install-using-pip
+    - name: Install docker-compose from PyPi
+      pip:
+        name=docker-compose
 

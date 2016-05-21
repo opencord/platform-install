@@ -60,6 +60,5 @@
     dest="{{ ansible_user_dir }}/docker-install-playbook.yml"
 
 - name: Install docker in VM's that require it
-  command: ansible-playbook -i {{ item.name }} -b -u ubuntu "{{ ansible_user_dir }}/docker-install-playbook.yml"
-  with_items: "{{ head_vm_list | selectattr('docker_path', 'defined') | list }}"
+  command: ansible-playbook "{{ ansible_user_dir }}/docker-install-playbook.yml"
 
