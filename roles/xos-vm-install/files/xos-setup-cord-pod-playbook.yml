@@ -15,6 +15,7 @@
       with_items:
        - git
        - make
+       - curl
        - python-novaclient
        - python-neutronclient
        - python-keystoneclient
@@ -27,9 +28,6 @@
         version={{ xos_repo_branch }}
         force=yes
 
-    - name: Make XOS prerequisites
-      command: make -f {{ xos_repo_dest }}/xos/configurations/common/Makefile.prereqs
-
     - name: Copy over SSH keys
       copy:
         src=~/.ssh/{{ item }}
@@ -39,21 +37,17 @@
        - id_rsa
        - id_rsa.pub
 
+    - name: copy over SSH key as node_key
+      copy:
+        src=~/.ssh/id_rsa
+        dest={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/node_key
+
     - name: download software image
       get_url:
         url=http://www.vicci.org/opencloud/trusty-server-cloudimg-amd64-disk1.img
         checksum=sha256:5fb160ea09649f9cebe5cfd7aaf3d1a341e8e0f9eca6e52e46eb6271155c48b0
         dest={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/images/trusty-server-multi-nic.img
 
-    - name: copy over SSH key as node_key
-      copy:
-        src=~/.ssh/id_rsa
-        dest={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/node_key
-
-    # The become here is to work around user not being in the docker group
-    # until the next login, so become it again to reload group membership
     - name: Pull docker images for XOS
-      become: yes
-      become_user: "{{ ansible_user_id }}"
       command: docker-compose pull chdir="{{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}"
 

@@ -15,17 +15,6 @@ apt_ssl_sites:
   - apt.dockerproject.org
   - butler.opencloud.cs.arizona.edu
 
-docker_compose_list:
-  - name: 'onos-cord-1'
-    path: 'cord'
-    build: yes
-    up: yes
-
-  - name: 'xos-1'
-    path: 'xos/xos/configurations/cord-pod'
-    build: no
-    up: no
-
 charm_versions:
   ceilometer: "cs:trusty/ceilometer-17"
   ceilometer-agent: "cs:trusty/ceilometer-agent-13"
@@ -156,6 +145,7 @@ head_vm_list:
     cpu: 2
     memMB: 4096
     diskGB: 40
+    docker_path: "cord"
 
   - name: "onos-fabric-1"
     aliases:
@@ -172,6 +162,7 @@ head_vm_list:
     cpu: 2
     memMB: 4096
     diskGB: 40
+    docker_path: 'xos/xos/configurations/cord-pod'
 
   - name: "nova-compute-1"
     service: "nova-compute"

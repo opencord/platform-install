@@ -50,7 +50,16 @@
   command: ansible services -m ping -u ubuntu
 
 # sshkey is registered in head-prep task
-- name: Enable root ssh login on VM's that need it
+- name: Enable root ssh login on VM's that require it
   command: ansible {{ item.name }} -b -u ubuntu -m authorized_key -a "user='root' key='{{ sshkey.stdout }}'"
   with_items: "{{ head_vm_list | selectattr('root_ssh_login', 'defined') | list }}"
+
+- name: Copy over docker installation playbook
+  copy:
+    src="docker-install-playbook.yml"
+    dest="{{ ansible_user_dir }}/docker-install-playbook.yml"
+
+- name: Install docker in VM's that require it
+  command: ansible-playbook -i {{ item.name }} -b -u ubuntu "{{ ansible_user_dir }}/docker-install-playbook.yml"
+  with_items: "{{ head_vm_list | selectattr('docker_path', 'defined') | list }}"
 
