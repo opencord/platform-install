@@ -34,5 +34,6 @@
         dest={{ ansible_user_dir }}/cord/docker-compose.yml
 
     - name: Pull docker image for ONOS
+      become; yes
       command: docker pull onosproject/onos
 
