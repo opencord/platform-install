@@ -49,6 +49,5 @@
         dest={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/images/trusty-server-multi-nic.img
 
     - name: Pull docker images for XOS
-      become: yes
-      command: docker-compose pull chdir="{{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}"
+      shell: "cd {{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}; sudo docker-compose pull"
 
