@@ -55,34 +55,34 @@ function build_xos_with_exampleservice() {
 function setup_xos() {
     echo ""
     echo "Setting up XOS, will take a few minutes"
-    ssh ubuntu@xos.cordtest.opencloud.us "cd xos/xos/configurations/cord-pod; make"
+    ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make"
     echo ""
     echo "Pause 2 minutes"
     sleep 120
 
-    ssh ubuntu@xos.cordtest.opencloud.us "cd xos/xos/configurations/cord-pod; make vtn"
+    ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make vtn"
     echo ""
     echo "Pause 30 seconds"
     sleep 30
 
-    ssh ubuntu@xos.cordtest.opencloud.us "cd xos/xos/configurations/cord-pod; make cord"
+    ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make cord"
 }
 
 function setup_test_client() {
-    ssh ubuntu@nova-compute.cordtest.opencloud.us "sudo apt-get -y install lxc"
+    ssh ubuntu@nova-compute "sudo apt-get -y install lxc"
 
     # Change default bridge
-    ssh ubuntu@nova-compute.cordtest.opencloud.us "sudo sed -i 's/lxcbr0/databr/' /etc/lxc/default.conf"
+    ssh ubuntu@nova-compute "sudo sed -i 's/lxcbr0/databr/' /etc/lxc/default.conf"
 
     # Create test client
-    ssh ubuntu@nova-compute.cordtest.opencloud.us "sudo lxc-create -t ubuntu -n testclient"
-    ssh ubuntu@nova-compute.cordtest.opencloud.us "sudo lxc-start -n testclient"
+    ssh ubuntu@nova-compute "sudo lxc-create -t ubuntu -n testclient"
+    ssh ubuntu@nova-compute "sudo lxc-start -n testclient"
 
     # Configure network interface inside of test client with s-tag and c-tag
-    ssh ubuntu@nova-compute.cordtest.opencloud.us "sudo lxc-attach -n testclient -- ip link add link eth0 name eth0.222 type vlan id 222"
-    ssh ubuntu@nova-compute.cordtest.opencloud.us "sudo lxc-attach -n testclient -- ip link add link eth0.222 name eth0.222.111 type vlan id 111"
-    ssh ubuntu@nova-compute.cordtest.opencloud.us "sudo lxc-attach -n testclient -- ifconfig eth0.222 up"
-    ssh ubuntu@nova-compute.cordtest.opencloud.us "sudo lxc-attach -n testclient -- ifconfig eth0.222.111 up"
+    ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- ip link add link eth0 name eth0.222 type vlan id 222"
+    ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- ip link add link eth0.222 name eth0.222.111 type vlan id 111"
+    ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- ifconfig eth0.222 up"
+    ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- ifconfig eth0.222.111 up"
 
     if [[ $EXAMPLESERVICE -eq 1 ]]
     then
@@ -120,15 +120,15 @@ function run_e2e_test() {
     echo ""
     echo "*** Run dhclient in test client"
 
-    ssh ubuntu@nova-compute.cordtest.opencloud.us "sudo lxc-attach -n testclient -- dhclient eth0.222.111" > /dev/null
+    ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- dhclient eth0.222.111" > /dev/null
 
     echo ""
     echo "*** Routes in test client"
-    ssh ubuntu@nova-compute.cordtest.opencloud.us "sudo lxc-attach -n testclient -- route -n"
+    ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- route -n"
 
     echo ""
     echo "*** Test external connectivity in test client"
-    ssh ubuntu@nova-compute.cordtest.opencloud.us "sudo lxc-attach -n testclient -- ping -c 3 8.8.8.8"
+    ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- ping -c 3 8.8.8.8"
 
     echo ""
     if [ $? -eq 0 ]
@@ -209,7 +209,6 @@ set -e
 
 bootstrap
 setup_openstack
-wait_for_openstack
 
 if [[ $RUN_TEST -eq 1 ]]
 then
