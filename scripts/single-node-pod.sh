@@ -18,14 +18,20 @@ function cleanup_from_previous_test() {
 function bootstrap() {
     cd ~
     sudo apt-get update
-    sudo apt-get -y install git
+    sudo apt-get -y install software-properties-common git mosh tmux dnsutils python-netaddr
+    sudo add-apt-repository -y ppa:ansible/ansible
+    sudo apt-get update
+    sudo apt-get install -y ansible
+
+    [ -e ~/.ssh/id_rsa ] || ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
+    cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
     git clone https://github.com/open-cloud/openstack-cluster-setup.git
     cd ~/openstack-cluster-setup
     git checkout roles
-    sed -i "s/zdw/acb/" inventory/cord-cloudlab
-    cp vars/example_keystone.yml vars/cord_keystone.yml
 
-    ./bootstrap.sh
+    sed -i "s/ubuntu/`whoami`/" inventory/cord-cloudlab
+    cp vars/example_keystone.yml vars/cord_keystone.yml
 
     # Log into the local node once to get host key
     ssh -o StrictHostKeyChecking=no localhost "ls > /dev/null"
@@ -34,44 +40,6 @@ function bootstrap() {
 function setup_openstack() {
     # Run the playbook
     ansible-playbook -i inventory/cord-cloudlab cord-single-playbook.yml
-}
-
-function pull_docker_images() {
-    # Pull down the Docker images
-    echo ""
-    echo "Pull down the Docker images for ONOS and XOS"
-    echo "This can take 20 minutes or more, be patient!"
-    ssh ubuntu@onos-cord.cordtest.opencloud.us "cd cord; sudo docker-compose up -d"
-    ssh ubuntu@xos.cordtest.opencloud.us "cd xos/xos/configurations/cord-pod; git checkout feature/roles-setup; sudo docker-compose pull"
-}
-
-function wait_for_openstack() {
-    # Need to wait for OpenStack services to come up before running any XOS "make" commands
-    echo "Waiting for the OpenStack services to fully come up."
-    echo "This can take 30 minutes or more, be patient!"
-    i=0
-    until juju status --format=summary|grep "started:  22" > /dev/null
-    do
-	    sleep 60
-	    (( i += 1 ))
-	    echo "Waited $i minutes"
-    done
-
-    echo "All OpenStack services are up."
-}
-
-function simulate_fabric() {
-    echo ""
-    echo "Setting up simulated fabric on nova-compute node"
-    ssh ubuntu@nova-compute.cordtest.opencloud.us "wget https://raw.githubusercontent.com/open-cloud/openstack-cluster-setup/master/scripts/compute-ext-net.sh; sudo bash compute-ext-net.sh"
-
-    if [[ $EXAMPLESERVICE -eq 1 ]]
-    then
-      SCRIPT=compute-ext-net-tutorial.sh
-    else
-      SCRIPT=compute-ext-net.sh
-    fi
-    ssh ubuntu@nova-compute "wget https://raw.githubusercontent.com/open-cloud/openstack-cluster-setup/master/scripts/$SCRIPT; sudo bash $SCRIPT"
 }
 
 function build_xos_with_exampleservice() {
@@ -241,9 +209,7 @@ set -e
 
 bootstrap
 setup_openstack
-pull_docker_images
 wait_for_openstack
-simulate_fabric
 
 if [[ $RUN_TEST -eq 1 ]]
 then
