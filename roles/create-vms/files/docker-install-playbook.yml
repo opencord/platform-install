@@ -34,12 +34,20 @@
         cache_valid_time=3600
         name=docker-engine
 
-    - name: Make ubuntu user part of the Docker group
-      user:
-        name="ubuntu" groups="docker" append=yes
-
     # https://docs.docker.com/compose/install/#install-using-pip
     - name: Install docker-compose from PyPi
       pip:
         name=docker-compose
+
+
+    - name: Make ubuntu user part of the Docker group
+      user:
+        name="ubuntu"
+        groups="docker"
+        append=yes
+
+    - name: restart Docker daemon to get new group membership
+      service:
+        name=docker
+        state=restarted
 
