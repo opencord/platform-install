@@ -34,10 +34,9 @@
         cache_valid_time=3600
         name=docker-engine
 
-    - name: Make user part of the Docker group
+    - name: Make ubuntu user part of the Docker group
       user:
-        name={{ ansible_user_id }}
-        groups="docker" append=yes
+        name="ubuntu" groups="docker" append=yes
 
     # https://docs.docker.com/compose/install/#install-using-pip
     - name: Install docker-compose from PyPi
