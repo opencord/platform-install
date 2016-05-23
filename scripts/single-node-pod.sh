@@ -47,13 +47,13 @@ function build_xos_with_exampleservice() {
     echo "Adding exampleservice to XOS"
     ssh ubuntu@xos "cd xos; git config --global user.email 'ubuntu@localhost'; git config --global user.name 'XOS ExampleService'"
     ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; git cherry-pick 775e00549e535803522fbcd70152e5e1b0629c83"
-    echo ""
-    echo "Rebuilding XOS containers"
-    ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make local_containers"
 }
 
 function setup_xos() {
-    echo ""
+
+    echo "Rebuilding XOS containers"
+    ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make local_containers"
+
     echo "Setting up XOS, will take a few minutes"
     ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make"
     echo ""
