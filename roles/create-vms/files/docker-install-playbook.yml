@@ -34,11 +34,18 @@
         cache_valid_time=3600
         name=docker-engine
 
-    # https://docs.docker.com/compose/install/#install-using-pip
-    - name: Install docker-compose from PyPi
-      pip:
-        name=docker-compose
+    - name: Install docker-compose from web
+      get_url:
+        url=https://github.com/docker/compose/releases/download/1.7.1/docker-compose-Linux-x86_64
+        checksum=sha256:3166bb74bc648e68c3154bc704fddf6bccf59f03a0c90fc48aefac034535e4ae
+        dest=/usr/local/bin/docker-compose
+        owner=root mode=0755
 
+    # This installs a bunch of prereqs that currently breaks SSL and CA's
+    # https://docs.docker.com/compose/install/#install-using-pip
+    #- name: Install docker-compose from PyPi
+    #  pip:
+    #    name=docker-compose
 
     - name: Make ubuntu user part of the Docker group
       user:
