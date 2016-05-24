@@ -30,7 +30,7 @@ function bootstrap() {
     cd ~/openstack-cluster-setup
     git checkout roles
 
-    sed -i "s/ubuntu/`whoami`/" inventory/cord-cloudlab
+    sed -i "s/ubuntu/`whoami`/" $INVENTORY
     cp vars/example_keystone.yml vars/cord_keystone.yml
 
     # Log into the local node once to get host key
