@@ -194,7 +194,7 @@ EXAMPLESERVICE=0
 BUILD_BRANCH=""
 INVENTORY="inventory/single-localhost"
 
-while getopts "b:eht" opt; do
+while getopts "b:ehi:t" opt; do
   case ${opt} in
     b ) BUILD_BRANCH=$OPTARG
       ;;
