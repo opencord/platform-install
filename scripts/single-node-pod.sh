@@ -47,21 +47,19 @@ function build_xos_docker_images() {
     echo "Checking out XOS branch $BUILD_BRANCH"
     ssh ubuntu@xos "cd xos; git config --global user.email 'ubuntu@localhost'; git config --global user.name 'XOS ExampleService'"
     ssh ubuntu@xos "cd xos; git checkout $BUILD_BRANCH"
+
     if [[ $EXAMPLESERVICE -eq 1 ]]
     then
       echo ""
       echo "Adding exampleservice to XOS"
       ssh ubuntu@xos "cd xos; git cherry-pick 775e00549e535803522fbcd70152e5e1b0629c83"
     fi
-    echo ""
+
     echo "Rebuilding XOS containers"
     ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make local_containers"
 }
 
 function setup_xos() {
-
-    echo "Rebuilding XOS containers"
-    ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make local_containers"
 
     echo "Setting up XOS, will take a few minutes"
     ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make"
