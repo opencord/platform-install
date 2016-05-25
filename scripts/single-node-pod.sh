@@ -73,6 +73,11 @@ function setup_xos() {
     sleep 30
 
     ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make cord"
+
+    if [[ $EXAMPLESERVICE -eq 1 ]]
+    then
+      ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make exampleservice"
+    fi
 }
 
 function setup_test_client() {
@@ -90,11 +95,6 @@ function setup_test_client() {
     ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- ip link add link eth0.222 name eth0.222.111 type vlan id 111"
     ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- ifconfig eth0.222 up"
     ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- ifconfig eth0.222.111 up"
-
-    if [[ $EXAMPLESERVICE -eq 1 ]]
-    then
-      ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make exampleservice"
-    fi
 }
 
 function run_e2e_test() {
