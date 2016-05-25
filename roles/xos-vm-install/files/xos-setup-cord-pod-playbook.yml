@@ -44,9 +44,10 @@
 
     - name: download software image
       get_url:
-        url=http://www.vicci.org/opencloud/trusty-server-cloudimg-amd64-disk1.img
-        checksum=sha256:5fb160ea09649f9cebe5cfd7aaf3d1a341e8e0f9eca6e52e46eb6271155c48b0
-        dest={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/images/trusty-server-multi-nic.img
+        url={{ item.url }}
+        checksum={{ item.checksum }}
+        dest={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/images/{{ item.name }}.img
+      with_items: "{{ xos_images }}"
 
     - name: Pull docker images for XOS
       shell: "cd {{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}; sudo docker-compose pull"

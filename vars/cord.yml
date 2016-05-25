@@ -34,3 +34,14 @@ name_on_public_interface: head
 unbound_listen_on_default: True
 
 
+xos_images:
+  - name: "trusty-server-multi-nic"
+    url: "http://www.vicci.org/opencloud/trusty-server-cloudimg-amd64-disk1.img"
+    checksum: "sha256:5fb160ea09649f9cebe5cfd7aaf3d1a341e8e0f9eca6e52e46eb6271155c48b0"
+  - name: "vsg-1.0"
+    url: "http://www.vicci.org/cord/vsg-1.0.img"
+    checksum: "sha256:ba1f1dfd9099a21ed6512f9e08ceddafbc8302dcc0da66eda3a0318281219abc"
+#  - name: ceilometer-trusty-server-multi-nic
+#    image_url: "http://www.vicci.org/cord/ceilometer-trusty-server-multi-nic.compressed.qcow2"
+#    checksum: "sha256:afde3f0448483902693be4d52ae76bb683fd74b1c7728019094bf81b37d86105"
+
