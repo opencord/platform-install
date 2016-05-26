@@ -15,7 +15,7 @@
 
 - name: Run the XOS ansible playbook
   command: ansible-playbook {{ ansible_user_dir }}/xos-setup-playbook.yml
-  async: 1200
+  async: 2400
   poll: 0
   register: xos_setup_playbook
 
