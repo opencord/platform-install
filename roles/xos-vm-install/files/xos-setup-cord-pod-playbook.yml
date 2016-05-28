@@ -50,5 +50,9 @@
       with_items: "{{ xos_images }}"
 
     - name: Pull docker images for XOS
-      shell: "cd {{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}; sudo docker-compose pull"
+      become: yes
+      command: docker pull {{ item }}
+      with_items:
+        - xosproject/xos-base
+        - xosproject/xos-postgres
 
