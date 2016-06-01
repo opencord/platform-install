@@ -75,12 +75,12 @@
   with_items: "{{ head_vm_list | selectattr('forwarded_ports', 'defined') | list }}"
 
 # secondary wait, as waiting on ports isn't enough. Probably only need one of these...
-# 40*15s = 600s = 10m max wait
+# 80*15s = 1200s = 20m max wait
 - name: Wait for juju services to start
   action: command juju status --format=summary
   register: juju_summary
   until: juju_summary.stdout.find("pending:") == -1
-  retries: 40
+  retries: 80
   delay: 15
 
 - name: Create admin-openrc.sh credentials file
@@ -88,9 +88,11 @@
    src=admin-openrc.sh.j2
    dest={{ ansible_user_dir }}/admin-openrc.sh
 
+
 - name: Copy nova-cloud-controller CA certificate to head
   command: juju scp {{ juju_services['nova-cloud-controller']['units'].keys()[0] }}:/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt {{ ansible_user_dir }}
-    creates={{ ansible_user_dir }}/keystone_juju_ca_cert.crt
+#    creates={{ ansible_user_dir }}/keystone_juju_ca_cert.crt 
+#    (this is commented out to deal with multiple runs, as it prevents the new cert from being copied locallly
 
 - name: Copy cert to system location
   become: yes

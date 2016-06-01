@@ -11,8 +11,9 @@ function cleanup_from_previous_test() {
     rm -f ~/.ssh/known_hosts
     rm -rf ~/openstack-cluster-setup
 
-    sudo rm -f /var/lib/libvirt/dnsmasq/default.leases
-    sudo killall -HUP dnsmasq
+    sudo rm -f /var/lib/libvirt/dnsmasq/xos-mgmtbr.leases
+    sudo killall dnsmasq
+    sudo service libvirt-bin restart 
 }
 
 function bootstrap() {
