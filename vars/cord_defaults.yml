@@ -7,7 +7,7 @@ juju_config_name: cord
 
 xos_configuration: cord-pod
 
-xos_repo_branch: "feature/docker_base"
+xos_repo_branch: "master"
 
 apt_cacher_name: apt-cache
 
