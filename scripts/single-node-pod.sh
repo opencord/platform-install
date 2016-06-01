@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function cleanup_from_previous_test() {
-    VMS=$( sudo virsh list|grep running|awk '{print $2}' )
+    VMS=$( sudo uvt-kvm list )
     for VM in $VMS
     do
       sudo uvt-kvm destroy $VM
@@ -11,8 +11,11 @@ function cleanup_from_previous_test() {
     rm -f ~/.ssh/known_hosts
     rm -rf ~/openstack-cluster-setup
 
-    sudo rm -f /var/lib/libvirt/dnsmasq/default.leases
-    sudo killall -HUP dnsmasq
+    # Attempt to flush out old leases from dnsmasq, for repeated runs
+    sudo cp /var/lib/libvirt/dnsmasq/default.leases /var/lib/libvirt/dnsmasq/default.leases.bak
+    sudo truncate -s 0 /var/lib/libvirt/dnsmasq/default.leases
+    sudo killall dnsmasq
+    sudo /usr/sbin/dnsmasq --conf-file=/var/lib/libvirt/dnsmasq/default.conf
 }
 
 function bootstrap() {
