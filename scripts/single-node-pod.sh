@@ -199,7 +199,7 @@ function run_exampleservice_test () {
 # Parse options
 RUN_TEST=0
 EXAMPLESERVICE=0
-BUILD_BRANCH=""
+BUILD_BRANCH="master"
 INVENTORY="inventory/single-localhost"
 
 while getopts "b:ehi:t" opt; do
@@ -210,7 +210,7 @@ while getopts "b:ehi:t" opt; do
       ;;
     h ) echo "Usage:"
       echo "    $0                install OpenStack and prep XOS and ONOS VMs [default]"
-      echo "    $0 -b <branch>    build XOS containers based on GitHub <branch> instead of pulling them from Docker Hub"
+      echo "    $0 -b <branch>    build XOS containers based on GitHub <branch>"
       echo "    $0 -e             add exampleservice to XOS"
       echo "    $0 -h             display this help message"
       echo "    $0 -i <inv_file>  specify an inventory file (default is inventory/single-localhost)"
@@ -240,10 +240,7 @@ setup_openstack
 
 if [[ $RUN_TEST -eq 1 ]]
 then
-  if [[ -n $BUILD_BRANCH || $EXAMPLESERVICE -eq 1 ]]
-  then
-    build_xos_docker_images
-  fi
+  build_xos_docker_images
   setup_xos
   setup_test_client
   run_e2e_test
