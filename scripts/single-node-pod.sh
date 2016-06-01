@@ -1,19 +1,28 @@
 #!/usr/bin/env bash
 
 function cleanup_from_previous_test() {
+
+    echo "## Cleanup ##"
+
+    echo "Destroying juju environment"
+    juju destroy-environment --force -y manual
+
     VMS=$( sudo virsh list|grep running|awk '{print $2}' )
     for VM in $VMS
     do
+      echo "Destroying $VM"
       sudo uvt-kvm destroy $VM
     done
 
+    echo "Cleaning up files"
     rm -rf ~/.juju
     rm -f ~/.ssh/known_hosts
     rm -rf ~/openstack-cluster-setup
 
+    echo "Cleaning up libvirt/dnsmasq"
     sudo rm -f /var/lib/libvirt/dnsmasq/xos-mgmtbr.leases
     sudo killall dnsmasq
-    sudo service libvirt-bin restart 
+    sudo service libvirt-bin restart
 }
 
 function bootstrap() {

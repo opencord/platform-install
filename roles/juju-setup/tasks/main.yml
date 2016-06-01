@@ -91,14 +91,14 @@
 
 - name: Copy nova-cloud-controller CA certificate to head
   command: juju scp {{ juju_services['nova-cloud-controller']['units'].keys()[0] }}:/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt {{ ansible_user_dir }}
-#    creates={{ ansible_user_dir }}/keystone_juju_ca_cert.crt 
-#    (this is commented out to deal with multiple runs, as it prevents the new cert from being copied locallly
 
 - name: Copy cert to system location
   become: yes
   command: cp {{ ansible_user_dir }}/keystone_juju_ca_cert.crt /usr/local/share/ca-certificates
-    creates=/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt
-  notify: update-ca-certificates
+
+- name: update-ca-certificates
+  become: yes
+  command: update-ca-certificates
 
 - name: Move cert to all service VM's
   command: ansible services -b -u ubuntu -m copy -a "src={{ ansible_user_dir }}/keystone_juju_ca_cert.crt dest=/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt owner=root group=root mode=0644"
