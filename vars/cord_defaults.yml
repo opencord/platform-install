@@ -14,6 +14,7 @@ apt_cacher_name: apt-cache
 apt_ssl_sites:
   - apt.dockerproject.org
   - butler.opencloud.cs.arizona.edu
+  - deb.nodesource.com
 
 charm_versions:
   ceilometer: "cs:trusty/ceilometer-17"
