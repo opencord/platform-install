@@ -27,7 +27,7 @@
   become: yes
   roles:
     - common-prep
-    - cloudlab-prep
+    - { role: cloudlab-prep, when: on-cloudlab }
 
 - name: Configure head node, create VM's
   hosts: head
