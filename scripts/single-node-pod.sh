@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 
 function cleanup_from_previous_test() {
-
     echo "## Cleanup ##"
 
     echo "Destroying juju environment"
     juju destroy-environment --force -y manual
 
-    VMS=$( sudo virsh list|grep running|awk '{print $2}' )
+    VMS=$( sudo uvt-kvm list )
     for VM in $VMS
     do
       echo "Destroying $VM"
@@ -38,7 +37,6 @@ function bootstrap() {
 
     git clone https://github.com/open-cloud/openstack-cluster-setup.git
     cd ~/openstack-cluster-setup
-    git checkout roles
 
     sed -i "s/ubuntu/`whoami`/" $INVENTORY
     cp vars/example_keystone.yml vars/cord_keystone.yml
