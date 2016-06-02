@@ -1,0 +1,7 @@
+---
+# tasks for xos-install role
+
+ - name: checkout XOS repo
+   git: repo={{ xos_repo_url }}
+        dest={{ xos_repo_dest }}
+        version={{ xos_repo_branch }}

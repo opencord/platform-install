@@ -1,0 +1,9 @@
+---
+# roles/dns-configure/tasks.yml
+
+- name: Configure resolv.conf to use nameservers
+  template:
+    src="resolv.conf.j2"
+    dest="/etc/resolv.conf"
+    mode=0644 owner=root group=root
+

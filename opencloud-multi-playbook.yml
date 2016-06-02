@@ -1,0 +1,49 @@
+---
+# aztest playbook, for installing an OpenCloud site
+
+- name: Include Configuration
+  hosts: all
+  tasks:
+  - include_vars: vars/opencloud_defaults.yml
+  - include_vars: vars/aztest.yml
+  - include_vars: vars/aztest_keystone.yml
+
+- name: Prep systems, and enable virtualization
+  hosts: all
+  become: yes
+  roles:
+    - common-prep
+    - dell-virt
+
+- name: DNS Server Setup
+  hosts: head
+  become: yes
+  roles:
+    - dns-nsd
+    - dns-unbound
+
+- name: Configure all hosts to use DNS server
+  hosts: all
+  become: yes
+  roles:
+    - dns-configure
+
+- name: Configure head node, create VM's, and start Juju setup
+  hosts: head
+  roles:
+    - { role: head-prep, become: yes }
+    - { role: config-virt, become: yes }
+    - juju-user-prep
+    - juju-setup
+
+- name: Configure compute nodes
+  hosts: compute
+  become: yes
+  roles:
+    - compute-prep
+
+- name: Configure Openstack using Juju
+  hosts: head
+  roles:
+    - juju-openstack-config
+

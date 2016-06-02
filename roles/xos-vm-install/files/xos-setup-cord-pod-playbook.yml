@@ -1,0 +1,58 @@
+---
+- hosts: xos-1
+  remote_user: ubuntu
+
+  tasks:
+    - name: Include configuration vars
+      include_vars: xos-setup-vars.yml
+
+    - name: Install prerequisites
+      apt:
+        name={{ item }}
+        update_cache=yes
+        cache_valid_time=3600
+      become: yes
+      with_items:
+       - git
+       - make
+       - curl
+       - python-novaclient
+       - python-neutronclient
+       - python-keystoneclient
+       - python-glanceclient
+
+    - name: Clone XOS repo
+      git:
+        repo={{ xos_repo_url }}
+        dest={{ xos_repo_dest }}
+        version={{ xos_repo_branch }}
+        force=yes
+
+    - name: Copy over SSH keys
+      copy:
+        src=~/.ssh/{{ item }}
+        dest={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/
+        owner={{ ansible_user_id }} mode=0600
+      with_items:
+       - id_rsa
+       - id_rsa.pub
+
+    - name: copy over SSH key as node_key
+      copy:
+        src=~/.ssh/id_rsa
+        dest={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/node_key
+
+    - name: download software image
+      get_url:
+        url={{ item.url }}
+        checksum={{ item.checksum }}
+        dest={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/images/{{ item.name }}.img
+      with_items: "{{ xos_images }}"
+
+    - name: Pull docker images for XOS
+      become: yes
+      command: docker pull {{ item }}
+      with_items:
+        - xosproject/xos-base
+        - xosproject/xos-postgres
+

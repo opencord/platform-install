@@ -1,0 +1,46 @@
+#!/bin/sh
+
+SHELL="/bin/bash"
+
+NIC=$( route|grep default|awk '{print $NF}' )
+PORTAL=$( dig +short portal.opencloud.us | tail -1 )
+
+SUBNET=$( ip addr show $NIC|grep "inet "|awk '{print $2}' )
+{% set vm_net = ( virt_nets | selectattr("head_vms", "defined") | first ) %}
+PRIVATENET=$( ip addr show {{ vm_net.name }} |grep "inet "|awk '{print $2}' )
+
+NAME="${1}"
+OP="${2}"
+SUBOP="${3}"
+ARGS="${4}"
+
+add_rule() {
+    CHAIN=$1
+    ARGS=$2
+    iptables -C $CHAIN $ARGS
+    if [ "$?" -ne 0 ]
+    then
+        iptables -I $CHAIN 1 $ARGS
+    fi
+}
+
+add_local_access_rules() {
+    add_rule "FORWARD" "-s $SUBNET -j ACCEPT"
+    # Don't NAT traffic from service VMs destined to the local subnet
+    add_rule "POSTROUTING" "-t nat -s $PRIVATENET -d $SUBNET -j RETURN"
+}
+
+add_portal_access_rules() {
+    add_rule "FORWARD" "-s $PORTAL -j ACCEPT"
+}
+
+add_web_access_rules() {
+    add_rule "FORWARD" "-p tcp --dport 80 -j ACCEPT"
+}
+
+if [ "$OP" = "start" ]
+then
+	add_local_access_rules
+	add_portal_access_rules
+	add_web_access_rules
+fi

@@ -1,0 +1,16 @@
+---
+# simulate-fabric/tasks/main.yml
+
+- name: Create a vars file from template
+  template:
+    src=simulate-fabric-vars.yml.j2
+    dest={{ ansible_user_dir }}/simulate-fabric-vars.yml
+
+- name: Copy over simulate-fabric ansible playbook
+  copy:
+    src=simulate-fabric-playbook.yml
+    dest={{ ansible_user_dir }}/simulate-fabric-playbook.yml
+
+- name: Setup simulated fabric on nova-compute-1 using playbook
+  command: ansible-playbook {{ ansible_user_dir }}/simulate-fabric-playbook.yml
+

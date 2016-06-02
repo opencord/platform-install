@@ -1,0 +1,108 @@
+---
+# roles/juju-setup/main/tasks.yml
+
+- name: Initialize Juju
+  command: juju generate-config
+    creates={{ ansible_user_dir }}/.juju/environments.yaml
+
+- name: Create Juju config file from template
+  template:
+    src=environments.yaml.j2
+    dest={{ ansible_user_dir }}/.juju/environments.yaml
+
+- name: Bootstrap Juju
+  command: juju bootstrap
+    creates={{ ansible_user_dir }}/.juju/environments/manual.jenv
+
+- name: Copy over juju-config.yml for configuring Juju services
+  become: yes
+  template:
+    src={{ juju_config_name }}_juju_config.yml.j2
+    dest={{ juju_config_path }}
+
+# Code for this is in library/juju_facts.py
+- name: Obtain Juju Facts for creating machines
+  juju_facts:
+
+- name: Pause to let Juju settle before adding machines
+  pause:
+    prompt="Waiting for Juju..."
+    seconds=20
+
+# For setwise operations on desired vs Juju state:
+# list of active juju_machines names: juju_machines.keys()
+# list of active juju_services names: juju_services.keys()
+
+- name: Add machines to Juju
+  command: "juju add-machine ssh:{{ item }}"
+  with_items: "{{ head_vm_list | map(attribute='service') | list | reject('undefined') | map('format_string', '%s.'~site_suffix ) | difference( juju_machines.keys() ) }}"
+
+# run this again, so machines will be in the juju_machines list
+- name: Obtain Juju Facts after machine creation
+  juju_facts:
+
+- name: Deploy services that are hosted in their own VM
+  command: "juju deploy {{ charm_versions[item] | default(item) }} --to {{ juju_machines[item~'.'~site_suffix]['machine_id'] }} --config={{ juju_config_path }}"
+  with_items: "{{ vm_service_list | difference( juju_services.keys() ) }}"
+
+- name: Deploy mongodb to ceilometer VM
+  command: "juju deploy {{ charm_versions['mongodb'] | default('mongodb') }} --to {{ juju_machines['ceilometer.'~site_suffix]['machine_id'] }} --config={{ juju_config_path }}"
+  when: juju_services['mongodb'] is undefined
+
+- name: Deploy services that don't have their own VM
+  command: "juju deploy {{ charm_versions[item] | default(item) }} --config={{ juju_config_path }}"
+  with_items: "{{ standalone_service_list | difference( juju_services.keys() ) }}"
+
+- name: Create relations between services
+  command: "juju add-relation '{{ item.0.name }}' '{{ item.1 }}'"
+  register: juju_relation
+  failed_when: "juju_relation|failed and 'relation already exists' not in juju_relation.stderr"
+  with_subelements:
+    - "{{ service_relations }}"
+    - relations
+
+# run another time, so services will be in juju_services list
+- name: Obtain Juju Facts after service creation
+  juju_facts:
+
+# 900s = 15m. Usually takes 10-12m on cloudlab for relations to come up
+# Only checks for first port in list
+- name: Wait for juju services on VM's have open ports
+  wait_for:
+    host={{ item.name }}
+    port={{ item.forwarded_ports[0].int }}
+    timeout=900
+  with_items: "{{ head_vm_list | selectattr('forwarded_ports', 'defined') | list }}"
+
+# secondary wait, as waiting on ports isn't enough. Probably only need one of these...
+# 80*15s = 1200s = 20m max wait
+- name: Wait for juju services to start
+  action: command juju status --format=summary
+  register: juju_summary
+  until: juju_summary.stdout.find("pending:") == -1
+  retries: 80
+  delay: 15
+
+- name: Create admin-openrc.sh credentials file
+  template:
+   src=admin-openrc.sh.j2
+   dest={{ ansible_user_dir }}/admin-openrc.sh
+
+
+- name: Copy nova-cloud-controller CA certificate to head
+  command: juju scp {{ juju_services['nova-cloud-controller']['units'].keys()[0] }}:/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt {{ ansible_user_dir }}
+
+- name: Copy cert to system location
+  become: yes
+  command: cp {{ ansible_user_dir }}/keystone_juju_ca_cert.crt /usr/local/share/ca-certificates
+
+- name: update-ca-certificates
+  become: yes
+  command: update-ca-certificates
+
+- name: Move cert to all service VM's
+  command: ansible services -b -u ubuntu -m copy -a "src={{ ansible_user_dir }}/keystone_juju_ca_cert.crt dest=/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt owner=root group=root mode=0644"
+
+- name: update-ca-certificates in service VM's
+  command: ansible services -b -u ubuntu -m command -a "update-ca-certificates"
+

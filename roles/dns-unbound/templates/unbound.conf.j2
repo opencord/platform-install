@@ -1,0 +1,54 @@
+# unbound.conf (configured by Ansible)
+
+server:
+{% if unbound_listen_on_default %}
+  interface: {{ ansible_default_ipv4.address }}  
+{% endif %}
+{% if unbound_interfaces is defined %}
+{% for cidr_ipv4 in unbound_interfaces %}
+  interface: {{ cidr_ipv4 | ipaddr('address') }}
+{% endfor %}
+{% endif %}
+  verbosity: 1
+  port: 53
+  do-ip4: yes
+  do-udp: yes
+  do-tcp: yes
+
+  # allow from localhost
+  access-control: 127.0.0.0/24 allow
+
+{% if unbound_listen_on_default %}
+  # allow from default interfaces
+  access-control: {{ ansible_default_ipv4.address }}/{{ (ansible_default_ipv4.address ~ "/" ~ ansible_default_ipv4.netmask) | ipaddr('prefix') }} allow
+{% endif %}
+
+{% if unbound_interfaces is defined %}
+  # allow from local networks
+{% for cidr_ipv4 in unbound_interfaces %}
+  access-control: {{ cidr_ipv4 }} allow
+{% endfor %}
+{% endif %}
+
+{% if nsd_zones is defined %}
+# allow unbound to query localhost, where nsd is listening
+do-not-query-localhost: no
+
+# allow reverse queries for RFC1918 addresses
+{% for zone in nsd_zones %}
+local-zone: "{{ zone.name_reverse_unbound }}." nodefault
+{% endfor %}
+
+# stub-zones zones that nsd is serving
+{% for zone in nsd_zones %}
+stub-zone:
+  name: "{{ zone.name }}"
+  stub-addr: {{ nsd_ip | default("127.0.0.1") }}
+
+stub-zone:
+  name: "{{ zone.name_reverse_unbound }}."
+  stub-addr: {{ nsd_ip | default("127.0.0.1") }}
+
+{% endfor %}
+{% endif %}
+

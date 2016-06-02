@@ -1,0 +1,28 @@
+# nsd.conf
+# configured by Ansible!
+
+server:
+  hide-version: yes
+## bind to a specific address/port
+  ip-address: {{ nsd_ip }}
+## port number
+  port: {{ nsd_port|default(53) }} 
+  server-count: 1
+  ip4-only: yes
+  zonesdir: {{ nsd_zonesdir }}
+
+remote-control:
+  control-enable: yes
+
+# zones to load
+{% for zone in nsd_zones %}
+zone:
+  name: {{ zone.name }}
+  zonefile: {{ zone.name }}.forward
+
+zone:
+  name: {{ (zone.ipv4_first_octets ~ ".0") | ipaddr('revdns') | regex_replace('^0\.','') }} 
+  zonefile: {{ zone.name }}.reverse
+
+{% endfor %}
+

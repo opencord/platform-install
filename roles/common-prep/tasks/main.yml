@@ -1,0 +1,35 @@
+---
+# file: roles/common-prep/tasks/main.yml
+
+- name: Upgrade system to current using apt
+  apt:
+    upgrade=dist
+    update_cache=yes
+    cache_valid_time=3600
+
+- stat:
+    path=/var/run/reboot-required
+  register: reboot-required
+
+- name: reboot if required
+  when: reboot-required.exists is defined
+  debug: msg="System will reboot"
+  notify:
+    - restart host
+    - wait for host
+
+- name: Install standard packages
+  apt:
+    pkg={{ item }}
+    state=present
+    update_cache=yes
+    cache_valid_time=3600
+  with_items:
+   - tmux
+   - vim
+
+- name: Enable vim syntax highlighting
+  lineinfile: dest=/etc/vim/vimrc
+    regexp="^\s*syntax on"
+    line="syntax on"
+

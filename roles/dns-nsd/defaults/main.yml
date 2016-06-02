@@ -1,0 +1,10 @@
+---
+
+nsd_ip: 127.0.0.1
+nsd_conf: "/var/nsd/etc/nsd.conf"
+nsd_zonesdir: "/var/nsd/zones"
+nsd_group: "nsd"
+
+# default DNS TTL
+dns_ttl: 3600
+

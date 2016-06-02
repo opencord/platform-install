@@ -1,0 +1,28 @@
+<network>
+  <name>xos-{{ item.name }}</name>
+  <bridge name="{{ item.name }}"/>
+  <forward/>
+  <domain name="{{ site_suffix }}" localonly="no"/>
+  <dns>
+{% if unbound_listen_on_default %}
+{% for host in groups['head'] %}
+  <forwarder addr="{{ hostvars[host].ansible_default_ipv4.address }}"/>
+{% endfor %}
+{% endif %}
+{% if dns_servers is defined %}
+{% for ns in dns_servers %}
+  <forwarder addr="{{ ns }}"/>
+{% endfor %}
+{% endif %}
+  </dns>
+  <ip address="{{ item.ipv4_prefix }}.1" netmask="255.255.255.0">
+    <dhcp>
+      <range start="{{ item.ipv4_prefix }}.2" end="{{ item.ipv4_prefix }}.254"/>
+{% if item.head_vms %}
+{% for vm in head_vm_list %}
+      <host name='{{ vm.name }}' ip='{{ item.ipv4_prefix }}.{{ vm.ipv4_last_octet }}'/>
+{% endfor %}
+{% endif %}
+    </dhcp>
+  </ip>
+</network>

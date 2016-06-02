@@ -1,0 +1,31 @@
+---
+# file: group_vars/aztest.yml
+
+# IP prefix for VMs
+virt_nets:
+  - name: mgmtbr
+    ipv4_prefix: 192.168.250
+    head_vms: true
+
+# site domain suffix
+site_suffix: aztest.infra.opencloud.us
+
+# resolv.conf settings
+dns_search:
+  - aztest.infra.opencloud.us
+  - opencloud.cs.arizona.edu
+
+# NSD/Unbound settings
+
+nsd_zones:
+  - name: aztest.infra.opencloud.us
+    ipv4_first_octets: 192.168.250
+    name_reverse_unbound: "168.192.in-addr.arpa"
+    soa: ns1
+    ns:
+      - { name: ns1 }
+    nodelist: head_vm_list
+
+# If true, unbound listens on the head node's `ansible_default_ipv4` interface
+unbound_listen_on_default: True
+

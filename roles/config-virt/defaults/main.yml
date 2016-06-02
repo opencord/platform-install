@@ -1,0 +1,6 @@
+---
+# roles/config-virt/defaults/main.yml
+
+virt_nets:
+  - mgmtbr
+

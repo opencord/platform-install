@@ -1,0 +1,5 @@
+---
+# file: roles/compute-prep/handlers/main.yml
+
+- name: run rc.local
+  command: /etc/rc.local

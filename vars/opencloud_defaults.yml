@@ -1,0 +1,187 @@
+---
+# vars/opencloud_defaults.yml
+
+openstack_version: kilo
+
+juju_config_name: opencloud
+
+charm_versions: {}
+
+head_vm_list:
+  - name: "juju-1"
+    service: "juju"
+    aliases:
+       - "juju"
+    ipv4_last_octet: 10
+    cpu: 1
+    memMB: 2048
+    diskGB: 20
+
+  - name: "ceilometer-1"
+    service: "ceilometer"
+    aliases:
+      - "ceilometer"
+    ipv4_last_octet: 20
+    cpu: 1
+    memMB: 2048
+    diskGB: 20
+    forwarded_ports:
+      - { ext: 8777, int: 8777 }
+
+  - name: "glance-1"
+    service: "glance"
+    aliases:
+      - "glance"
+    ipv4_last_octet: 30
+    cpu: 2
+    memMB: 4096
+    diskGB: 160
+    forwarded_ports:
+      - { ext: 9292, int: 9292 }
+
+  - name: "keystone-1"
+    service: "keystone"
+    aliases:
+      - "keystone"
+    ipv4_last_octet: 40
+    cpu: 2
+    memMB: 4096
+    diskGB: 40
+    forwarded_ports:
+      - { ext: 35357, int: 35357 }
+      - { ext: 4990, int: 4990 }
+      - { ext: 5000, int: 5000 }
+
+  - name: "percona-cluster-1"
+    service: "percona-cluster"
+    aliases:
+      - "percona-cluster"
+    ipv4_last_octet: 50
+    cpu: 2
+    memMB: 4096
+    diskGB: 40
+
+  - name: "nagios-1"
+    service: "nagios"
+    aliases:
+      - "nagios"
+    ipv4_last_octet: 60
+    cpu: 1
+    memMB: 2048
+    diskGB: 20
+    forwarded_ports:
+      - { ext: 3128, int: 80 }
+
+  - name: "neutron-api-1"
+    service: "neutron-api"
+    aliases:
+      - "neutron-api"
+    ipv4_last_octet: 70
+    cpu: 2
+    memMB: 4096
+    diskGB: 40
+    forwarded_ports:
+      - { ext: 9696, int: 9696 }
+
+  - name: "neutron-gateway-1"
+    service: "neutron-gateway"
+    aliases:
+      - "neutron-gateway"
+    ipv4_last_octet: 80
+    cpu: 2
+    memMB: 4096
+    diskGB: 40
+
+  - name: "nova-cloud-controller-1"
+    service: "nova-cloud-controller"
+    aliases:
+      - "nova-cloud-controller"
+    ipv4_last_octet: 90
+    cpu: 2
+    memMB: 4096
+    diskGB: 40
+    forwarded_ports:
+      - { ext: 8774, int: 8774 }
+
+  - name: "openstack-dashboard-1"
+    service: "openstack-dashboard"
+    aliases:
+      - "openstack-dashboard"
+    ipv4_last_octet: 100
+    cpu: 1
+    memMB: 2048
+    diskGB: 20
+    forwarded_ports:
+      - { ext: 8080, int: 80 }
+
+  - name: "rabbitmq-server-1"
+    service: "rabbitmq-server"
+    aliases:
+      - "rabbitmq-server"
+    ipv4_last_octet: 110
+    cpu: 2
+    memMB: 4096
+    diskGB: 40
+
+vm_service_list:
+  - ceilometer
+  - glance
+  - keystone
+  - nagios
+  - neutron-api
+  - neutron-gateway
+  - nova-cloud-controller
+  - openstack-dashboard
+  - percona-cluster
+  - rabbitmq-server
+
+standalone_service_list:
+  - ceilometer-agent
+  - neutron-openvswitch
+  - nrpe
+  - ntp
+
+service_relations:
+  - name: keystone
+    relations: [ "percona-cluster", "nrpe", ]
+
+  - name: nova-cloud-controller
+    relations: [ "percona-cluster", "rabbitmq-server", "glance", "keystone", "nrpe", ]
+
+  - name: glance
+    relations: [ "percona-cluster", "keystone", "nrpe", ]
+
+  - name: neutron-gateway
+    relations: [ "neutron-api", "nova-cloud-controller", "percona-cluster", "nrpe", ]
+
+  - name: "neutron-gateway:amqp"
+    relations: [ "rabbitmq-server:amqp", ]
+
+  - name: neutron-api
+    relations: [ "keystone", "neutron-openvswitch", "percona-cluster", "rabbitmq-server", "nova-cloud-controller", "nrpe", ]
+
+  - name: neutron-openvswitch
+    relations: [ "rabbitmq-server", ]
+
+  - name: openstack-dashboard
+    relations: [ "keystone", "nrpe", ]
+
+  - name: nagios
+    relations: [ "nrpe", ]
+
+  - name: "percona-cluster:juju-info"
+    relations: [ "nrpe:general-info", ]
+
+  - name: rabbitmq-server
+    relations: [ "nrpe", ]
+
+  - name: ceilometer
+    relations: [ "mongodb", "rabbitmq-server", "nagios", "nrpe", ]
+
+  - name: "ceilometer:identity-service"
+    relations: [ "keystone:identity-service", ]
+
+  - name: "ceilometer:ceilometer-service"
+    relations: [ "ceilometer-agent:ceilometer-service", ]
+
+

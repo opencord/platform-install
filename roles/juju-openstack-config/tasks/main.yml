@@ -1,0 +1,51 @@
+---
+# roles/juju-openstack-config/main/tasks.yml
+
+- name: add compute nodes
+  command: juju add-machine ssh:ubuntu@{{ item }}
+  with_items: "{{ groups['compute'] | difference( juju_machines.keys() ) }}"
+  register: added_compute_nodes
+
+# run this again, so add-machine items will be in the juju_compute_nodes list
+- name: Obtain Juju Facts after adding compute nodes
+  when: added_compute_nodes
+  juju_facts:
+
+# the crazy [ ] in the with-items is so that jinja compares arrays of strings,
+# rather than strings of characters
+- name: add-unit nova-compute to first compute node
+  command: "juju deploy nova-compute --to {{ juju_machines[item]['machine_id'] }} --config={{ openstack_cfg_path }}"
+  with_items: "{{ [ groups['compute'][0] ] | difference( juju_compute_nodes.keys() ) }}"
+  register: added_first_nova_compute
+
+# run this again, so first nova compute will be in the juju_compute_nodes list
+- name: Obtain Juju Facts nova-compute deploy
+  juju_facts:
+  when: added_first_nova_compute
+
+- name: add-unit nova-compute to other compute nodes
+  command: "juju add-unit nova-compute --to {{ juju_machines[item]['machine_id'] }}"
+  with_items: "{{ groups['compute'] | difference( juju_compute_nodes.keys() )  }}"
+
+- name: Create relations to compute
+  command: "juju add-relation '{{ item.0.name }}' '{{ item.1 }}'"
+  register: compute_relation
+  failed_when: "compute_relation|failed and 'relation already exists' not in compute_relation.stderr"
+  with_subelements:
+    - "{{ compute_relations }}"
+    - relations
+
+# need to ansible-ify these
+- name: Copy credentials file to nova-cloud-controller
+  command: "scp {{ ansible_user_dir }}/admin-openrc.sh ubuntu@nova-cloud-controller:"
+
+- name: Copy network setup script
+  become: yes
+  copy:
+    src=network-setup.sh
+    dest=/usr/local/src/network-setup.sh
+    mode=0644 owner=root
+
+- name: Run network setup script
+  command: ansible nova-cloud-controller-1 -m script -u ubuntu -a "/usr/local/src/network-setup.sh"
+

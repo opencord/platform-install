@@ -1,0 +1,65 @@
+---
+# file: roles/head-prep/tasks/main.yml
+
+- name:  Install prerequisites for using PPA repos
+  apt:
+    name={{ item }}
+    update_cache=yes
+    cache_valid_time=3600
+  with_items:
+    - python-pycurl
+    - software-properties-common
+
+- name: Add Ansible/Juju repositories
+  apt_repository:
+    repo={{ item }}
+  with_items:
+     - "ppa:juju/stable"
+     - "ppa:ansible/ansible"
+
+- name: Install packages
+  apt:
+    name={{ item }}
+    state=latest
+    update_cache=yes
+    cache_valid_time=3600
+  with_items:
+    - ansible
+    - uvtool
+    - git
+    - bzr
+    - juju-core
+    - python-novaclient
+    - python-neutronclient
+    - python-keystoneclient
+    - python-glanceclient
+    - virt-top
+
+- name: Prep user account by adding to libvirtd group and generating SSH key
+  user:
+    name={{ ansible_user_id }}
+    generate_ssh_key=yes
+    groups="libvirtd" append=yes
+
+- name: Register public key in variable
+  shell: cat {{ ansible_user_dir }}/.ssh/id_rsa.pub
+  register: sshkey
+
+- name: Add public key to this user account
+  authorized_key:
+    user={{ ansible_user_id }}
+    key="{{ sshkey.stdout }}"
+
+- name: Disable host key checking in ~/.ssh/config
+  lineinfile:
+    dest={{ ansible_user_dir }}/.ssh/config
+    line="StrictHostKeyChecking no"
+    create=yes
+    owner={{ ansible_user_id }} mode=0600
+
+- name: Disable host key checking in ~/.ansible.cfg
+  copy:
+    src=ansible.cfg
+    dest={{ ansible_user_dir }}/.ansible.cfg
+    owner={{ ansible_user_id }} mode=0644
+

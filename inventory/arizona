@@ -1,0 +1,12 @@
+[all:vars]
+ansible_ssh_user=ubuntu
+
+[head]
+node1.cs.arizona.edu
+
+[compute]
+node2.cs.arizona.edu
+node3.cs.arizona.edu
+node4.cs.arizona.edu
+node5.cs.arizona.edu
+node6.cs.arizona.edu

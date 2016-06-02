@@ -1,0 +1,14 @@
+# resolv.conf (ansible managed)
+{% if unbound_listen_on_default %}
+{% for host in groups['head'] %}
+nameserver {{ hostvars[host].ansible_default_ipv4.address }}
+{% endfor %}
+{% endif %}
+{% if dns_servers is defined %}
+{% for ns in dns_servers %}
+nameserver {{ ns }}
+{% endfor %}
+{% endif %}
+{% if dns_search is defined %}
+search{% for searchdom in dns_search %} {{ searchdom }}{% endfor %}
+{% endif %}

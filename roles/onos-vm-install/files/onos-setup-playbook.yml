@@ -1,0 +1,39 @@
+---
+- hosts: onos-cord-1
+  remote_user: ubuntu
+
+  tasks:
+    - name: Include configuration vars
+      include_vars: onos-setup-vars.yml
+
+    - name: Create CORD directory
+      file:
+        path={{ ansible_user_dir }}/cord
+        state=directory
+
+    - name: Copy over SSH keys
+      copy:
+        src=~/.ssh/{{ item }}
+        dest={{ ansible_user_dir }}/cord/{{ item }}
+        owner={{ ansible_user_id }} mode=0600
+      with_items:
+       - id_rsa
+       - id_rsa.pub
+
+    - name: Copy over files to build XOS variant of ONOS
+      copy:
+        src="~/{{ item }}"
+        dest="{{ ansible_user_dir }}/cord/{{ item }}"
+      with_items:
+       - Dockerfile.xos-onos
+       - onos-service
+
+    - name: Copy over & rename docker-compose file
+      copy:
+        src=~/onos-docker-compose.yml
+        dest={{ ansible_user_dir }}/cord/docker-compose.yml
+
+    - name: Pull docker image for ONOS
+      become: yes
+      command: docker pull onosproject/onos
+

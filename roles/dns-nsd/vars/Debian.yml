@@ -1,0 +1,6 @@
+---
+
+nsd_conf: "/etc/nsd/nsd.conf"
+nsd_zonesdir: "/var/lib/nsd/zones"
+nsd_group: "nsd"
+

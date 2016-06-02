@@ -1,0 +1,11 @@
+---
+# roles/dns-configure/defaults
+
+# Define this to set dns servers manually
+#dns_servers:
+#  - 8.8.8.8
+#  - 8.8.4.4
+
+# Set this to search domain suffixes
+# dns_search: {}
+

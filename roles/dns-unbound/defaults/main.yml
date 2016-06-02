@@ -1,0 +1,5 @@
+---
+
+unbound_conf: "/var/unbound/etc/unbound.conf"
+unbound_group: "wheel"
+

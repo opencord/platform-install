@@ -1,0 +1,7 @@
+---
+# apt-cacher-ng/handlers/main.yml
+
+- name: restart apt-cacher-ng
+  service:
+    name=apt-cacher-ng
+    state=restarted

@@ -1,30 +1,45 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 function cleanup_from_previous_test() {
+    echo "## Cleanup ##"
+
+    echo "Destroying juju environment"
+    juju destroy-environment --force -y manual
+
     VMS=$( sudo uvt-kvm list )
     for VM in $VMS
     do
+      echo "Destroying $VM"
       sudo uvt-kvm destroy $VM
     done
 
+    echo "Cleaning up files"
     rm -rf ~/.juju
     rm -f ~/.ssh/known_hosts
     rm -rf ~/openstack-cluster-setup
 
-    # Attempt to flush out old leases from dnsmasq, for repeated runs
-    sudo cp /var/lib/libvirt/dnsmasq/default.leases /var/lib/libvirt/dnsmasq/default.leases.bak
-    sudo truncate -s 0 /var/lib/libvirt/dnsmasq/default.leases
+    echo "Cleaning up libvirt/dnsmasq"
+    sudo rm -f /var/lib/libvirt/dnsmasq/xos-mgmtbr.leases
     sudo killall dnsmasq
-    sudo /usr/sbin/dnsmasq --conf-file=/var/lib/libvirt/dnsmasq/default.conf
+    sudo service libvirt-bin restart
 }
 
 function bootstrap() {
     cd ~
     sudo apt-get update
-    sudo apt-get -y install git
+    sudo apt-get -y install software-properties-common git mosh tmux dnsutils python-netaddr
+    sudo add-apt-repository -y ppa:ansible/ansible
+    sudo apt-get update
+    sudo apt-get install -y ansible
+
+    [ -e ~/.ssh/id_rsa ] || ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
+    cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
     git clone https://github.com/open-cloud/openstack-cluster-setup.git
     cd ~/openstack-cluster-setup
-    ./bootstrap.sh
+
+    sed -i "s/ubuntu/`whoami`/" $INVENTORY
+    cp vars/example_keystone.yml vars/cord_keystone.yml
 
     # Log into the local node once to get host key
     ssh -o StrictHostKeyChecking=no localhost "ls > /dev/null"
@@ -32,40 +47,7 @@ function bootstrap() {
 
 function setup_openstack() {
     # Run the playbook
-    ansible-playbook -i cord-test-hosts cord-setup.yml
-}
-
-function pull_onos_docker_image() {
-    echo ""
-    echo "Pull down the ONOS Docker image"
-    ssh ubuntu@onos-cord "cd cord; sudo docker-compose up -d"
-}
-
-function wait_for_openstack() {
-    # Need to wait for OpenStack services to come up before running any XOS "make" commands
-    echo "Waiting for the OpenStack services to fully come up."
-    echo "This can take 30 minutes or more, be patient!"
-    i=0
-    until juju status --format=summary|grep "started:  23" > /dev/null
-    do
-      sleep 60
-      (( i += 1 ))
-      echo "Waited $i minutes"
-    done
-
-    echo "All OpenStack services are up."
-}
-
-function simulate_fabric() {
-    echo ""
-    echo "Setting up simulated fabric on nova-compute node"
-    if [[ $EXAMPLESERVICE -eq 1 ]]
-    then
-      SCRIPT=compute-ext-net-tutorial.sh
-    else
-      SCRIPT=compute-ext-net.sh
-    fi
-    ssh ubuntu@nova-compute "wget https://raw.githubusercontent.com/open-cloud/openstack-cluster-setup/master/scripts/$SCRIPT; sudo bash $SCRIPT"
+    ansible-playbook -i $INVENTORY cord-single-playbook.yml
 }
 
 function build_xos_docker_images() {
@@ -73,20 +55,20 @@ function build_xos_docker_images() {
     echo "Checking out XOS branch $BUILD_BRANCH"
     ssh ubuntu@xos "cd xos; git config --global user.email 'ubuntu@localhost'; git config --global user.name 'XOS ExampleService'"
     ssh ubuntu@xos "cd xos; git checkout $BUILD_BRANCH"
+
     if [[ $EXAMPLESERVICE -eq 1 ]]
     then
       echo ""
       echo "Adding exampleservice to XOS"
       ssh ubuntu@xos "cd xos; git cherry-pick 775e00549e535803522fbcd70152e5e1b0629c83"
     fi
-    echo ""
+
     echo "Rebuilding XOS containers"
     ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make local_containers"
-
 }
 
 function setup_xos() {
-    echo ""
+
     echo "Setting up XOS, will take a few minutes"
     ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make"
     echo ""
@@ -128,6 +110,7 @@ function run_e2e_test() {
 
     echo "*** Wait for vSG VM to come up"
     i=0
+
     until nova list --all-tenants|grep 'vsg.*ACTIVE' > /dev/null
     do
       sleep 60
@@ -151,12 +134,12 @@ function run_e2e_test() {
 
     echo ""
     echo "*** Run dhclient in test client"
+
     ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- dhclient eth0.222.111" > /dev/null
 
     echo ""
     echo "*** Routes in test client"
     ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- route -n"
-
 
     echo ""
     echo "*** Test external connectivity in test client"
@@ -214,22 +197,27 @@ function run_exampleservice_test () {
 # Parse options
 RUN_TEST=0
 EXAMPLESERVICE=0
-BUILD_BRANCH=""
-while getopts "b:eht" opt; do
+BUILD_BRANCH="master"
+INVENTORY="inventory/single-localhost"
+
+while getopts "b:ehi:t" opt; do
   case ${opt} in
     b ) BUILD_BRANCH=$OPTARG
       ;;
+    e ) EXAMPLESERVICE=1
+      ;;
     h ) echo "Usage:"
-      echo "    $0             install OpenStack and prep XOS and ONOS VMs [default]"
-      echo "    $0 -b <branch> build XOS containers based on GitHub <branch> instead of pulling them from Docker Hub"
-      echo "    $0 -e          add exampleservice to XOS"
-      echo "    $0 -h          display this help message"
-      echo "    $0 -t          do install, bring up cord-pod configuration, run E2E test"
+      echo "    $0                install OpenStack and prep XOS and ONOS VMs [default]"
+      echo "    $0 -b <branch>    build XOS containers based on GitHub <branch>"
+      echo "    $0 -e             add exampleservice to XOS"
+      echo "    $0 -h             display this help message"
+      echo "    $0 -i <inv_file>  specify an inventory file (default is inventory/single-localhost)"
+      echo "    $0 -t             do install, bring up cord-pod configuration, run E2E test"
       exit 0
       ;;
-    t ) RUN_TEST=1
+    i ) INVENTORY=$OPTARG
       ;;
-    e ) EXAMPLESERVICE=1
+    t ) RUN_TEST=1
       ;;
     \? ) echo "Invalid option: -$OPTARG"
       exit 1
@@ -247,16 +235,10 @@ set -e
 
 bootstrap
 setup_openstack
-pull_onos_docker_image
-wait_for_openstack
-simulate_fabric
 
 if [[ $RUN_TEST -eq 1 ]]
 then
-  if [[ -n $BUILD_BRANCH || $EXAMPLESERVICE -eq 1 ]]
-  then
-    build_xos_docker_images
-  fi
+  build_xos_docker_images
   setup_xos
   setup_test_client
   run_e2e_test
@@ -267,3 +249,4 @@ then
 fi
 
 exit 0
+
