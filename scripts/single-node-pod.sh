@@ -49,7 +49,7 @@ function setup_openstack() {
     # Run the playbook, but check to see if we're on cloudlab
     if [[ -x /usr/testbed/bin/mkextrafs ]]
     then
-      ansible-playbook -i $INVENTORY cord-single-playbook.yml --extra-vars="on-clouldlab=true"
+      ansible-playbook -i $INVENTORY cord-single-playbook.yml --extra-vars="on_cloudlab=True"
     else
       ansible-playbook -i $INVENTORY cord-single-playbook.yml
     fi
