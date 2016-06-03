@@ -1,0 +1,15 @@
+---
+# Installs XOS on Cloudlab's OpenStack profile systems
+
+- hosts: cloudlab
+
+  vars:
+    xos_repo_url: "https://github.com/open-cloud/xos"
+    xos_repo_dest: "~/xos"
+    xos_repo_branch: "master"
+    xos_configuration: "devel"
+
+  roles:
+    - { role: common-prep, become: yes }
+    - xos-install
+

@@ -1,7 +1,12 @@
 ---
 # tasks for xos-install role
 
- - name: checkout XOS repo
-   git: repo={{ xos_repo_url }}
-        dest={{ xos_repo_dest }}
-        version={{ xos_repo_branch }}
+- name: checkout XOS repo
+  git: repo={{ xos_repo_url }}
+       dest={{ xos_repo_dest }}
+       version={{ xos_repo_branch }}
+
+- name: Initial build of XOS
+  command: make
+    chdir="{{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/"
+

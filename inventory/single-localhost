@@ -4,3 +4,6 @@ ansible_ssh_user=ubuntu
 [head]
 localhost
 
+[cloudlab]
+localhost
+

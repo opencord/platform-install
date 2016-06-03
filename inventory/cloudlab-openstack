@@ -1,0 +1,5 @@
+# inventory file for Clouldlab's OpenStack Profile
+
+[clouldlab]
+ctl ansible_ssh_host=hostname_goes_here.cloudlab.us ansible_ssh_user=cloudlab_username
+

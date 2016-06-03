@@ -1,5 +1,8 @@
 ---
-# CORD playbook, for installing a single-node CORD test-environment on cloudlab
+# Installs the single node cord-pod XOS configuration, using Juju to provision
+# the OpenStack installation inside of VM's on the head node.
+#
+# This is used by `scripts/single-node-pod.sh` for E2E testing.
 
 - name: Include vars
   hosts: all

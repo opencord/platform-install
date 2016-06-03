@@ -1,5 +1,5 @@
 ---
-# aztest playbook, for installing an OpenCloud site
+# Install an OpenCloud site, with multi-node Juju configured OpenStack
 
 - name: Include Configuration
   hosts: all
