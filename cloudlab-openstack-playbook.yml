@@ -6,8 +6,9 @@
   vars:
     xos_repo_url: "https://github.com/open-cloud/xos"
     xos_repo_dest: "~/xos"
-    xos_repo_branch: "master"
+    xos_repo_branch: "feature/lts"
     xos_configuration: "devel"
+    xos_container_rebuild: true
 
   roles:
     - { role: common-prep, become: yes }

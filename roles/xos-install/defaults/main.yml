@@ -4,3 +4,6 @@
 xos_repo_url: "https://github.com/open-cloud/xos.git"
 xos_repo_dest: "~/xos"
 xos_repo_branch: "HEAD"
+xos_configuration: "devel"
+xos_container_rebuild: false
+

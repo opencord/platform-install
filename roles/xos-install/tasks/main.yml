@@ -6,6 +6,11 @@
        dest={{ xos_repo_dest }}
        version={{ xos_repo_branch }}
 
+- name: Rebuild XOS containers
+  when: xos_container_rebuild
+  command: make local_containers
+    chdir="{{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/"
+
 - name: Initial build of XOS
   command: make
     chdir="{{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/"
