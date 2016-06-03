@@ -33,3 +33,8 @@
     regexp="^\s*syntax on"
     line="syntax on"
 
+- name: Configure tmux
+  copy:
+    src=tmux.conf
+    dest="{{ ansible_user_dir }}/.tmux.conf"
+
