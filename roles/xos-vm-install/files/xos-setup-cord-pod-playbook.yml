@@ -50,9 +50,17 @@
       with_items: "{{ xos_images }}"
 
     - name: Pull docker images for XOS
+      when: not xos_container_rebuild
       become: yes
       command: docker pull {{ item }}
       with_items:
         - xosproject/xos-base
         - xosproject/xos-postgres
+
+    - name: Rebuild XOS containers
+      when: xos_container_rebuild
+      command: make {{ item }}
+        chdir="{{ xos_repo_dest }}/containers/xos/"
+      with_items:
+       - base
 

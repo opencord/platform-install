@@ -8,8 +8,11 @@
 
 - name: Rebuild XOS containers
   when: xos_container_rebuild
-  command: make local_containers
+  command: make {{ item }}
     chdir="{{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/"
+  with_items:
+    - common_cloudlab
+    - base
 
 - name: Initial build of XOS
   command: make

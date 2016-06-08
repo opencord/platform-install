@@ -69,6 +69,7 @@ function build_xos_docker_images() {
     fi
 
     echo "Rebuilding XOS containers"
+    ssh ubuntu@xos "cd xos/containers/xos; make base"
     ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make local_containers"
 }
 
