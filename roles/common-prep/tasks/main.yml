@@ -28,6 +28,16 @@
    - tmux
    - vim
 
+- name: Remove annoying default editors
+  apt:
+    pkg={{ item }}
+    state=absent
+    update_cache=yes
+    cache_valid_time=3600
+  with_items:
+   - nano
+   - jove
+
 - name: Enable vim syntax highlighting
   lineinfile: dest=/etc/vim/vimrc
     regexp="^\s*syntax on"
