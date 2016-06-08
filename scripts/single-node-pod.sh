@@ -65,7 +65,7 @@ function build_xos_docker_images() {
     then
       echo ""
       echo "Adding exampleservice to XOS"
-      ssh ubuntu@xos "cd xos; git cherry-pick 775e00549e535803522fbcd70152e5e1b0629c83"
+      ssh ubuntu@xos "cd xos; git cherry-pick cd6e972210f4134ffb2f7a36fb3c4baf33f02bef"
     fi
 
     echo "Rebuilding XOS containers"
