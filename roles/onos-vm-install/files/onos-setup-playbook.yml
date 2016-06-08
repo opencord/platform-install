@@ -35,5 +35,5 @@
 
     - name: Pull docker image for ONOS
       become: yes
-      command: docker pull onosproject/onos
+      command: docker pull xosproject/onos-fork
 
