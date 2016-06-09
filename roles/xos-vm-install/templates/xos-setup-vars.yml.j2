@@ -6,7 +6,7 @@ xos_repo_branch: "{{ xos_repo_branch }}"
 
 xos_configuration: "{{ xos_configuration }}"
 
-xos_container_rebuild: "{{ xos_container_rebuild }}"
+xos_container_rebuild: {{ xos_container_rebuild }}
 
 xos_images:
 {{ xos_images | to_nice_yaml }}
