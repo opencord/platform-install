@@ -86,7 +86,7 @@ function setup_xos() {
     echo "Pause 30 seconds"
     sleep 30
 
-    ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make cord"
+    ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make cord; make vtn"
 
     if [[ $EXAMPLESERVICE -eq 1 ]]
     then
