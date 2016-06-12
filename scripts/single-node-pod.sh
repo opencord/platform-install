@@ -86,12 +86,17 @@ function setup_xos() {
     echo "Pause 30 seconds"
     sleep 30
 
-    ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make cord; make vtn"
+    ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make cord"
 
     if [[ $EXAMPLESERVICE -eq 1 ]]
     then
       ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make exampleservice"
     fi
+
+    echo ""
+    echo "(Temp workaround for bug in Synchronizer) Pause 60 seconds"
+    sleep 60
+    ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make vtn"
 }
 
 function setup_test_client() {
