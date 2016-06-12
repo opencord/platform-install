@@ -81,7 +81,7 @@ function setup_xos() {
     echo "Pause 2 minutes"
     sleep 120
 
-    ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make vtn"
+    ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make vtn; make fabric"
     echo ""
     echo "Pause 30 seconds"
     sleep 30
