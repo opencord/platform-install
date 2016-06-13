@@ -39,10 +39,12 @@
   with_items:
    - "glance image-list"
    - "nova list --all-tenants"
+   - "nova host-list"
    - "keystone tenant-list"
    - "keystone user-list"
    - "neutron net-list"
    - "neutron subnet-list"
+   - "neutron port-list"
 
 - name: ONOS diag collection - REST API
   shell: "curl -X GET -u karaf:karaf http://onos-cord-1:8181/onos/v1/{{ item }} | python -m json.tool > {{ diag_dir }}/onos/rest_{{ item | regex_replace('[^\\w-]', '_') }}"
@@ -71,7 +73,6 @@
 
 - name: XOS docker logs retrieval
   command: "rsync -avP ubuntu@xos-1:~/docker_logs/ {{ diag_dir }}/xos/"
-
 
 - name: nova-compute diag collection
   shell: "ssh ubuntu@nova-compute-1 \"{{ item }}\" > {{ diag_dir }}/nova-compute/{{ item | regex_replace('[^\\w-]', '_')}}"
