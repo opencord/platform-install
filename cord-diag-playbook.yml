@@ -1,0 +1,7 @@
+---
+# Collects diagnostic information for the currently running cord-pod config
+
+- name: Diagnostics on head node
+  hosts: head
+  roles:
+    - head-diag

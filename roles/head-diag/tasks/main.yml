@@ -1,0 +1,50 @@
+---
+# head-diag/tasks/main.yml
+
+- name: Create diag_dir fact
+  set_fact: diag_dir="~/diag-{{ ansible_date_time.iso8601_basic_short }}"
+
+- name: Create diag_dir subdirs
+  file:
+    dest="{{ diag_dir }}/{{ item }}"
+    state=directory
+  with_items:
+  - net
+  - juju
+  - openstack
+  - onos
+  - xos
+
+- name: Networking diag collection
+  shell: "{{ item }} > {{ diag_dir }}/net/{{ item | regex_replace('[^\\w-]', '_')}}"
+  with_items:
+   - "ifconfig -a"
+   - "route -n"
+   - "brctl show"
+   - "cat /etc/resolv.conf"
+
+- name: Juju diag collection
+  shell: "{{ item }} > {{ diag_dir }}/juju/{{ item | regex_replace('[^\\w-]', '_')}}"
+  with_items:
+   - "juju status --format=summary"
+   - "juju status --format=json"
+
+- name: OpenStack diag collection
+  shell: "source ~/admin-openrc.sh && {{ item }} > {{ diag_dir }}/openstack/{{ item | regex_replace('[^\\w-]', '_')}}"
+  args:
+    executable: "/bin/bash"
+  with_items:
+   - "nova image-list"
+   - "nova list --all-tenants"
+   - "keystone tenant-list"
+
+- name: ONOS diag collection
+  shell: "curl -X GET -u karaf:karaf http://onos-cord-1:8181/onos/v1/{{ item }} | python -m json.tool > {{ diag_dir }}/onos/{{ item | regex_replace('[^\\w-]', '_') }}"
+  with_items:
+   - "hosts"
+
+- name: XOS diag collection
+  shell: "ssh ubuntu@xos \"{{ item }}\" > {{ diag_dir }}/xos/{{ item | regex_replace('[^\\w-]', '_')}}"
+  with_items:
+   - "docker ps"
+
