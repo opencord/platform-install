@@ -37,9 +37,12 @@
   args:
     executable: "/bin/bash"
   with_items:
-   - "nova image-list"
+   - "glance image-list"
    - "nova list --all-tenants"
    - "keystone tenant-list"
+   - "keystone user-list"
+   - "neutron net-list"
+   - "neutron subnet-list"
 
 - name: ONOS diag collection - REST API
   shell: "curl -X GET -u karaf:karaf http://onos-cord-1:8181/onos/v1/{{ item }} | python -m json.tool > {{ diag_dir }}/onos/rest_{{ item | regex_replace('[^\\w-]', '_') }}"
