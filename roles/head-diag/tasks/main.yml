@@ -38,13 +38,28 @@
    - "nova list --all-tenants"
    - "keystone tenant-list"
 
-- name: ONOS diag collection
+- name: ONOS diag collection - REST API
   shell: "curl -X GET -u karaf:karaf http://onos-cord-1:8181/onos/v1/{{ item }} | python -m json.tool > {{ diag_dir }}/onos/{{ item | regex_replace('[^\\w-]', '_') }}"
   with_items:
    - "hosts"
 
+- name: ONOS diag collection - ONOS CLI
+  shell: "sshpass -p 'karaf' ssh -p 8101 karaf@onos-cord {{ item }} > {{ diag_dir }}/onos/{{ item | regex_replace('[^\\w-]', '_') }}"
+  with_items:
+   - "cordvtn-nodes"
+   - "cordvtn-node-check nova-compute-1"
+
 - name: XOS diag collection
-  shell: "ssh ubuntu@xos \"{{ item }}\" > {{ diag_dir }}/xos/{{ item | regex_replace('[^\\w-]', '_')}}"
+  shell: "ssh ubuntu@xos-1 \"{{ item }}\" > {{ diag_dir }}/xos/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
    - "docker ps"
+
+- name: Copy and run XOS docker logs script
+  command: "{{ item }}"
+  with_items:
+   - "scp {{ role_path }}/files/docker_logs.sh ubuntu@xos-1:~/docker_logs.sh"
+   - "ssh ubuntu@xos-1 'bash ~/docker_logs.sh'"
+
+- name: XOS docker logs retrieval
+  command: "rsync -avP ubuntu@xos-1:~/docker_logs/ {{ diag_dir }}/xos/"
 

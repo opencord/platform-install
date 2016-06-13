@@ -27,7 +27,7 @@ function cleanup_from_previous_test() {
 function bootstrap() {
     cd ~
     sudo apt-get update
-    sudo apt-get -y install software-properties-common git mosh tmux dnsutils python-netaddr
+    sudo apt-get -y install software-properties-common curl git mosh tmux dnsutils python-netaddr
     sudo add-apt-repository -y ppa:ansible/ansible
     sudo apt-get update
     sudo apt-get install -y ansible
