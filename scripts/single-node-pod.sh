@@ -37,6 +37,7 @@ function bootstrap() {
 
     git clone https://github.com/open-cloud/openstack-cluster-setup.git
     cd ~/openstack-cluster-setup
+    git checkout $SETUP_BRANCH
 
     sed -i "s/ubuntu/`whoami`/" $INVENTORY
     cp vars/example_keystone.yml vars/cord_keystone.yml
@@ -209,9 +210,10 @@ function run_exampleservice_test () {
 RUN_TEST=0
 EXAMPLESERVICE=0
 BUILD_BRANCH="master"
+SETUP_BRANCH="master"
 INVENTORY="inventory/single-localhost"
 
-while getopts "b:ehi:t" opt; do
+while getopts "b:ehi:ts:" opt; do
   case ${opt} in
     b ) BUILD_BRANCH=$OPTARG
       ;;
@@ -219,16 +221,19 @@ while getopts "b:ehi:t" opt; do
       ;;
     h ) echo "Usage:"
       echo "    $0                install OpenStack and prep XOS and ONOS VMs [default]"
-      echo "    $0 -b <branch>    build XOS containers based on GitHub <branch>"
+      echo "    $0 -b <branch>    build XOS containers using the <branch> branch of XOS git repo"
       echo "    $0 -e             add exampleservice to XOS"
       echo "    $0 -h             display this help message"
       echo "    $0 -i <inv_file>  specify an inventory file (default is inventory/single-localhost)"
       echo "    $0 -t             do install, bring up cord-pod configuration, run E2E test"
+      echo "    $0 -s <branch>    use branch <branch> of the openstack-cluster-setup git repo"
       exit 0
       ;;
     i ) INVENTORY=$OPTARG
       ;;
     t ) RUN_TEST=1
+      ;;
+    s ) SETUP_BRANCH=$OPTARG
       ;;
     \? ) echo "Invalid option: -$OPTARG"
       exit 1
