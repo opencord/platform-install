@@ -14,14 +14,17 @@
   - openstack
   - onos
   - xos
+  - nova-compute
 
 - name: Networking diag collection
   shell: "{{ item }} > {{ diag_dir }}/net/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
    - "ifconfig -a"
    - "route -n"
+   - "arp -n"
    - "brctl show"
    - "cat /etc/resolv.conf"
+   - "sudo uvt-kvm list"
 
 - name: Juju diag collection
   shell: "{{ item }} > {{ diag_dir }}/juju/{{ item | regex_replace('[^\\w-]', '_')}}"
@@ -39,7 +42,7 @@
    - "keystone tenant-list"
 
 - name: ONOS diag collection - REST API
-  shell: "curl -X GET -u karaf:karaf http://onos-cord-1:8181/onos/v1/{{ item }} | python -m json.tool > {{ diag_dir }}/onos/{{ item | regex_replace('[^\\w-]', '_') }}"
+  shell: "curl -X GET -u karaf:karaf http://onos-cord-1:8181/onos/v1/{{ item }} | python -m json.tool > {{ diag_dir }}/onos/rest_{{ item | regex_replace('[^\\w-]', '_') }}"
   with_items:
    - "hosts"
 
@@ -48,11 +51,14 @@
   with_items:
    - "cordvtn-nodes"
    - "cordvtn-node-check nova-compute-1"
+   - "hosts"
 
 - name: XOS diag collection
   shell: "ssh ubuntu@xos-1 \"{{ item }}\" > {{ diag_dir }}/xos/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
    - "docker ps"
+   - "arp -n"
+   - "ifconfig -a"
 
 - name: Copy and run XOS docker logs script
   command: "{{ item }}"
@@ -62,4 +68,14 @@
 
 - name: XOS docker logs retrieval
   command: "rsync -avP ubuntu@xos-1:~/docker_logs/ {{ diag_dir }}/xos/"
+
+
+- name: nova-compute diag collection
+  shell: "ssh ubuntu@nova-compute-1 \"{{ item }}\" > {{ diag_dir }}/nova-compute/{{ item | regex_replace('[^\\w-]', '_')}}"
+  with_items:
+   - "arp -n"
+   - "brctl show"
+   - "ifconfig -a"
+   - "ping -c 3 172.27.0.2"
+   - "route -n"
 
