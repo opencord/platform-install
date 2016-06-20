@@ -48,12 +48,12 @@ function bootstrap() {
 
 function setup_openstack() {
 
-    extra_vars="xos_repo_url='$XOS_REPO_URL'"
+    extra_vars="xos_repo_url=$XOS_REPO_URL"
 
     # check if running on cloudlab
     if [[ -x /usr/testbed/bin/mkextrafs ]]
     then
-      extra_vars="$extra_vars, on_cloudlab=True"
+      extra_vars="$extra_vars on_cloudlab=True"
     fi
 
     ansible-playbook -i $INVENTORY cord-single-playbook.yml --extra-vars="$extra_vars"
