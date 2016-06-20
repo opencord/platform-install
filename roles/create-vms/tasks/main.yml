@@ -54,10 +54,13 @@
   command: ansible {{ item.name }} -b -u ubuntu -m authorized_key -a "user='root' key='{{ sshkey.stdout }}'"
   with_items: "{{ head_vm_list | selectattr('root_ssh_login', 'defined') | list }}"
 
-- name: Copy over docker installation playbook
+- name: Copy over docker installation playbook and docker apt-key
   copy:
-    src="docker-install-playbook.yml"
-    dest="{{ ansible_user_dir }}/docker-install-playbook.yml"
+    src="{{ item }}"
+    dest="{{ ansible_user_dir }}/{{ item }}"
+  with_items:
+    - "docker-install-playbook.yml"
+    - "docker_apt_key.gpg"
 
 - name: Install docker in VM's that require it
   command: ansible-playbook "{{ ansible_user_dir }}/docker-install-playbook.yml"

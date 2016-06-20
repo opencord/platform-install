@@ -21,8 +21,7 @@
 
     - name: Trust docker apt key
       apt_key:
-        keyserver=pool.sks-keyservers.net
-        id=58118E89F3A912897C070ADBF76221572C52609D
+        data="{{ lookup('file', 'docker_apt_key.gpg') }}"
 
     - name: Add docker apt repo
       apt_repository:
