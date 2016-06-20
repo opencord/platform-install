@@ -47,20 +47,23 @@ function bootstrap() {
 }
 
 function setup_openstack() {
-    # Run the playbook, but check to see if we're on cloudlab
+
+    extra_vars="xos_repo_url=$XOS_REPO_URL"
+
+    # check if running on cloudlab
     if [[ -x /usr/testbed/bin/mkextrafs ]]
     then
-      ansible-playbook -i $INVENTORY cord-single-playbook.yml --extra-vars="on_cloudlab=True"
-    else
-      ansible-playbook -i $INVENTORY cord-single-playbook.yml
+      extra_vars="$extra_vars,on_cloudlab=True"
     fi
+
+    ansible-playbook -i $INVENTORY cord-single-playbook.yml --extra-vars="$extra_vars"
 }
 
 function build_xos_docker_images() {
     echo ""
-    echo "Checking out XOS branch $BUILD_BRANCH"
+    echo "Checking out XOS branch $XOS_BRANCH"
     ssh ubuntu@xos "cd xos; git config --global user.email 'ubuntu@localhost'; git config --global user.name 'XOS ExampleService'"
-    ssh ubuntu@xos "cd xos; git checkout $BUILD_BRANCH"
+    ssh ubuntu@xos "cd xos; git checkout $XOS_BRANCH"
 
     if [[ $EXAMPLESERVICE -eq 1 ]]
     then
@@ -209,13 +212,14 @@ function run_exampleservice_test () {
 # Parse options
 RUN_TEST=0
 EXAMPLESERVICE=0
-BUILD_BRANCH="master"
 SETUP_BRANCH="master"
 INVENTORY="inventory/single-localhost"
+XOS_BRANCH="master"
+XOS_REPO_URL="https://gerrit.opencord.org/xos"
 
-while getopts "b:ehi:ts:" opt; do
+while getopts "b:ehi:r:ts:" opt; do
   case ${opt} in
-    b ) BUILD_BRANCH=$OPTARG
+    b ) XOS_BRANCH=$OPTARG
       ;;
     e ) EXAMPLESERVICE=1
       ;;
@@ -225,11 +229,14 @@ while getopts "b:ehi:ts:" opt; do
       echo "    $0 -e             add exampleservice to XOS"
       echo "    $0 -h             display this help message"
       echo "    $0 -i <inv_file>  specify an inventory file (default is inventory/single-localhost)"
+      echo "    $0 -r <url>       use <url> to obtain the the XOS repo"
       echo "    $0 -t             do install, bring up cord-pod configuration, run E2E test"
       echo "    $0 -s <branch>    use branch <branch> of the openstack-cluster-setup git repo"
       exit 0
       ;;
     i ) INVENTORY=$OPTARG
+      ;;
+    r ) XOS_REPO_URL=$OPTARG
       ;;
     t ) RUN_TEST=1
       ;;

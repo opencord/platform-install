@@ -1,6 +1,6 @@
 ---
 
-xos_repo_url: "https://github.com/open-cloud/xos.git"
+xos_repo_url: "https://gerrit.opencord.org/xos"
 xos_repo_dest: "~/xos"
 xos_repo_branch: "HEAD"
 
