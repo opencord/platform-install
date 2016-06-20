@@ -65,13 +65,6 @@ function build_xos_docker_images() {
     ssh ubuntu@xos "cd xos; git config --global user.email 'ubuntu@localhost'; git config --global user.name 'XOS ExampleService'"
     ssh ubuntu@xos "cd xos; git checkout $XOS_BRANCH"
 
-    if [[ $EXAMPLESERVICE -eq 1 ]]
-    then
-      echo ""
-      echo "Adding exampleservice to XOS"
-      ssh ubuntu@xos "cd xos; git cherry-pick cd6e972210f4134ffb2f7a36fb3c4baf33f02bef"
-    fi
-
     echo "Rebuilding XOS containers"
     ssh ubuntu@xos "cd xos/containers/xos; make base"
     ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make local_containers"
