@@ -1,0 +1,8 @@
+<app name="org.opencord.vtn" origin="ON.Lab" version="1.0-SNAPSHOT" 
+        category="Traffic Steering" url="http://onosproject.org" title="CORD Virtual Tenant Network" 
+        featuresRepo="mvn:org.opencord/vtn/1.0-SNAPSHOT/xml/features" 
+        features="cord-vtn" 
+        apps="org.onosproject.ovsdb-base,org.onosproject.dhcp,org.onosproject.xosclient,org.opencord.config"> 
+    <description>VTN for CORD</description> 
+    <artifact>mvn:org.opencord/vtn/1.0-SNAPSHOT</artifact> 
+</app> 

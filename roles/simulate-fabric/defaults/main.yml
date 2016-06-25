@@ -10,12 +10,10 @@ simfabric_bridges:
       - veth0
 
 simfabric_links:
-  - name: veth
+  - type: veth
+    dev: veth0
+    peer: fabric
     mac: "02:42:0a:a8:00:01"
-
-simfabric_interfaces:
-  - veth0
-  - veth1
 
 # see note in playbook, won't apply until ansible gets module support
 simfabric_iptables:

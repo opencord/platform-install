@@ -47,4 +47,5 @@
     - juju-setup
     - docker-compose
     - simulate-fabric
+    - onos-load-apps
 
