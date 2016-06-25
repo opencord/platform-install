@@ -10,4 +10,4 @@
 - name: Load the apps using Docker
   command: ansible xos-1 -u ubuntu -m shell \
     -a "cd ~/xos/containers/cord-apps; make {{ item }}; docker run xosproject/cord-app-{{ item }}"
-  with_items: cord_apps
+  with_items: "{{ cord_apps }}"
