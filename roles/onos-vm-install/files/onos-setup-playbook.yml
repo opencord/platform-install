@@ -1,5 +1,6 @@
 ---
-- hosts: onos-cord-1
+# Common ONOS setup
+- hosts: onos-cord-1:onos-fabric-1
   remote_user: ubuntu
 
   tasks:
@@ -11,6 +12,15 @@
         path={{ ansible_user_dir }}/cord
         state=directory
 
+    - name: Pull docker image for ONOS
+      become: yes
+      command: docker pull onosproject/onos:1.6
+
+# Setup specific for onos-cord VM
+- hosts: onos-cord-1
+  remote_user: ubuntu
+
+  tasks:
     - name: Copy over SSH keys
       copy:
         src=~/.ssh/{{ item }}
@@ -33,7 +43,11 @@
         src=~/onos-docker-compose.yml
         dest={{ ansible_user_dir }}/cord/docker-compose.yml
 
-    - name: Pull docker image for ONOS
-      become: yes
-      command: docker pull xosproject/onos-fork
+- hosts: onos-fabric-1
+  remote_user: ubuntu
 
+  tasks:
+    - name: Copy over & rename docker-compose file
+      copy:
+        src=~/fabric-docker-compose.yml
+        dest={{ ansible_user_dir }}/cord/docker-compose.yml

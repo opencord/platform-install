@@ -1,0 +1,14 @@
+# Basic docker-compose file for ONOS
+version: '2'
+
+services:
+
+   xos-onos:
+      image: onosproject/onos:1.6
+      expose:
+      - "6653"
+      - "8101"
+      - "8181"
+      - "9876"
+      network_mode: host
+
