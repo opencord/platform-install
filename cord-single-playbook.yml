@@ -5,7 +5,7 @@
 # This is used by `scripts/single-node-pod.sh` for E2E testing.
 
 - name: Include vars
-  hosts: all
+  hosts: head
   tasks:
   - include_vars: vars/cord_defaults.yml
   - include_vars: vars/cord.yml
@@ -20,13 +20,13 @@
     - apt-cacher-ng
 
 - name: Configure all hosts to use DNS server
-  hosts: all
+  hosts: head
   become: yes
   roles:
     - dns-configure
 
 - name: Prep systems
-  hosts: all
+  hosts: head
   become: yes
   roles:
     - common-prep
