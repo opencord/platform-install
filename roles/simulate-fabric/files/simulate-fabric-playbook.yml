@@ -38,8 +38,8 @@
       with_items: "{{ simfabric_bridges }}"
 
     - name: Create ip links
-      when: "ansible_{{ item.name }}0 is not defined"
-      command: "ip link add address {{ item.mac }} type {{ item.name }}"
+      when: "ansible_{{ item.dev }} is not defined"
+      command: "ip link add dev {{ item.dev }} address {{ item.mac }} type {{ item.type }} peer name {{ item.peer }}"
       with_items: "{{ simfabric_links }}"
 
     - name: Run setup again to obtain link info
@@ -48,7 +48,9 @@
     - name: Start interfaces
       when: "not ansible_{{ item }}.active"
       command: "ip link set dev {{ item }} up"
-      with_items: "{{ simfabric_interfaces }}"
+      with_items:
+      - "{{ simfabric_links | map(attribute='dev') | list }}"
+      - "{{ simfabric_links | map(attribute='peer') | list }}"
 
     - name: Add interfaces to bridges
       when: "not item.1 in ansible_{{ item.0.name }}.interfaces"

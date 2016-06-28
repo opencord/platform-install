@@ -1,0 +1,13 @@
+---
+# onos-load-apps/tasks/main.yml
+#
+# Install CORD ONOS apps from local containers
+
+- name: Disable loading from Maven repo
+  command: ansible xos-1 -u ubuntu -m lineinfile \
+    -a "dest=~/xos/xos/configurations/{{ xos_configuration }}/make-vtn-external-yaml.sh state=absent regexp='install_dependencies'"
+
+- name: Load the apps using Docker
+  command: ansible xos-1 -u ubuntu -m shell \
+    -a "cd ~/xos/containers/cord-apps; make {{ item }}; docker run xosproject/cord-app-{{ item }}"
+  with_items: "{{ cord_apps }}"
