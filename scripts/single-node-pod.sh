@@ -39,7 +39,7 @@ function bootstrap() {
     cd ~/openstack-cluster-setup
     git checkout $SETUP_BRANCH
 
-    sed -i "s/ubuntu/`whoami`/" $INVENTORY
+    sed -i "s/replaceme/`whoami`/" $INVENTORY
     cp vars/example_keystone.yml vars/cord_keystone.yml
 
     # Log into the local node once to get host key
@@ -202,6 +202,11 @@ function run_exampleservice_test () {
     ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- curl -s http://$PUBLICIP"
 }
 
+function run_diagnostics() {
+    echo "*** COLLECTING DIAGNOSTIC INFO - check ~/diag-* on the head node"
+    ansible-playbook -i $INVENTORY cord-diag-playbook.yml
+}
+
 # Parse options
 RUN_TEST=0
 EXAMPLESERVICE=0
@@ -209,16 +214,20 @@ SETUP_BRANCH="master"
 INVENTORY="inventory/single-localhost"
 XOS_BRANCH="master"
 XOS_REPO_URL="https://gerrit.opencord.org/xos"
+DIAGNOSTICS=1
 
-while getopts "b:ehi:r:ts:" opt; do
+while getopts "b:dehi:r:ts:" opt; do
   case ${opt} in
     b ) XOS_BRANCH=$OPTARG
+      ;;
+    d ) DIAGNOSTICS=0
       ;;
     e ) EXAMPLESERVICE=1
       ;;
     h ) echo "Usage:"
       echo "    $0                install OpenStack and prep XOS and ONOS VMs [default]"
       echo "    $0 -b <branch>    build XOS containers using the <branch> branch of XOS git repo"
+      echo "    $0 -d             don't run diagnostic collector"
       echo "    $0 -e             add exampleservice to XOS"
       echo "    $0 -h             display this help message"
       echo "    $0 -i <inv_file>  specify an inventory file (default is inventory/single-localhost)"
@@ -262,6 +271,10 @@ then
   then
     run_exampleservice_test
   fi
+fi
+
+if [[ $DIAGNOSTICS -eq 1 ]]
+  run_diagnostics
 fi
 
 exit 0

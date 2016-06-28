@@ -1,12 +1,13 @@
 ---
 # compute-diag/tasks/main.yml
-
-- name: Create diag_dir subdirs
+#
+- name: Create diag_dir subdir
   file:
-    dest="{{ diag_dir }}/{{ inventory_hostname }}"
+    dest="/tmp/{{ hostvars[groups['head'][0]]['diag_dir'] }}/{{ inventory_hostname }}"
+    state=directory
 
 - name: Compute node diag collection
-  shell: "{{ item }} > {{ diag_dir }}/{{ inventory_hostname}}/{{ item | regex_replace('[^\\w-]', '_')}}"
+  shell: "{{ item }} > /tmp/{{ hostvars[groups['head'][0]]['diag_dir'] }}/{{ inventory_hostname }}/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
    - "arp -n"
    - "brctl show"
