@@ -1,9 +1,6 @@
 ---
 # head-diag/tasks/main.yml
 
-- name: Create diag_dir fact
-  set_fact: diag_dir="~/diag-{{ ansible_date_time.iso8601_basic_short }}"
-
 - name: Create diag_dir subdirs
   file:
     dest="{{ diag_dir }}/{{ item }}"
@@ -14,7 +11,6 @@
   - openstack
   - onos
   - xos
-  - nova-compute
 
 - name: Networking diag collection
   shell: "{{ item }} > {{ diag_dir }}/net/{{ item | regex_replace('[^\\w-]', '_')}}"
@@ -57,6 +53,7 @@
    - "cordvtn-nodes"
    - "cordvtn-node-check nova-compute-1"
    - "hosts"
+   - "dhcp-list"
 
 - name: XOS diag collection
   shell: "ssh ubuntu@xos-1 \"{{ item }}\" > {{ diag_dir }}/xos/{{ item | regex_replace('[^\\w-]', '_')}}"
@@ -65,21 +62,10 @@
    - "arp -n"
    - "ifconfig -a"
 
-- name: Copy and run XOS docker logs script
+- name: Copy/run/retrieve XOS docker logs
   command: "{{ item }}"
   with_items:
    - "scp {{ role_path }}/files/docker_logs.sh ubuntu@xos-1:~/docker_logs.sh"
    - "ssh ubuntu@xos-1 'bash ~/docker_logs.sh'"
-
-- name: XOS docker logs retrieval
-  command: "rsync -avP ubuntu@xos-1:~/docker_logs/ {{ diag_dir }}/xos/"
-
-- name: nova-compute diag collection
-  shell: "ssh ubuntu@nova-compute-1 \"{{ item }}\" > {{ diag_dir }}/nova-compute/{{ item | regex_replace('[^\\w-]', '_')}}"
-  with_items:
-   - "arp -n"
-   - "brctl show"
-   - "ifconfig -a"
-   - "ping -c 3 172.27.0.2"
-   - "route -n"
+   - "rsync -avP ubuntu@xos-1:~/docker_logs/ {{ diag_dir }}/xos/"
 

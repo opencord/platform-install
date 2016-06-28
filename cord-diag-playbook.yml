@@ -1,7 +1,24 @@
 ---
 # Collects diagnostic information for the currently running cord-pod config
 
+- name: Create diag_dir fact
+  set_fact: diag_dir="~/diag-{{ ansible_date_time.iso8601_basic_short }}"
+
 - name: Diagnostics on head node
   hosts: head
   roles:
     - head-diag
+
+- name: Diagnostics on compute nodes
+  hosts: compute
+  roles:
+    - compute-diag
+
+- name: Collect compute node diagnostics on head node
+  hosts: compute
+  synchronize:
+    src: "{{ diag_dir }}"
+    dest: "{{ diag_dir }}"
+    recursive: yes
+  delegate_to: "{{ groups['head'][0] }}"
+

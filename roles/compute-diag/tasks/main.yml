@@ -1,0 +1,16 @@
+---
+# compute-diag/tasks/main.yml
+
+- name: Create diag_dir subdirs
+  file:
+    dest="{{ diag_dir }}/{{ inventory_hostname }}"
+
+- name: Compute node diag collection
+  shell: "{{ item }} > {{ diag_dir }}/{{ inventory_hostname}}/{{ item | regex_replace('[^\\w-]', '_')}}"
+  with_items:
+   - "arp -n"
+   - "brctl show"
+   - "cat /etc/resolv.conf"
+   - "ifconfig -a"
+   - "route -n"
+

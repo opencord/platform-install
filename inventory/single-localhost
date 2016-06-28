@@ -7,3 +7,6 @@ localhost
 [cloudlab]
 localhost
 
+[compute]
+nova-compute-1
+
