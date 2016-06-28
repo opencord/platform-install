@@ -274,6 +274,7 @@ then
 fi
 
 if [[ $DIAGNOSTICS -eq 1 ]]
+then
   run_diagnostics
 fi
 
