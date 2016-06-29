@@ -6,15 +6,20 @@
        dest={{ xos_repo_dest }}
        version={{ xos_repo_branch }}
 
+- name: checkout service-profile repo
+  git: repo={{ service_profile_repo_url }}
+       dest={{ service_profile_repo_dest }}
+       version={{ service_profile_repo_branch }}
+
 - name: Rebuild XOS containers
   when: xos_container_rebuild
   command: make {{ item }}
-    chdir="{{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/"
+    chdir="{{ service_profile_repo_dest }}/{{ xos_configuration }}/"
   with_items:
     - common_cloudlab
     - base
 
 - name: Initial build of XOS
   command: make
-    chdir="{{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/"
+    chdir="{{ service_profile_repo_dest }}/{{ xos_configuration }}/"
 

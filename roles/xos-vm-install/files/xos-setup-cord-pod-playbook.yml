@@ -28,10 +28,17 @@
         version={{ xos_repo_branch }}
         force=yes
 
+    - name: Clone service-profile repo
+      git:
+        repo={{ service_profile_repo_url }}
+        dest={{ service_profile_repo_dest }}
+        version={{ service_profile_repo_branch }}
+        force=yes
+
     - name: Copy over SSH keys
       copy:
         src=~/.ssh/{{ item }}
-        dest={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/
+        dest={{ service_profile_repo_dest }}/{{ xos_configuration }}/
         owner={{ ansible_user_id }} mode=0600
       with_items:
        - id_rsa
@@ -40,13 +47,13 @@
     - name: copy over SSH key as node_key
       copy:
         src=~/.ssh/id_rsa
-        dest={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/node_key
+        dest={{ service_profile_repo_dest }}/{{ xos_configuration }}/node_key
 
     - name: download software image
       get_url:
         url={{ item.url }}
         checksum={{ item.checksum }}
-        dest={{ xos_repo_dest }}/xos/configurations/{{ xos_configuration }}/images/{{ item.name }}.img
+        dest={{ service_profile_repo_dest }}/{{ xos_configuration }}/images/{{ item.name }}.img
       with_items: "{{ xos_images }}"
 
     - name: Pull docker images for XOS
@@ -60,7 +67,7 @@
     - name: Rebuild XOS containers
       when: xos_container_rebuild
       command: make {{ item }}
-        chdir="{{ xos_repo_dest }}/containers/xos/"
+        chdir="{{ service_profile_repo_dest }}/containers/xos/"
       with_items:
        - base
 

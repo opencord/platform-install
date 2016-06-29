@@ -164,7 +164,7 @@ head_vm_list:
     cpu: 2
     memMB: 4096
     diskGB: 40
-    docker_path: 'xos/xos/configurations/cord-pod'
+    docker_path: 'service-profile/cord-pod'
 
   - name: "nova-compute-1"
     service: "nova-compute"

@@ -67,33 +67,33 @@ function build_xos_docker_images() {
 
     echo "Rebuilding XOS containers"
     ssh ubuntu@xos "cd xos/containers/xos; make base"
-    ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make local_containers"
+    ssh ubuntu@xos "cd service-profile/cord-pod; make local_containers"
 }
 
 function setup_xos() {
 
     echo "Setting up XOS, will take a few minutes"
-    ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make"
+    ssh ubuntu@xos "cd service-profile/cord-pod; make"
     echo ""
     echo "Pause 2 minutes"
     sleep 120
 
-    ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make vtn; make fabric"
+    ssh ubuntu@xos "cd service-profile/cord-pod; make vtn; make fabric"
     echo ""
     echo "Pause 30 seconds"
     sleep 30
 
-    ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make cord"
+    ssh ubuntu@xos "cd service-profile/cord-pod; make cord"
 
     if [[ $EXAMPLESERVICE -eq 1 ]]
     then
-      ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make exampleservice"
+      ssh ubuntu@xos "cd service-profile/cord-pod; make exampleservice"
     fi
 
     echo ""
     echo "(Temp workaround for bug in Synchronizer) Pause 60 seconds"
     sleep 60
-    ssh ubuntu@xos "cd xos/xos/configurations/cord-pod; make vtn"
+    ssh ubuntu@xos "cd service-profile/cord-pod; make vtn"
 }
 
 function setup_test_client() {
