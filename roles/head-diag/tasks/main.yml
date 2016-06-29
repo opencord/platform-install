@@ -50,10 +50,17 @@
 - name: ONOS diag collection - ONOS CLI
   shell: "sshpass -p 'karaf' ssh -p 8101 karaf@onos-cord {{ item }} > ~/{{ diag_dir }}/onos/{{ item | regex_replace('[^\\w-]', '_') }}"
   with_items:
-   - "cordvtn-nodes"
+   - "apps -s -a"
+   - "bundle:list"
    - "cordvtn-node-check nova-compute-1"
-   - "hosts"
+   - "cordvtn-nodes"
    - "dhcp-list"
+   - "flows"
+   - "hosts"
+   - "log:display"
+   - "nodes"
+   - "ports"
+   - "summary"
 
 - name: XOS diag collection
   shell: "ssh ubuntu@xos-1 \"{{ item }}\" > ~/{{ diag_dir }}/xos/{{ item | regex_replace('[^\\w-]', '_')}}"

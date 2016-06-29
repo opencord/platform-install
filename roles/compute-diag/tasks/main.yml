@@ -14,4 +14,5 @@
    - "cat /etc/resolv.conf"
    - "ifconfig -a"
    - "route -n"
+   - "sudo ovs-vsctl show"
 
