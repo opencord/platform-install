@@ -15,6 +15,7 @@
   with_items:
     - onos-setup-playbook.yml
     - onos-docker-compose.yml
+    - fabric-docker-compose.yml
     - Dockerfile.xos-onos
     - onos-service
 

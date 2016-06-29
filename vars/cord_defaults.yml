@@ -155,6 +155,7 @@ head_vm_list:
     cpu: 2
     memMB: 4096
     diskGB: 40
+    docker_path: "cord"
 
   - name: "xos-1"
     aliases:

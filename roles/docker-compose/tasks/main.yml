@@ -17,7 +17,7 @@
     -a "docker-compose build chdir=cord"
 
 - name: Start ONOS
-  command: ansible onos-cord-1 -u ubuntu -m command \
+  command: ansible onos-cord-1:onos-fabric-1 -u ubuntu -m command \
     -a "docker-compose up -d chdir=cord"
 
 - name: Wait for xos_setup_playbook to complete
