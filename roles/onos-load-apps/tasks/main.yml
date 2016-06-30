@@ -11,3 +11,8 @@
   command: ansible xos-1 -u ubuntu -m shell \
     -a "cd ~/xos/containers/cord-apps; make {{ item }}; docker run xosproject/cord-app-{{ item }}"
   with_items: "{{ cord_apps }}"
+
+- name: Enable debugging for cord apps
+  shell: "sshpass -p 'karaf' ssh -p 8101 karaf@onos-cord-1 log:set DEBUG org.opencord.{{ item }}"
+  with_items: "{{ cord_apps }}"
+
