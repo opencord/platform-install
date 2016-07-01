@@ -1,0 +1,7 @@
+---
+# xos-compute-setup/tasks/main.yml
+#
+# Tell XOS that a new compute node has been added
+
+- name: ssh to XOS VM and run 'make new-nodes'
+  command: ssh ubuntu@xos "cd {{ service_profile_repo_dest }}/{{ xos_configuration }}/; make new-nodes"

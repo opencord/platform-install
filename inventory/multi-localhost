@@ -1,0 +1,11 @@
+[head]
+localhost
+
+[head:vars]
+ansible_ssh_user=admin
+
+# Add compute nodes here as they are provisioned
+[compute]
+
+[compute:vars]
+ansible_ssh_user=ubuntu

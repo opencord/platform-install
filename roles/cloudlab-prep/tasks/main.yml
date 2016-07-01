@@ -3,14 +3,14 @@
 
 - name: create directories to mount extra filesystems
   file:
-    dest={{ item }}
+    dest={{ item.mount }}
     state=directory
   with_items: "{{ cloudlab_extrafs }}"
 
 
 # FIXME: does not create lost+found, -q makes it fail without error...
 - name: Set up extra disk space
-  command: /usr/testbed/bin/mkextrafs -qf {{ item }}
-    creates={{ item }}/lost+found
+  command: /usr/testbed/bin/mkextrafs -r {{ item.dev }} -qf {{ item.mount }}
+    creates={{ item.mount }}/lost+found
   with_items: "{{ cloudlab_extrafs }}"
 

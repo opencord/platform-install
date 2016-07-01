@@ -10,9 +10,19 @@
   with_items:
     - python-yaml
 
+- name: Add ubuntu user
+  user:
+   name=ubuntu
+   groups=admin
+
 - name: Add head node ubuntu user key
   authorized_key:
     user=ubuntu
+    key="{{ hostvars[groups['head'][0]]['sshkey']['stdout'] }}"
+
+- name: Add head node root user key
+  authorized_key:
+    user=root
     key="{{ hostvars[groups['head'][0]]['sshkey']['stdout'] }}"
 
 - name: Add route via /etc/rc.local
@@ -22,9 +32,9 @@
     mode=0755
   notify:
     - run rc.local
+  when: not cord_provisioned
 
 - name: Create /var/lib/nova dir
   file:
     path=/var/lib/nova
     state=directory
-

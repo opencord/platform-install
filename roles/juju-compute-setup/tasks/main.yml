@@ -1,0 +1,62 @@
+---
+# roles/juju-compute-setup/main/tasks.yml
+
+# Code for this is in library/juju_facts.py
+- name: Obtain Juju Facts for creating machines
+  juju_facts:
+
+# For setwise operations on desired vs Juju state:
+# list of active juju_machines names: juju_machines.keys()
+# list of active juju_services names: juju_services.keys()
+
+- name: Add machines to Juju
+  command: "juju add-machine ssh:{{ item }}"
+  with_items: "{{ groups['compute'] | difference( juju_machines.keys() ) }}"
+
+# run this again, so machines will be in the juju_machines list
+- name: Obtain Juju Facts after machine creation
+  juju_facts:
+
+- name: Deploy nova-compute service if needed
+  command: "juju deploy {{ charm_versions[item] | default(item) }} --to {{ juju_machines[groups['compute'][0]]['machine_id'] }} --config={{ juju_config_path }}"
+  with_items: 
+    - "nova-compute"
+  when: '"nova-compute" not in juju_services.keys()'
+
+- name: Create relations between nova-compute and other services if needed
+  command: "juju add-relation '{{ item.0.name }}' '{{ item.1 }}'"
+  register: juju_relation
+  failed_when: "juju_relation|failed and 'relation already exists' not in juju_relation.stderr"
+  with_subelements:
+    - "{{ compute_relations }}"
+    - relations
+
+# run another time
+- name: Obtain Juju Facts after deploying nova-compute
+  juju_facts:
+  when: '"nova-compute" not in juju_services.keys()'
+
+- name: Add more nova-compute units
+  command: "juju add-unit nova-compute --to {{ juju_machines[item]['machine_id'] }}"
+  with_items: "{{ groups['compute'] | difference( juju_compute_nodes.keys() ) }}"
+
+- name: Pause to let Juju settle
+  pause:
+    prompt="Waiting for Juju..."
+    seconds=20
+
+# 160*15s = 2400s = 40m max wait
+- name: Wait for nova-compute nodes to come online
+  juju_facts:
+  until: item in juju_compute_nodes.keys() and juju_compute_nodes[item]['workload-status']['message'] == "Unit is ready"
+  retries: 160
+  delay: 15
+  with_items: "{{ groups['compute'] }}"
+
+- name: verify that the nodes appear in nova
+  action: shell bash -c "source ~/admin-openrc.sh; nova hypervisor-list | grep '{{ item }}'"
+  register: result
+  until: result | success
+  retries: 5
+  delay: 5
+  with_items: "{{ groups['compute'] }}"

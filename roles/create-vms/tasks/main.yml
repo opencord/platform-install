@@ -39,15 +39,19 @@
   template:
     src=eth0.cfg.j2
     dest={{ ansible_user_dir }}/eth0.cfg
+  when: not cord_provisioned
 
 - name: Copy eth0 interface config file to all VMs
   command: ansible services -b -u ubuntu -m copy -a "src={{ ansible_user_dir }}/eth0.cfg dest=/etc/network/interfaces.d/eth0.cfg owner=root group=root mode=0644"
+  when: not cord_provisioned
 
 - name: Restart eth0 interface on all VMs
   command: ansible services -b -u ubuntu -m shell -a "ifdown eth0 ; ifup eth0"
+  when: not cord_provisioned
 
 - name: Verify that we can log into every VM after restarting network interfaces
   command: ansible services -m ping -u ubuntu
+  when: not cord_provisioned
 
 # sshkey is registered in head-prep task
 - name: Enable root ssh login on VM's that require it

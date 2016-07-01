@@ -5,28 +5,28 @@
 # This is used by `scripts/single-node-pod.sh` for E2E testing.
 
 - name: Include vars
-  hosts: head
+  hosts: all
   tasks:
-  - include_vars: vars/cord_single_defaults.yml
+  - include_vars: vars/cord_defaults.yml
   - include_vars: vars/cord.yml
-  - include_vars: vars/cord_keystone.yml
+  - include_vars: vars/example_keystone.yml  # for testing
 
 - name: DNS Server and apt-cacher-ng Setup
   hosts: head
   become: yes
   roles:
-    - dns-nsd
-    - dns-unbound
+    - { role: dns-nsd, when: on_cloudlab }
+    - { role: dns-unbound, when: on_cloudlab }
     - apt-cacher-ng
 
 - name: Configure all hosts to use DNS server
-  hosts: head
+  hosts: all
   become: yes
   roles:
-    - dns-configure
+    - { role: dns-configure, when: on_cloudlab }
 
 - name: Prep systems
-  hosts: head
+  hosts: all
   become: yes
   roles:
     - common-prep
@@ -39,13 +39,12 @@
     - { role: config-virt, become: yes }
     - create-vms
 
-- name: Set up VM's, juju, simulate fabric
+- name: Set up VM's, juju, start ONOS and XOS
   hosts: head
   roles:
     - xos-vm-install
     - onos-vm-install
     - juju-setup
     - docker-compose
-    - simulate-fabric
-    - onos-load-apps
     - xos-start
+

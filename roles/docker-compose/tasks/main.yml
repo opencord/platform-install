@@ -29,5 +29,4 @@
 
 - name: Copy admin-openrc.sh into XOS container
   command: ansible xos-1 -u ubuntu -m copy \
-    -a "src=~/admin-openrc.sh dest=~/service-profile/{{ xos_configuration }}"
-
+    -a "src=~/admin-openrc.sh dest={{ service_profile_repo_dest }}/{{ xos_configuration }}"

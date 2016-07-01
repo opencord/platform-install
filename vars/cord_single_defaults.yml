@@ -1,9 +1,9 @@
 ---
 # vars/cord_defaults.yml
 
-# indicate that the nodes have been provisioned by CORD MaaS
-# Change or override for a multi-node install on CloudLab
-cord_provisioned: True
+# For a single-node case, we don't expect the node to already have been
+# provisioned by CORD MaaS.  It's just Ubuntu 14.04.
+cord_provisioned: False
 
 openstack_version: kilo
 
@@ -16,8 +16,6 @@ service_profile_repo_dest: "~/service-profile"
 xos_configuration: cord-pod
 
 xos_repo_branch: "master"
-
-xos_repo_dest: "~/xos"
 
 apt_cacher_name: apt-cache
 
@@ -176,6 +174,16 @@ head_vm_list:
     diskGB: 40
     docker_path: 'service-profile/cord-pod'
 
+  - name: "nova-compute-1"
+    service: "nova-compute"
+    root_ssh_login: true
+    aliases:
+      - "nova-compute"
+    ipv4_last_octet: 140
+    cpu: 6
+    memMB: 16384
+    diskGB: 240
+
 
 vm_service_list:
   - ceilometer
@@ -187,6 +195,7 @@ vm_service_list:
   - nova-cloud-controller
   - openstack-dashboard
   - rabbitmq-server
+  - nova-compute
 
 
 standalone_service_list:
@@ -229,7 +238,6 @@ service_relations:
   - name: "ceilometer:ceilometer-service"
     relations: [ "ceilometer-agent:ceilometer-service", ]
 
-compute_relations:
   - name: nova-compute
     relations: [ "ceilometer-agent", "glance", "nova-cloud-controller", "nagios", "nrpe", ]
 

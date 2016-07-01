@@ -47,6 +47,7 @@ function bootstrap() {
 }
 
 function setup_openstack() {
+    cd ~/openstack-cluster-setup
 
     extra_vars="xos_repo_url=$XOS_REPO_URL"
 
@@ -59,31 +60,9 @@ function setup_openstack() {
     ansible-playbook -i $INVENTORY cord-single-playbook.yml --extra-vars="$extra_vars"
 }
 
-function build_xos_docker_images() {
-    echo ""
-    echo "Checking out XOS branch $XOS_BRANCH"
-    ssh ubuntu@xos "cd xos; git config --global user.email 'ubuntu@localhost'; git config --global user.name 'XOS ExampleService'"
-    ssh ubuntu@xos "cd xos; git checkout $XOS_BRANCH"
-
-    echo "Rebuilding XOS containers"
-    ssh ubuntu@xos "cd xos/containers/xos; make base"
-    ssh ubuntu@xos "cd service-profile/cord-pod; make local_containers"
-}
-
 function setup_xos() {
 
-    echo "Setting up XOS, will take a few minutes"
-    ssh ubuntu@xos "cd service-profile/cord-pod; make"
-    echo ""
-    echo "Pause 2 minutes"
-    sleep 120
-
-    ssh ubuntu@xos "cd service-profile/cord-pod; make vtn; make fabric"
-    echo ""
-    echo "Pause 30 seconds"
-    sleep 30
-
-    ssh ubuntu@xos "cd service-profile/cord-pod; make cord; make cord-subscriber"
+    ssh ubuntu@xos "cd service-profile/cord-pod; make cord-subscriber"
 
     if [[ $EXAMPLESERVICE -eq 1 ]]
     then
@@ -263,7 +242,6 @@ setup_openstack
 
 if [[ $RUN_TEST -eq 1 ]]
 then
-  build_xos_docker_images
   setup_xos
   setup_test_client
   run_e2e_test
