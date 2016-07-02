@@ -49,7 +49,7 @@ function bootstrap() {
 function setup_openstack() {
     cd ~/openstack-cluster-setup
 
-    extra_vars="xos_repo_url=$XOS_REPO_URL"
+    extra_vars="xos_repo_url=$XOS_REPO_URL xos_repo_branch=$XOS_BRANCH"
 
     # check if running on cloudlab
     if [[ -x /usr/testbed/bin/mkextrafs ]]
