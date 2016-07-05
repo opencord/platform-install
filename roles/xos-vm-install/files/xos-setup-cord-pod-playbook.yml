@@ -49,12 +49,19 @@
         src=~/.ssh/id_rsa
         dest={{ service_profile_repo_dest }}/{{ xos_configuration }}/node_key
 
-    - name: download software image
+    - name: Download Glance VM images
       get_url:
         url={{ item.url }}
         checksum={{ item.checksum }}
         dest={{ service_profile_repo_dest }}/{{ xos_configuration }}/images/{{ item.name }}.img
       with_items: "{{ xos_images }}"
+
+    - name: Pull database and cord-app-build image
+      become: yes
+      command: docker pull {{ item }}
+      with_items:
+        - xosproject/xos-postgres
+        - xosproject/cord-app-build
 
     - name: Pull docker images for XOS
       when: not xos_container_rebuild
@@ -62,11 +69,11 @@
       command: docker pull {{ item }}
       with_items:
         - xosproject/xos-base
-        - xosproject/xos-postgres
 
     - name: Rebuild XOS containers
       when: xos_container_rebuild
       command: make {{ item }}
-        chdir="{{ service_profile_repo_dest }}/containers/xos/"
+        chdir="{{ xos_repo_dest }}/containers/xos/"
       with_items:
        - base
+
