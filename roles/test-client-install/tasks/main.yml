@@ -1,0 +1,14 @@
+---
+# test-client-install/tasks/main.yml
+
+- name: Copy over test-client ansible playbook
+  copy:
+    src=test-client-playbook.yml
+    dest={{ ansible_user_dir }}/test-client-playbook.yml
+
+- name: Run the test-client ansible playbook
+  command: ansible-playbook {{ ansible_user_dir }}/test-client-playbook.yml
+  async: 3600
+  poll: 0
+  register: test_client_playbook
+
