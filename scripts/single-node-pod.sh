@@ -76,14 +76,6 @@ function setup_xos() {
 }
 
 function setup_test_client() {
-    ssh ubuntu@nova-compute "sudo apt-get -y install lxc"
-
-    # Change default bridge
-    ssh ubuntu@nova-compute "sudo sed -i 's/lxcbr0/databr/' /etc/lxc/default.conf"
-
-    # Create test client
-    ssh ubuntu@nova-compute "sudo lxc-create -t ubuntu -n testclient"
-    ssh ubuntu@nova-compute "sudo lxc-start -n testclient"
 
     # Configure network interface inside of test client with s-tag and c-tag
     ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- ip link add link eth0 name eth0.222 type vlan id 222"
