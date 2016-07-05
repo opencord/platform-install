@@ -6,7 +6,7 @@ xos_repo_branch: "HEAD"
 
 xos_configuration: "devel"
 
-xos_container_rebuild: false
+xos_container_rebuild: True
 
 service_profile_repo_url: "https://gerrit.opencord.org/p/service-profile.git"
 service_profile_repo_dest: "~/service-profile"

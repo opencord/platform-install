@@ -34,7 +34,7 @@
 
 - name: Update apt cache
   command: ansible services -m apt -b -u ubuntu -a "update_cache=yes"
-  
+
 - name: Update software in all the VMs
   command: ansible services -m apt -b -u ubuntu -a "upgrade=dist"
 

@@ -1,0 +1,26 @@
+---
+- hosts: nova-compute-1
+  remote_user: ubuntu
+
+  tasks:
+    - name: Install software
+      apt:
+        name={{ item }}
+        update_cache=yes
+        cache_valid_time=3600
+      become: yes
+      with_items:
+       - lxc
+
+    # replaces: sudo sed -i 's/lxcbr0/databr/' /etc/lxc/default.conf
+    - name: set lxc bridge interface to be databr
+      become: yes
+      lineinfile:
+        dest: /etc/lxc/default.conf
+        regexp: "^lxc.network.link ="
+        line: "lxc.network.link = databr"
+
+    - name: Create testclient
+      become: yes
+      command: lxc-create -t ubuntu -n testclient
+

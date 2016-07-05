@@ -19,6 +19,8 @@ xos_repo_branch: "master"
 
 xos_repo_dest: "~/xos"
 
+xos_container_rebuild: True
+
 apt_cacher_name: apt-cache
 
 apt_ssl_sites:

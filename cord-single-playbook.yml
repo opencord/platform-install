@@ -44,6 +44,7 @@
   roles:
     - xos-vm-install
     - onos-vm-install
+    - { role: test-client-install, when: test_client_install }
     - juju-setup
     - docker-compose
     - simulate-fabric

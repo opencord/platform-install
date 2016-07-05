@@ -16,7 +16,7 @@ function cleanup_from_previous_test() {
     echo "Cleaning up files"
     rm -rf ~/.juju
     rm -f ~/.ssh/known_hosts
-    rm -rf ~/openstack-cluster-setup
+    rm -rf ~/platform-install
 
     echo "Cleaning up libvirt/dnsmasq"
     sudo rm -f /var/lib/libvirt/dnsmasq/xos-mgmtbr.leases
@@ -35,8 +35,8 @@ function bootstrap() {
     [ -e ~/.ssh/id_rsa ] || ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
     cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
-    git clone https://github.com/open-cloud/openstack-cluster-setup.git
-    cd ~/openstack-cluster-setup
+    git clone $SETUP_REPO_URL platform-install
+    cd ~/platform-install
     git checkout $SETUP_BRANCH
 
     sed -i "s/replaceme/`whoami`/" $INVENTORY
@@ -47,7 +47,7 @@ function bootstrap() {
 }
 
 function setup_openstack() {
-    cd ~/openstack-cluster-setup
+    cd ~/platform-install
 
     extra_vars="xos_repo_url=$XOS_REPO_URL xos_repo_branch=$XOS_BRANCH"
 
@@ -76,14 +76,20 @@ function setup_xos() {
 }
 
 function setup_test_client() {
-    ssh ubuntu@nova-compute "sudo apt-get -y install lxc"
 
-    # Change default bridge
-    ssh ubuntu@nova-compute "sudo sed -i 's/lxcbr0/databr/' /etc/lxc/default.conf"
+    # prep moved to roles/test-client-install
 
-    # Create test client
-    ssh ubuntu@nova-compute "sudo lxc-create -t ubuntu -n testclient"
-    ssh ubuntu@nova-compute "sudo lxc-start -n testclient"
+    # start the test client
+    echo "starting testclient"
+    ssh ubuntu@nova-compute "sudo lxc-start -n testclient -d"
+
+    i=0
+    until ssh ubuntu@nova-compute "sudo lxc-wait -n testclient -s RUNNING -t 60"
+    do
+      echo "Waited $i minutes for testclient to start"
+    done
+
+    echo "test client started, configuring testclient network"
 
     # Configure network interface inside of test client with s-tag and c-tag
     ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- ip link add link eth0 name eth0.222 type vlan id 222"
@@ -190,12 +196,13 @@ function run_diagnostics() {
 RUN_TEST=0
 EXAMPLESERVICE=0
 SETUP_BRANCH="master"
+SETUP_REPO_URL="https://github.com/opencord/platform-install"
 INVENTORY="inventory/single-localhost"
 XOS_BRANCH="master"
-XOS_REPO_URL="https://gerrit.opencord.org/xos"
+XOS_REPO_URL="https://github.com/opencord/xos"
 DIAGNOSTICS=1
 
-while getopts "b:dehi:r:ts:" opt; do
+while getopts "b:dehi:p:r:ts:" opt; do
   case ${opt} in
     b ) XOS_BRANCH=$OPTARG
       ;;
@@ -205,17 +212,20 @@ while getopts "b:dehi:r:ts:" opt; do
       ;;
     h ) echo "Usage:"
       echo "    $0                install OpenStack and prep XOS and ONOS VMs [default]"
-      echo "    $0 -b <branch>    build XOS containers using the <branch> branch of XOS git repo"
+      echo "    $0 -b <branch>    checkout <branch> of the xos git repo"
       echo "    $0 -d             don't run diagnostic collector"
       echo "    $0 -e             add exampleservice to XOS"
       echo "    $0 -h             display this help message"
       echo "    $0 -i <inv_file>  specify an inventory file (default is inventory/single-localhost)"
-      echo "    $0 -r <url>       use <url> to obtain the the XOS repo"
+      echo "    $0 -p <git_url>   use <git_url> to obtain the platform-install git repo"
+      echo "    $0 -r <git_url>   use <git_url> to obtain the xos git repo"
+      echo "    $0 -s <branch>    checkout <branch> of the platform-install git repo"
       echo "    $0 -t             do install, bring up cord-pod configuration, run E2E test"
-      echo "    $0 -s <branch>    use branch <branch> of the openstack-cluster-setup git repo"
       exit 0
       ;;
     i ) INVENTORY=$OPTARG
+      ;;
+    p ) SETUP_REPO_URL=$OPTARG
       ;;
     r ) XOS_REPO_URL=$OPTARG
       ;;
