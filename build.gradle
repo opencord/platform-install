@@ -115,7 +115,7 @@ tasks.addRule(new DockerPublishRule(project))
 tasks.addRule(new DockerTagRule(project))
 tasks.addRule(new GitSubmoduleUpdateRule(project))
 
-task deploy (type: Exec) {
+task deployPlatform (type: Exec) {
     dependsOn copyAnsibleInventory
 
     println "Using deployment config: $deployConfig"
