@@ -1,0 +1,40 @@
+- name: JQ is present
+  apt:
+    name: jq
+    force: yes
+  tags: [common]
+
+- name: Host is present
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "^{{ item.host_ip }}"
+    line: "{{ item.host_ip }} {{ item.host_name }}"
+  with_items: "{{ hosts }}"
+  tags: [common]
+
+- name: Latest apt packages
+  apt:
+    name: "{{ item }}"
+  with_items: "{{ use_latest_for }}"
+  tags: [common]
+
+- name: Services are not running
+  service:
+    name: "{{ item }}"
+    state: stopped
+  ignore_errors: yes
+  with_items: "{{ obsolete_services }}"
+  tags: [common]
+
+- name: Ensure known_hosts file is absent
+  file:
+    path: /home/vagrant/.ssh/known_hosts
+    state: absent
+
+- name: Disable Known Host Checking
+  copy:
+    src: files/ssh_config
+    dest: /home/vagrant/.ssh/config
+    owner: vagrant
+    group: vagrant
+    mode: 0600

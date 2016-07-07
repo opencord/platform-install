@@ -1,0 +1,52 @@
+# Deployment configuration for a single-node physical hardware POD
+---
+seedServer:
+
+  # Put the IP of your CloudLab node here
+  ip: '128.104.222.83'
+
+  # User name and password used by Ansible to connect to the host for remote
+  # provisioning.   Put your CloudLab username here; also add your password or
+  # run ssh-agent to allow for password-less SSH login.
+  user: 'acb'
+  password: 'onos_test'
+
+  #
+  # *** For a single-node pod on CloudLab, you don't need to change anything below here ***
+  #
+
+  # Network address information for the head node:
+  #
+  # fabric_ip     - the IP address and mask bits to be used to configure the network
+  #                 interface connected to the leaf - spine fabric
+  #
+  # management_ip - the IP address and mask bits to be used to configure the network
+  #                 interface connecting the head node to the POD internal
+  #                 management network. The head node will deliver DHCP addresses to
+  #                 the other compute nodes over this interface
+  #
+  # external_ip   - the IP address and mask bits to be used to configure the network
+  #                 interface connecting the head node (and the POD) to the
+  #                 Internet. All traffic in the POD to external hosts will be
+  #                 NAT-ed through this interface
+  management_ip: '10.6.0.1/24'
+  management_iface: 'eth2'
+  external_iface: 'eth0'
+  skipTags:
+    - 'interface_config'
+    - 'switch_support'
+  extraVars:
+    - 'on_cloudlab=True'
+
+docker:
+  imageVersion: candidate
+
+otherNodes:
+  # Experimental
+  #
+  # Specifies the subnet and address range that will be used to allocate IP addresses
+  # to the compute nodes as they are deployed into the POD.
+  fabric:
+    network: 10.6.1.1/24
+    range_low: 10.6.1.2
+    range_high: 10.6.1.253
