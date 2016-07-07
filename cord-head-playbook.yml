@@ -15,15 +15,15 @@
   hosts: head
   become: yes
   roles:
-    - { role: dns-nsd, when: on_cloudlab }
-    - { role: dns-unbound, when: on_cloudlab }
+    - { role: dns-nsd, when: not cord_provisioned }
+    - { role: dns-unbound, when: not cord_provisioned }
     - apt-cacher-ng
 
 - name: Configure all hosts to use DNS server
   hosts: all
   become: yes
   roles:
-    - { role: dns-configure, when: on_cloudlab }
+    - { role: dns-configure, when: not cord_provisioned }
 
 - name: Prep systems
   hosts: all
