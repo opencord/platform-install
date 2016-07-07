@@ -32,7 +32,7 @@
     -a "src=~/admin-openrc.sh dest={{ service_profile_repo_dest }}/{{ xos_configuration }}"
 
 - name: Wait for test client to complete installation
-  when: test_client_install
+  when: test_client_install is defined and test_client_install
   async_status: jid={{ test_client_playbook.ansible_job_id }}
   register: test_client_playbook_result
   until: test_client_playbook_result.finished
