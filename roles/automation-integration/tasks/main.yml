@@ -1,0 +1,78 @@
+---
+- name: Ensure Ansible Directories
+  become: yes
+  file:
+    path=/etc/maas/ansible/{{ item }}
+    state=directory
+    owner=maas
+    group=maas
+    mode=0755
+  with_items:
+    - roles
+    - vars
+    - library
+
+- name: Ensure XOS Cluster Enlist Script
+  become: yes
+  template:
+    src=files/do-enlist-compute-node
+    dest=/etc/maas/ansible/do-enlist-compute-node
+    owner=maas
+    group=maas
+    mode=0755
+
+- name: Copy Compute Node Playbook
+  become: yes
+  copy:
+    src=../../../cord-compute-playbook.yml
+    dest=/etc/maas/ansible
+    owner=maas
+    group=maas
+    mode=0644
+
+- name: Copy Required Ansible Libraries
+  become: yes
+  copy:
+    src=../../../library/{{ item }}
+    dest=/etc/maas/ansible/library
+    owner=maas
+    group=maas
+    mode=0644
+  with_items:
+    - juju_facts.py
+
+- name: Copy Required Ansible Roles
+  become: yes
+  copy:
+    src=../../../roles/{{ item }}
+    dest=/etc/maas/ansible/roles
+    owner=maas
+    group=maas
+    mode=0755
+  with_items:
+    - common-prep
+    - cloudlab-prep
+    - compute-prep
+    - dns-configure
+    - head-prep
+    - juju-compute-setup
+    - xos-compute-setup
+
+- name: Copy Required Ansible Variables
+  become: yes
+  copy:
+    src=../../../vars/{{ item }}
+    dest=/etc/maas/ansible/vars
+    owner=maas
+    group=maas
+    mode=0644
+  with_items:
+    - cord_defaults.yml
+    - cord.yml
+    - example_keystone.yml
+
+- name: Ensure JuJu and XOS Compute Node Provisioning
+  become: yes
+  lineinfile:
+    dest=/etc/maas/ansible/do-ansible
+    line='/etc/maas/ansible/do-enlist-compute-node $ID $HOSTNAME || exit $?'

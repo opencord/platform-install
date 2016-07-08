@@ -48,3 +48,8 @@
     - docker-compose
     - xos-start
 
+- name: Set up Automated Compute Node Provisioning
+  hosts: head
+  roles:
+    - { role: automation-integration, when on_maas }
+
