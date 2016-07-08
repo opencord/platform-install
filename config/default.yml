@@ -1,47 +1,15 @@
-# Deployment configuration for VirtualBox based head node.
-#
-# This deployment configuration can be utilized with the head node created
-# via `vargrant up headnode` from the gerrit.opencord.org/maas repository.
+# Deployment configuration for a single-node physical hardware POD
 ---
 seedServer:
-  ip: '10.100.198.201'
 
-  # User name and password used by Ansible to connect to the host for remote
-  # provisioning
-  user: 'vagrant'
-  password: 'vagrant'
+  # Put the IP of your target server here
+  ip: '1.2.3.4'
 
-  # Specifies tasks within the head node provisioning not to execute, including:
-  #
-  # switch_support -   don't download the switch ONL images as there are no
-  #                    switches in this configuration
-  # interface_config - don't update the network configuration of the headnode
-  #                    as it is configured by vagrant to the proper settings
-  skipTags:
-    - 'switch_support'
-    - 'interface_config'
+  # User name and password used by Ansible to connect to the target server for remote
+  # provisioning.   You can also run ssh-agent to allow for password-less SSH login.
+  user: 'myuser'
+  password: 'cord_test'
 
-  management_ip: '10.1.0.1/24'
-  management_iface: 'eth2'
-  external_iface: 'eth0'
-  management_network: '10.1.0.0/24'
-
-  # Specifies the extra settings required for this configuration
-  #
-  # virtualbox_support - install support for managing virtual box based
-  #                      compute nodes
-  virtualbox_support: 1
-  power_helper_user: 'cord'
-
-docker:
-  imageVersion: candidate
-
-otherServers:
-  # Specifies the configuration for dynamically added compute nodes
-  location: 'http://gerrit.opencord.org/maas'
-  rolesPath: 'roles'
-  role: 'compute-node'
-  fabric:
-    network: '10.1.1.1/24'
-    range_low: '10.1.1.2'
-    range_high: '10.1.1.253'
+  # Uncomment if the target server is a CloudLab machine
+  #extraVars:
+  #  - 'on_cloudlab=True'
