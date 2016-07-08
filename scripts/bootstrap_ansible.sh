@@ -21,6 +21,6 @@ echo "Installing Ansible..."
 apt-get install -y software-properties-common
 apt-add-repository ppa:ansible/ansible
 apt-get update
-apt-get install -y ansible python-netaddr
+apt-get install -y ansible
 cp /platform-install/ansible.cfg /etc/ansible/ansible.cfg
 
