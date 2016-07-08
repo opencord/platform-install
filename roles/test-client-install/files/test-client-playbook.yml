@@ -22,5 +22,4 @@
 
     - name: Create testclient
       become: yes
-      command: lxc-create -t ubuntu -n testclient
-
+      shell: lxc-ls | grep testclient || lxc-create -t ubuntu -n testclient
