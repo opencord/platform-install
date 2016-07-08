@@ -1,5 +1,6 @@
 # Installing a CORD POD on a Single Physical Host
-[*This description is for bringing up a CORD POD on virtual machines on a single physical host. The purpose of this solution is to enable those interested in understanding how CORD works to examine and interact with a running CORD environment.*]
+[*This description is for bringing up a CORD POD on virtual machines on a single physical host. The purpose
+of this solution is to enable those interested in understanding how CORD works to examine and interact with a running CORD environment.*]
 
 This tutorial walks you through the steps to bring up a CORD "POD" on a single server using multiple virtual machines.
 
@@ -30,8 +31,8 @@ week or two, you wish to continue using CloudLab to experiment with or develop C
 then you must apply for your own separate CloudLab project.*]
 
 Once your account is approved, start an experiment using the `OnePC-Ubuntu14.04.4` profile
-on either the Wisconsin or Clemson cluster.  This will provide you with a target server
-meeting the above requirements temporarily.
+on either the Wisconsin or Clemson cluster.  This will provide you with a temporary target server
+meeting the above requirements.
 
 Refer to the [CloudLab documentation](https://docs.cloudlab.us) for more information.
 
