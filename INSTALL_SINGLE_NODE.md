@@ -38,37 +38,46 @@ Refer to the [CloudLab documentation](https://docs.cloudlab.us) for more informa
 
 ## Bring up the developer environment
 On the build host, clone the
-[`platform-install`](https://gerrit.opencord.org/platform-install) repository
+[`cord`](https://gerrit.opencord.org/cord) repository
 anonymously and switch into its top directory:
 
 ```
-git clone https://gerrit.opencord.org/platform-install
-cd platform-install
+git clone https://gerrit.opencord.org/cord
+cd cord
 ```
 
 Bring up the development Vagrant box.  This will take a few minutes, depending on your
 connection speed:
 
 ```
-vagrant up
+vagrant up corddev
 ```
 
 Login to the Vagrant box:
 
 ```
-vagrant ssh
+vagrant ssh corddev
 ```
 
-Switch to the `platform-install` directory.
+Switch to the `/cord` directory.
 
 ```
-cd /platform-install
+cd /cord
 ```
+
+Fetch the sub-modules required by CORD:
+
+```
+./gradlew fetch
+```
+
+Note that the above steps are standard for installing a single-node or multi-node CORD POD.
 
 ## Prepare the configuration file
 
-Edit the configuration file `config/default.yml`.  Add the IP address of your target
-server as well as the username / password for accessing the server.  
+Edit the configuration file `/cord/components/platform-install/config/default.yml`.  Add the IP address of your target
+server as well as the `username / password for accessing the server.  You can skip adding the password if you can SSH 
+to the target server from inside the Vagrant VM as `username` without one (e.g., by running `ssh-agent`).
 
 If your target server is a CloudLab machine, uncomment the following two lines in the
 configuration file:
@@ -76,6 +85,12 @@ configuration file:
 ```
 #extraVars:
 #  - 'on_cloudlab=True'
+```
+
+Edit `/cord/gradle.properties` to add the following line:
+
+```
+deployConfig=/cord/components/platform-install/config/default.yml
 ```
 
 ## Deploy the single-node CORD POD on the target server
@@ -90,9 +105,6 @@ Deploy the CORD software to the the target server and configure it to form a run
 > This command uses an Ansible playbook (cord-single-playbook.yml) to install
 > OpenStack services, ONOS, and XOS in VMs on the target server.  It also brings up
 > a compute node as a VM.
->
-> (You *could* also run the above Ansible playbook directly, but Gradle is the
-> top-level build tool of CORD and so we use it here for consistency.)
 
 Note that this step usually takes *at least an hour* to complete.  Be patient!
 
