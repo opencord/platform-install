@@ -76,7 +76,7 @@ Note that the above steps are standard for installing a single-node or multi-nod
 ## Prepare the configuration file
 
 Edit the configuration file `/cord/components/platform-install/config/default.yml`.  Add the IP address of your target
-server as well as the `username / password for accessing the server.  You can skip adding the password if you can SSH 
+server as well as the `username / password` for accessing the server.  You can skip adding the password if you can SSH
 to the target server from inside the Vagrant VM as `username` without one (e.g., by running `ssh-agent`).
 
 If your target server is a CloudLab machine, uncomment the following two lines in the
