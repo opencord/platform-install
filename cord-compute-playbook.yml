@@ -12,7 +12,7 @@
   hosts: all
   become: yes
   roles:
-    - { role: dns-configure, when: not cord_provisioned }
+    - { role: dns-configure, when: not on_maas }
 
 - name: Prep systems
   hosts: compute

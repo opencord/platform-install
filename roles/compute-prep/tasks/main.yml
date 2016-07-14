@@ -32,7 +32,7 @@
     mode=0755
   notify:
     - run rc.local
-  when: not cord_provisioned
+  when: not on_maas
 
 - name: Create /var/lib/nova dir
   file:
