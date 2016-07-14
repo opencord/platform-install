@@ -3,7 +3,7 @@
 
 # For a single-node case, we don't expect the node to already have been
 # provisioned by CORD MaaS.  It's just Ubuntu 14.04.
-cord_provisioned: False
+on_maas: False
 
 openstack_version: kilo
 

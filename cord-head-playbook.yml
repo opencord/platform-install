@@ -15,15 +15,15 @@
   hosts: head
   become: yes
   roles:
-    - { role: dns-nsd, when: not cord_provisioned }
-    - { role: dns-unbound, when: not cord_provisioned }
+    - { role: dns-nsd, when: not on_maas }
+    - { role: dns-unbound, when: not on_maas }
     - apt-cacher-ng
 
 - name: Configure all hosts to use DNS server
   hosts: all
   become: yes
   roles:
-    - { role: dns-configure, when: not cord_provisioned }
+    - { role: dns-configure, when: not on_maas }
 
 - name: Prep systems
   hosts: all
@@ -51,5 +51,5 @@
 - name: Set up Automated Compute Node Provisioning
   hosts: head
   roles:
-    - { role: automation-integration, when on_maas }
+    - { role: automation-integration, when: on_maas }
 

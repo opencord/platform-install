@@ -1,9 +1,8 @@
 ---
 # vars/cord_defaults.yml
 
-# indicate that the nodes have been provisioned by CORD MaaS
-# Change or override for a multi-node install on CloudLab
-cord_provisioned: True
+# turn this off, or override when running playbook with --extra-vars="on_maas=False"
+on_maas: True
 
 openstack_version: kilo
 
