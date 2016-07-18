@@ -74,6 +74,8 @@ Finally, we install the appropriate software in the VMs. This is a large, time c
 * onos-load-apps
 * xos-start
 
+Juju is leveraged to perform the OpenStack portion of the install. Cord specific juju charm changes are documented in [Internals of the CORD Build Process](https://wiki.opencord.org/display/CORD/Internals+of+the+CORD+Build+Process).
+
 ## Starting XOS
 
 The final ansible role executed by platform-install is to start XOS. This uses the XOS `service-profile` repository to bring up a stack of CORD services. 
