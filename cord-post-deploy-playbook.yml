@@ -1,0 +1,16 @@
+---
+# Tests single node cord-pod XOS configuration
+
+- name: Include vars
+  hosts: head
+  tasks:
+  - include_vars: vars/cord_single_defaults.yml
+  - include_vars: vars/cord.yml
+  - include_vars: vars/example_keystone.yml
+
+- name: Run post-deploy test
+  hosts: head
+  become: no
+  roles:
+    - post-deploy-tests
+
