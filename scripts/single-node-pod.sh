@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+!/usr/bin/env bash
 
 function cleanup_from_previous_test() {
     echo "## Cleanup ##"
@@ -40,7 +40,6 @@ function bootstrap() {
     git checkout $SETUP_BRANCH
 
     sed -i "s/replaceme/`whoami`/" $INVENTORY
-    cp vars/example_keystone.yml vars/cord_keystone.yml
 
     # Log into the local node once to get host key
     ssh -o StrictHostKeyChecking=no localhost "ls > /dev/null"
@@ -62,90 +61,19 @@ function setup_openstack() {
 
 function setup_xos() {
 
-    ssh ubuntu@xos "cd service-profile/cord-pod; make cord-subscriber"
-
     if [[ $EXAMPLESERVICE -eq 1 ]]
     then
       ssh ubuntu@xos "cd service-profile/cord-pod; make exampleservice"
+
+      echo "(Temp workaround for bug in Synchronizer) Pause 60 seconds"
+      sleep 60
+      ssh ubuntu@xos "cd service-profile/cord-pod; make vtn"
     fi
 
-    echo ""
-    echo "(Temp workaround for bug in Synchronizer) Pause 60 seconds"
-    sleep 60
-    ssh ubuntu@xos "cd service-profile/cord-pod; make vtn"
 }
 
-function setup_test_client() {
-
-    # prep moved to roles/test-client-install
-
-    # start the test client
-    echo "starting testclient"
-    ssh ubuntu@nova-compute "sudo lxc-start -n testclient -d"
-
-    i=0
-    until ssh ubuntu@nova-compute "sudo lxc-wait -n testclient -s RUNNING -t 60"
-    do
-      echo "Waited $i minutes for testclient to start"
-    done
-
-    echo "test client started, configuring testclient network"
-
-    # Configure network interface inside of test client with s-tag and c-tag
-    ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- ip link add link eth0 name eth0.222 type vlan id 222"
-    ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- ip link add link eth0.222 name eth0.222.111 type vlan id 111"
-    ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- ifconfig eth0.222 up"
-    ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- ifconfig eth0.222.111 up"
-}
-
-function run_e2e_test() {
-    source ~/admin-openrc.sh
-
-    echo "*** Wait for vSG VM to come up"
-    i=0
-
-    until nova list --all-tenants|grep 'vsg.*ACTIVE' > /dev/null
-    do
-      sleep 60
-      (( i += 1 ))
-      echo "Waited $i minutes"
-    done
-
-    # get mgmt IP address
-    ID=$( nova list --all-tenants|grep mysite_vsg|awk '{print $2}' )
-    MGMTIP=$( nova interface-list $ID|grep 172.27|awk '{print $8}' )
-
-    echo ""
-    echo "*** ssh into vsg VM, wait for Docker container to come up"
-    i=0
-    until ssh -o ProxyCommand="ssh -W %h:%p ubuntu@nova-compute" ubuntu@$MGMTIP "sudo docker ps|grep vcpe" > /dev/null
-    do
-      sleep 60
-      (( i += 1 ))
-      echo "Waited $i minutes"
-    done
-
-    echo ""
-    echo "*** Run dhclient in test client"
-
-    ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- dhclient eth0.222.111" > /dev/null
-
-    echo ""
-    echo "*** Routes in test client"
-    ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- route -n"
-
-    echo ""
-    echo "*** Test external connectivity in test client"
-    ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- ping -c 3 8.8.8.8"
-
-    echo ""
-    if [ $? -eq 0 ]
-    then
-      echo "*** [PASSED] End-to-end connectivity test"
-    else
-      echo "*** [FAILED] End-to-end connectivity test"
-      exit 1
-    fi
+function run_e2e_test () {
+    ansible-playbook -i $INVENTORY cord-post-deploy-playbook.yml
 }
 
 function run_exampleservice_test () {
@@ -252,11 +180,11 @@ setup_openstack
 
 if [[ $RUN_TEST -eq 1 ]]
 then
-  setup_xos
-  setup_test_client
   run_e2e_test
+
   if [[ $EXAMPLESERVICE -eq 1 ]]
   then
+    setup_xos
     run_exampleservice_test
   fi
 fi
