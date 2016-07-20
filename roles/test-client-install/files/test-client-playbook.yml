@@ -9,6 +9,10 @@
         update_cache=yes
         cache_valid_time=3600
       become: yes
+      register: result
+      until: result | success
+      retries: 15
+      delay: 60
       with_items:
        - lxc
 
