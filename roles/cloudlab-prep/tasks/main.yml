@@ -13,4 +13,8 @@
   command: /usr/testbed/bin/mkextrafs -r {{ item.dev }} -qf {{ item.mount }}
     creates={{ item.mount }}/lost+found
   with_items: "{{ cloudlab_extrafs }}"
+  register: result
+  until: result | success
+  retries: 3
+  delay: 5
 
