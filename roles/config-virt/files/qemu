@@ -1,0 +1,40 @@
+#!/bin/sh
+
+SHELL="/bin/bash"
+
+NIC=$( route|grep default|awk '{print $NF}' )
+
+NAME="${1}"
+OP="${2}"
+SUBOP="${3}"
+ARGS="${4}"
+
+add_rule() {
+    TABLE=$1
+    CHAIN=$2
+    ARGS=$3
+    iptables -t $TABLE -C $CHAIN $ARGS
+    if [ "$?" -ne 0 ]
+    then
+        iptables -t $TABLE -I $CHAIN 1 $ARGS
+    fi
+}
+
+add_port_fwd_rule() {
+    DPORT=$1
+    VMIP=$2
+    TOPORT=$3
+
+    add_rule "nat" "PREROUTING" "-p tcp -i $NIC --dport $DPORT -j DNAT --to-destination $VMIP:$TOPORT"
+}
+
+if [ "$OP" = "start" ]
+then
+    XOS=$( getent hosts xos | awk '{print $1}' )
+    if [ -n "$XOS" ]
+    then
+	add_port_fwd_rule 80 $XOS 80
+    fi
+    add_rule "filter" "FORWARD" "-p tcp --dport 80 -j ACCEPT"
+fi
+
