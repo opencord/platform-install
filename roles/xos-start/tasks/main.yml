@@ -3,11 +3,11 @@
 
 - name: Build XOS containers
   command: ansible xos-1 -u ubuntu -m shell \
-    -a "bash -c \"cd {{ service_profile_repo_dest }}/{{ xos_configuration }}; make local_containers |& tee xos-build.out\""
+    -a "bash -c \"set -o pipefail; cd {{ service_profile_repo_dest }}/{{ xos_configuration }}; make local_containers |& tee xos-build.out\""
 
 - name: Onboard services and start XOS
   command: ansible xos-1 -u ubuntu -m shell \
-    -a "bash -c \"cd {{ service_profile_repo_dest }}/{{ xos_configuration }}; make xos |& tee xos-onboard.out\""
+    -a "bash -c \"set -o pipefail; cd {{ service_profile_repo_dest }}/{{ xos_configuration }}; make xos |& tee xos-onboard.out\""
 
 - name: Pause to let XOS initialize
   pause: seconds=120
