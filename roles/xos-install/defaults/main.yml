@@ -3,10 +3,10 @@
 
 xos_repo_url: "https://gerrit.opencord.org/xos"
 xos_repo_dest: "~/xos"
-xos_repo_branch: "HEAD"
+xos_repo_branch: "cord-1.0"
 xos_configuration: "devel"
 xos_container_rebuild: false
 
 service_profile_repo_url: "https://gerrit.opencord.org/p/service-profile.git"
 service_profile_repo_dest: "~/service-profile"
-service_profile_repo_branch: "HEAD"
+service_profile_repo_branch: "cord-1.0"
