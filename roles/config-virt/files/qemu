@@ -33,7 +33,7 @@ then
     XOS=$( getent hosts xos | awk '{print $1}' )
     if [ -n "$XOS" ]
     then
-	add_port_fwd_rule 80 $XOS 80
+	add_port_fwd_rule 8888 $XOS 80
     fi
     add_rule "filter" "FORWARD" "-p tcp --dport 80 -j ACCEPT"
 fi
