@@ -12,9 +12,7 @@ juju_config_path: /usr/local/src/juju_config.yml
 
 service_profile_repo_dest: "~/service-profile"
 
-xos_configuration: cord-pod
-
-xos_repo_branch: "master"
+xos_configuration: cord-pod-ansible
 
 xos_repo_dest: "~/xos"
 
