@@ -48,7 +48,14 @@ function bootstrap() {
 function setup_openstack() {
     cd ~/platform-install
 
-    extra_vars="xos_repo_url=$XOS_REPO_URL xos_repo_branch=$XOS_BRANCH"
+    extra_vars="single_node_pod_script=true"
+
+    if [[ "$XOS_REPO_URL" != "" ]]; then
+        extra_vars="$extra_vars xos_repo_url=$XOS_REPO_URL"
+    fi
+    if [[ "$XOS_BRANCH" != "" ]]; then 
+        extra_vars="$extra_vars xos_repo_branch=$XOS_BRANCH"
+    fi
 
     # check if running on cloudlab
     if [[ -x /usr/testbed/bin/mkextrafs ]]
@@ -126,8 +133,6 @@ EXAMPLESERVICE=0
 SETUP_BRANCH="master"
 SETUP_REPO_URL="https://github.com/opencord/platform-install"
 INVENTORY="inventory/single-localhost"
-XOS_BRANCH="master"
-XOS_REPO_URL="https://github.com/opencord/xos"
 DIAGNOSTICS=1
 
 while getopts "b:dehi:p:r:ts:" opt; do
