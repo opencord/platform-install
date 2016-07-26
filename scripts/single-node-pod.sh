@@ -83,7 +83,7 @@ INVENTORY="inventory/single-localhost"
 DIAGNOSTICS=1
 CLEANUP=0
 
-while getopts "b:dehi:p:r:ts:" opt; do
+while getopts "b:cdehi:p:r:ts:" opt; do
   case ${opt} in
     b ) XOS_BRANCH=$OPTARG
       ;;
