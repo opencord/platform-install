@@ -13,7 +13,7 @@ juju_config_path: /usr/local/src/juju_config.yml
 
 service_profile_repo_dest: "~/service-profile"
 
-xos_configuration: cord-pod-ansible
+xos_configuration: cord-pod
 
 xos_container_rebuild: True
 
