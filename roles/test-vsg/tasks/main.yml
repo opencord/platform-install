@@ -1,5 +1,5 @@
 ---
-# post-deploy-tasks/tasks/main.yml
+# test-vsg/tasks/main.yml
 #
 # Run tests to check that the single-node deployment has worked
 
