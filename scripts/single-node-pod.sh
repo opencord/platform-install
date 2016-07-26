@@ -66,60 +66,8 @@ function setup_openstack() {
     ansible-playbook -i $INVENTORY cord-single-playbook.yml --extra-vars="$extra_vars"
 }
 
-function setup_xos() {
-
-    if [[ $EXAMPLESERVICE -eq 1 ]]
-    then
-      ssh ubuntu@xos "cd service-profile/cord-pod; make exampleservice"
-
-      echo "(Temp workaround for bug in Synchronizer) Pause 60 seconds"
-      sleep 60
-      ssh ubuntu@xos "cd service-profile/cord-pod; make vtn"
-    fi
-
-}
-
 function run_e2e_test () {
     ansible-playbook -i $INVENTORY cord-post-deploy-playbook.yml
-}
-
-function run_exampleservice_test () {
-    source ~/admin-openrc.sh
-
-    echo "*** Wait for exampleservice VM to come up."
-    echo "!!! NOTE that currently the VM will only be created after you login"
-    echo "!!! to XOS and manually create an ExampleService tenant."
-    i=0
-    until nova list --all-tenants|grep exampleservice.*ACTIVE > /dev/null
-    do
-      sleep 60
-	    (( i += 1 ))
-	    echo "Waited $i minutes"
-    done
-
-    # get mgmt IP address
-    ID=$( nova list --all-tenants|grep mysite_exampleservice|awk '{print $2}' )
-    MGMTIP=$( nova interface-list $ID|grep 172.27|awk '{print $8}' )
-    PUBLICIP=$( nova interface-list $ID|grep 10.168|awk '{print $8}' )
-
-    echo ""
-    echo "*** ssh into exampleservice VM, wait for Apache come up"
-    i=0
-    until ssh -o ProxyCommand="ssh -W %h:%p ubuntu@nova-compute" ubuntu@$MGMTIP "ls /var/run/apache2/apache2.pid"
-    do
-      sleep 60
-      (( i += 1 ))
-      echo "Waited $i minutes"
-    done
-
-
-    echo ""
-    echo "*** Install curl in test client"
-    ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- apt-get -y install curl"
-
-    echo ""
-    echo "*** Test connectivity to ExampleService from test client"
-    ssh ubuntu@nova-compute "sudo lxc-attach -n testclient -- curl -s http://$PUBLICIP"
 }
 
 function run_diagnostics() {
@@ -129,25 +77,25 @@ function run_diagnostics() {
 
 # Parse options
 RUN_TEST=0
-EXAMPLESERVICE=0
 SETUP_BRANCH="master"
 SETUP_REPO_URL="https://github.com/opencord/platform-install"
 INVENTORY="inventory/single-localhost"
 DIAGNOSTICS=1
+CLEANUP=0
 
 while getopts "b:dehi:p:r:ts:" opt; do
   case ${opt} in
     b ) XOS_BRANCH=$OPTARG
       ;;
-    d ) DIAGNOSTICS=0
+    c ) CLEANUP=1
       ;;
-    e ) EXAMPLESERVICE=1
+    d ) DIAGNOSTICS=0
       ;;
     h ) echo "Usage:"
       echo "    $0                install OpenStack and prep XOS and ONOS VMs [default]"
       echo "    $0 -b <branch>    checkout <branch> of the xos git repo"
+      echo "    $0 -c             cleanup from previous test"
       echo "    $0 -d             don't run diagnostic collector"
-      echo "    $0 -e             add exampleservice to XOS"
       echo "    $0 -h             display this help message"
       echo "    $0 -i <inv_file>  specify an inventory file (default is inventory/single-localhost)"
       echo "    $0 -p <git_url>   use <git_url> to obtain the platform-install git repo"
@@ -173,7 +121,7 @@ while getopts "b:dehi:p:r:ts:" opt; do
 done
 
 # What to do
-if [[ $RUN_TEST -eq 1 ]]
+if [[ $CLEANUP -eq 1 ]]
 then
   cleanup_from_previous_test
 fi
@@ -186,12 +134,6 @@ setup_openstack
 if [[ $RUN_TEST -eq 1 ]]
 then
   run_e2e_test
-
-  if [[ $EXAMPLESERVICE -eq 1 ]]
-  then
-    setup_xos
-    run_exampleservice_test
-  fi
 fi
 
 if [[ $DIAGNOSTICS -eq 1 ]]

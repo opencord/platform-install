@@ -8,9 +8,9 @@
   - include_vars: vars/cord.yml
   - include_vars: vars/example_keystone.yml
 
-- name: Run post-deploy test
+- name: Run post-deploy tests
   hosts: head
   become: no
   roles:
-    - post-deploy-tests
-
+    - test-vsg
+    - test-exampleservice
