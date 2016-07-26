@@ -9,9 +9,11 @@
 - name: Compute node diag collection
   shell: "{{ item }} > /tmp/{{ hostvars[groups['head'][0]]['diag_dir'] }}/{{ inventory_hostname }}/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
+   - "date"
    - "arp -n"
    - "brctl show"
    - "cat /etc/resolv.conf"
+   - "cat /etc/lsb-release"
    - "ifconfig -a"
    - "route -n"
    - "sudo ovs-vsctl show"
