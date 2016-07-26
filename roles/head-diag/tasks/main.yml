@@ -6,20 +6,22 @@
     dest="~/{{ diag_dir }}/{{ item }}"
     state=directory
   with_items:
-  - net
+  - head
   - juju
   - openstack
   - onos
   - xos
 
-- name: Networking diag collection
-  shell: "{{ item }} > ~/{{ diag_dir }}/net/{{ item | regex_replace('[^\\w-]', '_')}}"
+- name: Head node diag collection
+  shell: "{{ item }} > ~/{{ diag_dir }}/head/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
    - "ifconfig -a"
    - "route -n"
    - "arp -n"
+   - "date"
    - "brctl show"
    - "cat /etc/resolv.conf"
+   - "cat /etc/lsb-release"
    - "sudo uvt-kvm list"
 
 - name: Juju diag collection
