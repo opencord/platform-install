@@ -81,3 +81,7 @@ Juju is leveraged to perform the OpenStack portion of the install. Cord specific
 The final ansible role executed by platform-install is to start XOS. This uses the XOS `service-profile` repository to bring up a stack of CORD services. 
 
 For a discussion of how the XOS service-profile system works, please see [Dynamic On-boarding System and Service Profiles](https://wiki.opencord.org/display/CORD/Dynamic+On-boarding+System+and+Service+Profiles). 
+
+## Helpful log files and diagnostic information
+
+The xos-build and xos-onboard steps run ansible playbooks to setup the xos virtual machine. The output of these playbooks is stored in the files `service-profile/cord-pod/xos-build.out` and `service-profile/cord-pod/xos-onboard.out` respectively. 
