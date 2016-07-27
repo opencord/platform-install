@@ -1,4 +1,4 @@
-!/usr/bin/env bash
+#!/usr/bin/env bash
 
 function cleanup_from_previous_test() {
     echo "## Cleanup ##"
