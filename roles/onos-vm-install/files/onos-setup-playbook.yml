@@ -21,14 +21,11 @@
   remote_user: ubuntu
 
   tasks:
-    - name: Copy over SSH keys
+    - name: Copy over SSH key
       copy:
-        src=~/.ssh/{{ item }}
-        dest={{ ansible_user_dir }}/cord/{{ item }}
+        src={{ node_private_key }}
+        dest={{ ansible_user_dir }}/cord/node_key
         owner={{ ansible_user_id }} mode=0600
-      with_items:
-       - id_rsa
-       - id_rsa.pub
 
     - name: Copy over files to build XOS variant of ONOS
       copy:

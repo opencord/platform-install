@@ -46,7 +46,7 @@
 
     - name: copy over SSH key as node_key
       copy:
-        src=~/.ssh/id_rsa
+        src={{ node_private_key }}
         dest={{ service_profile_repo_dest }}/{{ xos_configuration }}/node_key
 
     - name: Download Glance VM images
@@ -76,4 +76,3 @@
         chdir="{{ xos_repo_dest }}/containers/xos/"
       with_items:
        - base
-

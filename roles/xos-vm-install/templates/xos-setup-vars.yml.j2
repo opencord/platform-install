@@ -14,3 +14,9 @@ xos_images:
 service_profile_repo_url: "{{ service_profile_repo_url }}"
 service_profile_repo_dest: "{{ service_profile_repo_dest }}"
 service_profile_repo_branch: "{{ service_profile_repo_branch }}"
+
+{% if on_maas %}
+node_private_key: "{{ maas_node_key }}"
+{% else %}
+node_private_key: "~/.ssh/id_rsa"
+{% endif %}
