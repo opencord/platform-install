@@ -4,6 +4,8 @@
 # turn this off, or override when running playbook with --extra-vars="on_maas=False"
 on_maas: True
 
+maas_node_key: /etc/maas/ansible/id_rsa
+
 openstack_version: kilo
 
 juju_config_name: cord

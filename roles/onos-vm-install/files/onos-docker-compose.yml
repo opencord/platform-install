@@ -15,5 +15,4 @@ services:
       - "9876"
       network_mode: host
       volumes:
-      - ./id_rsa:/root/node_key:ro
-
+      - ./node_key:/root/node_key:ro
