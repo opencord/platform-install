@@ -63,3 +63,9 @@
     dest={{ ansible_user_dir }}/.ansible.cfg
     owner={{ ansible_user_id }} mode=0644
 
+- name: Open permissions on MaaS node key
+  file:
+    src={{ maas_node_key }}
+    owner=root
+    mode=0444
+  when: on_maas
