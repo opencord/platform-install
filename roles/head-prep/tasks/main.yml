@@ -65,7 +65,7 @@
 
 - name: Open permissions on MaaS node key
   file:
-    src={{ maas_node_key }}
+    name={{ maas_node_key }}
     owner=root
     mode=0444
   when: on_maas
