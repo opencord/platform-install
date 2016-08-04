@@ -35,9 +35,6 @@
 - name: Update apt cache
   command: ansible services -m apt -b -u ubuntu -a "update_cache=yes"
 
-- name: Update software in all the VMs
-  command: ansible services -m apt -b -u ubuntu -a "upgrade=dist"
-
 - name: Create VM's eth0 interface config file for DNS config via resolvconf program
   template:
     src=eth0.cfg.j2
@@ -71,4 +68,3 @@
 
 - name: Install docker in VM's that require it
   command: ansible-playbook "{{ ansible_user_dir }}/docker-install-playbook.yml"
-

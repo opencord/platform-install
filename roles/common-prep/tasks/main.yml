@@ -1,12 +1,6 @@
 ---
 # file: roles/common-prep/tasks/main.yml
 
-- name: Upgrade system to current using apt
-  apt:
-    upgrade=dist
-    update_cache=yes
-    cache_valid_time=3600
-
 - stat:
     path=/var/run/reboot-required
   register: reboot-required
@@ -47,4 +41,3 @@
   copy:
     src=tmux.conf
     dest="{{ ansible_user_dir }}/.tmux.conf"
-
