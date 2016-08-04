@@ -35,7 +35,7 @@ function bootstrap() {
     [ -e ~/.ssh/id_rsa ] || ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
     cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
-    [ -d platform-install ] || git clone -b $SETUP_BRANCH $SETUP_REPO_URL platform-install
+    [ -d ~/platform-install ] || git clone -b $SETUP_BRANCH $SETUP_REPO_URL ~/platform-install
     cd ~/platform-install
 
     sed -i "s/replaceme/`whoami`/" $INVENTORY
