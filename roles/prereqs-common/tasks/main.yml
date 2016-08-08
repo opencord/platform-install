@@ -1,0 +1,38 @@
+---
+# prereqs-common/tasks/main.yml
+
+- name: "Check here on failure: 'https://wiki.opencord.org/display/CORD/Troubleshooting+a+Build'"
+  pause:
+    seconds: 10
+
+- name: Memory size Check
+  assert:
+    that: "ansible_memtotal_mb >= {{ min_memtotal_mb }}"
+
+- name: CPU quantity Check
+  assert:
+    that: "ansible_processor_vcpus >= {{ min_processor_vcpus }}"
+
+- name: CPU KVM Check
+  when: kvm_check
+  shell: "lsmod | grep kvm_"
+
+- name: DNS Lookup Check
+  shell: "dig +short {{ dns_check_domain }} | grep {{ dns_check_ipv4 }}"
+
+- name: DNS Global Root Connectivity Check
+  shell: "dig @{{ item }} +trace +short {{ dns_check_domain }} | grep {{ dns_check_ipv4 }}"
+  with_items: "{{ dns_roots }}"
+
+- name: HTTP Download Check
+  get_url:
+    url: "{{ http_dl_url }}"
+    checksum: "{{ http_dl_cksum }}"
+    dest: /tmp/http_dl_check
+
+- name: HTTPS Download Check
+  get_url:
+    url: "{{ https_dl_url }}"
+    checksum: "{{ https_dl_cksum }}"
+    dest: /tmp/https_dl_check
+
