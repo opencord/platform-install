@@ -11,6 +11,11 @@
   - include_vars: vars/cord.yml
   - include_vars: vars/example_keystone.yml
 
+- name: Check Prerequisites
+  hosts: head
+  roles:
+    - prereqs-common
+
 - name: DNS Server and apt-cacher-ng Setup
   hosts: head
   become: yes

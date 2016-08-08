@@ -7,3 +7,7 @@
     dest="/etc/resolv.conf"
     mode=0644 owner=root group=root
 
+- name: Check that VM's can be found in DNS
+  shell: "dig +short {{ item.name }}.{{ site_suffix }} | grep {{ item.ipv4_last_octet }}"
+  with_items: "{{ head_vm_list }}"
+
