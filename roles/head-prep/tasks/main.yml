@@ -20,7 +20,7 @@
 - name: Install packages
   apt:
     name={{ item }}
-    state=latest
+    state=present
     update_cache=yes
     cache_valid_time=3600
   with_items:
@@ -41,6 +41,7 @@
     generate_ssh_key=yes
     groups="libvirtd" append=yes
 
+# FIXME: this should be changed per http://docs.ansible.com/ansible/playbooks_lookups.html#intro-to-lookups-getting-file-contents
 - name: Register public key in variable
   shell: cat {{ ansible_user_dir }}/.ssh/id_rsa.pub
   register: sshkey
@@ -63,9 +64,3 @@
     dest={{ ansible_user_dir }}/.ansible.cfg
     owner={{ ansible_user_id }} mode=0644
 
-- name: Open permissions on MaaS node key
-  file:
-    name={{ maas_node_key }}
-    owner=root
-    mode=0444
-  when: on_maas
