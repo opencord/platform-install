@@ -1,9 +1,20 @@
 ---
 # vars/opencloud_defaults.yml
 
+on_maas: false
+
+run_dist_upgrade: true
+
 openstack_version: kilo
 
 juju_config_name: opencloud
+
+apt_cacher_name: apt-cache
+
+xos_images:
+  - name: "trusty-server-multi-nic"
+    url: "http://www.vicci.org/opencloud/trusty-server-cloudimg-amd64-disk1.img"
+    checksum: "sha256:c2d0ffc937aeb96016164881052a496658efeb98959dc68e73d9895c5d9920f7"
 
 charm_versions: {}
 
