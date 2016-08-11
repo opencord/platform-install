@@ -33,7 +33,6 @@ name_on_public_interface: head
 # If true, unbound listens on the head node's `ansible_default_ipv4` interface
 unbound_listen_on_default: True
 
-
 xos_images:
   - name: "trusty-server-multi-nic"
     url: "http://www.vicci.org/opencloud/trusty-server-cloudimg-amd64-disk1.img"
@@ -47,3 +46,5 @@ xos_images:
 
 # turn this on, or override when running playbook with --extra-vars="on_cloudlab=True"
 on_cloudlab: False
+
+
