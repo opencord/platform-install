@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a014df3_15dba4ee",
+        "filename": "roles/create-vms/library/resolvehosts.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2016-08-11T22:46:02Z",
+      "side": 1,
+      "message": "spaces not tabs and your tabstop should be something like 2 or 4.",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 3
+      },
+      "revId": "0bf58f64160c246576c0693e8421fa9cdd0a3bc4",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a014df3_f5d718be",
+        "filename": "roles/create-vms/library/resolvehosts.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2016-08-11T22:46:02Z",
+      "side": 1,
+      "message": "typo?",
+      "range": {
+        "startLine": 68,
+        "startChar": 9,
+        "endLine": 68,
+        "endChar": 16
+      },
+      "revId": "0bf58f64160c246576c0693e8421fa9cdd0a3bc4",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
