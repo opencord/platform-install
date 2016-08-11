@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a014df3_55ab6c89",
+        "filename": "roles/head-prep/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2016-08-11T00:32:51Z",
+      "side": 1,
+      "message": "This can actually just be dropped. Unless you just want to make sure it is there.",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 13
+      },
+      "revId": "f4f540c1f5d6a0b59dff3ac6c5a96e1c76a8ceb3",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
