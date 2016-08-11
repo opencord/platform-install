@@ -25,6 +25,12 @@ nsd_zones:
     ns:
       - { name: ns1 }
     nodelist: head_vm_list
+    aliases:
+      - { name: "ns1" , dest: "head" }
+      - { name: "ns" , dest: "head" }
+      - { name: "apt-cache" , dest: "head" }
+
+name_on_public_interface: head
 
 # If true, unbound listens on the head node's `ansible_default_ipv4` interface
 unbound_listen_on_default: True
