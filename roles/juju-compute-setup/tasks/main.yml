@@ -9,6 +9,12 @@
 # list of active juju_machines names: juju_machines.keys()
 # list of active juju_services names: juju_services.keys()
 
+# FIXME: Need to add firewall rules to head node or compute machines won't be
+# able to talk to head node VM's.  iptables cmd's look like this:
+#
+# iptables -A FORWARD -i eth0 -o mgmtbr -s <extnet> -d <vmnet> -j ACCEPT
+# iptables -A FORWARD -i mgmtbr -o eth0 -s <vmnet> -d <extnet> -j ACCEPT
+
 - name: Add machines to Juju
   command: "juju add-machine ssh:{{ item }}"
   with_items: "{{ groups['compute'] | difference( juju_machines.keys() ) }}"

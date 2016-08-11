@@ -94,7 +94,7 @@
   register: result
   until: result | success
   retries: 40
-  delay: 15 
+  delay: 15
 
 - name: Copy cert to system location
   become: yes

@@ -23,17 +23,17 @@
 
 # note, this isn't idempotent, so may need manual fixing if it changes
 - name: define libvirt networks IP/DHCP/DNS settings
+  when: not on_maas
   virt_net:
     name=xos-{{ item.name }}
     command=define
     xml='{{ lookup("template", "virt_net.xml.j2") }}'
   with_items: '{{ virt_nets }}'
-  when: not on_maas
 
 - name: collect libvirt network facts after defining new network
+  when: not on_maas
   virt_net:
     command=facts
-  when: not on_maas
 
 - name: start libvirt networks
   when: not on_maas and ansible_libvirt_networks["xos-{{ item.name }}"].state != "active"

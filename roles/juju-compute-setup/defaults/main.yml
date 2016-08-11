@@ -1,10 +1,9 @@
 ---
-# juju-setup/defaults/main.yml
-
-juju_config_name: opencloud
+# juju-compute-setup/defaults/main.yml
 
 # note: juju_config_path and charm_versions are also set in
-# `juju-compute-setup/defaults/main.yml`.  Keep these in sync.
+# `juju-setup/defaults/main.yml`.  Keep these in sync.
 
 juju_config_path: /usr/local/src/juju_config.yml
 charm_versions: {}
+  

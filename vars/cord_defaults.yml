@@ -2,7 +2,9 @@
 # vars/cord_defaults.yml
 
 # turn this off, or override when running playbook with --extra-vars="on_maas=False"
-on_maas: True
+on_maas: true
+
+run_dist_upgrade: false
 
 maas_node_key: /etc/maas/ansible/id_rsa
 

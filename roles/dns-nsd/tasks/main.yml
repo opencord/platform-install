@@ -1,8 +1,8 @@
 ---
 #file: roles/dns-nsd/tasks/main.yml
 
-# OS specific vars
-- include_vars: "{{ ansible_os_family }}.yml"
+- name: Include OS specific vars
+  include_vars: "{{ ansible_os_family }}.yml"
 
 # Debian specific installation
 - include: nsd-Debian.yml

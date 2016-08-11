@@ -1,12 +1,20 @@
 ---
 # file: roles/common-prep/tasks/main.yml
 
-- stat:
-    path=/var/run/reboot-required
+- name: Upgrade system to current using apt
+  when: run_dist_upgrade
+  apt:
+    upgrade: dist
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Determine if a reboot if required
+  when: run_dist_upgrade
+  stat: path=/var/run/reboot-required
   register: reboot-required
 
-- name: reboot if required
-  when: reboot-required.exists is defined
+- name: Perform a reboot if required
+  when: run_dist_upgrade and reboot-required.exists is defined
   debug: msg="System will reboot"
   notify:
     - restart host
@@ -24,10 +32,10 @@
 
 - name: Remove annoying default editors
   apt:
-    pkg={{ item }}
-    state=absent
-    update_cache=yes
-    cache_valid_time=3600
+    pkg: "{{ item }}"
+    state: absent
+    update_cache: yes
+    cache_valid_time: 3600
   with_items:
    - nano
    - jove
@@ -41,3 +49,4 @@
   copy:
     src=tmux.conf
     dest="{{ ansible_user_dir }}/.tmux.conf"
+
