@@ -3,36 +3,36 @@
 
 - name: Install packages
   apt:
-    name={{ item }}
-    state=latest
-    update_cache=yes
-    cache_valid_time=3600
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
   with_items:
     - python-yaml
 
 - name: Add ubuntu user
   user:
-   name=ubuntu
-   groups=admin
+    name: ubuntu
+    groups: adm
 
 - name: Add head node ubuntu user key
   authorized_key:
-    user=ubuntu
-    key="{{ hostvars[groups['head'][0]]['sshkey']['stdout'] }}"
+    user: ubuntu
+    key: "{{ hostvars[groups['head'][0]]['sshkey']['stdout'] }}"
 
 - name: Add head node root user key
   authorized_key:
-    user=root
-    key="{{ hostvars[groups['head'][0]]['sshkey']['stdout'] }}"
+    user: root
+    key: "{{ hostvars[groups['head'][0]]['sshkey']['stdout'] }}"
 
 - name: Add route via /etc/rc.local
+  when: not on_maas
   template:
     src=rc.local.j2
     dest=/etc/rc.local
     mode=0755
   notify:
     - run rc.local
-  when: not on_maas
 
 - name: Create /var/lib/nova dir
   file:

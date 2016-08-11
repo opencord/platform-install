@@ -42,7 +42,6 @@
     generate_ssh_key=yes
     groups="libvirtd" append=yes
 
-# FIXME: this should be changed per http://docs.ansible.com/ansible/playbooks_lookups.html#intro-to-lookups-getting-file-contents
 - name: Register public key in variable
   shell: cat {{ ansible_user_dir }}/.ssh/id_rsa.pub
   register: sshkey
@@ -66,19 +65,20 @@
     owner={{ ansible_user_id }} mode=0644
 
 - name: Copy node key (MaaS)
+  when: on_maas
   copy:
     src={{ maas_node_key }}
     dest={{ ansible_user_dir }}/node_key
     owner={{ ansible_user }}
     mode=0600
     remote_src=True
-  when: on_maas
 
 - name: Copy node key (without MaaS)
+  when: not on_maas
   copy:
     src={{ ansible_user_dir }}/.ssh/id_rsa
     dest={{ ansible_user_dir }}/node_key
     owner={{ ansible_user }}
     mode=0600
     remote_src=True
-  when: not on_maas
+
