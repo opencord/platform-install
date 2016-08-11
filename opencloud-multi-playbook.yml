@@ -1,39 +1,51 @@
 ---
 # Install an OpenCloud site, with multi-node Juju configured OpenStack
 
-- name: Include Configuration
+- name: Include vars
   hosts: all
   tasks:
-  - include_vars: vars/opencloud_defaults.yml
-  - include_vars: vars/aztest.yml
-  - include_vars: vars/aztest_keystone.yml
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - vars/opencloud_defaults.yml
+        - vars/aztest.yml
+        - vars/aztest_keystone.yml
 
-- name: Prep systems, and enable virtualization
+- name: Turn on virtualization
   hosts: all
   become: yes
-  roles:
-    - common-prep
     - dell-virt
 
-- name: DNS Server Setup
+- name: Check prerequisites
+  hosts: all
+  roles:
+    - prereqs-common
+
+- name: DNS Server and apt-cacher-ng Setup
   hosts: head
   become: yes
   roles:
     - dns-nsd
     - dns-unbound
+    - apt-cacher-ng
 
-- name: Configure all hosts to use DNS server
+- name: Use the new DNS server, prep systems
   hosts: all
   become: yes
   roles:
     - dns-configure
+    - common-prep
 
-- name: Configure head node, create VM's, and start Juju setup
+- name: Configure head node, configure virtualization
   hosts: head
   roles:
     - { role: head-prep, become: yes }
     - { role: config-virt, become: yes }
-    - juju-user-prep
+
+- name: Create VM's, Configure Juju, install XOS
+  hosts: head
+  roles:
+    - create-vms
     - juju-setup
 
 - name: Configure compute nodes
@@ -42,8 +54,8 @@
   roles:
     - compute-prep
 
-- name: Configure Openstack using Juju
+- name: Deploy compute nodes
   hosts: head
   roles:
-    - juju-openstack-config
+    - juju-compute-setup
 
