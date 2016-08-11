@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1a014df3_b5e1909c",
+        "filename": "roles/create-vms/library/resolvehosts.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2016-08-11T22:59:34Z",
+      "side": 1,
+      "message": "pep8 is 4 spaces, which is what I\u0027d recommend.",
+      "parentUuid": "1a014df3_15dba4ee",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 3
+      },
+      "revId": "0bf58f64160c246576c0693e8421fa9cdd0a3bc4",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a014df3_f5d718be",
         "filename": "roles/create-vms/library/resolvehosts.py",
         "patchSetId": 1
@@ -41,6 +65,52 @@
         "startChar": 9,
         "endLine": 68,
         "endChar": 16
+      },
+      "revId": "0bf58f64160c246576c0693e8421fa9cdd0a3bc4",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a014df3_95ee948a",
+        "filename": "roles/create-vms/library/resolvehosts.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2016-08-11T22:59:34Z",
+      "side": 1,
+      "message": "It\u0027s OK to return a dict with the retcode, output, etc.   Might see what the `command` module returns and emulate that.",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 41
+      },
+      "revId": "0bf58f64160c246576c0693e8421fa9cdd0a3bc4",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a014df3_75f30874",
+        "filename": "roles/create-vms/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2016-08-11T22:59:34Z",
+      "side": 1,
+      "message": "This module name isn\u0027t instantly clear to me - maybe change it to `check_for_dns` or `host_dns_lookup`, or something else ?",
+      "range": {
+        "startLine": 30,
+        "startChar": 2,
+        "endLine": 30,
+        "endChar": 14
       },
       "revId": "0bf58f64160c246576c0693e8421fa9cdd0a3bc4",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
