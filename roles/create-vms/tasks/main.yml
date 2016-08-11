@@ -10,23 +10,24 @@
 - name: Have VMs autostart on reboot
   become: yes
   virt:
-    name={{ item.name }}
-    command=autostart
+    name: "{{ item.name }}"
+    command: autostart
   with_items: "{{ head_vm_list }}"
 
 - name: fetch IP of DHCP harvester
+  when: on_maas
   command: docker-ip harvester
   register: harvester_ip
   changed_when: False
-  when: on_maas
 
 - name: force a harvest to get VM name resolution
+  when: on_maas
   uri:
     url: http://{{ harvester_ip.stdout }}:8954/harvest
     method: POST
-  when: on_maas
 
 - name: wait for VM name resolution
+  when: on_maas
   host_dns_check:
     hosts: "{{ head_vm_list | map(attribute='name') | list }}"
     command_on_fail: "curl -sS --connect-timeout 3 -XPOST http://{{ harvester_ip.stdout }}:8954/harvest"
@@ -35,7 +36,6 @@
   retries: 5
   delay: 10
   failed_when: all_resolved.everyone != "OK"
-  when: on_maas
 
 - name: wait for VM's to come up
   wait_for:
@@ -56,25 +56,29 @@
   command: ansible services -b -u ubuntu -m lineinfile -a "dest=/etc/apt/apt.conf.d/02apt-cacher-ng create=yes mode=0644 owner=root group=root regexp='^Acquire' line='Acquire::http { Proxy \"http://{{ apt_cacher_name }}:{{ apt_cacher_port | default('3142') }}\"; };'"
 
 - name: Update apt cache
-  command: ansible services -m apt -b -u ubuntu -a "update_cache=yes"
+  command: ansible services -m apt -b -u ubuntu -a "update_cache=yes cache_valid_time=3600"
+
+- name: Update software in all the VMs
+  when: run_dist_upgrade
+  command: ansible services -m apt -b -u ubuntu -a "upgrade=dist"
 
 - name: Create VM's eth0 interface config file for DNS config via resolvconf program
+  when: not on_maas
   template:
     src=eth0.cfg.j2
     dest={{ ansible_user_dir }}/eth0.cfg
-  when: not on_maas
 
 - name: Copy eth0 interface config file to all VMs
-  command: ansible services -b -u ubuntu -m copy -a "src={{ ansible_user_dir }}/eth0.cfg dest=/etc/network/interfaces.d/eth0.cfg owner=root group=root mode=0644"
   when: not on_maas
+  command: ansible services -b -u ubuntu -m copy -a "src={{ ansible_user_dir }}/eth0.cfg dest=/etc/network/interfaces.d/eth0.cfg owner=root group=root mode=0644"
 
 - name: Restart eth0 interface on all VMs
-  command: ansible services -b -u ubuntu -m shell -a "ifdown eth0 ; ifup eth0"
   when: not on_maas
+  command: ansible services -b -u ubuntu -m shell -a "ifdown eth0 ; ifup eth0"
 
 - name: Verify that we can log into every VM after restarting network interfaces
-  command: ansible services -m ping -u ubuntu
   when: not on_maas
+  command: ansible services -m ping -u ubuntu
 
 # sshkey is registered in head-prep task
 - name: Enable root ssh login on VM's that require it
@@ -91,3 +95,4 @@
 
 - name: Install docker in VM's that require it
   command: ansible-playbook "{{ ansible_user_dir }}/docker-install-playbook.yml"
+
