@@ -14,6 +14,29 @@
     command=autostart
   with_items: "{{ head_vm_list }}"
 
+- name: fetch IP of DHCP harvester
+  command: docker-ip harvester
+  register: harvester_ip
+  changed_when: False
+  when: on_maas
+
+- name: force a harvest to get VM name resolution
+  uri:
+    url: http://{{ harvester_ip.stdout }}:8954/harvest
+    method: POST
+  when: on_maas
+
+- name: wait for VM name resolution
+  host_dns_check:
+    hosts: "{{ head_vm_list | map(attribute='name') | list }}"
+    command_on_fail: "curl -sS --connect-timeout 3 -XPOST http://{{ harvester_ip.stdout }}:8954/harvest"
+  register: all_resolved
+  until: all_resolved.everyone == "OK"
+  retries: 5
+  delay: 10
+  failed_when: all_resolved.everyone != "OK"
+  when: on_maas
+
 - name: wait for VM's to come up
   wait_for:
     host={{ item.name }}
