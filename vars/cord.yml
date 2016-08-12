@@ -37,7 +37,7 @@ unbound_listen_on_default: True
 xos_images:
   - name: "trusty-server-multi-nic"
     url: "http://www.vicci.org/opencloud/trusty-server-cloudimg-amd64-disk1.img"
-    checksum: "sha256:5fb160ea09649f9cebe5cfd7aaf3d1a341e8e0f9eca6e52e46eb6271155c48b0"
+    checksum: "sha256:c2d0ffc937aeb96016164881052a496658efeb98959dc68e73d9895c5d9920f7"
   - name: "vsg-1.1"
     url: "http://www.vicci.org/cord/vsg-1.1.img"
     checksum: "sha256:16b0beb6778aed0f5feecb05f8d5750e6c262f98e6011e99ddadf7d46a177b6f"
