@@ -14,7 +14,8 @@
     dest={{ ansible_user_dir }}/xos-setup-playbook.yml
 
 - name: Run the XOS ansible playbook
-  command: ansible-playbook {{ ansible_user_dir }}/xos-setup-playbook.yml
+  command: ansible-playbook {{ ansible_user_dir }}/xos-setup-playbook.yml --private-key=~/.ssh/id_rsa
+  become: yes
   async: 4800
   poll: 0
   register: xos_setup_playbook

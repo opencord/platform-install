@@ -20,7 +20,8 @@
     - onos-service
 
 - name: Run the ONOS ansible playbook
-  command: ansible-playbook {{ ansible_user_dir }}/onos-setup-playbook.yml
+  command: ansible-playbook {{ ansible_user_dir }}/onos-setup-playbook.yml --private-key=~/.ssh/id_rsa
+  become: yes
   async: 1200
   poll: 0
   register: onos_setup_playbook
