@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a014df3_30cfceb2",
+        "filename": "roles/onos-vm-install/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2016-08-12T22:25:15Z",
+      "side": 1,
+      "message": "use the become: instruction",
+      "range": {
+        "startLine": 23,
+        "startChar": 11,
+        "endLine": 23,
+        "endChar": 15
+      },
+      "revId": "a6a54128c6d900528d2ccb4e75c9f82f3f10c772",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a014df3_50ca5aa2",
+        "filename": "roles/xos-vm-install/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2016-08-12T22:25:15Z",
+      "side": 1,
+      "message": "you can use the become: instruction",
+      "range": {
+        "startLine": 17,
+        "startChar": 10,
+        "endLine": 17,
+        "endChar": 16
+      },
+      "revId": "a6a54128c6d900528d2ccb4e75c9f82f3f10c772",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
