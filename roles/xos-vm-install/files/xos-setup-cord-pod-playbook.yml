@@ -44,10 +44,11 @@
        - id_rsa
        - id_rsa.pub
 
-    - name: copy over SSH key as node_key
+    - name: copy over node_key
       copy:
         src={{ node_private_key }}
         dest={{ service_profile_repo_dest }}/{{ xos_configuration }}/node_key
+        owner={{ ansible_user_id }} mode=0600
 
     - name: Download Glance VM images
       get_url:

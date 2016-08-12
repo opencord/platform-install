@@ -1,6 +1,2 @@
 ---
-{% if on_maas %}
-node_private_key: "{{ maas_node_key }}"
-{% else %}
-node_private_key: "~/.ssh/id_rsa"
-{% endif %}
+node_private_key: "{{ ansible_user_dir }}/node_key"
