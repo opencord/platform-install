@@ -19,10 +19,18 @@
 
 - name: DNS Lookup Check
   shell: "dig +short {{ dns_check_domain }} | grep {{ dns_check_ipv4 }}"
+  register: dns_lookup_check_result
+  until: dns_lookup_check_result.rc == 0
+  retries: 3
+  delay: 1
 
 - name: DNS Global Root Connectivity Check
   shell: "dig @{{ item }} +trace +short {{ dns_check_domain }} | grep {{ dns_check_ipv4 }}"
   with_items: "{{ dns_roots }}"
+  register: dns_global_check_result
+  until: dns_global_check_result.rc == 0
+  retries: 3
+  delay: 1
 
 - name: HTTP Download Check
   get_url:
