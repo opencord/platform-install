@@ -33,11 +33,9 @@ charm_versions:
   keystone: "cs:trusty/keystone-33"
   mongodb: "cs:trusty/mongodb-33"
   percona-cluster: "cs:trusty/percona-cluster-31"
-  nagios: "cs:trusty/nagios-10"
   neutron-api: "cs:~cordteam/trusty/neutron-api-3"
   nova-cloud-controller: "cs:trusty/nova-cloud-controller-64"
   nova-compute: "cs:~cordteam/trusty/nova-compute-2"
-  nrpe: "cs:trusty/nrpe-4"
   ntp: "cs:trusty/ntp-14"
   openstack-dashboard: "cs:trusty/openstack-dashboard-19"
   rabbitmq-server: "cs:trusty/rabbitmq-server-42"
@@ -95,17 +93,6 @@ head_vm_list:
     cpu: 2
     memMB: 4096
     diskGB: 40
-
-  - name: "nagios-1"
-    service: "nagios"
-    aliases:
-      - "nagios"
-    ipv4_last_octet: 60
-    cpu: 1
-    memMB: 2048
-    diskGB: 20
-    forwarded_ports:
-      - { ext: 3128, int: 80 }
 
   - name: "neutron-api-1"
     service: "neutron-api"
@@ -192,7 +179,6 @@ vm_service_list:
   - glance
   - keystone
   - percona-cluster
-  - nagios
   - neutron-api
   - nova-cloud-controller
   - openstack-dashboard
@@ -202,37 +188,27 @@ vm_service_list:
 
 standalone_service_list:
   - ntp
-  - nrpe
   - ceilometer-agent
 
 
 service_relations:
   - name: keystone
-    relations: [ "percona-cluster", "nrpe", ]
+    relations: [ "percona-cluster", ]
 
   - name: nova-cloud-controller
-    relations: [ "percona-cluster", "rabbitmq-server", "glance", "keystone", "nrpe", ]
+    relations: [ "percona-cluster", "rabbitmq-server", "glance", "keystone", ]
 
   - name: glance
-    relations: [ "percona-cluster", "keystone", "nrpe", ]
+    relations: [ "percona-cluster", "keystone", ]
 
   - name: neutron-api
-    relations: [ "keystone",  "percona-cluster", "rabbitmq-server", "nova-cloud-controller", "nrpe", ]
+    relations: [ "keystone",  "percona-cluster", "rabbitmq-server", "nova-cloud-controller", ]
 
   - name: openstack-dashboard
-    relations: [ "keystone", "nrpe", ]
-
-  - name: nagios
-    relations: [ "nrpe", ]
-
-  - name: "percona-cluster:juju-info"
-    relations: [ "nrpe:general-info", ]
-
-  - name: rabbitmq-server
-    relations: [ "nrpe", ]
+    relations: [ "keystone", ]
 
   - name: ceilometer
-    relations: [ "mongodb", "rabbitmq-server", "nagios", "nrpe", ]
+    relations: [ "mongodb", "rabbitmq-server", ]
 
   - name: "ceilometer:identity-service"
     relations: [ "keystone:identity-service", ]
@@ -241,7 +217,7 @@ service_relations:
     relations: [ "ceilometer-agent:ceilometer-service", ]
 
   - name: nova-compute
-    relations: [ "ceilometer-agent", "glance", "nova-cloud-controller", "nagios", "nrpe", ]
+    relations: [ "ceilometer-agent", "glance", "nova-cloud-controller", ]
 
   - name: "nova-compute:shared-db"
     relations: [ "percona-cluster:shared-db", ]

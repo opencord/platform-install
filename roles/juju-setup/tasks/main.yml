@@ -93,8 +93,8 @@
   command: juju scp {{ juju_services['nova-cloud-controller']['units'].keys()[0] }}:/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt {{ ansible_user_dir }}
   register: result
   until: result | success
-  retries: 10
-  delay: 18
+  retries: 40
+  delay: 15 
 
 - name: Copy cert to system location
   become: yes
