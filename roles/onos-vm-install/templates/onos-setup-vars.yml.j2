@@ -1,2 +1,13 @@
 ---
+# onos-vm-install/templates/onos-setup-vars.yml.j2
+
 node_private_key: "{{ ansible_user_dir }}/node_key"
+
+onos_docker_image: "{{ onos_docker_image }}"
+
+cord_apps:
+{{ cord_apps | to_nice_yaml }}
+
+cord_apps_repo_url: "{{ cord_apps_repo_url }}"
+cord_apps_version: "{{ cord_apps_version }}"
+

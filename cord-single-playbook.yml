@@ -53,5 +53,4 @@
     - simulate-fabric
     - { role: test-client-install, when: test_client_install }
     - docker-compose
-    - onos-load-apps
     - xos-start

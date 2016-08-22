@@ -27,6 +27,15 @@
   delay: 10
   retries: 120
 
+- name: Disable loading of CORD apps from Maven repo
+  command: ansible xos-1 -u ubuntu -m lineinfile \
+    -a "dest=~/service-profile/{{ xos_configuration }}/make-vtn-external-yaml.sh state=absent regexp='install_dependencies'"
+
+# may need to put a wait_for here on ONOS to finish it's startup
+- name: Load the CORD apps into ONOS
+  command: ansible onos-cord-1 -u ubuntu -m command \
+    -a "sudo docker exec cord_xos-onos_1 /root/apps/cord_app_loader.sh"
+
 - name: Copy admin-openrc.sh into XOS container
   command: ansible xos-1 -u ubuntu -m copy \
     -a "src=~/admin-openrc.sh dest={{ service_profile_repo_dest }}/{{ xos_configuration }}"
