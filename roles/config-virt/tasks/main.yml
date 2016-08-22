@@ -50,6 +50,7 @@
   with_items: '{{ virt_nets }}'
 
 - name: Have libvirt enable port forwarding to VM's
+  when: xos_on_port_80
   become: yes
   copy:
     src={{ item }}
@@ -59,6 +60,15 @@
     - qemu
   notify:
     - run qemu hook
+
+- name: Make sure port forwarding is disabled
+  when: not xos_on_port_80
+  become: yes
+  file:
+    path=/etc/libvirt/hooks/{{ item }}
+    state=absent
+  with_items:
+    - qemu
 
 - name: Wait for uvt-kvm image to be available
   async_status: jid={{ uvt_sync.ansible_job_id }}

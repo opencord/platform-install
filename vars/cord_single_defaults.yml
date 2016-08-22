@@ -17,6 +17,8 @@ xos_configuration: cord-pod
 
 xos_container_rebuild: True
 
+xos_on_port_80: True
+
 test_client_install: True
 
 apt_cacher_name: apt-cache
