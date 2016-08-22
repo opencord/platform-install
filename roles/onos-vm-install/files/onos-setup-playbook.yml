@@ -9,12 +9,13 @@
 
     - name: Create CORD directory
       file:
-        path={{ ansible_user_dir }}/cord
-        state=directory
+        path: "{{ ansible_user_dir }}/cord"
+        state: directory
 
+# Should replace with http://docs.ansible.com/ansible/docker_module.html, when replacements are stable
     - name: Pull docker image for ONOS
       become: yes
-      command: docker pull onosproject/onos:1.6
+      command: "docker pull {{ onos_docker_image }}"
 
 # Setup specific for onos-cord VM
 - hosts: onos-cord-1
@@ -23,22 +24,52 @@
   tasks:
     - name: Copy over SSH key
       copy:
-        src={{ node_private_key }}
-        dest={{ ansible_user_dir }}/cord/node_key
-        owner={{ ansible_user_id }} mode=0600
+        src: "{{ node_private_key }}"
+        dest: "{{ ansible_user_dir }}/cord/node_key"
+        owner: "{{ ansible_user_id }}"
+        mode: 0600
 
     - name: Copy over files to build XOS variant of ONOS
       copy:
-        src="~/{{ item }}"
-        dest="{{ ansible_user_dir }}/cord/{{ item }}"
+        src: "~/{{ item }}"
+        dest: "{{ ansible_user_dir }}/cord/{{ item }}"
       with_items:
        - Dockerfile.xos-onos
        - onos-service
 
     - name: Copy over & rename docker-compose file
       copy:
-        src=~/onos-docker-compose.yml
-        dest={{ ansible_user_dir }}/cord/docker-compose.yml
+        src: "~/onos-docker-compose.yml"
+        dest: "{{ ansible_user_dir }}/cord/docker-compose.yml"
+
+    - name: Create directory for CORD apps and load script
+      file:
+        state: directory
+        dest: "{{ ansible_user_dir }}/cord/apps/"
+
+    - name: install python-lxml to support maven_artifact
+      become: yes
+      apt:
+         name: python-lxml
+         state: present
+         update_cache: yes
+         cache_valid_time: 3600
+
+    - name: Download CORD apps from maven repo
+      maven_artifact:
+        repository_url: "{{ cord_apps_repo_url }}"
+        group_id: "org.opencord"
+        artifact_id: "{{ item.name }}"
+        version: "{{ cord_apps_version }}"
+        extension: "oar"
+        dest: "{{ ansible_user_dir }}/cord/apps/{{ item.name }}.oar"
+      with_items: "{{ cord_apps }}"
+
+    - name: Create directory for CORD apps and load script
+      copy:
+        src: "~/cord_app_loader.sh"
+        dest: "{{ ansible_user_dir }}/cord/apps/cord_app_loader.sh"
+        mode: 0755
 
 - hosts: onos-fabric-1
   remote_user: ubuntu
