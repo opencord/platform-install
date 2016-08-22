@@ -3,25 +3,27 @@
 #
 # Install ONOS on a sub vm by calling ansible
 
-- name: Create a vars file from template
+- name: Create templated ONOS files
   template:
-    src=onos-setup-vars.yml.j2
-    dest={{ ansible_user_dir }}/onos-setup-vars.yml
+    src: "{{ item }}.j2"
+    dest: "{{ ansible_user_dir }}/{{ item }}"
+  with_items:
+    - onos-setup-vars.yml
+    - Dockerfile.xos-onos
+    - onos-service
 
-- name: Copy over ONOS playbook and docker compose files
+- name: Copy over ONOS playbook and other files
   copy:
-    src={{ item }}
-    dest={{ ansible_user_dir }}/{{ item }}
+    src: "{{ item }}"
+    dest: "{{ ansible_user_dir }}/{{ item }}"
   with_items:
     - onos-setup-playbook.yml
     - onos-docker-compose.yml
     - fabric-docker-compose.yml
-    - Dockerfile.xos-onos
-    - onos-service
 
 - name: Run the ONOS ansible playbook
   command: ansible-playbook {{ ansible_user_dir }}/onos-setup-playbook.yml
-  async: 1200
+  async: 1800
   poll: 0
   register: onos_setup_playbook
 
