@@ -1,0 +1,16 @@
+---
+# onos-load-apps/defaults/main.yml
+
+onos_cord_vm_hostname: "onos-cord-1"
+onos_web_user: "onos"
+onos_web_pass: "rocks"
+
+cord_apps:
+  - name: cord-config
+    onos_name: org.opencord.config
+  - name: vtn
+    onos_name: org.opencord.vtn
+
+cord_apps_repo_url: "https://oss.sonatype.org/content/repositories/public"
+cord_apps_version: "latest"
+

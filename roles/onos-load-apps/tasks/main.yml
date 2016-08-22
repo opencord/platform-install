@@ -1,18 +1,46 @@
 ---
 # onos-load-apps/tasks/main.yml
-#
-# Install CORD ONOS apps from local containers
 
-- name: Disable loading from Maven repo
+- name: Disable loading of CORD apps from Maven repo
   command: ansible xos-1 -u ubuntu -m lineinfile \
     -a "dest=~/service-profile/{{ xos_configuration }}/make-vtn-external-yaml.sh state=absent regexp='install_dependencies'"
 
-- name: Load the apps using Docker
-  command: ansible xos-1 -u ubuntu -m shell \
-    -a "cd ~/xos/containers/cord-apps; make {{ item }}; sudo docker run xosproject/cord-app-{{ item }}"
+- name: Create directory for CORD apps and load script
+  file:
+    state: directory
+    dest: "{{ ansible_user_dir }}/cord_apps/"
+
+- name: Create cord_app_loader.sh script to load CORD apps
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ ansible_user_dir }}/cord_apps/{{ item }}"
+    mode: 0755
+  with_items:
+    - cord_app_loader.sh
+
+- name: Copy onos-app REST API app loader tool
+  copy:
+    src: "{{ item }}"
+    dest: "{{ ansible_user_dir }}/cord_apps/{{ item }}"
+    mode: 0755
+  with_items:
+   - onos-app
+
+- name: Download CORD apps from maven repo
+  maven_artifact:
+    repository_url: "{{ cord_apps_repo_url }}"
+    group_id: "org.opencord"
+    artifact_id: "{{ item.name }}"
+    version: "{{ cord_apps_version }}"
+    extension: "oar"
+    dest: "{{ ansible_user_dir }}/cord_apps/{{ item.name }}.oar"
   with_items: "{{ cord_apps }}"
 
-- name: Enable debugging for cord apps
-  shell: "sshpass -p 'karaf' ssh -p 8101 karaf@onos-cord-1 log:set DEBUG org.opencord.{{ item }}"
-  with_items: "{{ cord_apps }}"
+- name: Wait for ONOS to be ready
+  wait_for:
+    host: "{{ onos_cord_vm_hostname }}"
+    port: 8181
+
+- name: Install CORD apps
+  command: "{{ ansible_user_dir }}/cord_apps/cord_app_loader.sh"
 

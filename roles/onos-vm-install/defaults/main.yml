@@ -1,2 +1,8 @@
---- 
+---
+# onos-vm-install/defaults/main.yml
+
+trust_store_pw: 222222
+
+onos_docker_image: "onosproject/onos:1.6"
+
 

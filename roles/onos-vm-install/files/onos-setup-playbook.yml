@@ -9,12 +9,13 @@
 
     - name: Create CORD directory
       file:
-        path={{ ansible_user_dir }}/cord
-        state=directory
+        path: "{{ ansible_user_dir }}/cord"
+        state: directory
 
+# Should replace with http://docs.ansible.com/ansible/docker_module.html, when replacements are stable
     - name: Pull docker image for ONOS
       become: yes
-      command: docker pull onosproject/onos:1.6
+      command: "docker pull {{ onos_docker_image }}"
 
 # Setup specific for onos-cord VM
 - hosts: onos-cord-1
@@ -23,22 +24,23 @@
   tasks:
     - name: Copy over SSH key
       copy:
-        src={{ node_private_key }}
-        dest={{ ansible_user_dir }}/cord/node_key
-        owner={{ ansible_user_id }} mode=0600
+        src: "{{ node_private_key }}"
+        dest: "{{ ansible_user_dir }}/cord/node_key"
+        owner: "{{ ansible_user_id }}"
+        mode: 0600
 
     - name: Copy over files to build XOS variant of ONOS
       copy:
-        src="~/{{ item }}"
-        dest="{{ ansible_user_dir }}/cord/{{ item }}"
+        src: "~/{{ item }}"
+        dest: "{{ ansible_user_dir }}/cord/{{ item }}"
       with_items:
        - Dockerfile.xos-onos
        - onos-service
 
     - name: Copy over & rename docker-compose file
       copy:
-        src=~/onos-docker-compose.yml
-        dest={{ ansible_user_dir }}/cord/docker-compose.yml
+        src: "~/onos-docker-compose.yml"
+        dest: "{{ ansible_user_dir }}/cord/docker-compose.yml"
 
 - hosts: onos-fabric-1
   remote_user: ubuntu
@@ -46,5 +48,5 @@
   tasks:
     - name: Copy over & rename docker-compose file
       copy:
-        src=~/fabric-docker-compose.yml
-        dest={{ ansible_user_dir }}/cord/docker-compose.yml
+        src: "~/fabric-docker-compose.yml"
+        dest: "{{ ansible_user_dir }}/cord/docker-compose.yml"
