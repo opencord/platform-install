@@ -1,7 +1,0 @@
-<app name="org.opencord.config" origin="ON.Lab" version="1.0-SNAPSHOT" 
-        category="Configuration" url="http://opencord.org" title="CORD Configuration" 
-        featuresRepo="mvn:org.opencord/config/1.0-SNAPSHOT/xml/features" 
-        features="cord-config"> 
-    <description>CORD Configuration</description> 
-    <artifact>mvn:org.opencord/config/1.0-SNAPSHOT</artifact> 
-</app> 
