@@ -4,3 +4,4 @@
 virt_nets:
   - mgmtbr
 
+xos_on_port_80: false
