@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a014df3_27b0b58a",
+        "filename": "roles/head-prologue/files/cord-http.conf",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2016-08-25T02:48:26Z",
+      "side": 1,
+      "message": "May want to make sure this module (and the rewrite module below) is loaded with:  http://docs.ansible.com/ansible/apache2_module_module.html",
+      "revId": "893d9e72b97872ad36486a2589718daa562daeaa",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a014df3_87c1c9e6",
+        "filename": "roles/head-prologue/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2016-08-25T02:48:26Z",
+      "side": 1,
+      "message": "Don\u0027t need the `on_maas` on each step, as we can include/exclude the entire role at the playbook level if is/isn\u0027t needed.",
+      "revId": "893d9e72b97872ad36486a2589718daa562daeaa",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a014df3_47bbc172",
+        "filename": "roles/head-prologue/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2016-08-25T02:48:26Z",
+      "side": 1,
+      "message": "You might want to use the build in apache tools to enable/disable sites as they\u0027ve already automated the process.\n\n- name: Enable site\n  command: a2ensite cord-http.conf\n    creates\u003d/etc/apache2/sites-enabled/cord-http.conf\n  notify:\n    - apache-restart\n\n(paths might be different)",
+      "revId": "893d9e72b97872ad36486a2589718daa562daeaa",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a014df3_67b6bd8c",
+        "filename": "roles/head-prologue/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2016-08-25T02:48:26Z",
+      "side": 1,
+      "message": "Rather than this, when making the changes to the config files above you should notify a handler to restart apache - see previous comment.",
+      "revId": "893d9e72b97872ad36486a2589718daa562daeaa",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
