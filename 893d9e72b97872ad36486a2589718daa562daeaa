@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1a014df3_e7a9ad25",
+        "filename": "roles/head-prologue/files/cord-http.conf",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2016-08-25T05:04:56Z",
+      "side": 1,
+      "message": "This is installed after MAAS and are deployed by MAAS, so I am not sure we need to ensure they are installed. I will look into it as i guess it doesn\u0027t hurt.",
+      "parentUuid": "1a014df3_27b0b58a",
+      "revId": "893d9e72b97872ad36486a2589718daa562daeaa",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a014df3_87c1c9e6",
         "filename": "roles/head-prologue/tasks/main.yml",
         "patchSetId": 1
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "1a014df3_c7a6b153",
+        "filename": "roles/head-prologue/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2016-08-25T05:04:56Z",
+      "side": 1,
+      "message": "I thought we might add other \"prologue\" items in the future, that is why i put it on the steps and not on the role.",
+      "parentUuid": "1a014df3_87c1c9e6",
+      "revId": "893d9e72b97872ad36486a2589718daa562daeaa",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a014df3_47bbc172",
         "filename": "roles/head-prologue/tasks/main.yml",
         "patchSetId": 1
@@ -47,6 +83,24 @@
       "writtenOn": "2016-08-25T02:48:26Z",
       "side": 1,
       "message": "You might want to use the build in apache tools to enable/disable sites as they\u0027ve already automated the process.\n\n- name: Enable site\n  command: a2ensite cord-http.conf\n    creates\u003d/etc/apache2/sites-enabled/cord-http.conf\n  notify:\n    - apache-restart\n\n(paths might be different)",
+      "revId": "893d9e72b97872ad36486a2589718daa562daeaa",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a014df3_a763a519",
+        "filename": "roles/head-prologue/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2016-08-25T05:04:56Z",
+      "side": 1,
+      "message": "not familiar with handlers and notify.",
+      "parentUuid": "1a014df3_47bbc172",
       "revId": "893d9e72b97872ad36486a2589718daa562daeaa",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
