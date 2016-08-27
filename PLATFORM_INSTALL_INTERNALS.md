@@ -89,4 +89,4 @@ For a discussion of how the XOS service-profile system works, please see [Dynami
 
 ## Helpful log files and diagnostic information
 
-The xos-build and xos-onboard steps run ansible playbooks to setup the xos virtual machine. The output of these playbooks is stored in the files `service-profile/cord-pod/xos-build.out` and `service-profile/cord-pod/xos-onboard.out` respectively.
+The xos-build and xos-onboard steps run ansible playbooks to setup the xos virtual machine. The output of these playbooks is stored (inside the `xos-1` VM) in the files `service-profile/cord-pod/xos-build.out` and `service-profile/cord-pod/xos-onboard.out` respectively.
