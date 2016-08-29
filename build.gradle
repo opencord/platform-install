@@ -118,17 +118,12 @@ List.metaClass.p = { spec ->
   }
 }
 
-task fetchUpstreamImages {
-    comps.each { name, spec -> if (spec.type == 'image') { dependsOn "fetch" + name } }
+task fetch << {
+    logger.info 'Platform install has nothing to fetch'
 }
 
-task fetchGitSubmodules {
-    comps.each { name, spec -> if (spec.type == 'gitmodule') { dependsOn "gitupdate" + name } }
-}
-
-task fetch {
-    dependsOn fetchUpstreamImages
-    dependsOn fetchGitSubmodules
+task buildImages << {
+    logger.info 'Platform install has nothing to build'
 }
 
 task publishImages {
