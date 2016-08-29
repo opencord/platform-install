@@ -18,9 +18,15 @@
   shell: "lsmod | grep kvm_"
 
 - name: DNS Lookup Check
-  shell: "dig +short {{ dns_check_domain }} | grep {{ dns_check_ipv4 }}"
-  register: dns_lookup_check_result
-  until: dns_lookup_check_result.rc == 0
+  assert: 
+    that: "{{ lookup('dig', dns_check_domain ) == dns_check_ipv4 }}"
+  retries: 3
+  delay: 1
+
+- name: DNS Global Root Connectivity Check, assert version
+  assert: 
+    that: "{{ lookup('dig', dns_check_domain, '@{{ item }}' ) = dns_check_ipv4 }}"
+  with_items: "{{ dns_roots }}"
   retries: 3
   delay: 1
 
@@ -31,6 +37,8 @@
   until: dns_global_check_result.rc == 0
   retries: 3
   delay: 1
+  tags:
+   - skip_ansible_lint # purely a way to pass/fail config done so far. Ansible needs a "dns_query" module
 
 - name: HTTP Download Check
   get_url:

@@ -2,24 +2,28 @@
 # tasks for xos-install role
 
 - name: checkout XOS repo
-  git: repo={{ xos_repo_url }}
-       dest={{ xos_repo_dest }}
-       version={{ xos_repo_branch }}
+  git:
+   repo: "{{ xos_repo_url }}"
+   dest: "{{ xos_repo_dest }}"
+   version: "{{ xos_repo_branch }}"
 
 - name: checkout service-profile repo
-  git: repo={{ service_profile_repo_url }}
-       dest={{ service_profile_repo_dest }}
-       version={{ service_profile_repo_branch }}
+  git:
+    repo: "{{ service_profile_repo_url }}"
+    dest: "{{ service_profile_repo_dest }}"
+    version: "{{ service_profile_repo_branch }}"
 
 - name: Rebuild XOS containers
   when: xos_container_rebuild
-  command: make {{ item }}
-    chdir="{{ service_profile_repo_dest }}/{{ xos_configuration }}/"
+  make:
+    target: "{{ item }}"
+    chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}/"
   with_items:
     - common_cloudlab
     - base
 
 - name: Initial build of XOS
-  command: make
-    chdir="{{ service_profile_repo_dest }}/{{ xos_configuration }}/"
+  make:
+    target: "{{ item }}"
+    chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}/"
 
