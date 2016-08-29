@@ -12,10 +12,11 @@
         path: "{{ ansible_user_dir }}/cord"
         state: directory
 
-# Should replace with http://docs.ansible.com/ansible/docker_module.html, when replacements are stable
     - name: Pull docker image for ONOS
       become: yes
       command: "docker pull {{ onos_docker_image }}"
+      tags:
+        - skip_ansible_lint # Should replace with http://docs.ansible.com/ansible/docker_module.html, when replacements are stable
 
 # Setup specific for onos-cord VM
 - hosts: onos-cord-1

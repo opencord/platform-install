@@ -67,6 +67,8 @@
       command: "iptables -t nat -C POSTROUTING -s 10.168.0.0/16 ! -d 10.168.0.0/16 -j MASQUERADE"
       register: iptables_check
       failed_when: "iptables_check|failed and 'No chain/target/match by that name' not in iptables_check.stderr"
+      tags:
+        - skip_ansible_lint # FIXME: should use iptables module when it supports inversion of ranges
 
     - name: Create iptables rule
       when: "iptables_check.rc != 0"

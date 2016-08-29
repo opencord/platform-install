@@ -8,14 +8,12 @@
     update_cache: yes
     cache_valid_time: 3600
 
-- name: Determine if a reboot if required
+- name: Reboot if required after dist_upgrade
   when: run_dist_upgrade
-  stat: path=/var/run/reboot-required
-  register: reboot-required
-
-- name: Perform a reboot if required
-  when: run_dist_upgrade and reboot-required.exists is defined
-  debug: msg="System will reboot"
+  stat:
+    path: /var/run/reboot-required
+  register: reboot_required
+  changed_when: reboot_required.stat.exists
   notify:
     - restart host
     - wait for host

@@ -63,6 +63,8 @@
       with_items:
         - xosproject/xos-postgres
         - xosproject/cord-app-build
+      tags:
+        - skip_ansible_lint # FIXME: use new 2.2 docker modules when available
 
     - name: Pull docker images for XOS
       when: not xos_container_rebuild
@@ -77,3 +79,5 @@
         chdir="{{ xos_repo_dest }}/containers/xos/"
       with_items:
        - base
+
+

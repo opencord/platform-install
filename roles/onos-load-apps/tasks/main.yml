@@ -4,6 +4,8 @@
 - name: Disable loading of CORD apps from Maven repo
   command: ansible xos-1 -u ubuntu -m lineinfile \
     -a "dest=~/service-profile/{{ xos_configuration }}/make-vtn-external-yaml.sh state=absent regexp='install_dependencies'"
+  tags:
+    - skip_ansible_lint # running a sub-job
 
 - name: Create directory for CORD apps and load script
   file:
@@ -26,6 +28,11 @@
   with_items:
    - onos-app
 
+- name: Wait for ONOS to be ready
+  wait_for:
+    host: "{{ onos_cord_vm_hostname }}"
+    port: 8181
+
 - name: Download CORD apps from maven repo
   maven_artifact:
     repository_url: "{{ cord_apps_repo_url }}"
@@ -35,12 +42,10 @@
     extension: "oar"
     dest: "{{ ansible_user_dir }}/cord_apps/{{ item.name }}.oar"
   with_items: "{{ cord_apps }}"
+  register: maven_artifact_dl
 
-- name: Wait for ONOS to be ready
-  wait_for:
-    host: "{{ onos_cord_vm_hostname }}"
-    port: 8181
-
+# assumes no interruption between this and previous steps...
 - name: Install CORD apps
+  when: maven_artifact_dl.changed
   command: "{{ ansible_user_dir }}/cord_apps/cord_app_loader.sh"
 

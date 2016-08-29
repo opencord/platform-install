@@ -14,6 +14,8 @@
 
 - name: Head node diag collection
   shell: "{{ item }} > ~/{{ diag_dir }}/head/{{ item | regex_replace('[^\\w-]', '_')}}"
+  args:
+    creates: "~/{{ diag_dir }}/head/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
    - "ifconfig -a"
    - "route -n"
@@ -26,6 +28,8 @@
 
 - name: Juju diag collection
   shell: "{{ item }} > ~/{{ diag_dir }}/juju/{{ item | regex_replace('[^\\w-]', '_')}}"
+  args:
+    creates: "~/{{ diag_dir }}/juju/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
    - "juju status --format=summary"
    - "juju status --format=json"
@@ -34,6 +38,7 @@
   shell: "source ~/admin-openrc.sh && {{ item }} > ~/{{ diag_dir }}/openstack/{{ item | regex_replace('[^\\w-]', '_')}}"
   args:
     executable: "/bin/bash"
+    creates: "~/{{ diag_dir }}/openstack/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
    - "glance image-list"
    - "nova list --all-tenants"
@@ -46,11 +51,16 @@
 
 - name: ONOS diag collection - REST API
   shell: "curl -X GET -u karaf:karaf http://onos-cord-1:8181/onos/v1/{{ item }} | python -m json.tool > ~/{{ diag_dir }}/onos/rest_{{ item | regex_replace('[^\\w-]', '_') }}"
+  args:
+    creates: "~/{{ diag_dir }}/onos/rest_{{ item | regex_replace('[^\\w-]', '_')}}"
+    warn: False # get_url or uri can't easily redirect to a file
   with_items:
    - "hosts"
 
 - name: ONOS diag collection - ONOS CLI
   shell: "sshpass -p 'karaf' ssh -p 8101 karaf@onos-cord {{ item }} > ~/{{ diag_dir }}/onos/{{ item | regex_replace('[^\\w-]', '_') }}"
+  args:
+    creates: "~/{{ diag_dir }}/onos/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
    - "apps -s -a"
    - "bundle:list"
@@ -66,6 +76,8 @@
 
 - name: XOS diag collection
   shell: "ssh ubuntu@xos-1 \"{{ item }}\" > ~/{{ diag_dir }}/xos/{{ item | regex_replace('[^\\w-]', '_')}}"
+  args:
+    creates: "~/{{ diag_dir }}/xos/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
    - "docker ps"
    - "arp -n"
@@ -73,6 +85,8 @@
 
 - name: Copy/run/retrieve XOS docker logs
   command: "{{ item }}"
+  tags:
+   - skip_ansible_lint # don't know the name of docker containers for all configurations
   with_items:
    - "scp {{ role_path }}/files/docker_logs.sh ubuntu@xos-1:~/docker_logs.sh"
    - "ssh ubuntu@xos-1 'bash ~/docker_logs.sh'"

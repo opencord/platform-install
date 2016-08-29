@@ -27,7 +27,7 @@ function cleanup_from_previous_test() {
 function bootstrap() {
     cd ~
     sudo apt-get update
-    sudo apt-get -y install software-properties-common curl git mosh tmux dnsutils python-netaddr
+    sudo apt-get -y install software-properties-common curl git tmux dnsutils python-netaddr python-dnspython
     sudo add-apt-repository -y ppa:ansible/ansible
     sudo apt-get update
     sudo apt-get install -y ansible
@@ -52,7 +52,7 @@ function setup_openstack() {
     if [[ "$XOS_REPO_URL" != "" ]]; then
         extra_vars="$extra_vars xos_repo_url=$XOS_REPO_URL"
     fi
-    if [[ "$XOS_BRANCH" != "" ]]; then 
+    if [[ "$XOS_BRANCH" != "" ]]; then
         extra_vars="$extra_vars xos_repo_branch=$XOS_BRANCH"
     fi
 

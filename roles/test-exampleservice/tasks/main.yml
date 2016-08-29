@@ -6,6 +6,8 @@
 - name: Onboard ExampleService and instantiate a VM
   command: ansible xos-1 -u ubuntu -m shell \
     -a "cd ~/service-profile/cord-pod; make exampleservice"
+  tags:
+    - skip_ansible_lint # running a sub job
 
 - name: Pause 60 seconds (work around bug in synchronizer)
   pause: seconds=60
@@ -13,6 +15,8 @@
 - name: Re-run 'make vtn' (work around bug in synchronizer)
   command: ansible xos-1 -u ubuntu -m shell \
     -a "cd ~/service-profile/cord-pod; make vtn"
+  tags:
+    - skip_ansible_lint # running a sub job
 
 - name: Wait for ExampleService VM to come up
   shell: bash -c "source ~/admin-openrc.sh; nova list --all-tenants|grep 'exampleservice.*ACTIVE' > /dev/null"
@@ -20,18 +24,26 @@
   until: result | success
   retries: 10
   delay: 60
+  tags:
+    - skip_ansible_lint # running a sub job
 
 - name: Get ID of VM
   shell: bash -c "source ~/admin-openrc.sh; nova list --all-tenants|grep mysite_exampleservice|cut -d '|' -f 2"
   register: nova_id
+  tags:
+    - skip_ansible_lint # running a sub job
 
 - name: Get mgmt IP of VM
   shell: bash -c "source ~/admin-openrc.sh; nova interface-list {{ nova_id.stdout }}|grep -o -m 1 172.27.[[:digit:]]*.[[:digit:]]*"
   register: mgmt_ip
+  tags:
+    - skip_ansible_lint # running a sub job
 
 - name: Get public IP of VM
   shell: bash -c "source ~/admin-openrc.sh; nova interface-list {{ nova_id.stdout }}|grep -o -m 1 10.168.[[:digit:]]*.[[:digit:]]*"
   register: public_ip
+  tags:
+    - skip_ansible_lint # running a sub job
 
 - name: Wait for Apache to come up inside VM
   shell: ssh -o ProxyCommand="ssh -W %h:%p ubuntu@nova-compute-1" ubuntu@{{ mgmt_ip.stdout }} "ls /var/run/apache2/apache2.pid" > /dev/null
@@ -39,15 +51,21 @@
   until: result | success
   retries: 20
   delay: 60
+  tags:
+    - skip_ansible_lint # running a sub job
 
 - name: Install curl in testclient
   command: ansible nova-compute-1 -u ubuntu -m shell \
     -s -a "lxc-attach -n testclient -- apt-get -y install curl"
+  tags:
+    - skip_ansible_lint # running a sub job
 
 - name: Test connectivity to ExampleService from test client
   command: ansible nova-compute-1 -u ubuntu -m shell \
     -s -a "lxc-attach -n testclient -- curl -s http://{{ public_ip.stdout }}"
   register: curltest
+  tags:
+    - skip_ansible_lint # running a sub job
 
 - name: Output from curl test
   debug: var=curltest.stdout_lines

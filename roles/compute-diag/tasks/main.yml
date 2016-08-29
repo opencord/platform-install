@@ -1,13 +1,16 @@
 ---
 # compute-diag/tasks/main.yml
-#
+
 - name: Create diag_dir subdir
   file:
-    dest="/tmp/{{ hostvars[groups['head'][0]]['diag_dir'] }}/{{ inventory_hostname }}"
-    state=directory
+    dest: "/tmp/{{ hostvars[groups['head'][0]]['diag_dir'] }}/{{ inventory_hostname }}"
+    state: directory
+  register: compute_diag_dir
 
 - name: Compute node diag collection
   shell: "{{ item }} > /tmp/{{ hostvars[groups['head'][0]]['diag_dir'] }}/{{ inventory_hostname }}/{{ item | regex_replace('[^\\w-]', '_')}}"
+  args:
+    creates: "compute_diag_dir.stat.path/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
    - "date"
    - "arp -n"

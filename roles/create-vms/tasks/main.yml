@@ -2,9 +2,10 @@
 # file: create-vms/tasks/main.yml
 
 - name: create Virtual Machines with uvt-kvm
-  shell: uvt-kvm create {{ item.name }} release={{ ansible_distribution_release }} \
+  command: uvt-kvm create {{ item.name }} release={{ ansible_distribution_release }} \
     --cpu={{ item.cpu }} --memory={{ item.memMB }} --disk={{ item.diskGB }} --bridge="mgmtbr"
-    creates=/var/lib/uvtool/libvirt/images/{{ item.name }}.qcow
+  args:
+    creates: "/var/lib/uvtool/libvirt/images/{{ item.name }}.qcow"
   with_items: "{{ head_vm_list }}"
 
 - name: Have VMs autostart on reboot
@@ -51,16 +52,24 @@
 
 - name: Verify that we can log into every VM
   command: ansible services -m ping -u ubuntu
+  tags:
+    - skip_ansible_lint # connectivity check
 
 - name: Have VM's use the apt-cache
   command: ansible services -b -u ubuntu -m lineinfile -a "dest=/etc/apt/apt.conf.d/02apt-cacher-ng create=yes mode=0644 owner=root group=root regexp='^Acquire' line='Acquire::http { Proxy \"http://{{ apt_cacher_name }}:{{ apt_cacher_port | default('3142') }}\"; };'"
+  tags:
+    - skip_ansible_lint # running a sub job
 
 - name: Update apt cache
   command: ansible services -m apt -b -u ubuntu -a "update_cache=yes cache_valid_time=3600"
+  tags:
+    - skip_ansible_lint # running a sub job
 
 - name: Update software in all the VMs
   when: run_dist_upgrade
   command: ansible services -m apt -b -u ubuntu -a "upgrade=dist"
+  tags:
+    - skip_ansible_lint # running a sub job
 
 - name: Create VM's eth0 interface config file for DNS config via resolvconf program
   when: not on_maas
@@ -84,6 +93,8 @@
 - name: Enable root ssh login on VM's that require it
   command: ansible {{ item.name }} -b -u ubuntu -m authorized_key -a "user='root' key='{{ sshkey.stdout }}'"
   with_items: "{{ head_vm_list | selectattr('root_ssh_login', 'defined') | list }}"
+  tags:
+    - skip_ansible_lint # FIXME, ssh key mangling
 
 - name: Copy over docker installation playbook and docker apt-key
   copy:
@@ -95,4 +106,7 @@
 
 - name: Install docker in VM's that require it
   command: ansible-playbook "{{ ansible_user_dir }}/docker-install-playbook.yml"
+  tags:
+    - skip_ansible_lint # running a sub job
+
 
