@@ -13,4 +13,6 @@
 
 - name: Setup simulated fabric on nova-compute-1 using playbook
   command: ansible-playbook {{ ansible_user_dir }}/simulate-fabric-playbook.yml
+  tags:
+    - skip_ansible_lint # running a sub-job
 

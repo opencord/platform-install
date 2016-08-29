@@ -1,9 +1,18 @@
 ---
 # roles/config-virt/tasks/main.yml
 
+- name: Check to see if we already have a uvtool image
+  find:
+    path: "/var/lib/uvtool/libvirt/images"
+    patterns: "x-uvt-b64-*"
+  register: uvtool_image
+
 - name: Get ubuntu image for uvtool
+  when: "{{ uvtool_image.matched < 1 }}"
   command: uvt-simplestreams-libvirt sync --source http://cloud-images.ubuntu.com/daily \
     release={{ ansible_distribution_release }} arch=amd64
+  args:
+    creates: "/var/lib/uvtool/libvirt/images/x-uvt-b64-*"
   async: 1200
   poll: 0
   register: uvt_sync
@@ -50,6 +59,7 @@
   with_items: '{{ virt_nets }}'
 
 - name: Wait for uvt-kvm image to be available
+  when: "{{ uvtool_image.matched < 1 }}"
   async_status: jid={{ uvt_sync.ansible_job_id }}
   register: uvt_sync_result
   until: uvt_sync_result.finished

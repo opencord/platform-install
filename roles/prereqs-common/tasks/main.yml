@@ -23,6 +23,10 @@
   until: dns_lookup_check_result.rc == 0
   retries: 3
   delay: 1
+  tags:
+   - skip_ansible_lint # tried assert + dig (below), but it fails quickly and won't loop
+  #  assert:
+  #    that: "{{ lookup('dig', dns_check_domain ) == dns_check_ipv4 }}"
 
 - name: DNS Global Root Connectivity Check
   shell: "dig @{{ item }} +trace +short {{ dns_check_domain }} | grep {{ dns_check_ipv4 }}"
@@ -31,6 +35,8 @@
   until: dns_global_check_result.rc == 0
   retries: 3
   delay: 1
+  tags:
+   - skip_ansible_lint # too complex for lookup('dig', ...) to handle
 
 - name: HTTP Download Check
   get_url:

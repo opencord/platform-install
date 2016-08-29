@@ -21,6 +21,8 @@
   shell: lsmod | grep kvm_
   ignore_errors: true
   register: virtualization_enabled
+  tags:
+    - skip_ansible_lint # just used to register result
 
 - name: Enable virtualization in BIOS
   command: /opt/dell/toolkit/bin/syscfg --virtualization=enable

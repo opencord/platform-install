@@ -6,6 +6,8 @@
 - name: Create a sample CORD subscriber
   command: ansible xos-1 -u ubuntu -m shell \
     -a "cd ~/service-profile/cord-pod; make cord-subscriber"
+  tags:
+    - skip_ansible_lint # running a sub job
 
 - name: Pause 60 seconds (work around bug in synchronizer)
   pause: seconds=60
@@ -13,6 +15,8 @@
 - name: Re-run 'make vtn' (work around bug in synchronizer)
   command: ansible xos-1 -u ubuntu -m shell \
     -a "cd ~/service-profile/cord-pod; make vtn"
+  tags:
+    - skip_ansible_lint # running a sub job
 
 - name: Wait for vSG VM to come up
   shell: bash -c "source ~/admin-openrc.sh; nova list --all-tenants|grep 'vsg.*ACTIVE' > /dev/null"
@@ -20,14 +24,20 @@
   until: result | success
   retries: 10
   delay: 60
+  tags:
+    - skip_ansible_lint # running a sub job
 
 - name: Get ID of VM
   shell: bash -c "source ~/admin-openrc.sh; nova list --all-tenants|grep mysite_vsg|cut -d '|' -f 2"
   register: nova_id
+  tags:
+    - skip_ansible_lint # running a sub job
 
 - name: Get mgmt IP of VM
   shell: bash -c "source ~/admin-openrc.sh; nova interface-list {{ nova_id.stdout }}|grep -o -m 1 172.27.[[:digit:]]*.[[:digit:]]*"
   register: mgmt_ip
+  tags:
+    - skip_ansible_lint # running a sub job
 
 - name: Wait for Docker container inside VM to come up
   shell: ssh -o ProxyCommand="ssh -W %h:%p ubuntu@nova-compute-1" ubuntu@{{ mgmt_ip.stdout }} "sudo docker ps|grep vcpe" > /dev/null
@@ -35,15 +45,21 @@
   until: result | success
   retries: 20
   delay: 60
+  tags:
+    - skip_ansible_lint # running a sub job
 
 - name: Run dhclient inside testclient to get IP address from vSG
   command: ansible nova-compute-1 -u ubuntu -m shell \
     -s -a "lxc-attach -n testclient -- dhclient eth0.222.111"
+  tags:
+    - skip_ansible_lint # running a sub job
 
 - name: Test external connectivity in test client
   command: ansible nova-compute-1 -u ubuntu -m shell \
     -s -a "lxc-attach -n testclient -- ping -c 3 8.8.8.8"
   register: pingtest
+  tags:
+    - skip_ansible_lint # running a sub job
 
 - name: Output from ping test
   debug: var=pingtest.stdout_lines

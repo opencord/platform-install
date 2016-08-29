@@ -7,9 +7,12 @@
 - name: Include vars
   hosts: all
   tasks:
-  - include_vars: vars/cord_defaults.yml
-  - include_vars: vars/cord.yml
-  - include_vars: vars/example_keystone.yml  # for testing
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - vars/cord_defaults.yml
+        - vars/cord.yml
+        - vars/example_keystone.yml
 
 - name: DNS Server and apt-cacher-ng Setup
   hosts: head
