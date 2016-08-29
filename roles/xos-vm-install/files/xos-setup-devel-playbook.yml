@@ -62,6 +62,8 @@
       command: docker pull {{ item }}
       with_items:
         - xosproject/xos-postgres
+      tags:
+        - skip_ansible_lint # Should replace with http://docs.ansible.com/ansible/docker_module.html, when replacements are stable
 
     - name: Pull docker images for XOS
       when: not xos_container_rebuild

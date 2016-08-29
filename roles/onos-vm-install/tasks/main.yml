@@ -26,4 +26,6 @@
   async: 1800
   poll: 0
   register: onos_setup_playbook
+  tags:
+    - skip_ansible_lint # running a sub-job
 

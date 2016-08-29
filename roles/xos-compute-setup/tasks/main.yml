@@ -5,3 +5,5 @@
 
 - name: ssh to XOS VM and run 'make new-nodes'
   command: ssh ubuntu@xos "cd {{ service_profile_repo_dest }}/{{ xos_configuration }}/; make new-nodes"
+  tags:
+    - skip_ansible_lint # running a sub-job

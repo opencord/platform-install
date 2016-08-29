@@ -1,9 +1,0 @@
-head    ansible_ssh_host=opencloud0.sing.internet2.edu
-
-[compute]
-opencloud1.sing.internet2.edu
-opencloud2.sing.internet2.edu
-opencloud3.sing.internet2.edu
-
-[all:vars]
-cloudlab=false

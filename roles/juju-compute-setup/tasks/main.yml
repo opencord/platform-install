@@ -16,6 +16,7 @@
 # iptables -A FORWARD -i mgmtbr -o eth0 -s <vmnet> -d <extnet> -j ACCEPT
 
 - name: Add machines to Juju
+  when: "{{ groups['compute'] | difference( juju_machines.keys() ) | length }}"
   command: "juju add-machine ssh:{{ item }}"
   with_items: "{{ groups['compute'] | difference( juju_machines.keys() ) }}"
 
@@ -24,10 +25,10 @@
   juju_facts:
 
 - name: Deploy nova-compute service if needed
-  command: "juju deploy {{ charm_versions[item] | default(item) }} --to {{ juju_machines[groups['compute'][0]]['machine_id'] }} --config={{ juju_config_path }}"
-  with_items: 
-    - "nova-compute"
   when: '"nova-compute" not in juju_services.keys()'
+  command: "juju deploy {{ charm_versions[item] | default(item) }} --to {{ juju_machines[groups['compute'][0]]['machine_id'] }} --config={{ juju_config_path }}"
+  with_items:
+    - "nova-compute"
 
 - name: Create relations between nova-compute and other services if needed
   command: "juju add-relation '{{ item.0.name }}' '{{ item.1 }}'"
@@ -36,15 +37,19 @@
   with_subelements:
     - "{{ compute_relations }}"
     - relations
+  tags:
+   - skip_ansible_lint # benign to do this more than once, hard to check for
 
 # run another time
 - name: Obtain Juju Facts after deploying nova-compute
-  juju_facts:
   when: '"nova-compute" not in juju_services.keys()'
+  juju_facts:
 
 - name: Add more nova-compute units
   command: "juju add-unit nova-compute --to {{ juju_machines[item]['machine_id'] }}"
   with_items: "{{ groups['compute'] | difference( juju_compute_nodes.keys() ) }}"
+  tags:
+   - skip_ansible_lint # benign to do this more than once, hard to check for
 
 - name: Pause to let Juju settle
   pause:
@@ -66,3 +71,6 @@
   retries: 5
   delay: 5
   with_items: "{{ groups['compute'] }}"
+  tags:
+   - skip_ansible_lint # this really should be the os_server module, but ansible doesn't know about juju created openstack
+

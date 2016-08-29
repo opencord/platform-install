@@ -4,7 +4,8 @@
 - name: Create diag_dir fact
   hosts: head
   tasks:
-    - set_fact:
+    - name: Set diag_dir name to diag-rfc3339_datetime
+      set_fact:
         diag_dir: "diag-{{ ansible_date_time.iso8601_basic_short }}"
 
 - name: Diagnostics on head node
@@ -20,7 +21,8 @@
 - name: Collect compute node diagnostics on head node
   hosts: compute
   tasks:
-    - synchronize:
+    - name: rsync diag_dir from compute nodes
+      synchronize:
         src: "/tmp/{{ hostvars[groups['head'][0]]['diag_dir'] }}/{{ inventory_hostname }}"
         dest: "~/{{ hostvars[groups['head'][0]]['diag_dir'] }}/"
         recursive: yes

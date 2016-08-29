@@ -27,10 +27,14 @@
     - name: Create testclient
       become: yes
       shell: lxc-ls | grep testclient || lxc-create -t ubuntu -n testclient
+      tags:
+        - skip_ansible_lint # FIXME: should used lxc_container module
 
     - name: Start testclient
       become: yes
       shell: lxc-info -n testclient -s | grep RUNNING || lxc-start -n testclient
+      tags:
+        - skip_ansible_lint # FIXME: should used lxc_container module
 
     - name: Set up networking inside the testclient for testing sample CORD subscriber
       become: yes
@@ -40,3 +44,5 @@
       - "lxc-attach -n testclient -- bash -c 'ip link show eth0.222.111 || ip link add link eth0.222 name eth0.222.111 type vlan id 111'"
       - "lxc-attach -n testclient -- ifconfig eth0.222 up"
       - "lxc-attach -n testclient -- ifconfig eth0.222.111 up"
+      tags:
+        - skip_ansible_lint # non-trivial use case

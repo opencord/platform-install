@@ -34,6 +34,7 @@
 # list of active juju_services names: juju_services.keys()
 
 - name: Add machines to Juju
+  when: "{{ head_vm_list | map(attribute='service') | list | reject('undefined') | map('format_string', '%s.'~site_suffix ) | difference( juju_machines.keys() ) | length }}"
   command: "juju add-machine ssh:{{ item }}"
   with_items: "{{ head_vm_list | map(attribute='service') | list | reject('undefined') | map('format_string', '%s.'~site_suffix ) | difference( juju_machines.keys() ) }}"
 
@@ -42,14 +43,16 @@
   juju_facts:
 
 - name: Deploy services that are hosted in their own VM
+  when: "{{ vm_service_list | difference( juju_services.keys() ) | length }}"
   command: "juju deploy {{ charm_versions[item] | default(item) }} --to {{ juju_machines[item~'.'~site_suffix]['machine_id'] }} --config={{ juju_config_path }}"
   with_items: "{{ vm_service_list | difference( juju_services.keys() ) }}"
 
 - name: Deploy mongodb to ceilometer VM
-  command: "juju deploy {{ charm_versions['mongodb'] | default('mongodb') }} --to {{ juju_machines['ceilometer.'~site_suffix]['machine_id'] }} --config={{ juju_config_path }}"
   when: juju_services['mongodb'] is undefined
+  command: "juju deploy {{ charm_versions['mongodb'] | default('mongodb') }} --to {{ juju_machines['ceilometer.'~site_suffix]['machine_id'] }} --config={{ juju_config_path }}"
 
 - name: Deploy services that don't have their own VM
+  when: "{{ standalone_service_list | difference( juju_services.keys() ) | length }}"
   command: "juju deploy {{ charm_versions[item] | default(item) }} --config={{ juju_config_path }}"
   with_items: "{{ standalone_service_list | difference( juju_services.keys() ) }}"
 
@@ -60,6 +63,8 @@
   with_subelements:
     - "{{ service_relations }}"
     - relations
+  tags:
+   - skip_ansible_lint # benign to do this more than once, hard to check for
 
 # run another time, so services will be in juju_services list
 - name: Obtain Juju Facts after service creation
@@ -77,17 +82,18 @@
 # secondary wait, as waiting on ports isn't enough. Probably only need one of these...
 # 160*15s = 2400s = 40m max wait
 - name: Wait for juju services to start
-  action: command juju status --format=summary
+  command: juju status --format=summary
   register: juju_summary
   until: juju_summary.stdout.find("pending:") == -1
   retries: 160
   delay: 15
+  tags:
+   - skip_ansible_lint # checking/waiting on a system to be up
 
 - name: Create admin-openrc.sh credentials file
   template:
    src=admin-openrc.sh.j2
    dest={{ ansible_user_dir }}/admin-openrc.sh
-
 
 - name: Copy nova-cloud-controller CA certificate to head
   command: juju scp {{ juju_services['nova-cloud-controller']['units'].keys()[0] }}:/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt {{ ansible_user_dir }}
@@ -95,18 +101,27 @@
   until: result | success
   retries: 40
   delay: 15
+  tags:
+   - skip_ansible_lint # checking/waiting on file availibilty
 
 - name: Copy cert to system location
   become: yes
-  command: cp {{ ansible_user_dir }}/keystone_juju_ca_cert.crt /usr/local/share/ca-certificates
+  copy:
+    src: "{{ ansible_user_dir }}/keystone_juju_ca_cert.crt"
+    dest: "/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt"
+    remote_src: true
+  register: copied_cert
 
 - name: update-ca-certificates
+  when: copied_cert.changed
   become: yes
   command: update-ca-certificates
 
 - name: Move cert to all service VM's
+  when: copied_cert.changed
   command: ansible services -b -u ubuntu -m copy -a "src={{ ansible_user_dir }}/keystone_juju_ca_cert.crt dest=/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt owner=root group=root mode=0644"
 
 - name: update-ca-certificates in service VM's
+  when: copied_cert.changed
   command: ansible services -b -u ubuntu -m command -a "update-ca-certificates"
 
