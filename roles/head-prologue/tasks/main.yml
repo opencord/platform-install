@@ -25,6 +25,7 @@
     - proxy_http
     - proxy_wstunnel
     - rewrite
+    - headers
 
 - name: Enable CORD Apache Configuration
   become: yes
