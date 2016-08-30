@@ -12,5 +12,5 @@ cord_apps:
     onos_name: org.opencord.vtn
 
 cord_apps_repo_url: "https://oss.sonatype.org/content/repositories/public"
-cord_apps_version: "latest"
+cord_apps_version: "1.0-rc4"
 
