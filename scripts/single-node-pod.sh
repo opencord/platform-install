@@ -17,6 +17,8 @@ function cleanup_from_previous_test() {
     rm -rf ~/.juju
     rm -f ~/.ssh/known_hosts
     rm -rf ~/platform-install
+    rm -rf ~/cord-apps
+    rm -rf ~/.ansible_async
 
     echo "Cleaning up libvirt/dnsmasq"
     sudo rm -f /var/lib/libvirt/dnsmasq/xos-mgmtbr.leases
