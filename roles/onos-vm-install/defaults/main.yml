@@ -3,6 +3,7 @@
 
 trust_store_pw: 222222
 
-onos_docker_image: "onosproject/onos:1.6"
+# ONOS 1.7 not tagged yet, but latest is 1.7
+onos_docker_image: "onosproject/onos:latest"
 
 
