@@ -1,0 +1,43 @@
+---
+- name: Install software
+  apt:
+    name={{ item }}
+    update_cache=yes
+    cache_valid_time=3600
+  become: yes
+  register: result
+  until: result | success
+  retries: 15
+  delay: 60
+  with_items:
+   - lxc
+
+- name: set lxc bridge interface to be databr
+  become: yes
+  lineinfile:
+    dest: /etc/lxc/default.conf
+    regexp: "^lxc.network.link ="
+    line: "lxc.network.link = databr"
+
+- name: Create testclient
+  become: yes
+  shell: lxc-ls | grep testclient || lxc-create -t ubuntu -n testclient
+  tags:
+    - skip_ansible_lint # FIXME: should used lxc_container module
+
+- name: Start testclient
+  become: yes
+  shell: lxc-info -n testclient -s | grep RUNNING || lxc-start -d -n testclient
+  tags:
+    - skip_ansible_lint # FIXME: should used lxc_container module
+
+- name: Set up networking inside the testclient for testing sample CORD subscriber
+  become: yes
+  shell: "{{ item }}"
+  with_items:
+  - "lxc-attach -n testclient -- bash -c 'ip link show eth0.222 || ip link add link eth0 name eth0.222 type vlan id 222'"
+  - "lxc-attach -n testclient -- bash -c 'ip link show eth0.222.111 || ip link add link eth0.222 name eth0.222.111 type vlan id 111'"
+  - "lxc-attach -n testclient -- ifconfig eth0.222 up"
+  - "lxc-attach -n testclient -- ifconfig eth0.222.111 up"
+  tags:
+    - skip_ansible_lint # non-trivial use case
