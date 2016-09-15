@@ -30,7 +30,7 @@
 - name: wait for VM name resolution
   when: on_maas
   host_dns_check:
-    hosts: "{{ head_vm_list | map(attribute='name') | list }}"
+    hosts: "{{ head_vm_list | map(attribute='name') | list | to_json }}"
     command_on_fail: "curl -sS --connect-timeout 3 -XPOST http://{{ harvester_ip.stdout }}:8954/harvest"
   register: all_resolved
   until: all_resolved.everyone == "OK"
