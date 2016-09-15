@@ -1,5 +1,5 @@
 ---
-# Installs  new compute nodes in cord-pod XOS configuration using Juju
+# Installs new compute nodes in cord-pod XOS configuration using Juju
 
 - name: Include vars
   hosts: all
@@ -34,10 +34,11 @@
   become: yes
   roles:
     - compute-prep
+    - { role: maas-simulate-fabric, when: cord_in_a_box }
+    - { role: maas-test-client-install, when: cord_in_a_box }
 
 - name: Deploy compute nodes
   hosts: head
   roles:
     - juju-compute-setup
     - xos-compute-setup
-
