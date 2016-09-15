@@ -57,6 +57,8 @@
     - head-prep
     - juju-compute-setup
     - xos-compute-setup
+    - simulate-fabric
+    - test-client-install
 
 - name: Copy Required Ansible Variables
   become: yes

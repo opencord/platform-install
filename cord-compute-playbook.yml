@@ -39,5 +39,7 @@
   hosts: head
   roles:
     - juju-compute-setup
+    - { role: simulate-fabric, when: test_client_install }
+    - { role: test-client-install, when: test_client_install }
     - xos-compute-setup
 
