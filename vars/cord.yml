@@ -47,4 +47,5 @@ xos_images:
 # turn this on, or override when running playbook with --extra-vars="on_cloudlab=True"
 on_cloudlab: False
 
-
+# turn this on, or override when running playbook with --extra-vars="cord_in_a_box=True"
+cord_in_a_box: False
