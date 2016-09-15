@@ -34,6 +34,8 @@
   become: yes
   roles:
     - compute-prep
+    - maas-simulate-fabric
+    - maas-test-client-install
 
 - name: Deploy compute nodes
   hosts: head

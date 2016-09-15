@@ -8,9 +8,9 @@
 
 - name: Run the test-client ansible playbook
   command: ansible-playbook {{ ansible_user_dir }}/test-client-playbook.yml
-  async: 3600
-  poll: 0
-  register: test_client_playbook
+  #async: 3600
+  #poll: 0
+  #register: test_client_playbook
   tags:
     - skip_ansible_lint # running a sub-job
 
