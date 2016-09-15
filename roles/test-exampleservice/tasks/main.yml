@@ -45,8 +45,14 @@
   tags:
     - skip_ansible_lint # running a sub job
 
+- name: Get name of compute node
+  shell: bash -c "source ~/admin-openrc.sh; nova service-list|grep nova-compute|cut -d '|' -f 3"
+  register: node_name
+  tags:
+    - skip_ansible_lint # running a sub job
+
 - name: Wait for Apache to come up inside VM
-  shell: ssh -o ProxyCommand="ssh -W %h:%p ubuntu@nova-compute-1" ubuntu@{{ mgmt_ip.stdout }} "ls /var/run/apache2/apache2.pid" > /dev/null
+  shell: ssh -o ProxyCommand="ssh -W %h:%p -l ubuntu {{ node_name.stdout }}" ubuntu@{{ mgmt_ip.stdout }} "ls /var/run/apache2/apache2.pid" > /dev/null
   register: result
   until: result | success
   retries: 20
@@ -55,14 +61,12 @@
     - skip_ansible_lint # running a sub job
 
 - name: Install curl in testclient
-  command: ansible nova-compute-1 -u ubuntu -m shell \
-    -s -a "lxc-attach -n testclient -- apt-get -y install curl"
+  command: ssh -l ubuntu {{ node_name.stdout }} "sudo lxc-attach -n testclient -- apt-get -y install curl"
   tags:
     - skip_ansible_lint # running a sub job
 
 - name: Test connectivity to ExampleService from test client
-  command: ansible nova-compute-1 -u ubuntu -m shell \
-    -s -a "lxc-attach -n testclient -- curl -s http://{{ public_ip.stdout }}"
+  command: ssh -l ubuntu {{ node_name.stdout }} "sudo lxc-attach -n testclient -- curl -s http://{{ public_ip.stdout }}"
   register: curltest
   tags:
     - skip_ansible_lint # running a sub job
