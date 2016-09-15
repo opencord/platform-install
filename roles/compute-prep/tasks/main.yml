@@ -38,3 +38,8 @@
   file:
     path=/var/lib/nova
     state=directory
+
+- name: Remove superfluous requests package
+  pip:
+    name=requests
+    state=absent

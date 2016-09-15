@@ -44,7 +44,8 @@ xos_images:
 #    image_url: "http://www.vicci.org/cord/ceilometer-trusty-server-multi-nic.compressed.qcow2"
 #    checksum: "sha256:afde3f0448483902693be4d52ae76bb683fd74b1c7728019094bf81b37d86105"
 
-# turn this on, or override when running playbook with --extra-vars="on_cloudlab=True"
+# turn this on, or override it when running the playbook with --extra-vars="on_cloudlab=True"
 on_cloudlab: False
 
-
+# turn this on, or override it when running the playbook with --extra-vars="cord_in_a_box=True"
+cord_in_a_box: False

@@ -39,8 +39,14 @@
   tags:
     - skip_ansible_lint # running a sub job
 
+- name: Get name of compute node
+  shell: bash -c "source ~/admin-openrc.sh; nova service-list|grep nova-compute|cut -d '|' -f 3"
+  register: node_name
+  tags:
+    - skip_ansible_lint # running a sub job
+
 - name: Wait for Docker container inside VM to come up
-  shell: ssh -o ProxyCommand="ssh -W %h:%p ubuntu@nova-compute-1" ubuntu@{{ mgmt_ip.stdout }} "sudo docker ps|grep vcpe" > /dev/null
+  shell: ssh -o ProxyCommand="ssh -W %h:%p -l ubuntu {{ node_name.stdout }}" ubuntu@{{ mgmt_ip.stdout }} "sudo docker ps|grep vcpe" > /dev/null
   register: result
   until: result | success
   retries: 20
@@ -49,14 +55,12 @@
     - skip_ansible_lint # running a sub job
 
 - name: Run dhclient inside testclient to get IP address from vSG
-  command: ansible nova-compute-1 -u ubuntu -m shell \
-    -s -a "lxc-attach -n testclient -- dhclient eth0.222.111"
+  command: ssh -l ubuntu {{ node_name.stdout }} "sudo lxc-attach -n testclient -- dhclient eth0.222.111"
   tags:
     - skip_ansible_lint # running a sub job
 
 - name: Test external connectivity in test client
-  command: ansible nova-compute-1 -u ubuntu -m shell \
-    -s -a "lxc-attach -n testclient -- ping -c 3 8.8.8.8"
+  command: ssh -l ubuntu {{ node_name.stdout }} "sudo lxc-attach -n testclient -- ping -c 3 8.8.8.8"
   register: pingtest
   tags:
     - skip_ansible_lint # running a sub job

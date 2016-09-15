@@ -57,6 +57,8 @@
     - head-prep
     - juju-compute-setup
     - xos-compute-setup
+    - maas-simulate-fabric
+    - maas-test-client-install
 
 - name: Copy Required Ansible Variables
   become: yes
@@ -70,6 +72,11 @@
     - cord_defaults.yml
     - cord.yml
     - example_keystone.yml
+
+- name: Store cord_in_a_box value for compute node provisioning
+  become: yes
+  lineinfile: "dest=/etc/maas/ansible/vars/cord.yml state=present regexp='^cord_in_a_box' line='cord_in_a_box: True'"
+  when: cord_in_a_box
 
 - name: Ensure JuJu and XOS Compute Node Provisioning
   become: yes

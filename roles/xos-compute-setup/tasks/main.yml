@@ -7,3 +7,11 @@
   command: ssh ubuntu@xos "cd {{ service_profile_repo_dest }}/{{ xos_configuration }}/; make new-nodes"
   tags:
     - skip_ansible_lint # running a sub-job
+
+- name: Pause 5 seconds
+  pause: seconds=5
+
+- name: ssh to XOS VM and run 'make vtn'
+  command: ssh ubuntu@xos "cd {{ service_profile_repo_dest }}/{{ xos_configuration }}/; rm -f vtn-external.yaml; make vtn"
+  tags:
+    - skip_ansible_lint # running a sub-job

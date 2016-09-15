@@ -29,12 +29,23 @@
     - git
     - bzr
     - juju-core
+    - python-pip
     - python-novaclient
     - python-neutronclient
     - python-keystoneclient
     - python-glanceclient
     - python-lxml
     - virt-top
+
+- name: Install Python packages
+  pip:
+    name={{ item}}
+    state=present
+  with_items:
+    - urllib3
+    - pyopenssl
+    - ndg-httpsclient
+    - pyasn1
 
 - name: Prep user account by adding to libvirtd group and generating SSH key
   user:
