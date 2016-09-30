@@ -5,3 +5,6 @@
   service:
     name=libvirt-bin
     state=restarted
+
+- name: run qemu hook
+  command: /etc/libvirt/hooks/qemu start start
