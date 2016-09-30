@@ -3,8 +3,15 @@
 #
 # Tell XOS that a new compute node has been added
 
-- name: ssh to XOS VM and run 'make new-nodes'
-  command: ssh ubuntu@xos "cd {{ service_profile_repo_dest }}/{{ xos_configuration }}/; make new-nodes"
+- name: Create VTN config
+  template:
+    src: vtn.yaml.j2
+    dest: "{{ ansible_user_dir }}/vtn.yaml"
+    owner: "{{ ansible_user_id }}"
+    mode: 0644
+
+- name: copy VTN config to XOS container
+  command: ansible xos-1 -b -u ubuntu -m copy -a "src={{ ansible_user_dir }}/vtn.yaml dest={{ service_profile_repo_dest }}/{{ xos_configuration }}/vtn.yaml owner=ubuntu mode=0644"
   tags:
     - skip_ansible_lint # running a sub-job
 
@@ -12,6 +19,6 @@
   pause: seconds=5
 
 - name: ssh to XOS VM and run 'make vtn'
-  command: ssh ubuntu@xos "cd {{ service_profile_repo_dest }}/{{ xos_configuration }}/; rm -f vtn-external.yaml; make vtn"
+  command: ssh ubuntu@xos "cd {{ service_profile_repo_dest }}/{{ xos_configuration }}/; make vtn"
   tags:
     - skip_ansible_lint # running a sub-job
