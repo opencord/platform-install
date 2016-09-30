@@ -5,8 +5,17 @@
 
 - name: Create a vars file from template
   template:
-    src=xos-setup-vars.yml.j2
-    dest={{ ansible_user_dir }}/xos-setup-vars.yml
+    src: xos-setup-vars.yml.j2
+    dest: "{{ ansible_user_dir }}/xos-setup-vars.yml"
+
+- name: Create templated TOSCA files
+  when: "{{ xos_configuration == 'opencloud' }}"
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ ansible_user_dir }}/{{ item }}"
+  with_items:
+    - opencloud.yaml
+    - vtn.yaml
 
 - name: Copy over XOS ansible playbook
   copy:
@@ -20,4 +29,5 @@
   register: xos_setup_playbook
   tags:
     - skip_ansible_lint # running a sub-job
+
 

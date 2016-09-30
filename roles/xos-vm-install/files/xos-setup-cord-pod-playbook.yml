@@ -57,12 +57,11 @@
         dest={{ service_profile_repo_dest }}/{{ xos_configuration }}/images/{{ item.name }}.img
       with_items: "{{ xos_images }}"
 
-    - name: Pull database and cord-app-build image
+    - name: Pull database image
       become: yes
       command: docker pull {{ item }}
       with_items:
         - xosproject/xos-postgres
-        - xosproject/cord-app-build
       tags:
         - skip_ansible_lint # FIXME: use new 2.2 docker modules when available
 
@@ -79,5 +78,3 @@
         chdir="{{ xos_repo_dest }}/containers/xos/"
       with_items:
        - base
-
-
