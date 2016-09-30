@@ -1,0 +1,4 @@
+---
+# automation-integration/defaults/main.yml
+
+cord_in_a_box: False
