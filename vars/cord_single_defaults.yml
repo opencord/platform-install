@@ -19,6 +19,13 @@ xos_configuration: cord-pod
 
 xos_container_rebuild: False
 
+xos_config_targets:
+  - local_containers
+  - xos
+  - vtn
+  - fabric
+  - cord
+
 test_client_install: True
 
 apt_cacher_name: apt-cache

@@ -109,7 +109,6 @@
       command: docker pull {{ item }}
       with_items:
         - xosproject/xos-postgres
-        - xosproject/cord-app-build
       tags:
         - skip_ansible_lint # FIXME: use new 2.2 docker modules when available
 
@@ -126,6 +125,4 @@
         chdir="{{ xos_repo_dest }}/containers/xos/"
       with_items:
        - base
-
-
 

@@ -24,3 +24,6 @@ docker_tag: "{{ docker_tag }}"
 docker_registry: "{{ docker_registry }}"
 
 local_docker_registry: "{{ local_docker_registry }}"
+
+compute_hosts:
+{{ groups["compute"] | to_nice_yaml }}
