@@ -46,7 +46,11 @@
   hosts: head
   roles:
     - create-vms
+    - xos-vm-install
+    - onos-vm-install
     - juju-setup
+    - docker-compose
+    - xos-start
 
 - name: Configure compute nodes
   hosts: compute

@@ -1,6 +1,19 @@
 ---
 # file: group_vars/cord.yml
 
+# site configuration
+site_name: mysite
+site_humanname: MySite
+
+deployment_type: MyDeployment
+
+xos_users:
+  - email: padmin@vicci.org
+    password: letmein
+    first: PAdmin
+    last: VicciOrg
+    admin: true
+
 # VM networks/bridges on head
 virt_nets:
   - name: mgmtbr
@@ -33,22 +46,11 @@ name_on_public_interface: head
 # If true, unbound listens on the head node's `ansible_default_ipv4` interface
 unbound_listen_on_default: True
 
-xos_images:
-  - name: "trusty-server-multi-nic"
-    url: "http://www.vicci.org/opencloud/trusty-server-cloudimg-amd64-disk1.img"
-    checksum: "sha256:c2d0ffc937aeb96016164881052a496658efeb98959dc68e73d9895c5d9920f7"
-  - name: "vsg-1.1"
-    url: "http://www.vicci.org/cord/vsg-1.1.img"
-    checksum: "sha256:16b0beb6778aed0f5feecb05f8d5750e6c262f98e6011e99ddadf7d46a177b6f"
-  - name: ceilometer-trusty-server-multi-nic
-    url: "http://www.vicci.org/cord/ceilometer-trusty-server-multi-nic.compressed.qcow2"
-    checksum: "sha256:afde3f0448483902693be4d52ae76bb683fd74b1c7728019094bf81b37d86105"
-  - name: ceilometer-service-trusty-server-multi-nic
-    url: "http://www.vicci.org/cord/ceilometer-service-trusty-server-multi-nic.compressed.qcow2"
-    checksum: "sha256:9c346ff15727e9a98942835d6bd34b3d033f868234425f517e53d64b5a124a13"
-
 # turn this on, or override it when running the playbook with --extra-vars="on_cloudlab=True"
 on_cloudlab: False
 
-# turn this on, or override it when running the playbook with --extra-vars="cord_in_a_box=True"
-cord_in_a_box: False
+# VTN network configuration
+management_network_cidr: 172.27.0.0/24
+management_network_ip: 172.27.0.1/24
+data_plane_ip: 10.168.0.253/24
+
