@@ -1,0 +1,39 @@
+---
+
+orchestration_dest: "{{ orchestration_dest }}"
+
+xos_repo_url: "{{ xos_repo_url }}"
+xos_repo_dest: "{{ xos_repo_dest }}"
+xos_repo_branch: "{{ xos_repo_branch }}"
+
+xos_configuration: "{{ xos_configuration }}"
+
+xos_container_rebuild: {{ xos_container_rebuild }}
+
+xos_images:
+{{ xos_images | to_nice_yaml }}
+
+xos_tosca_templates:
+{{ xos_tosca_templates | to_nice_yaml }}
+
+service_profile_repo_url: "{{ service_profile_repo_url }}"
+service_profile_repo_dest: "{{ service_profile_repo_dest }}"
+service_profile_repo_branch: "{{ service_profile_repo_branch }}"
+
+node_private_key: "{{ ansible_user_dir }}/node_key"
+
+docker_opts: "{{ docker_opts }}"
+docker_tag: "{{ docker_tag }}"
+docker_registry: "{{ docker_registry }}"
+
+local_docker_registry: "{{ local_docker_registry }}"
+deploy_docker_registry: "{{ deploy_docker_registry }}"
+deploy_docker_tag: "{{ deploy_docker_tag }}"
+
+{% if groups["compute"] %}
+compute_hosts:
+{{ groups["compute"] | to_nice_yaml }}
+{% else %}
+compute_hosts: []
+{% endif %}
+

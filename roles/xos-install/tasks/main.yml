@@ -27,7 +27,7 @@
       src: "{{ playbook_dir }}/../../orchestration/{{ item }}"
       dest: "{{ ansible_user_dir }}/"
   when:
-      False # orchestration.stat.exists == True   # XXX
+      orchestration.stat.exists == True
   with_items:
       - service-profile
       - xos
@@ -46,7 +46,8 @@
       - vtn
       - olt
   when:
-      False # (orchestration.stat.exists == True) and (onos_apps.stat.exists == True)   # XXX
+      (orchestration.stat.exists == True) and (onos_apps.stat.exists == True)
+
 
 # ----  alternatively, check out repos from Internet ---
 
@@ -57,7 +58,7 @@
     version={{ service_profile_repo_branch }}
     force=yes
   when:
-    True # orchestration.stat.exists == False   # XXX
+    orchestration.stat.exists == False
 
 # ----  install keys ----
 
@@ -84,13 +85,17 @@
    - id_rsa.pub
    - node_key
 
-# ----
+- name: Create templated TOSCA files
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ service_profile_repo_dest }}/{{ xos_configuration }}/{{ item }}"
+  with_items: "{{ xos_tosca_templates }}"
 
 - name: Download Glance VM images
   get_url:
     url={{ item.url }}
     checksum={{ item.checksum }}
-    dest={{ service_profile_repo_dest }}/{{ xos_configuration }}/images/{{ item.name }}.img
+    dest={{ service_profile_repo_dest }}/{{ xos_configuration }}/images/{{ item.name }}.qcow2
   with_items: "{{ xos_images }}"
 
 # ---- pull docker images ----
