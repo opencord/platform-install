@@ -16,3 +16,6 @@ service_profile_repo_dest: "{{ service_profile_repo_dest }}"
 service_profile_repo_branch: "{{ service_profile_repo_branch }}"
 
 node_private_key: "{{ ansible_user_dir }}/node_key"
+
+compute_hosts:
+{{ groups["compute"] | to_nice_yaml }}

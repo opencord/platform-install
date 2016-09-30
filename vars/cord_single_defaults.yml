@@ -17,6 +17,13 @@ service_profile_repo_dest: "~/service-profile"
 
 xos_configuration: cord-pod
 
+xos_config_targets:
+  - local_containers
+  - xos
+  - vtn
+  - fabric
+  - cord
+
 xos_container_rebuild: True
 
 test_client_install: True
