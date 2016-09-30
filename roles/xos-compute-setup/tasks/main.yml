@@ -3,15 +3,20 @@
 #
 # Tell XOS that a new compute node has been added
 
-- name: Build XOS containers
-  command: chdir="{{ service_profile_repo_dest }}/{{ xos_configuration }}" bash -c "make new-nodes |& tee xos-new-nodes.out"
-  tags:
-    - skip_ansible_lint
+- name: Create VTN config
+  template:
+    src: vtn.yaml.j2
+    dest: "{{ ansible_user_dir }}/vtn.yaml"
+    owner: "{{ ansible_user_id }}"
+    mode: 0644
+
+- name: copy VTN config to XOS container
+  command: ansible xos-1 -u ubuntu -m copy -a "src={{ ansible_user_dir }}/vtn.yaml dest={{ service_profile_repo_dest }}/{{ xos_configuration }}/vtn.yaml owner=ubuntu mode=0644"
 
 - name: Pause 5 seconds
   pause: seconds=5
 
-- name: Rebuild VTN configuration with new nodes block
-  command: chdir="{{ service_profile_repo_dest }}/{{ xos_configuration }}" bash -c "rm -f vtn-external.yaml; make vtn |& tee xos-makevtn2.out"
+- name: ssh to XOS VM and run 'make vtn'
+  command: ssh ubuntu@xos "cd {{ service_profile_repo_dest }}/{{ xos_configuration }}/; make vtn |& tee xos-makevtn2.out"
   tags:
     - skip_ansible_lint
