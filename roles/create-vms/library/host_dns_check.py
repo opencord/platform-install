@@ -65,7 +65,7 @@ if command_on_fail != None:
     result["command_on_fail"] = {}
     result["command_on_fail"]["command"] = command_on_fail
     try:
-        cmd_out = subprocess.check_output(shlex.split(command_on_fail), shell=True, stderr=subprocess.STDOUT)
+        cmd_out = subprocess.check_output(shlex.split(command_on_fail), stderr=subprocess.STDOUT)
         result["command_on_fail"]["retcode"] = 0
         result["command_on_fail"]["out"] = cmd_out
     except subprocess.CalledProcessError as e:
