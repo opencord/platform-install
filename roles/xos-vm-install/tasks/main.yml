@@ -5,8 +5,17 @@
 
 - name: Create a vars file from template
   template:
-    src=xos-setup-vars.yml.j2
-    dest={{ ansible_user_dir }}/xos-setup-vars.yml
+    src: xos-setup-vars.yml.j2
+    dest: "{{ ansible_user_dir }}/xos-setup-vars.yml"
+
+- name: Create templated TOSCA files
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ ansible_user_dir }}/{{ item }}"
+  with_items:
+    - deployment.yaml
+    - opencloud.yaml
+    - vtn.yaml
 
 - name: Check to see if orchestration directory exists
   local_action: stat path="{{ playbook_dir }}/../../orchestration"
@@ -59,4 +68,5 @@
   register: xos_setup_playbook
   tags:
     - skip_ansible_lint # running a sub-job
+
 

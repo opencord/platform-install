@@ -18,6 +18,26 @@ service_profile_repo_dest: "~/service-profile"
 
 xos_configuration: cord-pod
 
+xos_config_targets:
+  - local_containers
+  - xos
+  - vtn
+  - fabric
+  - cord
+
+xos_users:
+  - email: padmin@vicci.org
+    password: letmein
+    first: PAdmin
+    last: VicciOrg
+    admin: true
+
+deployment_flavors:
+  - m1.small
+  - m1.medium
+  - m1.large
+  - m1.xlarge
+
 xos_repo_dest: "~/xos"
 
 xos_container_rebuild: False
