@@ -58,6 +58,21 @@
     autostart=yes
   with_items: '{{ virt_nets }}'
 
+
+- name: Have libvirt enable port forwarding to VM's
+  become: yes
+  template:
+    src={{ item }}.j2
+    dest=/etc/libvirt/hooks/{{ item }}
+    mode=0755 owner=root
+  with_items:
+    - daemon
+    - qemu
+  notify:
+    - reload libvirt-bin
+    - run qemu hook
+  when: not on_maas
+
 - name: Wait for uvt-kvm image to be available
   when: "{{ uvtool_image.matched < 1 }}"
   async_status: jid={{ uvt_sync.ansible_job_id }}

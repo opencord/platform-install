@@ -71,11 +71,18 @@
         dest={{ service_profile_repo_dest }}/{{ xos_configuration }}/node_key
         owner={{ ansible_user_id }} mode=0600
 
+    - name: copy over TOSCA files
+      copy:
+        src={{ item }}
+        dest={{ service_profile_repo_dest }}/{{ xos_configuration }}/{{ item }}
+        owner={{ ansible_user_id }} mode=0644
+      with_items: "{{ xos_tosca_templates }}"
+
     - name: Download Glance VM images
       get_url:
         url={{ item.url }}
         checksum={{ item.checksum }}
-        dest={{ service_profile_repo_dest }}/{{ xos_configuration }}/images/{{ item.name }}.img
+        dest={{ service_profile_repo_dest }}/{{ xos_configuration }}/images/{{ item.name }}.qcow2
       with_items: "{{ xos_images }}"
 
     - name: Check to see if registry is reachable
@@ -130,6 +137,4 @@
         chdir="{{ xos_repo_dest }}/containers/xos/"
       with_items:
        - base
-
-
 
