@@ -61,13 +61,8 @@
     - skip_ansible_lint # running a sub job
 
 - name: Update apt cache
-  command: ansible services -m apt -b -u ubuntu -a "update_cache=yes cache_valid_time=3600"
-  tags:
-    - skip_ansible_lint # running a sub job
-
-- name: Update software in all the VMs
-  when: run_dist_upgrade
-  command: ansible services -m apt -b -u ubuntu -a "upgrade=dist"
+  command: ansible services -m apt -b -u ubuntu -a "update_cache=yes upgrade=dist cache_valid_time=3600"
+  ignore_errors: yes
   tags:
     - skip_ansible_lint # running a sub job
 
