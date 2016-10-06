@@ -57,6 +57,8 @@ ext {
 }
 
 task copyAnsibleInventory(type: Copy) {
+    inputs.file deployConfig
+
     File configFile = new File(deployConfig)
     def yaml = new Yaml()
     def config = yaml.load(configFile.newReader())
