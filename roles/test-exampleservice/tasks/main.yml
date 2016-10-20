@@ -40,7 +40,7 @@
     - skip_ansible_lint # running a sub job
 
 - name: Get public IP of VM
-  shell: bash -c "source ~/admin-openrc.sh; nova interface-list {{ nova_id.stdout }}|grep -o -m 1 10.168.[[:digit:]]*.[[:digit:]]*"
+  shell: bash -c "source ~/admin-openrc.sh; nova interface-list {{ nova_id.stdout }}|grep -o -m 1 10.6.[[:digit:]]*.[[:digit:]]*"
   register: public_ip
   tags:
     - skip_ansible_lint # running a sub job
@@ -61,12 +61,17 @@
     - skip_ansible_lint # running a sub job
 
 - name: Install curl in testclient
-  command: ssh -l ubuntu {{ node_name.stdout }} "sudo lxc-attach -n testclient -- apt-get -y install curl"
+  become: yes
+  lxc_container:
+    name: testclient
+    container_command: apt-get -y install curl
   tags:
     - skip_ansible_lint # running a sub job
 
+# Don't use lxc_container in order to get output
 - name: Test connectivity to ExampleService from test client
-  command: ssh -l ubuntu {{ node_name.stdout }} "sudo lxc-attach -n testclient -- curl -s http://{{ public_ip.stdout }}"
+  become: yes
+  command: lxc-attach -n testclient -- curl -s http://{{ public_ip.stdout }}
   register: curltest
   tags:
     - skip_ansible_lint # running a sub job
