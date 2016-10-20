@@ -34,8 +34,6 @@
   become: yes
   roles:
     - compute-prep
-    - { role: maas-simulate-fabric, when: cord_in_a_box }
-    - { role: maas-test-client-install, when: cord_in_a_box }
 
 - name: Deploy compute nodes
   hosts: head
