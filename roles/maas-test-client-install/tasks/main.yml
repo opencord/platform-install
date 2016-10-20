@@ -12,12 +12,26 @@
   with_items:
    - lxc
 
-- name: set lxc bridge interface to be databr
+- name: Remove default LXC bridge
   become: yes
   lineinfile:
     dest: /etc/lxc/default.conf
     regexp: "^lxc.network.link ="
-    line: "lxc.network.link = databr"
+    state: absent
+
+- name: OVS startup script
+  become: yes
+  copy:
+    src: files/ovsup
+    dest: /etc/lxc/ovsup
+    mode: 0755
+
+- name: Add OVS network start script for LXC
+  become: yes
+  lineinfile:
+    dest: /etc/lxc/default.conf
+    line: "lxc.network.script.up = /etc/lxc/ovsup"
+    state: present
 
 - name: Create testclient
   become: yes
