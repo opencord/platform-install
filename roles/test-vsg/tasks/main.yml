@@ -1,7 +1,9 @@
 ---
 # test-vsg/tasks/main.yml
 #
-# Run tests to check that the single-node deployment has worked
+# Run tests to check that the single-node deployment has worked.
+# Would be nice to break this up into smaller roles, run each on the host they
+# affect (e.g., xos-1, head, compute)
 
 - name: Create a sample CORD subscriber
   command: ansible xos-1 -u ubuntu -m shell \
@@ -54,16 +56,30 @@
   tags:
     - skip_ansible_lint # running a sub job
 
-- name: Run dhclient inside testclient to get IP address from vSG
-  command: ssh -l ubuntu {{ node_name.stdout }} "sudo lxc-attach -n testclient -- dhclient eth0.222.111"
-  tags:
-    - skip_ansible_lint # running a sub job
+- name: Create testclient
+  become: yes
+  lxc_container:
+    name: testclient
+    container_log: true
+    template: ubuntu
+    state: started
+    template_options: --release trusty
+    container_config:
+      - "lxc.network.link = {{ fabric_bridge_on_head_node }}"
+      - "lxc.network.ipv4 = 0.0.0.0/32"
+    container_command: |
+      ip link show eth0.222 || ip link add link eth0 name eth0.222 type vlan id 222
+      ip link show eth0.222.111 || ip link add link eth0.222 name eth0.222.111 type vlan id 111
+      ifconfig eth0.222 up
+      ifconfig eth0.222.111 up
+      dhclient eth0.222.111
 
 - name: Test external connectivity in test client
-  command: ssh -l ubuntu {{ node_name.stdout }} "sudo lxc-attach -n testclient -- ping -c 3 8.8.8.8"
+  become: yes
+  lxc_container:
+    name: testclient
+    container_command: ping -c 3 8.8.8.8
   register: pingtest
-  tags:
-    - skip_ansible_lint # running a sub job
 
 - name: Output from ping test
   debug: var=pingtest.stdout_lines
