@@ -1,7 +1,9 @@
 ---
 # test-vsg/tasks/main.yml
 #
-# Run tests to check that the single-node deployment has worked
+# Run tests to check that the single-node deployment has worked.
+# Would be nice to break this up into smaller roles, run each on the host they
+# affect (e.g., xos-1, head, compute)
 
 - name: Create a sample CORD subscriber
   command: ansible xos-1 -u ubuntu -m shell \
@@ -54,13 +56,27 @@
   tags:
     - skip_ansible_lint # running a sub job
 
-- name: Run dhclient inside testclient to get IP address from vSG
-  command: ssh -l ubuntu {{ node_name.stdout }} "sudo lxc-attach -n testclient -- dhclient eth0.222.111"
+- name: Start testclient
+  become: yes
+  shell: "lxc-info -n testclient -s | grep RUNNING || lxc-start -d -n testclient"
   tags:
-    - skip_ansible_lint # running a sub job
+    - skip_ansible_lint
+
+- name: Set up networking inside the testclient for testing sample CORD subscriber
+  become: yes
+  shell: "lxc-attach -n testclient -- bash -c '{{ item }}'"
+  with_items:
+  - 'ip link show eth0.222 || ip link add link eth0 name eth0.222 type vlan id 222'
+  - 'ip link show eth0.222.111 || ip link add link eth0.222 name eth0.222.111 type vlan id 111'
+  - 'ifconfig eth0.222 up'
+  - 'ifconfig eth0.222.111 up'
+  - 'dhclient eth0.222.111'
+  tags:
+    - skip_ansible_lint # non-trivial use case
 
 - name: Test external connectivity in test client
-  command: ssh -l ubuntu {{ node_name.stdout }} "sudo lxc-attach -n testclient -- ping -c 3 8.8.8.8"
+  become: yes
+  command: "lxc-attach -n testclient -- ping -c 3 8.8.8.8"
   register: pingtest
   tags:
     - skip_ansible_lint # running a sub job
