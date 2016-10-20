@@ -49,3 +49,6 @@ on_cloudlab: False
 
 # turn this on, or override it when running the playbook with --extra-vars="cord_in_a_box=True"
 cord_in_a_box: False
+
+# For development
+service_profile_repo_url: https://github.com/andybavier/service-profile.git
