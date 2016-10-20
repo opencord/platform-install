@@ -1,0 +1,4 @@
+---
+
+fabric_bridge_on_head_node: "virbr3"
+

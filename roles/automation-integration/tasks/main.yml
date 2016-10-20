@@ -57,8 +57,6 @@
     - head-prep
     - juju-compute-setup
     - xos-compute-setup
-    - maas-simulate-fabric
-    - maas-test-client-install
 
 - name: Copy Required Ansible Variables
   become: yes

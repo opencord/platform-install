@@ -15,5 +15,6 @@
   hosts: head
   become: no
   roles:
+    - maas-test-client-install
     - test-vsg
     - test-exampleservice
