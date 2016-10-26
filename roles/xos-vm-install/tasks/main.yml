@@ -8,6 +8,21 @@
     src=xos-setup-vars.yml.j2
     dest={{ ansible_user_dir }}/xos-setup-vars.yml
 
+- name: Check to see if orchestration directory exists
+  local_action: stat path="{{ playbook_dir }}/../../orchestration"
+  register: orchestration
+
+- name: Make xos_install directory
+  file: path="{{ ansible_user_dir }}/xos_install" state=directory
+  when: orchestration.stat.exists == True
+
+- name: Copy repositories to the head node
+  synchronize:
+      src: "{{ playbook_dir }}/../../orchestration"
+      dest: "{{ ansible_user_dir }}/xos_install/"
+  when:
+      orchestration.stat.exists == True
+
 - name: Copy over XOS ansible playbook
   copy:
     src=xos-setup-{{ xos_configuration }}-playbook.yml
