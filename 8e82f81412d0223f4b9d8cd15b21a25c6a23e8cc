@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a014df3_36c7bc47",
+        "filename": "roles/dell-virt/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2016-10-27T19:42:42Z",
+      "side": 1,
+      "message": "Seems like it should be dell_apt_repo",
+      "range": {
+        "startLine": 10,
+        "startChar": 13,
+        "endLine": 10,
+        "endChar": 26
+      },
+      "revId": "8e82f81412d0223f4b9d8cd15b21a25c6a23e8cc",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
