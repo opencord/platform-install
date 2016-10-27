@@ -14,8 +14,8 @@
   apt_repository:
     repo={{ item }}
   with_items:
-     - "ppa:juju/stable"
-     - "ppa:ansible/ansible"
+     - "{{ juju_apt_repo | default('ppa:juju/stable') }}"
+     - "{{ ansible_apt_repo | default('ppa:ansible/ansible') }}"
 
 - name: Install packages
   apt:
