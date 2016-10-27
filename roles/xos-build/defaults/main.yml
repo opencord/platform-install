@@ -1,0 +1,4 @@
+---
+
+xos_repo_dir: "{{ playbook_dir }}/../../orchestration/xos/containers/xos"
+docker_registry: "{{ inventory_hostname }}:5000"

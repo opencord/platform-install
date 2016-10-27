@@ -47,6 +47,11 @@
     - { role: config-virt, become: yes }
     - create-vms
 
+- name: Create docker images
+  hosts: head
+  roles:
+    - xos-build
+
 - name: Set up VM's, juju, simulate fabric
   hosts: head
   roles:
