@@ -3,12 +3,11 @@
 
 - name: Trust the Dell apt repository
   apt_key:
-    keyserver=pool.sks-keyservers.net
-    id=1285491434D8786F
+    data: "{{ lookup('file', 'dell_apt_key.gpg') }}"
 
 - name: Add Dell apt repo
   apt_repository:
-    repo="deb http://linux.dell.com/repo/community/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} openmanage"
+    repo="{{ dell_apt_repo | default('deb http://linux.dell.com/repo/community/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} openmanage') }}"
 
 - name: Install BIOS configuration scripts
   apt:
