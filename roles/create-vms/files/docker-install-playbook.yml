@@ -25,7 +25,7 @@
 
     - name: Add docker apt repo
       apt_repository:
-        repo="deb https://apt.dockerproject.org/repo ubuntu-trusty main"
+        repo: "{{ docker_apt_repo | default('deb https://apt.dockerproject.org/repo ubuntu-trusty main') }}"
 
     - name: Install docker
       apt:

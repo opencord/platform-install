@@ -1,5 +1,10 @@
 ---
 # file: create-vms/tasks/main.yml
+- name: Ensure DIG
+  become: yes
+  apt:
+    name: dnsutils=1:9*
+    state: present
 
 - name: create Virtual Machines with uvt-kvm
   command: uvt-kvm create {{ item.name }} release={{ ansible_distribution_release }} \
