@@ -85,6 +85,8 @@
   become: yes
   command: lxc-attach -n testclient -- ping -c 3 8.8.8.8
   register: pingtest
+  tags:
+    - skip_ansible_lint # running a sub job
 
 - name: Output from ping test
   debug: var=pingtest.stdout_lines
