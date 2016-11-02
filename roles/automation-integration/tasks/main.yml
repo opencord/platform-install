@@ -15,7 +15,7 @@
 - name: Ensure XOS Cluster Enlist Script
   become: yes
   template:
-    src=files/do-enlist-compute-node
+    src=do-enlist-compute-node
     dest=/etc/maas/ansible/do-enlist-compute-node
     owner=maas
     group=maas
