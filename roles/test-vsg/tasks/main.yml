@@ -54,13 +54,19 @@
   tags:
     - skip_ansible_lint # running a sub job
 
+- name: get "fabric" bridge interface
+  shell: route -n | grep 10.6.1.0 | awk '{print $8}'
+  register: bridge
+  tags:
+     - skip_ansible_lint # running a sub job
+
 # Specifying this through container_config below was not working...
 - name: set lxc bridge interface
   become: yes
   lineinfile:
     dest: /etc/lxc/default.conf
     regexp: "^lxc.network.link ="
-    line: "lxc.network.link = {{ fabric_bridge_on_head_node }}"
+    line: "lxc.network.link = {{ bridge.stdout }}"
 
 - name: Create testclient
   become: yes
