@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a014df3_81352c48",
+        "filename": "roles/xos-start/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2016-11-03T14:32:26Z",
+      "side": 1,
+      "message": "Much cleaner... but is it safe without the pauses?",
+      "range": {
+        "startLine": 4,
+        "startChar": 2,
+        "endLine": 4,
+        "endChar": 67
+      },
+      "revId": "a0c6ed4f9eec2143dc159bd08308d8b1401e7a45",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a014df3_a1302857",
+        "filename": "roles/xos-vm-install/templates/xos-setup-vars.yml.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2016-11-03T14:32:26Z",
+      "side": 1,
+      "message": "This is not working in my tests.  I end up with:\n\ncompute_nodes:\n[]\n\nI.e., brackets on the next line.  This throws a syntax error when the xos-setup-vars.yml file gets included.  If I change it to:\n\ncompute_nodes: []\n\nThen it seems to work",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 38
+      },
+      "revId": "a0c6ed4f9eec2143dc159bd08308d8b1401e7a45",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
