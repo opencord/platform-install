@@ -1,7 +1,6 @@
 ---
 - hosts: xos-1
   remote_user: ubuntu
-
   tasks:
     - name: Include configuration vars
       include_vars: xos-setup-vars.yml
@@ -79,6 +78,32 @@
         dest={{ service_profile_repo_dest }}/{{ xos_configuration }}/images/{{ item.name }}.img
       with_items: "{{ xos_images }}"
 
+    - name: Check to see if registry is reachable
+      command: curl -sf http://docker-registry:5000/
+      ignore_errors: yes
+      register: docker_registry_check
+      tags:
+        - skip_ansible_lint
+
+    - name: Use registry if it is available
+      set_fact:
+         docker_registry: "{{ local_docker_registry }}"
+         docker_opts: "--insecure-registry {{ local_docker_registry }}"
+         docker_tag: "candidate"
+      when: docker_registry_check|succeeded
+
+    - name: Set docker options
+      become: yes
+      template: src=docker.j2 dest=/etc/default/docker
+      register: set_docker_opts
+
+    # Note this needs to be executed now, not as a handler,  as the pull
+    # operations won't succeed without it.
+    - name: restart docker
+      become: yes
+      service: name=docker state=restarted
+      when: set_docker_opts.changed
+
     - name: Pull database and cord-app-build image
       become: yes
       command: docker pull {{ item }}
@@ -93,7 +118,7 @@
       become: yes
       command: docker pull {{ item }}
       with_items:
-        - xosproject/xos-base
+        - "{{ docker_registry }}/xosproject/xos-base:{{ docker_tag }}"
 
     - name: Rebuild XOS containers
       when: xos_container_rebuild
@@ -101,5 +126,6 @@
         chdir="{{ xos_repo_dest }}/containers/xos/"
       with_items:
        - base
+
 
 

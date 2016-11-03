@@ -42,6 +42,16 @@
     src=xos-setup-{{ xos_configuration }}-playbook.yml
     dest={{ ansible_user_dir }}/xos-setup-playbook.yml
 
+- name: Create template directory
+  file: path="{{ ansible_user_dir }}/templates" state=directory
+
+- name: Copy over necessary templates
+  copy:
+    src={{ item }}
+    dest={{ ansible_user_dir }}/templates/{{ item }}
+  with_items:
+    - docker.j2
+
 - name: Run the XOS ansible playbook
   command: ansible-playbook {{ ansible_user_dir }}/xos-setup-playbook.yml
   async: 4800
