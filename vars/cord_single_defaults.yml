@@ -17,7 +17,7 @@ service_profile_repo_dest: "~/service-profile"
 
 xos_configuration: cord-pod
 
-xos_container_rebuild: True
+xos_container_rebuild: False
 
 test_client_install: True
 
