@@ -104,27 +104,25 @@
       service: name=docker state=restarted
       when: set_docker_opts.changed
 
-    - name: Pull database and cord-app-build image
-      become: yes
-      command: docker pull {{ item }}
-      with_items:
-        - xosproject/xos-postgres
-        - xosproject/cord-app-build
-      tags:
-        - skip_ansible_lint # FIXME: use new 2.2 docker modules when available
-
     - name: Pull docker images for XOS
-      when: not xos_container_rebuild
       become: yes
       command: docker pull {{ docker_registry }}/{{ item }}:{{ docker_tag }}
       with_items:
         - xosproject/xos-base
+        - xosproject/xos-postgres
+        - xosproject/cord-app-build
+        - redis
+      tags:
+        - skip_ansible_lint
 
     - name: Tag the images downloaded from the local registry
       command: docker tag {{ docker_registry }}/{{ item }}:{{ docker_tag }} {{ item }}:latest
       with_items:
         - xosproject/xos-base
-      when: (not xos_container_rebuild) and (docker_registry_check|succeeded)
+        - xosproject/xos-postgres
+        - xosproject/cord-app-build
+        - redis
+      when: docker_registry_check|succeeded
 
     - name: Rebuild XOS containers
       when: xos_container_rebuild
