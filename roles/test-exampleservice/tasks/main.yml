@@ -60,18 +60,32 @@
   tags:
     - skip_ansible_lint # running a sub job
 
-- name: Install curl in testclient
+- name: start container
   become: yes
-  lxc_container:
+  lxd_container:
     name: testclient
-    container_command: apt-get -y install curl
+    state: started
+
+- name: Make sure testclient has default route to vSG
+  become: yes
+  shell: lxc exec testclient -- route | grep default | grep "eth0.222.111"
+  register: result
+  until: result | success
+  retries: 3
+  delay: 10
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Download the curl package through the vSG
+  become: yes
+  command: lxc exec testclient -- apt-get install -y curl
   tags:
     - skip_ansible_lint # running a sub job
 
 # Don't use lxc_container in order to get output
 - name: Test connectivity to ExampleService from test client
   become: yes
-  command: lxc-attach -n testclient -- curl -s http://{{ public_ip.stdout }}
+  command: lxc exec testclient -- curl -s http://{{ public_ip.stdout }}
   register: curltest
   tags:
     - skip_ansible_lint # running a sub job
