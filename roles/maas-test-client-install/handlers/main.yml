@@ -1,0 +1,9 @@
+---
+- name: restart container
+  lxd_container:
+    name: testclient
+    state: restarted
+  register: result
+  until: result | success
+  retries: 3
+  delay: 10
