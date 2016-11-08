@@ -3,15 +3,15 @@
 #
 # Tell XOS that a new compute node has been added
 
-- name: ssh to XOS VM and run 'make new-nodes'
-  command: ssh ubuntu@xos "cd {{ service_profile_repo_dest }}/{{ xos_configuration }}/; make new-nodes"
+- name: Build XOS containers
+  command: chdir="{{ service_profile_repo_dest }}/{{ xos_configuration }}" bash -c "make new-nodes |& tee xos-new-nodes.out"
   tags:
-    - skip_ansible_lint # running a sub-job
+    - skip_ansible_lint
 
 - name: Pause 5 seconds
   pause: seconds=5
 
-- name: ssh to XOS VM and run 'make vtn'
-  command: ssh ubuntu@xos "cd {{ service_profile_repo_dest }}/{{ xos_configuration }}/; rm -f vtn-external.yaml; make vtn"
+- name: Rebuild VTN configuration with new nodes block
+  command: chdir="{{ service_profile_repo_dest }}/{{ xos_configuration }}" bash -c "rm -f vtn-external.yaml; make vtn |& tee xos-makevtn2.out"
   tags:
-    - skip_ansible_lint # running a sub-job
+    - skip_ansible_lint
