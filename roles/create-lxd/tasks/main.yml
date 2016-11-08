@@ -1,0 +1,78 @@
+---
+# file: create-lxd/tasks/main.yml
+- name: Ensure DIG
+  become: yes
+  apt:
+    name: dnsutils=1:9*
+    state: present
+
+- name: Setup space for LXD
+  file: 
+    name: "{{ item }}"
+    state: directory
+  with_items: 
+    - "/var/extra/lxd"
+  when: on_cloudlab
+
+- name: Setup links for LXD
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { src: "/var/extra/lxd", dest: "/var/lib/lxd" }
+  when: on_cloudlab
+
+- name: Enable trusty-backports
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  with_items:
+    - "deb http://us.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe"
+    - "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe"
+
+- name: Ensure LXD
+  apt:
+    name: lxd
+    state: present
+    update_cache: yes
+    default_release: trusty-backports
+
+# For development, remove later
+- name: Manually set up LXD bridge
+  pause:
+    prompt: "Run: sudo dpkg-reconfigure -p medium lxd"
+
+- name: Create openstack LXD profile
+  lxd_profile:
+    name: openstack
+    state: present
+    config:
+      user.user-data: |
+        #cloud-config
+        ssh_authorized_keys:
+          - "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    description: 'OpenStack services on CORD'
+    devices:
+      eth0:
+        nictype: bridged
+        parent: mgmtbr
+        type: nic
+
+- name: Create containers for the OpenStack services
+  lxd_container:
+    name: "{{ item.name }}"
+    architecture: x86_64
+    state: started
+    source:
+      type: image
+      mode: pull
+      server: https://cloud-images.ubuntu.com/releases
+      protocol: simplestreams
+      alias: "{{ ansible_distribution_release }}"
+    profiles: ["openstack"]
+    wait_for_ipv4_addresses: true
+    timeout: 600
+  with_items: "{{ head_lxd_list }}"
+
+### Fix from here
+
