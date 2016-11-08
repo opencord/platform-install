@@ -1,26 +1,48 @@
 ---
-- name: Install software
-  apt:
-    name={{ item }}
-    update_cache=yes
-    cache_valid_time=3600
-  become: yes
-  register: result
-  until: result | success
-  retries: 15
-  delay: 60
-  with_items:
-   - lxc
-   - lxc-dev
-   - python-dev
+- name: get "fabric" bridge interface
+  shell: route -n | grep 10.6.1.0 | awk '{print $8}'
+  register: bridge
+  tags:
+     - skip_ansible_lint # running a sub job
 
-- name: Install PIP packages
-  pip:
-    name={{ item }}
+- name: Create testclient LXD profile
   become: yes
-  register: result
-  until: result | success
-  retries: 15
-  delay: 60
-  with_items:
-   - lxc-python2
+  lxd_profile:
+    name: testclient
+    state: present
+    config:
+      user.user-data: |
+        #cloud-config
+        ssh_authorized_keys:
+          - "{{ lookup('file', '/tmp/id_rsa.pub') }}"
+        bootcmd:
+          - apt-get -y install curl
+          - ifdown eth0
+          - sed -i 's/eth0 inet dhcp/eth0 inet manual/g' /etc/network/interfaces
+          - ifup eth0
+          - ip link add link eth0 name eth0.222 type vlan id 222
+          - ip link add link eth0.222 name eth0.222.111 type vlan id 111
+          - ifconfig eth0.222 up
+          - ifconfig eth0.222.111 up
+    description: 'Subscriber test client'
+    devices:
+      eth0:
+        nictype: bridged
+        parent: "{{ bridge.stdout }}"
+        type: nic
+
+- name: Create testclient container
+  become: yes
+  lxd_container:
+    name: testclient
+    architecture: x86_64
+    state: started
+    source:
+      type: image
+      mode: pull
+      server: https://cloud-images.ubuntu.com/releases
+      protocol: simplestreams
+      alias: "{{ ansible_distribution_release }}"
+    profiles: ["testclient"]
+    wait_for_ipv4_addresses: true
+    timeout: 600
