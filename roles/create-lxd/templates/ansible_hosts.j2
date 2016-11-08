@@ -1,0 +1,22 @@
+[localhost]
+127.0.0.1 hostname={{ ansible_fqdn }}
+
+# VMs will go away shortly in favor of containers
+[vms]
+{% for vm in head_vm_list -%}
+{{ vm.name }}
+{% endfor -%}
+
+[containers]
+{% for lxd in head_lxd_list -%}
+{{ lxd.name }}
+{% endfor -%}
+
+[services:children]
+vms
+containers
+
+[docker]
+{% for vm in head_vm_list | selectattr('docker_path', 'defined') -%}
+{{ vm.name }}
+{% endfor -%}
