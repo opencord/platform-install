@@ -4,9 +4,15 @@
 xos_repo_url: "https://gerrit.opencord.org/xos"
 xos_repo_dest: "~/xos"
 xos_repo_branch: "HEAD"
+
 xos_configuration: "devel"
-xos_container_rebuild: false
+
+xos_container_rebuild: False
 
 service_profile_repo_url: "https://gerrit.opencord.org/p/service-profile.git"
 service_profile_repo_dest: "~/service-profile"
 service_profile_repo_branch: "HEAD"
+
+docker_tag: "latest"
+docker_registry: "docker.io"
+local_docker_registry: "docker-registry:5000"

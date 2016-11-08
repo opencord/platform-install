@@ -31,18 +31,26 @@
   command: ansible onos-cord-1:onos-fabric-1 -u ubuntu -m command \
     -a "docker-compose up -d chdir=cord"
 
-- name: Wait for xos_setup_playbook to complete
-  when: "{{ head_vm_list | map(attribute='name') | list | intersect(['xos-1']) | list | length }}"
-  async_status: jid={{ xos_setup_playbook.ansible_job_id }}
-  register: xos_setup_playbook_result
-  until: xos_setup_playbook_result.finished
-  delay: 10
-  retries: 120
+#- name: Wait for xos_setup_playbook to complete
+#  when: "{{ head_vm_list | map(attribute='name') | list | intersect(['xos-1']) | list | length }}"
+#  async_status: jid={{ xos_setup_playbook.ansible_job_id }}
+#  register: xos_setup_playbook_result
+#  until: xos_setup_playbook_result.finished
+#  delay: 10
+#  retries: 120
 
-- name: Copy admin-openrc.sh into XOS container
-  when: "{{ head_vm_list | map(attribute='name') | list | intersect(['xos-1']) | list | length }}"
-  command: ansible xos-1 -u ubuntu -m copy \
-    -a "src=~/admin-openrc.sh dest={{ service_profile_repo_dest }}/{{ xos_configuration }}"
+#- name: Copy admin-openrc.sh into XOS container
+#  when: "{{ head_vm_list | map(attribute='name') | list | intersect(['xos-1']) | list | length }}"
+#  command: ansible xos-1 -u ubuntu -m copy \
+#    -a "src=~/admin-openrc.sh dest={{ service_profile_repo_dest }}/{{ xos_configuration }}"
+
+- name: Copy admin-openrc.sh to service-profile
+  command: cp ~/admin-openrc.sh {{ service_profile_repo_dest }}/{{ xos_configuration }}
+  tags:
+    - skip_ansible_lint
+#  copy:
+#      src=~/admin-openrc.sh
+#      dest={{ service_profile_repo_dest }}/{{ xos_configuration }}
 
 - name: Wait for test client to complete installation
   when: test_client_install is defined and test_client_install

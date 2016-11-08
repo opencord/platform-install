@@ -156,14 +156,14 @@ head_vm_list:
     diskGB: 40
     docker_path: "cord"
 
-  - name: "xos-1"
-    aliases:
-      - "xos"
-    ipv4_last_octet: 130
-    cpu: 2
-    memMB: 4096
-    diskGB: 40
-    docker_path: 'service-profile/cord-pod'
+#  - name: "xos-1"
+#    aliases:
+#      - "xos"
+#    ipv4_last_octet: 130
+#    cpu: 2
+#    memMB: 4096
+#    diskGB: 40
+#    docker_path: 'service-profile/cord-pod'
 
   - name: "nova-compute-1"
     service: "nova-compute"

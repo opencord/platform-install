@@ -1,29 +1,143 @@
 ---
 # tasks for xos-install role
 
-- name: checkout XOS repo
-  git:
-   repo: "{{ xos_repo_url }}"
-   dest: "{{ xos_repo_dest }}"
-   version: "{{ xos_repo_branch }}"
+- name: Install prerequisites
+  apt:
+    name={{ item }}
+    update_cache=yes
+    cache_valid_time=3600
+  become: yes
+  with_items:
+   - git
+   - make
+   - curl
+   - python-novaclient
+   - python-neutronclient
+   - python-keystoneclient
+   - python-glanceclient
 
-- name: checkout service-profile repo
+# ---- copy repos from the dev machine to the head node ----
+
+- name: Check to see if orchestration directory exists
+  local_action: stat path="{{ playbook_dir }}/../../orchestration"
+  register: orchestration
+
+- name: Copy repositories to the head node
+  synchronize:
+      src: "{{ playbook_dir }}/../../orchestration/{{ item }}"
+      dest: "{{ ansible_user_dir }}/"
+  when:
+      False # orchestration.stat.exists == True   # XXX
+  with_items:
+      - service-profile
+      - xos
+      - xos_libraries
+      - xos_services
+
+- name: Check to see if onos_apps directory exists
+  local_action: stat path="{{ playbook_dir }}/../../onos-apps/apps"
+  register: onos_apps
+
+- name: Copy in onos-apps that have XOS code
+  synchronize:
+      src: "{{ playbook_dir }}/../../onos-apps/apps/{{ item }}"
+      dest: "{{ ansible_user_dir }}/xos_services/"
+  with_items:
+      - vtn
+      - olt
+  when:
+      False # (orchestration.stat.exists == True) and (onos_apps.stat.exists == True)   # XXX
+
+# ----  alternatively, check out repos from Internet ---
+
+- name: Clone service-profile repo
   git:
-    repo: "{{ service_profile_repo_url }}"
-    dest: "{{ service_profile_repo_dest }}"
-    version: "{{ service_profile_repo_branch }}"
+    repo={{ service_profile_repo_url }}
+    dest={{ service_profile_repo_dest }}
+    version={{ service_profile_repo_branch }}
+    force=yes
+  when:
+    True # orchestration.stat.exists == False   # XXX
+
+# ----  install keys ----
+
+- name: Copy over SSH keys
+  command: cp ~/.ssh/{{ item }} {{ service_profile_repo_dest }}/{{ xos_configuration }}/
+  with_items:
+   - id_rsa
+   - id_rsa.pub
+  tags:
+    - skip_ansible_lint
+
+- name: Copy over node key
+  command: cp {{ ansible_user_dir }}/node_key {{ service_profile_repo_dest }}/{{ xos_configuration }}/
+  tags:
+    - skip_ansible_lint
+
+- name: Set ownership and permissions of keys
+  file:
+    path={{ service_profile_repo_dest }}/{{ xos_configuration }}/{{ item }}
+    owner={{ ansible_user_id }}
+#    mode=0600
+  with_items:
+   - id_rsa
+   - id_rsa.pub
+   - node_key
+
+# ----
+
+- name: Download Glance VM images
+  get_url:
+    url={{ item.url }}
+    checksum={{ item.checksum }}
+    dest={{ service_profile_repo_dest }}/{{ xos_configuration }}/images/{{ item.name }}.img
+  with_items: "{{ xos_images }}"
+
+# ---- pull docker images ----
+
+- name: Check to see if registry is reachable
+  command: curl -sf http://docker-registry:5000/
+  ignore_errors: yes
+  register: docker_registry_check
+  tags:
+    - skip_ansible_lint
+
+- name: Use registry if it is available
+  set_fact:
+     docker_registry: "{{ local_docker_registry }}"
+     docker_opts: "--insecure-registry {{ local_docker_registry }}"
+     docker_tag: "candidate"
+  when: docker_registry_check|succeeded
+
+- name: Pull docker images for XOS
+  become: yes
+  command: docker pull {{ docker_registry }}/{{ item }}:{{ docker_tag }}
+  with_items:
+    - xosproject/xos-base
+    - xosproject/xos-postgres
+    - xosproject/cord-app-build
+    - redis
+  tags:
+    - skip_ansible_lint
+
+- name: Tag the images downloaded from the local registry
+  command: docker tag {{ docker_registry }}/{{ item }}:{{ docker_tag }} {{ item }}:latest
+  with_items:
+    - xosproject/xos-base
+    - xosproject/xos-postgres
+    - xosproject/cord-app-build
+    - redis
+  when: docker_registry_check|succeeded
+
+# ---- optional: rebuild base container ----
 
 - name: Rebuild XOS containers
   when: xos_container_rebuild
-  make:
-    target: "{{ item }}"
-    chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}/"
+  command: make {{ item }}
+    chdir="{{ xos_repo_dest }}/containers/xos/"
   with_items:
-    - common_cloudlab
-    - base
+   - base
 
-- name: Initial build of XOS
-  make:
-    target: "{{ item }}"
-    chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}/"
+
+
 
