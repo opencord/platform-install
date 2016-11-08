@@ -50,7 +50,7 @@
 - name: Set up VM's, juju, start ONOS and XOS
   hosts: head
   roles:
-    - xos-vm-install
+    - xos-install
     - onos-vm-install
     - juju-setup
     - docker-compose
