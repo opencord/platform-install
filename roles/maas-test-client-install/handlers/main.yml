@@ -1,0 +1,12 @@
+---
+- name: set up container networking
+  become: yes
+  command: lxc exec testclient -- {{ item }}
+  with_items:
+    - ifdown eth0
+    - sed -i 's/eth0 inet dhcp/eth0 inet manual/g' /etc/network/interfaces.d/eth0.cfg
+    - ifup eth0
+    - ip link add link eth0 name eth0.222 type vlan id 222
+    - ip link add link eth0.222 name eth0.222.111 type vlan id 111
+    - ifconfig eth0.222 up
+    - ifconfig eth0.222.111 up
