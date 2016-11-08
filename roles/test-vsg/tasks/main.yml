@@ -54,42 +54,25 @@
   tags:
     - skip_ansible_lint # running a sub job
 
-- name: get "fabric" bridge interface
-  shell: route -n | grep 10.6.1.0 | awk '{print $8}'
-  register: bridge
-  tags:
-     - skip_ansible_lint # running a sub job
-
-# Specifying this through container_config below was not working...
-- name: set lxc bridge interface
+- name: start container
   become: yes
-  lineinfile:
-    dest: /etc/lxc/default.conf
-    regexp: "^lxc.network.link ="
-    line: "lxc.network.link = {{ bridge.stdout }}"
-
-- name: Create testclient
-  become: yes
-  lxc_container:
+  lxd_container:
     name: testclient
-    container_log: true
-    template: ubuntu
     state: started
-    template_options: --release trusty
-    container_command: |
-      ifdown eth0
-      sed -i 's/eth0 inet dhcp/eth0 inet manual/g' /etc/network/interfaces
-      ifup eth0
-      ip link show eth0.222 || ip link add link eth0 name eth0.222 type vlan id 222
-      ip link show eth0.222.111 || ip link add link eth0.222 name eth0.222.111 type vlan id 111
-      ifconfig eth0.222 up
-      ifconfig eth0.222.111 up
-      dhclient eth0.222.111
 
-# Don't use lxc_container so that we can get output
+- name: Make sure testclient has default route to vSG
+  become: yes
+  shell: lxc exec testclient -- route | grep default | grep "eth0.222.111"
+  register: result
+  until: result | success
+  retries: 3
+  delay: 10
+  tags:
+    - skip_ansible_lint # running a sub job
+
 - name: Test external connectivity in test client
   become: yes
-  command: lxc-attach -n testclient -- ping -c 3 8.8.8.8
+  command: lxc exec testclient -- ping -c 3 8.8.8.8
   register: pingtest
   tags:
     - skip_ansible_lint # running a sub job
