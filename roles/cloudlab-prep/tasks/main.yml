@@ -18,3 +18,15 @@
   retries: 3
   delay: 5
 
+- name: Set up symlink targets
+  file:
+    path: "{{ item.src }}"
+    state: directory
+  with_items: "{{ cloudlab_links }}"
+
+- name: Create symlinks
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: link
+  with_items: "{{ cloudlab_links }}"
