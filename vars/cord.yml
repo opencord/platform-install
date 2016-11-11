@@ -41,10 +41,10 @@ xos_images:
     url: "http://www.vicci.org/cord/vsg-1.1.img"
     checksum: "sha256:16b0beb6778aed0f5feecb05f8d5750e6c262f98e6011e99ddadf7d46a177b6f"
   - name: ceilometer-trusty-server-multi-nic
-    image_url: "http://www.vicci.org/cord/ceilometer-trusty-server-multi-nic.compressed.qcow2"
+    url: "http://www.vicci.org/cord/ceilometer-trusty-server-multi-nic.compressed.qcow2"
     checksum: "sha256:afde3f0448483902693be4d52ae76bb683fd74b1c7728019094bf81b37d86105"
   - name: ceilometer-service-trusty-server-multi-nic
-    image_url: "http://www.vicci.org/cord/ceilometer-service-trusty-server-multi-nic.compressed.qcow2"
+    url: "http://www.vicci.org/cord/ceilometer-service-trusty-server-multi-nic.compressed.qcow2"
     checksum: "sha256:9c346ff15727e9a98942835d6bd34b3d033f868234425f517e53d64b5a124a13"
 
 # turn this on, or override it when running the playbook with --extra-vars="on_cloudlab=True"
