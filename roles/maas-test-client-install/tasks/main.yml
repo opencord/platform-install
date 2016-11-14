@@ -1,26 +1,72 @@
 ---
-- name: Install software
-  apt:
-    name={{ item }}
-    update_cache=yes
-    cache_valid_time=3600
-  become: yes
-  register: result
-  until: result | success
-  retries: 15
-  delay: 60
+- name: Enable trusty-backports
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
   with_items:
-   - lxc
-   - lxc-dev
-   - python-dev
+    - "deb http://us.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe"
+    - "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe"
 
-- name: Install PIP packages
-  pip:
-    name={{ item }}
-  become: yes
+- name: Ensure LXD
+  apt:
+    name: lxd
+    state: present
+    update_cache: yes
+    default_release: trusty-backports
+
+- name: get "fabric" bridge interface
+  shell: route -n | grep 10.6.1.0 | awk '{print $8}'
+  register: bridge
+  tags:
+     - skip_ansible_lint # running a sub job
+
+- name: Create testclient LXD profile
+  lxd_profile:
+    name: testclient
+    state: present
+    config:
+      user.user-data: |
+        #cloud-config
+        write_files:
+          - path: /etc/rc.local
+            permissions: "0755"
+            content: |
+              #!/bin/sh -e
+              # Set up VLAN tagging interface ("simulated OLT")
+              ip link add link eth0 name eth0.222 type vlan id 222
+              ip link add link eth0.222 name eth0.222.111 type vlan id 111
+              ifconfig eth0.222 up
+              ifconfig eth0.222.111 up
+              dhclient eth0.222.111
+              exit 0
+        bootcmd:
+          - sed -i 's/eth0 inet dhcp/eth0 inet manual/g' /etc/network/interfaces.d/eth0.cfg
+    description: 'Subscriber test client'
+    devices:
+      eth0:
+        nictype: bridged
+        parent: "{{ bridge.stdout }}"
+        type: nic
+
+- name: Create testclient container
+  lxd_container:
+    name: testclient
+    architecture: x86_64
+    state: started
+    source:
+      type: image
+      mode: pull
+      server: https://cloud-images.ubuntu.com/releases
+      protocol: simplestreams
+      alias: "{{ ansible_distribution_release }}"
+    profiles: ["testclient"]
+    timeout: 600
+
+- name: Stop container
+  lxd_container:
+    name: testclient
+    state: stopped
   register: result
   until: result | success
-  retries: 15
-  delay: 60
-  with_items:
-   - lxc-python2
+  retries: 3
+  delay: 10
