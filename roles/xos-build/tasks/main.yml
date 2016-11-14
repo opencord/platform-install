@@ -11,14 +11,11 @@
       xosdir.stat.exists == True
 
 - name: tag xos base container image
-  local_action: command docker tag xosproject/xos-base {{ docker_registry }}/xosproject/xos-base:candidate
+  local_action: command docker tag xosproject/xos-base {{ deploy_docker_registry }}/xosproject/xos-base:{{ deploy_docker_tag }}
   when:
       xosdir.stat.exists == True
 
 - name: publish XOS base container image to local repo
-  local_action: shell cd {{ xos_repo_dir }} && docker push {{ docker_registry }}/xosproject/xos-base:candidate
+  local_action: shell cd {{ xos_repo_dir }} && docker push {{ deploy_docker_registry }}/xosproject/xos-base:{{ deploy_docker_tag }}
   when:
       xosdir.stat.exists == True
-
-
-

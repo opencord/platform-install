@@ -79,7 +79,7 @@
       with_items: "{{ xos_images }}"
 
     - name: Check to see if registry is reachable
-      command: curl -sf http://docker-registry:5000/
+      command: curl -sf http://{{ local_docker_registry }}
       ignore_errors: yes
       register: docker_registry_check
       tags:
@@ -89,7 +89,7 @@
       set_fact:
          docker_registry: "{{ local_docker_registry }}"
          docker_opts: "--insecure-registry {{ local_docker_registry }}"
-         docker_tag: "candidate"
+         docker_tag: "{{ deploy_docker_tag }}"
       when: docker_registry_check|succeeded
 
     - name: Set docker options
