@@ -40,6 +40,7 @@
   roles:
     - { role: head-prep, become: yes }
     - { role: config-virt, become: yes }
+    - create-lxd
     - create-vms
 
 - name: Create docker images
