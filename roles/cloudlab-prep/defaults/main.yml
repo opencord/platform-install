@@ -2,5 +2,11 @@
 # roles/cloudlab-prep/defaults/main.yml
 
 cloudlab_extrafs:
-  - { mount: /var/lib/uvtool/libvirt/images, dev: /dev/sda }
-  - { mount: /var/lib/nova, dev: /dev/sdb }
+  - { mount: /mnt/extra, dev: /dev/sdb }
+
+cloudlab_links:
+  - { src: /mnt/extra/lxc, dest: /var/lib/lxc  }
+  - { src: /mnt/extra/lxd, dest: /var/lib/lxd  }
+  - { src: /mnt/extra/uvtool, dest: /var/lib/uvtool }
+  - { src: /mnt/extra/nova, dest: /var/lib/nova }
+  - { src: /mnt/extra/juju, dest: /var/lib/juju }
