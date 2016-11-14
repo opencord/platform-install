@@ -46,112 +46,6 @@ charm_versions:
   rabbitmq-server: "cs:trusty/rabbitmq-server-42"
 
 head_vm_list:
-  - name: "juju-1"
-    service: "juju"
-    aliases:
-      - "juju"
-    ipv4_last_octet: 10
-    cpu: 1
-    memMB: 2048
-    diskGB: 20
-
-  - name: "ceilometer-1"
-    service: "ceilometer"
-    aliases:
-      - "ceilometer"
-    ipv4_last_octet: 20
-    cpu: 1
-    memMB: 2048
-    diskGB: 20
-    forwarded_ports:
-      - { ext: 8777, int: 8777 }
-
-  - name: "glance-1"
-    service: "glance"
-    aliases:
-      - "glance"
-    ipv4_last_octet: 30
-    cpu: 2
-    memMB: 4096
-    diskGB: 160
-    forwarded_ports:
-      - { ext: 9292, int: 9292 }
-
-  - name: "keystone-1"
-    service: "keystone"
-    aliases:
-      - "keystone"
-    ipv4_last_octet: 40
-    cpu: 2
-    memMB: 4096
-    diskGB: 40
-    forwarded_ports:
-      - { ext: 35357, int: 35357 }
-      - { ext: 4990, int: 4990 }
-      - { ext: 5000, int: 5000 }
-
-  - name: "percona-cluster-1"
-    service: "percona-cluster"
-    aliases:
-      - "percona-cluster"
-    ipv4_last_octet: 50
-    cpu: 2
-    memMB: 4096
-    diskGB: 40
-
-  - name: "nagios-1"
-    service: "nagios"
-    aliases:
-      - "nagios"
-    ipv4_last_octet: 60
-    cpu: 1
-    memMB: 2048
-    diskGB: 20
-    forwarded_ports:
-      - { ext: 3128, int: 80 }
-
-  - name: "neutron-api-1"
-    service: "neutron-api"
-    aliases:
-      - "neutron-api"
-    ipv4_last_octet: 70
-    cpu: 2
-    memMB: 4096
-    diskGB: 40
-    forwarded_ports:
-      - { ext: 9696, int: 9696 }
-
-  - name: "nova-cloud-controller-1"
-    service: "nova-cloud-controller"
-    aliases:
-      - "nova-cloud-controller"
-    ipv4_last_octet: 80
-    cpu: 2
-    memMB: 4096
-    diskGB: 40
-    forwarded_ports:
-      - { ext: 8774, int: 8774 }
-
-  - name: "openstack-dashboard-1"
-    service: "openstack-dashboard"
-    aliases:
-      - "openstack-dashboard"
-    ipv4_last_octet: 90
-    cpu: 1
-    memMB: 2048
-    diskGB: 20
-    forwarded_ports:
-      - { ext: 8080, int: 80 }
-
-  - name: "rabbitmq-server-1"
-    service: "rabbitmq-server"
-    aliases:
-      - "rabbitmq-server"
-    ipv4_last_octet: 100
-    cpu: 2
-    memMB: 4096
-    diskGB: 40
-
   - name: "onos-cord-1"
     aliases:
       - "onos-cord"
@@ -170,17 +64,84 @@ head_vm_list:
     diskGB: 40
     docker_path: "cord"
 
-#  - name: "xos-1"
-#    aliases:
-#      - "xos"
-#    ipv4_last_octet: 130
-#    cpu: 2
-#    memMB: 4096
-#    diskGB: 40
-#    docker_path: 'service-profile/cord-pod'
+head_lxd_list:
+  - name: "ceilometer-1"
+    service: "ceilometer"
+    aliases:
+      - "ceilometer"
+    ipv4_last_octet: 20
+    forwarded_ports:
+      - { ext: 8777, int: 8777 }
 
+  - name: "glance-1"
+    service: "glance"
+    aliases:
+      - "glance"
+    ipv4_last_octet: 30
+    forwarded_ports:
+      - { ext: 9292, int: 9292 }
 
-vm_service_list:
+  - name: "keystone-1"
+    service: "keystone"
+    aliases:
+      - "keystone"
+    ipv4_last_octet: 40
+    forwarded_ports:
+      - { ext: 35357, int: 35357 }
+      - { ext: 4990, int: 4990 }
+      - { ext: 5000, int: 5000 }
+
+  - name: "percona-cluster-1"
+    service: "percona-cluster"
+    aliases:
+      - "percona-cluster"
+    ipv4_last_octet: 50
+
+  - name: "nagios-1"
+    service: "nagios"
+    aliases:
+      - "nagios"
+    ipv4_last_octet: 60
+    forwarded_ports:
+      - { ext: 3128, int: 80 }
+
+  - name: "neutron-api-1"
+    service: "neutron-api"
+    aliases:
+      - "neutron-api"
+    ipv4_last_octet: 70
+    forwarded_ports:
+      - { ext: 9696, int: 9696 }
+
+  - name: "nova-cloud-controller-1"
+    service: "nova-cloud-controller"
+    aliases:
+      - "nova-cloud-controller"
+    ipv4_last_octet: 80
+    forwarded_ports:
+      - { ext: 8774, int: 8774 }
+
+  - name: "openstack-dashboard-1"
+    service: "openstack-dashboard"
+    aliases:
+      - "openstack-dashboard"
+    ipv4_last_octet: 90
+    forwarded_ports:
+      - { ext: 8080, int: 80 }
+
+  - name: "rabbitmq-server-1"
+    service: "rabbitmq-server"
+    aliases:
+      - "rabbitmq-server"
+    ipv4_last_octet: 100
+
+  - name: "mongodb-1"
+    service: "mongodb"
+    aliases:
+      - "mongodb"
+    ipv4_last_octet: 110
+
+lxd_service_list:
   - ceilometer
   - glance
   - keystone
@@ -190,7 +151,7 @@ vm_service_list:
   - nova-cloud-controller
   - openstack-dashboard
   - rabbitmq-server
-
+  - mongodb
 
 standalone_service_list:
   - ntp
@@ -244,4 +205,3 @@ compute_relations:
 
   - name: ntp
     relations: [ "nova-compute", ]
-

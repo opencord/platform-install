@@ -2,8 +2,8 @@ default: manual
 environments:
     manual:
         type: manual
-        bootstrap-host: juju.{{ site_suffix }}
-        bootstrap-user: ubuntu
+        bootstrap-host: {{ ansible_mgmtbr.ipv4.address }}
+        bootstrap-user: {{ ansible_user_id }}
         default-series: {{ ansible_distribution_release }}
         enable-os-refresh-update: false
         enable-os-upgrade: false

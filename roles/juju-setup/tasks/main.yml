@@ -34,22 +34,18 @@
 # list of active juju_services names: juju_services.keys()
 
 - name: Add machines to Juju
-  when: "{{ head_vm_list | map(attribute='service') | list | reject('undefined') | map('format_string', '%s.'~site_suffix ) | difference( juju_machines.keys() ) | length }}"
+  when: "{{ head_lxd_list | map(attribute='service') | list | reject('undefined') | map('format_string', '%s.'~site_suffix ) | difference( juju_machines.keys() ) | length }}"
   command: "juju add-machine ssh:{{ item }}"
-  with_items: "{{ head_vm_list | map(attribute='service') | list | reject('undefined') | map('format_string', '%s.'~site_suffix ) | difference( juju_machines.keys() ) }}"
+  with_items: "{{ head_lxd_list | map(attribute='service') | list | reject('undefined') | map('format_string', '%s.'~site_suffix ) | difference( juju_machines.keys() ) }}"
 
 # run this again, so machines will be in the juju_machines list
 - name: Obtain Juju Facts after machine creation
   juju_facts:
 
 - name: Deploy services that are hosted in their own VM
-  when: "{{ vm_service_list | difference( juju_services.keys() ) | length }}"
+  when: "{{ lxd_service_list | difference( juju_services.keys() ) | length }}"
   command: "juju deploy {{ charm_versions[item] | default(item) }} --to {{ juju_machines[item~'.'~site_suffix]['machine_id'] }} --config={{ juju_config_path }}"
-  with_items: "{{ vm_service_list | difference( juju_services.keys() ) }}"
-
-- name: Deploy mongodb to ceilometer VM
-  when: juju_services['mongodb'] is undefined
-  command: "juju deploy {{ charm_versions['mongodb'] | default('mongodb') }} --to {{ juju_machines['ceilometer.'~site_suffix]['machine_id'] }} --config={{ juju_config_path }}"
+  with_items: "{{ lxd_service_list | difference( juju_services.keys() ) }}"
 
 - name: Deploy services that don't have their own VM
   when: "{{ standalone_service_list | difference( juju_services.keys() ) | length }}"
@@ -72,12 +68,12 @@
 
 # 1800s = 30m. Usually takes 10-12m on cloudlab for relations to come up
 # Only checks for first port in list
-- name: Wait for juju services on VM's to have open ports
+- name: Wait for juju services to have open ports
   wait_for:
     host={{ item.name }}
     port={{ item.forwarded_ports[0].int }}
     timeout=1800
-  with_items: "{{ head_vm_list | selectattr('forwarded_ports', 'defined') | list }}"
+  with_items: "{{ head_lxd_list | selectattr('forwarded_ports', 'defined') | list }}"
 
 # secondary wait, as waiting on ports isn't enough. Probably only need one of these...
 # 160*15s = 2400s = 40m max wait
