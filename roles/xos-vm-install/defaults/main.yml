@@ -17,4 +17,6 @@ service_profile_repo_branch: "HEAD"
 docker_opts: ""
 docker_tag: "latest"
 docker_registry: "docker.io"
+
 local_docker_registry: "docker-registry:5000"
+local_docker_tag: "{{ deploy_docker_tag | default('candidate') }}"
