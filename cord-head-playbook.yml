@@ -47,12 +47,16 @@
   roles:
     - xos-build
 
-- name: Set up VM's, juju, start ONOS and XOS
+- name: Set up VMs and juju
   hosts: head
   roles:
     - xos-install
     - onos-vm-install
     - juju-setup
+
+- name: Start ONOS and XOS
+  hosts: head
+  roles:
     - docker-compose
     - xos-head-start
 
@@ -65,4 +69,3 @@
   hosts: head
   roles:
     - head-prologue
-
