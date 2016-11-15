@@ -110,18 +110,7 @@
     src: "{{ ansible_user_dir }}/keystone_juju_ca_cert.crt"
     dest: "/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt"
     remote_src: true
-  register: copied_cert
-
-- name: update-ca-certificates
-  when: copied_cert.changed
-  become: yes
-  command: update-ca-certificates
-
-- name: Move cert to all service VM's
-  when: copied_cert.changed
-  command: ansible services -b -u ubuntu -m copy -a "src={{ ansible_user_dir }}/keystone_juju_ca_cert.crt dest=/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt owner=root group=root mode=0644"
-
-- name: update-ca-certificates in service VM's
-  when: copied_cert.changed
-  command: ansible services -b -u ubuntu -m command -a "update-ca-certificates"
-
+  notify:
+    - update-ca-certificates
+    - Move cert to all service VMs
+    - update-ca-certificates in service VMs

@@ -103,6 +103,8 @@
       become: yes
       service: name=docker state=restarted
       when: set_docker_opts.changed
+      tags:
+        - skip_ansible_lint # Wants this to be a handler
 
     - name: Pull docker images for XOS
       become: yes
@@ -130,6 +132,3 @@
         chdir="{{ xos_repo_dest }}/containers/xos/"
       with_items:
        - base
-
-
-
