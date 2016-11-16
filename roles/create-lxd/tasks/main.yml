@@ -1,0 +1,139 @@
+---
+# file: create-lxd/tasks/main.yml
+- name: Ensure DIG
+  become: yes
+  apt:
+    name: dnsutils=1:9*
+    state: present
+
+- name: Enable trusty-backports
+  become: yes
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  with_items:
+    - "deb http://us.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe"
+    - "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe"
+
+- name: Ensure LXD
+  become: yes
+  apt:
+    name: lxd
+    state: present
+    update_cache: yes
+    default_release: trusty-backports
+
+# For lookup() below
+- name: Fetch remote key
+  fetch:
+    src: .ssh/id_rsa.pub
+    dest: /tmp/id_rsa.pub
+    flat: yes
+
+- name: Create openstack LXD profile
+  become: yes
+  lxd_profile:
+    name: openstack
+    state: present
+    config:
+      user.user-data: |
+        #cloud-config
+        ssh_authorized_keys:
+          - "{{ lookup('file', '/tmp/id_rsa.pub') }}"
+    description: 'OpenStack services on CORD'
+    devices:
+      eth0:
+        nictype: bridged
+        parent: mgmtbr
+        type: nic
+
+- name: Create containers for the OpenStack services
+  become: yes
+  lxd_container:
+    name: "{{ item.name }}"
+    architecture: x86_64
+    state: started
+    source:
+      type: image
+      mode: pull
+      server: https://cloud-images.ubuntu.com/releases
+      protocol: simplestreams
+      alias: "{{ ansible_distribution_release }}"
+    profiles: ["openstack"]
+    wait_for_ipv4_addresses: true
+    timeout: 600
+  with_items: "{{ head_lxd_list }}"
+
+- name: fetch IP of DHCP harvester
+  when: on_maas
+  command: docker-ip harvester
+  register: harvester_ip
+  changed_when: False
+
+- name: force a harvest to get container name resolution
+  when: on_maas
+  uri:
+    url: http://{{ harvester_ip.stdout }}:8954/harvest
+    method: POST
+
+- name: wait for container name resolution
+  when: on_maas
+  host_dns_check:
+    hosts: "{{ head_lxd_list | map(attribute='name') | list | to_json }}"
+    command_on_fail: "curl -sS --connect-timeout 3 -XPOST http://{{ harvester_ip.stdout }}:8954/harvest"
+  register: all_resolved
+  until: all_resolved.everyone == "OK"
+  retries: 5
+  delay: 10
+  failed_when: all_resolved.everyone != "OK"
+
+- name: wait for containers to come up
+  wait_for:
+    host={{ item.name }}
+    port=22
+  with_items: "{{ head_lxd_list }}"
+
+- name: Create /etc/ansible/hosts file
+  become: yes
+  template:
+    src=ansible_hosts.j2
+    dest=/etc/ansible/hosts
+
+- name: Verify that we can log into every container
+  command: ansible containers -m ping -u ubuntu
+  tags:
+    - skip_ansible_lint # connectivity check
+
+- name: Have containers use the apt-cache
+  command: ansible containers -b -u ubuntu -m lineinfile -a "dest=/etc/apt/apt.conf.d/02apt-cacher-ng create=yes mode=0644 owner=root group=root regexp='^Acquire' line='Acquire::http { Proxy \"http://{{ apt_cacher_name }}:{{ apt_cacher_port | default('3142') }}\"; };'"
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Update apt cache
+  command: ansible containers -m apt -b -u ubuntu -a "update_cache=yes cache_valid_time=3600"
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Update software in all the containers
+  when: run_dist_upgrade
+  command: ansible containers -m apt -b -u ubuntu -a "upgrade=dist"
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Create containers' eth0 interface config file for DNS config via resolvconf program
+  when: not on_maas
+  template:
+    src=eth0.cfg.j2
+    dest={{ ansible_user_dir }}/eth0.cfg
+
+- name: Copy eth0 interface config file to all containers
+  when: not on_maas
+  command: ansible containers -b -u ubuntu -m copy -a "src={{ ansible_user_dir }}/eth0.cfg dest=/etc/network/interfaces.d/eth0.cfg owner=root group=root mode=0644"
+
+- name: Restart eth0 interface on all containers
+  when: not on_maas
+  command: ansible containers -b -u ubuntu -m shell -a "ifdown eth0 ; ifup eth0"
+
+- name: Verify that we can log into every container after restarting network interfaces
+  when: not on_maas
+  command: ansible containers -m ping -u ubuntu
