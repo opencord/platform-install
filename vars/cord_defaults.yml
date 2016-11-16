@@ -14,7 +14,7 @@ juju_config_name: cord
 
 juju_config_path: /usr/local/src/juju_config.yml
 
-service_profile_repo_dest: "~/service-profile"
+service_profile_repo_dest: "{{ ansible_user_dir }}/service-profile"
 
 xos_configuration: cord-pod
 
