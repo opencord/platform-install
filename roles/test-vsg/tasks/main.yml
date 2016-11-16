@@ -4,17 +4,17 @@
 # Run tests to check that the CORD-in-a-Box deployment has worked.
 
 - name: Create cord subscriber
-  command: chdir="{{ service_profile_repo_dest }}/{{ xos_configuration }}" bash -c "make cord-subscriber |& tee xos-make-cord-subscriber.out"
-  tags:
-    - skip_ansible_lint
+  make:
+    chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
+    target: cord-subscriber
 
 - name: Pause 60 seconds (work around bug in synchronizer)
   pause: seconds=60
 
 - name: Re-run 'make vtn' (work around bug in synchronizer)
-  command: chdir="{{ service_profile_repo_dest }}/{{ xos_configuration }}" bash -c "make vtn |& tee xos-makevtn2.out"
-  tags:
-    - skip_ansible_lint
+  make:
+    chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
+    target: vtn
 
 - name: Wait for vSG VM to come up
   shell: bash -c "source ~/admin-openrc.sh; nova list --all-tenants|grep 'vsg.*ACTIVE' > /dev/null"
