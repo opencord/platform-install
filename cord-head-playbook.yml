@@ -43,17 +43,26 @@
     - create-lxd
     - create-vms
 
-- name: Create docker images
+- name: Start OpenStack install
+  hosts: head
+  roles:
+    - juju-setup
+
+- name: XOS setup
   hosts: head
   roles:
     - xos-build
+    - xos-install
 
-- name: Set up VMs and juju
+- name: Finish OpenStack install
   hosts: head
   roles:
-    - xos-install
+    - juju-finish
+
+- name: Set up VMs
+  hosts: head
+  roles:
     - onos-vm-install
-    - juju-setup
 
 - name: Start ONOS and XOS
   hosts: head

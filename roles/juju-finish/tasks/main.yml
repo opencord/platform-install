@@ -1,0 +1,52 @@
+# run another time, so services will be in juju_services list
+- name: Obtain Juju Facts after service creation
+  juju_facts:
+  register: result
+  until: result | success
+  retries: 3
+  delay: 15
+
+# 1800s = 30m. Usually takes 10-12m on cloudlab for relations to come up
+# Only checks for first port in list
+- name: Wait for juju services to have open ports
+  wait_for:
+    host={{ item.name }}
+    port={{ item.forwarded_ports[0].int }}
+    timeout=1800
+  with_items: "{{ head_lxd_list | selectattr('forwarded_ports', 'defined') | list }}"
+
+# secondary wait, as waiting on ports isn't enough. Probably only need one of these...
+# 160*15s = 2400s = 40m max wait
+- name: Wait for juju services to start
+  command: juju status --format=summary
+  register: juju_summary
+  until: juju_summary.stdout.find("pending:") == -1
+  retries: 160
+  delay: 15
+  tags:
+   - skip_ansible_lint # checking/waiting on a system to be up
+
+- name: Create admin-openrc.sh credentials file
+  template:
+   src=admin-openrc.sh.j2
+   dest={{ ansible_user_dir }}/admin-openrc.sh
+
+- name: Copy nova-cloud-controller CA certificate to head
+  command: juju scp {{ juju_services['nova-cloud-controller']['units'].keys()[0] }}:/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt {{ ansible_user_dir }}
+  register: result
+  until: result | success
+  retries: 40
+  delay: 15
+  tags:
+   - skip_ansible_lint # checking/waiting on file availibilty
+
+- name: Copy cert to system location
+  become: yes
+  copy:
+    src: "{{ ansible_user_dir }}/keystone_juju_ca_cert.crt"
+    dest: "/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt"
+    remote_src: true
+  notify:
+    - update-ca-certificates
+    - Move cert to all service VMs
+    - update-ca-certificates in service VMs
