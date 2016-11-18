@@ -1,0 +1,13 @@
+# ONOS with XOS features for docker-compose
+version: '2'
+
+services:
+
+   xos-onos:
+      image: onosproject/onos:latest
+      ports:
+       - "6653:6653"
+       - "8101:8101"
+       - "8181:8181"
+       - "9876:9876"
+
