@@ -60,7 +60,7 @@ charm_versions:
   mongodb: "cs:trusty/mongodb-33"
   percona-cluster: "cs:trusty/percona-cluster-31"
   nagios: "cs:trusty/nagios-10"
-  neutron-api: "cs:~cordteam/trusty/neutron-api-3"
+  neutron-api: "cs:~cordteam/trusty/neutron-api-4"
   nova-cloud-controller: "cs:trusty/nova-cloud-controller-64"
   nova-compute: "cs:~cordteam/trusty/nova-compute-2"
   nrpe: "cs:trusty/nrpe-4"
@@ -68,24 +68,7 @@ charm_versions:
   openstack-dashboard: "cs:trusty/openstack-dashboard-19"
   rabbitmq-server: "cs:trusty/rabbitmq-server-42"
 
-head_vm_list:
-  - name: "onos-cord-1"
-    aliases:
-      - "onos-cord"
-    ipv4_last_octet: 110
-    cpu: 2
-    memMB: 4096
-    diskGB: 40
-    docker_path: "cord"
-
-  - name: "onos-fabric-1"
-    aliases:
-      - "onos-fabric"
-    ipv4_last_octet: 120
-    cpu: 2
-    memMB: 4096
-    diskGB: 40
-    docker_path: "cord"
+head_vm_list: []
 
 head_lxd_list:
   - name: "juju-1"

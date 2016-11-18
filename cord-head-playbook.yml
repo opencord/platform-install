@@ -62,7 +62,8 @@
 - name: Set up VMs
   hosts: head
   roles:
-    - onos-vm-install
+    - onos-cord-install
+    - onos-fabric-install
 
 - name: Start ONOS and XOS
   hosts: head
