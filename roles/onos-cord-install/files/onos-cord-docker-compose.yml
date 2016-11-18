@@ -1,0 +1,17 @@
+# ONOS with XOS features for docker-compose
+version: '2'
+
+services:
+
+   xos-onos:
+      build:
+       context: .
+       dockerfile: Dockerfile
+      image: xos/onos
+      ports:
+       - "6654:6653"
+       - "8102:8101"
+       - "8182:8181"
+       - "9877:9876"
+      volumes:
+      - ./node_key:/root/node_key:ro

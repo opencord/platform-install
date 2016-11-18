@@ -45,24 +45,7 @@ charm_versions:
   openstack-dashboard: "cs:trusty/openstack-dashboard-19"
   rabbitmq-server: "cs:trusty/rabbitmq-server-42"
 
-head_vm_list:
-  - name: "onos-cord-1"
-    aliases:
-      - "onos-cord"
-    ipv4_last_octet: 110
-    cpu: 2
-    memMB: 4096
-    diskGB: 40
-    docker_path: "cord"
-
-  - name: "onos-fabric-1"
-    aliases:
-      - "onos-fabric"
-    ipv4_last_octet: 120
-    cpu: 2
-    memMB: 4096
-    diskGB: 40
-    docker_path: "cord"
+head_vm_list: []
 
 head_lxd_list:
   - name: "ceilometer-1"
