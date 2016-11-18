@@ -8,41 +8,28 @@
 # {{ head_vm_list | selectattr('name', 'equalto', 'onos-cord-1') | list | length }}
 # {{ head_vm_list | map(attribute='name') | list | intersect(['onos-cord-1']) | list | length }}
 
-- name: Wait for onos_setup_playbook to complete
-  when: "{{ head_vm_list | map(attribute='name') | list | intersect(['onos-cord-1']) | list | length }}"
-  async_status: jid={{ onos_setup_playbook.ansible_job_id }}
-  register: onos_setup_playbook_result
-  until: onos_setup_playbook_result.finished
-  delay: 10
-  retries: 120
-
-- name: Copy SSL Certs to ONOS so docker-compose can find it
-  when: "{{ head_vm_list | map(attribute='name') | list | intersect(['onos-cord-1']) | list | length }}"
-  command: ansible onos-cord-1 -u ubuntu -m copy \
-    -a "src=/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt dest=~/cord/xos-certs.crt"
-
-- name: Build ONOS image with docker-compose
-  when: "{{ head_vm_list | map(attribute='name') | list | intersect(['onos-cord-1']) | list | length }}"
-  command: ansible onos-cord-1 -u ubuntu -m command \
-    -a "docker-compose build chdir=cord"
-
-- name: Start ONOS
-  when: "{{ head_vm_list | map(attribute='name') | list | intersect(['onos-cord-1']) | list | length }}"
-  command: ansible onos-cord-1:onos-fabric-1 -u ubuntu -m command \
-    -a "docker-compose up -d chdir=cord"
-
-#- name: Wait for xos_setup_playbook to complete
-#  when: "{{ head_vm_list | map(attribute='name') | list | intersect(['xos-1']) | list | length }}"
-#  async_status: jid={{ xos_setup_playbook.ansible_job_id }}
-#  register: xos_setup_playbook_result
-#  until: xos_setup_playbook_result.finished
+#- name: Wait for onos_setup_playbook to complete
+#  when: "{{ head_vm_list | map(attribute='name') | list | intersect(['onos-cord-1']) | list | length }}"
+#  async_status: jid={{ onos_setup_playbook.ansible_job_id }}
+#  register: onos_setup_playbook_result
+#  until: onos_setup_playbook_result.finished
 #  delay: 10
 #  retries: 120
 
-#- name: Copy admin-openrc.sh into XOS container
-#  when: "{{ head_vm_list | map(attribute='name') | list | intersect(['xos-1']) | list | length }}"
-#  command: ansible xos-1 -u ubuntu -m copy \
-#    -a "src=~/admin-openrc.sh dest={{ service_profile_repo_dest }}/{{ xos_configuration }}"
+#- name: Copy SSL Certs to ONOS so docker-compose can find it
+#  when: "{{ head_vm_list | map(attribute='name') | list | intersect(['onos-cord-1']) | list | length }}"
+#  command: ansible onos-cord-1 -u ubuntu -m copy \
+#    -a "src=/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt dest=~/cord/xos-certs.crt"
+
+#- name: Build ONOS image with docker-compose
+#  when: "{{ head_vm_list | map(attribute='name') | list | intersect(['onos-cord-1']) | list | length }}"
+#  command: ansible onos-cord-1 -u ubuntu -m command \
+#    -a "docker-compose build chdir=cord"
+
+#- name: Start ONOS
+#  when: "{{ head_vm_list | map(attribute='name') | list | intersect(['onos-cord-1']) | list | length }}"
+#  command: ansible onos-cord-1:onos-fabric-1 -u ubuntu -m command \
+#    -a "docker-compose up -d chdir=cord"
 
 - name: Wait for test client to complete installation
   when: test_client_install is defined and test_client_install
