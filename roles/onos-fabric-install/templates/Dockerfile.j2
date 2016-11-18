@@ -1,0 +1,20 @@
+# ONOS dockerfile with XOS/CORD additions
+
+FROM {{ onos_docker_image }}
+MAINTAINER Zack Williams <zdw@cs.arizona.edu>
+
+# Add SSL certs
+COPY xos-certs.crt /usr/local/share/ca-certificates/xos-certs.crt
+RUN update-ca-certificates
+
+# Create Java KeyStore from certs
+RUN openssl x509 -in /usr/local/share/ca-certificates/xos-certs.crt \
+      -outform der -out /usr/local/share/ca-certificates/xos-certs.der && \
+    keytool -import -noprompt -storepass {{ trust_store_pw }} -alias xos-certs \
+      -file /usr/local/share/ca-certificates/xos-certs.der \
+      -keystore /usr/local/share/ca-certificates/xos-certs.jks
+
+# Updated onos-service to use the jks
+COPY onos-service /root/onos/bin/onos-service
+RUN chmod 755 /root/onos/bin/onos-service
+
