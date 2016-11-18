@@ -62,7 +62,7 @@
 - name: Set up VMs
   hosts: head
   roles:
-    - onos-vm-install
+    - onos-install
 
 - name: Start ONOS and XOS
   hosts: head
