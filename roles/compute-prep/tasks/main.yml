@@ -43,3 +43,4 @@
   pip:
     name=requests
     state=absent
+
