@@ -9,14 +9,38 @@ openstack_version: kilo
 
 juju_config_name: opencloud
 
+xos_configuration: opencloud
+
+xos_config_targets:
+  - local_containers
+  - xos
+  - opencloud
+
+xos_tosca_templates:
+  - deployment.yaml
+  - exampleservice.yaml
+  - management-net.yaml
+  - nodes.yaml
+  - openstack.yaml
+  - public-net.yaml
+  - vtn.yaml
+
+deployment_flavors:
+  - m1.small
+  - m1.medium
+  - m1.large
+  - m1.xlarge
+
 apt_cacher_name: apt-cache
 
-xos_images:
-  - name: "trusty-server-multi-nic"
-    url: "http://www.vicci.org/opencloud/trusty-server-cloudimg-amd64-disk1.img"
-    checksum: "sha256:c2d0ffc937aeb96016164881052a496658efeb98959dc68e73d9895c5d9920f7"
+apt_ssl_sites:
+  - apt.dockerproject.org
+  - butler.opencloud.cs.arizona.edu
+  - deb.nodesource.com
 
-charm_versions: {}
+charm_versions:
+  neutron-api: "cs:~cordteam/trusty/neutron-api-3"
+  nova-compute: "cs:~cordteam/trusty/nova-compute-2"
 
 head_vm_list:
   - name: "juju-1"
@@ -94,14 +118,6 @@ head_vm_list:
     forwarded_ports:
       - { ext: 9696, int: 9696 }
 
-  - name: "neutron-gateway-1"
-    service: "neutron-gateway"
-    aliases:
-      - "neutron-gateway"
-    ipv4_last_octet: 80
-    cpu: 2
-    memMB: 4096
-    diskGB: 40
 
   - name: "nova-cloud-controller-1"
     service: "nova-cloud-controller"
@@ -134,13 +150,30 @@ head_vm_list:
     memMB: 4096
     diskGB: 40
 
+  - name: "onos-cord-1"
+    aliases:
+      - "onos-cord"
+    ipv4_last_octet: 110
+    cpu: 2
+    memMB: 4096
+    diskGB: 40
+    docker_path: "cord"
+
+  - name: "xos-1"
+    aliases:
+      - "xos"
+    ipv4_last_octet: 130
+    cpu: 2
+    memMB: 4096
+    diskGB: 40
+    docker_path: 'service-profile/opencloud'
+
 vm_service_list:
   - ceilometer
   - glance
   - keystone
   - nagios
   - neutron-api
-  - neutron-gateway
   - nova-cloud-controller
   - openstack-dashboard
   - percona-cluster
@@ -148,7 +181,6 @@ vm_service_list:
 
 standalone_service_list:
   - ceilometer-agent
-  - neutron-openvswitch
   - nrpe
   - ntp
 
@@ -162,17 +194,8 @@ service_relations:
   - name: glance
     relations: [ "percona-cluster", "keystone", "nrpe", ]
 
-  - name: neutron-gateway
-    relations: [ "neutron-api", "nova-cloud-controller", "nrpe", ]
-
-  - name: "neutron-gateway:amqp"
-    relations: [ "rabbitmq-server:amqp", ]
-
   - name: neutron-api
-    relations: [ "keystone", "neutron-openvswitch", "percona-cluster", "rabbitmq-server", "nova-cloud-controller", "nrpe", ]
-
-  - name: neutron-openvswitch
-    relations: [ "rabbitmq-server", ]
+    relations: [ "keystone", "percona-cluster", "rabbitmq-server", "nova-cloud-controller", "nrpe", ]
 
   - name: openstack-dashboard
     relations: [ "keystone", "nrpe", ]
@@ -195,6 +218,7 @@ service_relations:
   - name: "ceilometer:ceilometer-service"
     relations: [ "ceilometer-agent:ceilometer-service", ]
 
+
 compute_relations:
   - name: nova-compute
     relations: [ "ceilometer-agent", "glance", "nova-cloud-controller", "nagios", "nrpe", ]
@@ -207,4 +231,10 @@ compute_relations:
 
   - name: ntp
     relations: [ "nova-compute", ]
+
+
+xos_images:
+  - name: "trusty-server-multi-nic"
+    url: "http://www.vicci.org/opencloud/trusty-server-cloudimg-amd64-disk1.img"
+    checksum: "sha256:c2d0ffc937aeb96016164881052a496658efeb98959dc68e73d9895c5d9920f7"
 
