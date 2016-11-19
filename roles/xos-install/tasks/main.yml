@@ -129,14 +129,6 @@
     - redis
   when: docker_registry_check|succeeded
 
-# ---- optional: rebuild base container ----
-
-- name: Rebuild XOS containers
-  when: xos_container_rebuild
-  command: make {{ item }}
-    chdir="{{ xos_repo_dest }}/containers/xos/"
-  with_items:
-   - base
 
 
 

@@ -51,7 +51,7 @@
 - name: XOS setup
   hosts: head
   roles:
-    - xos-build
+    - { role: xos-build, when: xos_container_rebuild }
     - xos-install
 
 - name: Finish OpenStack install
