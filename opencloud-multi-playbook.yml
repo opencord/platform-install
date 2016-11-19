@@ -45,8 +45,13 @@
 - name: Create VM's, Configure Juju, install XOS
   hosts: head
   roles:
+    - create-lxd
     - create-vms
+    - xos-install
+    - onos-vm-install
     - juju-setup
+    - docker-compose
+    - xos-head-start
 
 - name: Configure compute nodes
   hosts: compute

@@ -8,9 +8,6 @@
     chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
     target: cord-subscriber
 
-- name: Pause 60 seconds (work around bug in synchronizer)
-  pause: seconds=60
-
 - name: Re-run 'make vtn' (work around bug in synchronizer)
   make:
     chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"

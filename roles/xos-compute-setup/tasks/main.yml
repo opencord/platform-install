@@ -3,18 +3,18 @@
 #
 # Tell XOS that a new compute node has been added
 
-- name: Build XOS containers
-  make:
-    chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
-    target: new-nodes
-
-- name: Pause 5 seconds
-  pause: seconds=5
-
-- name: Remove vtn-external.yaml
-  file: path="{{ service_profile_repo_dest }}/{{ xos_configuration }}/vtn-external.yaml" state=absent
+- name: Create nodes/vtn TOSCA config
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ service_profile_repo_dest }}/{{ xos_configuration }}/{{ item }}"
+    owner: "{{ ansible_user_id }}"
+    mode: 0644
+  with_items:
+    - vtn.yaml
+    - nodes.yaml
 
 - name: Rebuild VTN configuration with new nodes block
   make:
     chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
     target: vtn
+

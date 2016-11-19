@@ -1,21 +1,31 @@
 ---
 # file: group_vars/aztest.yml
 
+# site configuration
+site_name: aztest
+site_humanname: "Arizona Test Site"
+
+deployment_type: campus
+
+xos_users:
+  - email: padmin@vicci.org
+    password: letmein
+    first: PAdmin
+    last: VicciOrg
+    admin: true
+
 # IP prefix for VMs
 virt_nets:
   - name: mgmtbr
     ipv4_prefix: 192.168.250
     head_vms: true
 
-# site domain suffix
+# DNS/domain settings
 site_suffix: aztest.infra.opencloud.us
 
-# resolv.conf settings
 dns_search:
   - aztest.infra.opencloud.us
   - opencloud.cs.arizona.edu
-
-# NSD/Unbound settings
 
 nsd_zones:
   - name: aztest.infra.opencloud.us
@@ -34,4 +44,9 @@ name_on_public_interface: head
 
 # If true, unbound listens on the head node's `ansible_default_ipv4` interface
 unbound_listen_on_default: True
+
+# VTN network configuration
+management_network_cidr: 172.27.0.0/24
+management_network_ip: 172.27.0.1/24
+data_plane_ip: 10.168.0.253/24
 

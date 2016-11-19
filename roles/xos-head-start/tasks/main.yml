@@ -1,35 +1,9 @@
 ---
-# xos-start/tasks/main.yml
+# xos-head-start/tasks/main.yml
 
-- name: Build XOS containers
+- name: Run service-profile make targets
   make:
     chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
-    target: local_containers
+    target: "{{ item }}"
+  with_items: "{{ xos_config_targets }}"
 
-- name: Onboard services and start XOS
-  make:
-    chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
-    target: xos
-
-- name: Pause to let XOS initialize
-  pause: seconds=120
-
-- name: Initial VTN configuration
-  make:
-    chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
-    target: vtn
-
-- name: Initial fabric configuration
-  make:
-    chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
-    target: fabric
-
-- name: Pause to let ONOS initialize
-  pause: seconds=20
-  tags:
-    - skip_ansible_lint
-
-- name: Configure CORD services
-  make:
-    chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
-    target: cord

@@ -18,7 +18,30 @@ service_profile_repo_dest: "{{ ansible_user_dir }}/service-profile"
 
 xos_configuration: cord-pod
 
-xos_repo_dest: "~/xos"
+xos_config_targets:
+  - local_containers
+  - xos
+  - vtn
+  - fabric
+  - cord
+
+xos_tosca_templates:
+  - cord-services.yaml
+  - cord-test-subscriber.yaml
+  - deployment.yaml
+  - exampleservice.yaml
+  - fabric.yaml
+  - management-net.yaml
+  - nodes.yaml
+  - openstack.yaml
+  - public-net.yaml
+  - vtn.yaml
+
+deployment_flavors:
+  - m1.small
+  - m1.medium
+  - m1.large
+  - m1.xlarge
 
 xos_container_rebuild: False
 
@@ -199,6 +222,7 @@ service_relations:
   - name: "ceilometer:ceilometer-service"
     relations: [ "ceilometer-agent:ceilometer-service", ]
 
+
 compute_relations:
   - name: nova-compute
     relations: [ "ceilometer-agent", "glance", "nova-cloud-controller", "nagios", "nrpe", ]
@@ -211,3 +235,22 @@ compute_relations:
 
   - name: ntp
     relations: [ "nova-compute", ]
+
+
+xos_images:
+  - name: "trusty-server-multi-nic"
+    url: "http://www.vicci.org/opencloud/trusty-server-cloudimg-amd64-disk1.img"
+    checksum: "sha256:c2d0ffc937aeb96016164881052a496658efeb98959dc68e73d9895c5d9920f7"
+
+  - name: "vsg-1.1"
+    url: "http://www.vicci.org/cord/vsg-1.1.img"
+    checksum: "sha256:16b0beb6778aed0f5feecb05f8d5750e6c262f98e6011e99ddadf7d46a177b6f"
+
+  - name: "ceilometer-trusty-server-multi-nic"
+    url: "http://www.vicci.org/cord/ceilometer-trusty-server-multi-nic.compressed.qcow2"
+    checksum: "sha256:afde3f0448483902693be4d52ae76bb683fd74b1c7728019094bf81b37d86105"
+
+  - name: "ceilometer-service-trusty-server-multi-nic"
+    url: "http://www.vicci.org/cord/ceilometer-service-trusty-server-multi-nic.compressed.qcow2"
+    checksum: "sha256:9c346ff15727e9a98942835d6bd34b3d033f868234425f517e53d64b5a124a13"
+
