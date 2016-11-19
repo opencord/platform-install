@@ -1,0 +1,104 @@
+tosca_definitions_version: tosca_simple_yaml_1_0
+
+description: Setup the ExampleService on the pod
+
+imports:
+   - custom_types/xos.yaml
+   - custom_types/exampleservice.yaml
+
+topology_template:
+  node_templates:
+
+# image/flavor are hardcoded - FIXME if/when they change
+    m1.small:
+      type: tosca.nodes.Flavor
+
+    trusty-server-multi-nic:
+      type: tosca.nodes.Image
+
+# private network template, created in fixtures.yml
+    Private:
+      type: tosca.nodes.NetworkTemplate
+
+# site, fully created in deployment.yaml
+    {{ site_name }}:
+      type: tosca.nodes.Site
+
+# management network, fully created in management-net.yaml
+    management:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+
+# public network, fully created in public-net.yaml
+    public:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+
+# vrouter service, fully created in cord-service.yaml
+    service#vrouter:
+      type: tosca.nodes.Service
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+
+# ExampleService/ExampleTenant
+
+    {{ site_name }}_exampleservice:
+      description: This slice holds the ExampleService
+      type: tosca.nodes.Slice
+      properties:
+        network: noauto
+      requirements:
+        - site:
+            node: {{ site_name }}
+            relationship: tosca.relationships.MemberOfSite
+        - management:
+            node: management
+            relationship: tosca.relationships.ConnectsToNetwork
+        - public:
+            node: public
+            relationship: tosca.relationships.ConnectsToNetwork
+        - exmapleserver:
+            node: service#exampleservice
+            relationship: tosca.relationships.MemberOfService
+        - image:
+            node: trusty-server-multi-nic
+            relationship: tosca.relationships.DefaultImage
+        - default_flavor:
+            node: m1.small
+            relationship: tosca.relationships.DefaultFlavor
+
+    service#exampleservice:
+      type: tosca.nodes.ExampleService
+      requirements:
+        - management:
+            node: management
+            relationship: tosca.relationships.UsesNetwork
+      properties:
+        view_url: /admin/exampleservice/exampleservice/$id$/
+        kind: exampleservice
+        public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
+        private_key_fn: /opt/xos/services/exampleservice/keys/exampleservice_rsa
+        service_message: hello
+      artifacts:
+        pubkey: /opt/xos/services/exampleservice/keys/exampleservice_rsa.pub
+
+    tenant#exampletenant1:
+      type: tosca.nodes.ExampleTenant
+      properties:
+        tenant_message: world
+      requirements:
+        - tenant:
+            node: service#exampleservice
+            relationship: tosca.relationships.TenantOfService
+        - dependency:
+            node: {{ site_name }}_exampleservice
+            relationship: tosca.relationships.DependsOn
+
