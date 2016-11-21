@@ -65,6 +65,12 @@ head_vm_list:
     docker_path: "cord"
 
 head_lxd_list:
+  - name: "juju-1"
+    service: "juju"
+    aliases:
+      - "juju"
+    ipv4_last_octet: 10
+
   - name: "ceilometer-1"
     service: "ceilometer"
     aliases:
