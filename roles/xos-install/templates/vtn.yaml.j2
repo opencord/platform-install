@@ -35,6 +35,8 @@ topology_template:
           vtnAPIVersion: 2
 
 {% for node in groups["compute"] %}
+{% if 'ipv4' in hostvars[node]['ansible_fabric'] %}
+
     {{ hostvars[node]['ansible_hostname'] }}:
       type: tosca.nodes.Node
 
@@ -43,7 +45,7 @@ topology_template:
       type: tosca.nodes.Tag
       properties:
           name: bridgeId
-          value: of:{{ "%016d" | format(loop.index) }}
+          value: of:0000{{ hostvars[node]['ansible_fabric']['macaddress'] | hwaddr('bare') }}
       requirements:
           - target:
               node: {{ hostvars[node]['ansible_hostname'] }}
@@ -71,11 +73,7 @@ topology_template:
       type: tosca.nodes.Tag
       properties:
           name: dataPlaneIp
-{% if 'ipv4' in hostvars[node]['ansible_fabric'] %}
           value: {{ ( hostvars[node]['ansible_fabric']['ipv4']['address'] ~ '/' ~ hostvars[node]['ansible_fabric']['ipv4']['netmask'] ) | ipaddr('cidr') }}
-{% else %}{# single node case #}
-          value: 10.168.0.253/24
-{% endif %}
       requirements:
           - target:
               node: {{ hostvars[node]['ansible_hostname'] }}
@@ -84,6 +82,7 @@ topology_template:
               node: service#ONOS_CORD
               relationship: tosca.relationships.MemberOfService
 
+{% endif %}
 {% endfor %}
 
     VTN_ONOS_app:
