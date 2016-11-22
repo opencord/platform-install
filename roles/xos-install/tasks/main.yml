@@ -27,7 +27,7 @@
       src: "{{ playbook_dir }}/../../orchestration/{{ item }}"
       dest: "{{ ansible_user_dir }}/"
   when:
-      orchestration.stat.exists == True
+      False # orchestration.stat.exists == True  # XXX
   with_items:
       - service-profile
       - xos
@@ -46,7 +46,7 @@
       - vtn
       - olt
   when:
-      (orchestration.stat.exists == True) and (onos_apps.stat.exists == True)
+      False # (orchestration.stat.exists == True) and (onos_apps.stat.exists == True)   # XXX
 
 
 # ----  alternatively, check out repos from Internet ---
@@ -58,7 +58,7 @@
     version={{ service_profile_repo_branch }}
     force=yes
   when:
-    orchestration.stat.exists == False
+    True # orchestration.stat.exists == False # XXX
 
 # ----  install keys ----
 
