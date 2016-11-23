@@ -1,25 +1,4 @@
 ---
-- name: Enable trusty-backports
-  apt_repository:
-    repo: "{{ item }}"
-    state: present
-  with_items:
-    - "deb http://us.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe"
-    - "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe"
-
-- name: Ensure LXD
-  apt:
-    name: lxd
-    state: present
-    update_cache: yes
-    default_release: trusty-backports
-
-- name: get "fabric" bridge interface
-  shell: route -n | grep 10.6.1.0 | awk '{print $8}'
-  register: bridge
-  tags:
-     - skip_ansible_lint # running a sub job
-
 - name: Create testclient LXD profile
   lxd_profile:
     name: testclient
@@ -44,8 +23,8 @@
     description: 'Subscriber test client'
     devices:
       eth0:
-        nictype: bridged
-        parent: "{{ bridge.stdout }}"
+        nictype: macvlan
+        parent: eth3
         type: nic
 
 - name: Create testclient container
