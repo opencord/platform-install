@@ -98,6 +98,14 @@
     dest={{ service_profile_repo_dest }}/{{ xos_configuration }}/images/{{ item.name }}.qcow2
   with_items: "{{ xos_images }}"
 
+- name: Copy admin-openrc.sh to service-profile
+  command: cp ~/admin-openrc.sh {{ service_profile_repo_dest }}/{{ xos_configuration }}
+  tags:
+    - skip_ansible_lint
+#  copy:
+#      src=~/admin-openrc.sh
+#      dest={{ service_profile_repo_dest }}/{{ xos_configuration }}
+
 # ---- pull docker images ----
 
 - name: Check to see if registry is reachable
