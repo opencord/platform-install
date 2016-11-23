@@ -68,6 +68,7 @@
   hosts: head
   roles:
     - docker-compose
+    - xos-config
     - xos-head-start
 
 - name: Set up Automated Compute Node Provisioning

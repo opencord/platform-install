@@ -1,0 +1,15 @@
+---
+# xos-head-start/tasks/main.yml
+
+# Performs any configuration of XOS that should be done right before starting
+# XOS. This includes copying the admin-openrc.sh, since we had to wait for juju
+# to finish before admin-openrc.sh was present.
+
+- name: Copy admin-openrc.sh to service-profile
+#  command: cp ~/admin-openrc.sh {{ service_profile_repo_dest }}/{{ xos_configuration }}
+  copy:
+      remote_src=True
+      src=~/admin-openrc.sh
+      dest={{ service_profile_repo_dest }}/{{ xos_configuration }}
+
+
