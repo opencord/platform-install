@@ -1,0 +1,28 @@
+---
+# Runs "make cleanup", deletes XOS,  reinstalls, and restarts XOS
+
+- name: Include vars
+  hosts: head
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - vars/cord_defaults.yml
+        - vars/cord.yml
+        - vars/example_keystone.yml
+
+- name: Reinstall XOS
+  hosts: head
+  roles:
+    - xos-uninstall
+    - xos-install
+    - xos-config
+    - xos-head-start
+
+- name: Reprovision compute nodes
+  hosts: head
+  tasks:
+   - name: Delete maas inventory
+     command: cord prov delete -a
+     tags:
+       - skip_ansible_lint

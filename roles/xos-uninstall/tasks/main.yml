@@ -1,0 +1,25 @@
+---
+# xos-head-start/tasks/main.yml
+
+- name: Check to see if service-profile exists
+  stat: path="{{ service_profile_repo_dest }}"
+  register: service_profile_dir
+
+- name: Run make cleanup
+  make:
+    chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
+    target: "cleanup"
+  when: service_profile_dir.stat.exists == True
+
+- name: Remove service-profile directory
+  file: path="{{ service_profile_repo_dest }}" state=absent
+
+- name: Remove xos directory
+  file: path="{{ xos_repo_dest }}" state=absent
+
+- name: Remove xos services
+  file: path="{{ xos_services_dest }}" state=absent
+
+- name: Remove xos libraries
+  file: path="{{ xos_libraries_dest }}" state=absent
+
