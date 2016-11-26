@@ -29,7 +29,7 @@
     - skip_ansible_lint # running a sub job
 
 - name: Get mgmt IP of VM
-  shell: bash -c "source ~/admin-openrc.sh; nova interface-list {{ nova_id.stdout }}|grep -o -m 1 172.27.[[:digit:]]*.[[:digit:]]*"
+  shell: bash -c "source ~/admin-openrc.sh; nova interface-list {{ nova_id.stdout }}|grep -o -m 1 '172\.27\.[[:digit:]]*\.[[:digit:]]*'"
   register: mgmt_ip
   tags:
     - skip_ansible_lint # running a sub job
