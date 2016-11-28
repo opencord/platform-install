@@ -1,0 +1,9 @@
+---
+# xos-bootstrap-playbook.yaml
+
+- name: Prepare system
+  hosts: head
+  roles:
+    - repo
+    - docker-install
+

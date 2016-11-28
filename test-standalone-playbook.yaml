@@ -1,0 +1,33 @@
+---
+# test-standalone-playbook.yaml
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - vars/test_standalone_defaults.yml
+
+- include: cord-bootstrap-playbook.yaml
+
+- name: Configure CORD profile, bootstrap XOS in docker
+  hosts: head
+  roles:
+    - cord-profile
+    - xos-docker-bootstrap
+
+- name: Re-include vars after adding docker containers
+  hosts: xos_bootstrap_ui
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - vars/test_standalone_defaults.yml
+
+- name: Onboard XOS services
+  hosts: xos_bootstrap_ui
+  connection: docker
+  roles:
+    - xos-service-onboard
+
