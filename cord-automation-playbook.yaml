@@ -1,0 +1,22 @@
+---
+# cord-automation-playbook.yaml
+# Installs the automation scripts used by MaaS to provision nodes.
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "vars/{{ cord_profile }}.yaml"
+        - vars/local_vars.yaml
+
+- name: Set up Automated Compute Node Provisioning
+  hosts: head
+  roles:
+    - { role: automation-integration, when: on_maas }
+
+- name: Prologue
+  hosts: head
+  roles:
+    - head-prologue
