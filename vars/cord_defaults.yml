@@ -44,7 +44,7 @@ deployment_flavors:
   - m1.large
   - m1.xlarge
 
-xos_container_rebuild: False
+build_xos_base_image: false
 
 apt_cacher_name: apt-cache
 

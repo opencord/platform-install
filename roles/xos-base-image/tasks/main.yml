@@ -1,0 +1,22 @@
+---
+# xos-base-image/tasks/main.yml
+
+- name: Build xos-base docker image
+  when: build_xos_base_image
+  docker_image:
+    name: "xosproject/xos-base"
+    path: "{{ cord_dir }}/orchestration/xos/containers/xos"
+    dockerfile: "Dockerfile.base"
+
+- name: Pull xos-base docker image from Dockerhub
+  when: not build_xos_base_image
+  docker_image:
+    name: "xosproject/xos-base"
+
+- name: Tag and push xos-base container image to docker registry
+  when: push_xos_base_image
+  docker_image:
+    name: "{{ deploy_docker_registry }}/xosproject/xos-base"
+    tag: "{{ deploy_docker_tag }}"
+    push: yes
+
