@@ -51,6 +51,23 @@ topology_template:
               relationship: tosca.relationships.SupportsDeployment
 
 # XOS Users
+# Default admin user account
+    {{ xos_admin_user }}:
+      type: tosca.nodes.User
+      properties:
+        password: {{ xos_admin_pass }}
+        firstname: {{ xos_admin_first }}
+        lastname: {{ xos_admin_last }}
+        is_admin: True
+      requirements:
+        - site:
+            node: {{ site_name }}
+            relationship: tosca.relationships.MemberOfSite
+        - tenant_dashboard:
+              node: Tenant
+              relationship: tosca.relationships.UsesDashboard
+
+# All other users
 {% for user in xos_users %}
     {{ user.email }}:
       type: tosca.nodes.User
