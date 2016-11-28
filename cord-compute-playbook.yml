@@ -1,4 +1,5 @@
 ---
+# cord-compute-playbook.yml
 # Installs new compute nodes in cord-pod XOS configuration using Juju
 
 - name: Include vars
@@ -7,9 +8,8 @@
     - name: Include variables
       include_vars: "{{ item }}"
       with_items:
-        - vars/cord_defaults.yml
-        - vars/cord.yml
-        - vars/example_keystone.yml
+        - "vars/{{ cord_profile }}.yml"
+        - vars/local_vars.yml
 
 - name: Configure compute hosts to use DNS server
   hosts: all
@@ -40,3 +40,4 @@
   roles:
     - juju-compute-setup
     - xos-compute-setup
+
