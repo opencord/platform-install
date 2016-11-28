@@ -9,7 +9,6 @@
       with_items:
         - vars/cord_defaults.yml
         - vars/cord.yml
-        - vars/example_keystone.yml
 
 - name: Set up Automated Compute Node Provisioning
   hosts: head

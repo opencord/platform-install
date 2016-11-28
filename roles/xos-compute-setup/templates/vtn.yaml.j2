@@ -30,8 +30,8 @@ topology_template:
           sshKeyFile: /root/node_key
           sshPort: 22
           xosEndpoint: http://xos:8888/
-          xosUser: padmin@vicci.org
-          xosPassword: letmein
+          xosUser: {{ xos_admin_user }}
+          xosPassword: {{ xos_admin_pass }}
           replaces: service_vtn
           vtnAPIVersion: 2
           controllerPort: onos-cord:6654

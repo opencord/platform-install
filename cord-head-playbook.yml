@@ -12,7 +12,6 @@
       with_items:
         - vars/cord_defaults.yml
         - vars/cord.yml
-        - vars/example_keystone.yml
 
 - name: DNS Server and apt-cacher-ng Setup
   hosts: head
@@ -49,7 +48,7 @@
 - name: XOS setup
   hosts: head
   roles:
-    - { role: xos-build, when: xos_container_rebuild }
+    - { role: xos-build, when: build_xos_base_image }
     - xos-install
 
 - name: Finish OpenStack install

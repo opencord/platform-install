@@ -1,0 +1,8 @@
+; test-standalone configuration
+
+[all:vars]
+cord_profile=test-standalone
+
+[head]
+localhost ansible_connection=local
+

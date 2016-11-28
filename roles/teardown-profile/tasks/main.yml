@@ -1,0 +1,31 @@
+---
+# teardown-profile/tasks/main.yml
+
+- name: Stop and remove XOS containers and images
+  docker_service:
+    project_name: "{{ cord_profile | regex_replace('\\W','') }}"
+    project_src: "{{ cord_profile_dir }}/onboarding-docker-compose/"
+    state: absent
+    remove_images: local
+
+- name: Stop and remove XOS bootstrap containers and images
+  docker_service:
+    project_name: "{{ cord_profile | regex_replace('\\W','') }}bs"
+    project_src: "{{ cord_profile_dir }}"
+    files: "xos-bootstrap-docker-compose.yaml"
+    state: absent
+    remove_images: local
+
+# need to remove images using docker_images here?
+
+- name: Remove docker networks
+  docker_network:
+    name: "{{ item }}"
+    state: absent
+  with_items: "{{ xos_docker_networks }}"
+
+- name: Remove the cord_profile directory
+  file:
+    path: "{{ cord_profile_dir }}"
+    state: absent
+

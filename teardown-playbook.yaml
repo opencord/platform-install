@@ -1,0 +1,16 @@
+---
+# teardown-playbook.yaml
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "vars/{{ cord_profile }}_defaults.yml"
+        - vars/local_vars.yaml
+
+- name: Create CORD profile, create docker images, bootstrap XOS in docker
+  hosts: head
+  roles:
+   - teardown-profile
