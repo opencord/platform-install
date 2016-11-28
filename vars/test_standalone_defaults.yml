@@ -1,0 +1,22 @@
+---
+# test-standalone_defaults.yml
+
+cord_profile: test-standalone
+
+xos_bootstrap_ui_port: 9998
+
+xos_docker_volumes:
+  - "../orchestration/xos/xos/core/tests:/opt/xos/core/tests:ro"
+
+xos_redis: False
+
+xos_libraries:
+  - "ng-xos-lib"
+
+xos_services:
+  - "vtn"
+  - "vrouter"
+  - "volt"
+  - "vsg"
+  - "vtr"
+

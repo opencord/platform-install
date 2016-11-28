@@ -1,0 +1,34 @@
+---
+# xos-docker-bootstrap/tasks/main.yml
+
+- name: Pull xosproject/xos-base image from dockerhub
+  docker_image:
+    name: "xosproject/xos-base"
+
+- name: Obtain XOS repo git metadata
+  command: "git log --pretty=format:'{\"XOS_GIT_COMMIT_DATE\":\"%ci\", \"XOS_GIT_COMMIT_HASH\":\"%H\"}' -n 1"
+  args:
+    chdir: "{{ cord_dir }}/orchestration/xos/"
+  register: xos_git_metadata
+  tags:
+    - skip_ansible_lint # idempotent git metadata retrieval, git module can't do this
+
+- name: Build xosproject/xos devel image
+  docker_image:
+    name: "xosproject/xos"
+    path: "{{ cord_dir }}/orchestration/xos/"
+    dockerfile: "containers/xos/Dockerfile.devel"
+    buildargs: xos_git_metadata.stdout
+
+- name: Start XOS bootstrap container
+  docker_service:
+    files: "xos-bootstrap-docker-compose.yaml"
+    project_src: "{{ cord_dir }}/{{ cord_profile }}"
+  register: xos_bootstrap_out
+
+- name: Add the containers to Ansible groups on a per-container type basis
+  add_host:
+    name: "{{ xos_bootstrap_out.ansible_facts[item].keys() | first }}"
+    groups:  "{{ item }}"
+  with_items: "{{ xos_bootstrap_out.ansible_facts.keys() | list }}"
+
