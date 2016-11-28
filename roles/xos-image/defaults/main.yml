@@ -1,0 +1,9 @@
+---
+# xos-image/defaults/main.yml
+
+cord_dir: "{{ ansible_user_dir + '/opencord' }}"
+
+push_xos_image: false
+deploy_docker_registry: "localhost:5000"
+deploy_docker_tag: "latest"
+
