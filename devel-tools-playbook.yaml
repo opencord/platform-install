@@ -1,0 +1,8 @@
+---
+# devel-tools-playbook.yaml
+
+- name: Install developer tools
+  hosts: head
+  roles:
+    - docker-install
+

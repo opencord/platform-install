@@ -1,0 +1,8 @@
+; frontend-mcord configuration
+
+[all:vars]
+cord_profile=frontend-mcord
+
+[head]
+localhost ansible_connection=local
+

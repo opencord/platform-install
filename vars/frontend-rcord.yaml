@@ -1,0 +1,62 @@
+---
+# vars/frontend-rcord.yaml
+# creates a mock R-CORD pod
+
+site_name: frontend-rcord
+deployment_type: "Mock R-CORD Pod"
+
+xos_admin_user: xosadmin@opencord.org
+xos_admin_pass: "{{ lookup('password', 'credentials/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+xos_admin_first: XOS
+xos_admin_last: admin
+
+xos_bootstrap_ui_port: 9998
+xos_ui_port: 9999
+
+frontend_only: True
+
+xos_redis: False
+
+xos_tosca_templates:
+  - sample.yaml
+  - management-net.yaml
+  - public-net.yaml
+  - mock-onos.yaml
+  - test-subscriber.yaml
+  - cord-volt-devices.yaml
+
+# GUI branding
+gui_branding_name: "CORD"
+gui_branding_icon: "/static/cord-logo.png"
+gui_branding_favicon: "/static/cord-favicon.png"
+gui_branding_bg: "/static/cord-bg.jpg"
+
+# paths defined in manifest/default.xml
+xos_services:
+  - name: volt
+    path: onos-apps/apps/olt
+  - name: onos
+    path: orchestration/xos_services/onos-service
+  - name: vrouter
+    path: orchestration/xos_services/vrouter
+  - name: vsg
+    path: orchestration/xos_services/vsg
+  - name: vtr
+    path: orchestration/xos_services/vtr
+  - name: fabric
+    path: orchestration/xos_services/fabric
+
+xos_service_sshkeys:
+  - name: onos_rsa
+    source_path: "/dev/null"
+  - name: onos_rsa.pub
+    source_path: "/dev/null"
+  - name: volt_rsa
+    source_path: "/dev/null"
+  - name: volt_rsa.pub
+    source_path: "/dev/null"
+  - name: vsg_rsa
+    source_path: "/dev/null"
+  - name: vsg_rsa.pub
+    source_path: "/dev/null"
+
