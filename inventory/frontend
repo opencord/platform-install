@@ -1,0 +1,8 @@
+; frontend configuration
+
+[all:vars]
+cord_profile=frontend
+
+[head]
+localhost ansible_connection=local
+
