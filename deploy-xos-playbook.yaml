@@ -1,0 +1,54 @@
+---
+# deploy-xos-playbook.yaml
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "vars/{{ cord_profile }}.yaml"
+        - vars/local_vars.yaml
+
+- name: Create CORD profile, create docker images, bootstrap XOS in docker
+  hosts: head
+  roles:
+    - cord-profile
+    - xos-docker-images
+    - xos-bootstrap
+
+- name: Re-include vars after adding bootstrap containers
+  hosts: xos_bootstrap_ui
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "vars/{{ cord_profile }}.yaml"
+        - vars/local_vars.yaml
+
+- name: Onboard XOS services
+  hosts: xos_bootstrap_ui
+  connection: docker
+  roles:
+    - xos-onboarding
+
+- name: Add onboarded containers to inventory
+  hosts: head
+  roles:
+    - xos-onboard-hosts
+
+- name: Re-include vars after adding onboarded containers
+  hosts: xos_ui
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "vars/{{ cord_profile }}.yaml"
+        - vars/local_vars.yaml
+
+- name: Check to see if XOS UI is ready
+  hosts: xos_ui
+  connection: docker
+  roles:
+    - xos-ready
+
