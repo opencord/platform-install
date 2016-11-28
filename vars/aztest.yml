@@ -7,12 +7,14 @@ site_humanname: "Arizona Test Site"
 
 deployment_type: campus
 
-xos_users:
-  - email: padmin@vicci.org
-    password: letmein
-    first: PAdmin
-    last: VicciOrg
-    admin: true
+keystone_admin_password: "{{ lookup('password', 'credentials/aztest_keystone_admin chars=ascii_letters,digits') }}"
+
+xos_admin_user: xosadmin@opencord.org
+xos_admin_pass: "{{ lookup('password', 'credentials/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+xos_admin_first: XOS
+xos_admin_last: Admin
+
+xos_users: []
 
 # IP prefix for VMs
 virt_nets:

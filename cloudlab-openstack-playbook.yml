@@ -8,7 +8,7 @@
     xos_repo_dest: "~/xos"
     xos_repo_branch: "master"
     xos_configuration: "devel"
-    xos_container_rebuild: true
+    build_xos_base_image: true
 
   roles:
     - { role: common-prep, become: yes }
