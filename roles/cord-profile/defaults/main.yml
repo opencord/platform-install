@@ -1,0 +1,33 @@
+---
+# cord-profile/defaults/main.yml
+
+cord_dir: "{{ ansible_user_dir + '/opencord' }}"
+
+cord_profile: "test-standalone"
+
+# set to True to create the xos_redis container in the bootstrap context
+xos_redis: False
+
+xos_bootstrap_ui_port: 81
+
+xos_libraries: []
+
+xos_services: []
+
+# used in deployment.yaml.j2
+xos_admin_user: "xosadmin@opencord.org"
+xos_admin_pass: "{{ lookup('password', 'credentials/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+xos_admin_first: XOS
+xos_admin_last: Admin
+
+site_name: sitename
+site_humanname: "Site HumanName"
+
+deployment_type: deploymenttype
+
+deployment_flavors:
+  - m1.small
+  - m1.medium
+  - m1.large
+  - m1.xlarge
+
