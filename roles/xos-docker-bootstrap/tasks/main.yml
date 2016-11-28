@@ -1,0 +1,26 @@
+---
+# xos-docker-bootstrap/tasks/main.yml
+
+- name: Pull xosproject/xos-base image from dockerhub
+  docker_image:
+    name: "xosproject/xos-base"
+
+- name: Build xosproject/xos image
+  docker_image:
+    path: "{{ cord_dir }}/orchestration/xos/containers/xos"
+    name: "xosproject/xos"
+
+- name: Start XOS bootstrap container
+  docker_service:
+    files: "xos-bootstrap-docker-compose.yaml"
+    project_src: "{{ cord_dir }}/{{ cord_profile }}"
+  register: xos_bootstrap_out
+
+- name: Add the containers to Ansible groups on a per-container type basis
+  hosts: head
+  tasks:
+    - add_host:
+        name: "{{ xos_bootstrap_out.ansible_facts[item].keys() | first }}"
+        groups:  "{{ item }}"
+      with_items: "{{ xos_bootstrap_out.ansible_facts.keys() | list }}"
+
