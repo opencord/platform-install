@@ -1,0 +1,60 @@
+---
+# cord-profile/tasks/main.yml
+# Constructs a CORD service profile directory and configuration files
+
+- name: Create CORD profile directory
+  file:
+    path: "{{ cord_dir }}/{{ cord_profile }}"
+    state: directory
+    mode: 0755
+
+- name: Create key_import directory
+  file:
+    path: "{{ cord_dir }}/{{ cord_profile }}/key_import"
+    state: directory
+    mode: 0755
+
+- name: Create xos-bootstrap-docker-compose.yaml file
+  template:
+    src: "xos-bootstrap-docker-compose.yaml.j2"
+    dest: "{{ cord_dir }}/{{ cord_profile }}/xos-bootstrap-docker-compose.yaml"
+    mode: 0644
+
+- name: Create templated xos_common_config file
+  template:
+    src: "xos_common_config.j2"
+    dest: "{{ cord_dir }}/{{ cord_profile }}/xos_common_config"
+    mode: 0644
+
+- name: Copy over profile specific xos.yaml file
+  copy:
+    src: "{{ cord_profile }}-xos.yaml"
+    dest: "{{ cord_dir }}/{{ cord_profile }}/xos.yaml"
+
+- name: Copy over common/utility TOSCA files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ cord_dir }}/{{ cord_profile }}/{{ item }}"
+  with_items:
+    - "fixtures.yaml"
+    - "enable-onboarding.yaml"
+    - "disable-onboarding.yaml"
+
+- name: Create templated TOSCA config files
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ cord_dir }}/{{ cord_profile }}/{{ item }}"
+  with_items: "{{ xos_tosca_templates }}"
+
+- name: Copy library onboarding TOSCA files
+  copy:
+    src: "{{ cord_dir }}/orchestration/xos_libraries/{{ item }}/{{ item }}-onboard.yaml"
+    dest: "{{ cord_dir }}/{{ cord_profile }}/{{ item }}-onboard.yaml"
+  with_items: "{{ xos_libraries }}"
+
+- name: Copy service onboarding TOSCA files
+  copy:
+    src: "{{ cord_dir }}/{{ item.path }}/xos/{{ item.name }}-onboard.yaml"
+    dest: "{{ cord_dir }}/{{ cord_profile }}/{{ item.name }}-onboard.yaml"
+  with_items: "{{ xos_services }}"
+

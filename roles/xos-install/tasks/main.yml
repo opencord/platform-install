@@ -85,12 +85,6 @@
    - id_rsa.pub
    - node_key
 
-- name: Create templated TOSCA files
-  template:
-    src: "{{ item }}.j2"
-    dest: "{{ service_profile_repo_dest }}/{{ xos_configuration }}/{{ item }}"
-  with_items: "{{ xos_tosca_templates }}"
-
 - name: Download Glance VM images
   get_url:
     url={{ item.url }}
