@@ -1,0 +1,20 @@
+---
+# ui-tests/tasks/main.yml
+
+- name: Run UI tests
+  command: "python ./xos-e2e-test.py"
+  args:
+    chdir: "/opt/xos/tests/ui-e2e"
+  register: ui_tests_out
+  ignore-errors: yes
+  tags:
+    - skip_ansible_lint # run during testing only
+
+- name: Save output from UI tests
+  copy:
+    content: ui_tests_out.stdout_lines
+    dest: "/tmp/ui-tests.out"
+
+- name: Print output from UI test
+  debug: var=ui_tests_out.stdout_lines
+

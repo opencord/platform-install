@@ -7,12 +7,12 @@ site_humanname: MySite
 
 deployment_type: MyDeployment
 
-xos_users:
-  - email: padmin@vicci.org
-    password: letmein
-    first: PAdmin
-    last: VicciOrg
-    admin: true
+xos_admin_user: xosadmin@opencord.org
+xos_admin_pass: "{{ lookup('password', 'credentials/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+xos_admin_first: XOS
+xos_admin_last: Admin
+
+xos_users: []
 
 # VM networks/bridges on head
 virt_nets:
