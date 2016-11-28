@@ -9,7 +9,6 @@
       with_items:
         - vars/cord_defaults.yml
         - vars/cord.yml
-        - vars/example_keystone.yml
 
 - name: XOS setup
   hosts: head

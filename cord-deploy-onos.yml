@@ -9,7 +9,6 @@
       with_items:
         - vars/cord_defaults.yml
         - vars/cord.yml
-        - vars/example_keystone.yml
 
 - name: Deploy and start ONOS containers
   hosts: head

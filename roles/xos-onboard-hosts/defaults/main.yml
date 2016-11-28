@@ -1,0 +1,5 @@
+---
+# xos-onboard-hosts/defaults/main.yml
+
+cord_dir: "{{ ansible_user_dir + '/opencord' }}"
+
