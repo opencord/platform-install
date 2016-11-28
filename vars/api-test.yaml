@@ -1,0 +1,58 @@
+---
+# vars/api-test.yaml
+
+site_name: mysite
+deployment_type: MyDeployment
+
+xos_admin_user: padmin@vicci.org
+xos_admin_pass: letmein
+xos_admin_first: XOS
+xos_admin_last: admin
+
+xos_bootstrap_ui_port: 9998
+xos_ui_port: 9999
+
+frontend_only: True
+
+build_xos_test_image: True
+source_ui_image: "xosproject/xos-test"
+
+xos_docker_volumes:
+  - "{{ cord_dir }}/orchestration/xos/xos/core/tests:/opt/xos/core/tests:ro"
+
+xos_redis: False
+
+xos_tosca_templates:
+  - deployment.yaml
+  - management-net.yaml
+  - sample.yaml
+  - services.yaml
+  - volt-devices.yaml
+
+# paths defined in manifest/default.xml
+xos_services:
+  - name: volt
+    path: onos-apps/apps/olt
+  - name: onos
+    path: orchestration/xos_services/onos-service
+  - name: vrouter
+    path: orchestration/xos_services/vrouter
+  - name: vsg
+    path: orchestration/xos_services/vsg
+  - name: vtr
+    path: orchestration/xos_services/vtr
+
+xos_service_sshkeys:
+  - name: onos_rsa
+    source_path: "/dev/null"
+  - name: onos_rsa.pub
+    source_path: "/dev/null"
+  - name: volt_rsa
+    source_path: "/dev/null"
+  - name: volt_rsa.pub
+    source_path: "/dev/null"
+  - name: vsg_rsa
+    source_path: "/dev/null"
+  - name: vsg_rsa.pub
+    source_path: "/dev/null"
+
