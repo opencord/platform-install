@@ -1,0 +1,10 @@
+---
+# xos-bootstrap/defaults/main.yml
+
+cord_dir: "{{ ansible_user_dir + '/opencord' }}"
+
+cord_profile: "test-standalone"
+
+xos_docker_networks:
+  - "xos"
+
