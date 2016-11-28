@@ -1,0 +1,17 @@
+---
+# add-bootstrap-containers-playbook.yaml
+
+- name: Add bootstrapped containers to inventory
+  hosts: head
+  roles:
+    - xos-bootstrap-hosts
+
+- name: Re-include vars after adding bootstrap containers
+  hosts: xos_bootstrap_ui
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "vars/{{ cord_profile }}.yaml"
+        - vars/local_vars.yaml
+
