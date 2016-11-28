@@ -1,0 +1,6 @@
+---
+# xos-compute-setup/defaults/main.yml
+
+# used in vtn.yaml.j2, referencing network in management-net.yaml.j2
+vtn_management_host_net_interface: veth3
+
