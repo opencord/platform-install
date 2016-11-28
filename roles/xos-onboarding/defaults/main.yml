@@ -1,0 +1,9 @@
+---
+# xos-service-onboard/defaults/main.yml
+
+xos_bootstrap_ui_port: 81
+
+xos_libraries: []
+
+xos_services: []
+
