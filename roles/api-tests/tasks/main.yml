@@ -1,0 +1,19 @@
+---
+# api-tests/tasks/main.yml
+
+- name: Copy apiary.apib to target location
+  copy:
+    src: "{{ cord_dir }}/orchestration/xos/apiary.apib"
+    dest: "/opt/xos/tests/api/apiary.apib"
+
+- name: Run API tests
+  command: "npm test"
+  args:
+    chdir: "/opt/xos/tests/api"
+  register: api_tests_out
+  tags:
+    - skip_ansible_lint # run during testing only
+
+- name: Print output from API test
+  debug: var=api_tests_out.stdout_lines
+

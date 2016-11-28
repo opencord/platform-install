@@ -1,0 +1,14 @@
+---
+# ui-tests/tasks/main.yml
+
+- name: Run UI tests
+  command: "python ./xos-e2e-test.py"
+  args:
+    chdir: "/opt/xos/tests/ui-e2e"
+  register: ui_tests_out
+  tags:
+    - skip_ansible_lint # run during testing only
+
+- name: Print output from UI test
+  debug: var=ui_tests_out.stdout_lines
+
