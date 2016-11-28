@@ -1,0 +1,30 @@
+---
+# vars/frontend.yaml
+# creates a mock MCORD pod
+
+site_name: frontend-mcord
+deployment_type: "Mock M-CORD Pod"
+
+xos_admin_user: xosadmin@opencord.org
+xos_admin_pass: "{{ lookup('password', 'credentials/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+xos_admin_first: XOS
+xos_admin_last: admin
+
+xos_bootstrap_ui_port: 9998
+xos_ui_port: 9999
+
+frontend_only: True
+
+xos_redis: False
+
+xos_tosca_templates:
+  - management-net.yaml
+  - mock-mcord.yaml
+
+# GUI branding
+gui_branding_name: "M-CORD"
+gui_branding_icon: "/static/cord-logo.png"
+gui_branding_favicon: "/static/cord-favicon.png"
+gui_branding_bg: "/static/mcord-bg.jpg"
+gui_service_view_class: "core.views.mCordServiceGrid.ServiceGridView"
+

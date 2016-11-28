@@ -1,0 +1,43 @@
+---
+# cord-compute-playbook.yaml
+# Installs new compute nodes in cord-pod XOS configuration using Juju
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "vars/{{ cord_profile }}.yaml"
+        - vars/local_vars.yaml
+
+- name: Configure compute hosts to use DNS server
+  hosts: all
+  become: yes
+  roles:
+    - { role: dns-configure, when: not on_maas }
+
+- name: Prep systems
+  hosts: compute
+  become: yes
+  roles:
+    - common-prep
+    - { role: cloudlab-prep, when: on_cloudlab }
+
+- name: Configure head node (for sshkey)
+  hosts: head
+  roles:
+    - { role: head-prep, become: yes }
+
+- name: Configure compute nodes
+  hosts: compute
+  become: yes
+  roles:
+    - compute-prep
+
+- name: Deploy compute nodes
+  hosts: head
+  roles:
+    - juju-compute-setup
+    - xos-compute-setup
+
