@@ -1,0 +1,16 @@
+---
+# teardown-playbook.yaml
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "vars/{{ cord_profile }}.yaml"
+        - vars/local_vars.yaml
+
+- name: Teardown CORD profile
+  hosts: head
+  roles:
+   - teardown-profile

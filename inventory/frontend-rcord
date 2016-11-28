@@ -1,0 +1,8 @@
+; frontend-rcord configuration
+
+[all:vars]
+cord_profile=frontend-rcord
+
+[head]
+localhost ansible_connection=local
+
