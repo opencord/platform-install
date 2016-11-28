@@ -1,0 +1,17 @@
+---
+# xos-test-image/tasks/main.yml
+
+- name: Build xosproject/xos-test testing image
+  docker_image:
+    name: "xosproject/xos-test"
+    path: "{{ cord_dir }}/orchestration/xos/"
+    dockerfile: "containers/xos/Dockerfile.test"
+    pull: False # use the locally built copy of xosproject/xos
+
+- name: Tag and push xos-test image to docker registry
+  when: push_xos_image
+  docker_image:
+    name: "{{ deploy_docker_registry }}/xosproject/xos-test"
+    tag: "{{ deploy_docker_tag }}"
+    push: yes
+
