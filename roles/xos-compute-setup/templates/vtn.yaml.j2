@@ -30,8 +30,8 @@ topology_template:
           sshKeyFile: /root/node_key
           sshPort: 22
           xosEndpoint: http://xos:8888/
-          xosUser: padmin@vicci.org
-          xosPassword: letmein
+          xosUser: {{ xos_admin_user }}
+          xosPassword: {{ xos_admin_pass }}
           replaces: service_vtn
           vtnAPIVersion: 2
           controllerPort: onos-cord:6654
@@ -76,6 +76,20 @@ topology_template:
       properties:
           name: dataPlaneIp
           value: {{ ( hostvars[node]['ansible_fabric']['ipv4']['address'] ~ '/' ~ hostvars[node]['ansible_fabric']['ipv4']['netmask'] ) | ipaddr('cidr') }}
+      requirements:
+          - target:
+              node: {{ hostvars[node]['ansible_hostname'] }}
+              relationship: tosca.relationships.TagsObject
+          - service:
+              node: service#ONOS_CORD
+              relationship: tosca.relationships.MemberOfService
+
+    # VTN management interface field for node {{ hostvars[node]['ansible_hostname'] }}
+    {{ hostvars[node]['ansible_hostname'] }}_hostManagementIface_tag:
+      type: tosca.nodes.Tag
+      properties:
+          name: hostManagementIface
+          value: {{ vtn_management_host_net_interface }}
       requirements:
           - target:
               node: {{ hostvars[node]['ansible_hostname'] }}
