@@ -1,0 +1,21 @@
+---
+# xos-docker-bootstrap/tasks/main.yml
+
+- name: Pull xosproject/xos-base image
+  docker_image:
+    name: "xosproject/xos-base"
+
+- name: Build xosproject/xos image
+  docker_image:
+    path: "{{ cord_dir }}/orchestration/xos/containers/xos"
+    name: "xosproject/xos"
+
+- name: Start XOS bootstrap container
+  docker_service:
+    project_src: "{{ cord_dir }}/{{ cord_profile }}/xos-bootstrap-docker-compose.yaml"
+  register: xos_bootstrap_out
+
+- name: Status of XOS bootstrap containers
+  debug:
+    var: xos_boostrap_out
+

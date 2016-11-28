@@ -1,0 +1,11 @@
+---
+# test-standalone_defaults.yml
+
+cord_profile: test-standalone
+
+xos_docker_volumes:
+  - "../orchestration/xos/xos/core/tests:/opt/xos/core/tests:ro"
+
+xos_redis: False
+
+xos_bootstrap_ui_ports: "9998:9998"

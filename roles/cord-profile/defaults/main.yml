@@ -1,0 +1,12 @@
+---
+# cord-profile/defaults/main.yml
+
+cord_dir: "{{ ansible_user_dir + '/opencord' }}"
+
+cord_profile: "test-standalone"
+
+# set to True to create the xos_redis container in the bootstrap context
+xos_redis: False
+
+xos_bootstrap_ui_ports: "81:81"
+
