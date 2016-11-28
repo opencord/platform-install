@@ -1,0 +1,12 @@
+---
+# xos-service-onboard/defaults/main.yml
+
+cord_dir: "{{ ansible_user_dir + '/opencord' }}"
+
+xos_bootstrap_ui_port: 81
+
+xos_libraries:
+  - "ng-xos-lib"
+
+xos_services: []
+

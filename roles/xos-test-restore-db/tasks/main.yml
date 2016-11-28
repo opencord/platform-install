@@ -1,0 +1,28 @@
+---
+# xos-test-restore-db/tasks/main.yml
+
+- name: Restore core initial data from fixture
+  command: python /opt/xos/manage.py --noobserver loaddata /opt/xos/core/fixtures/core_initial_data.json
+  tags:
+    - skip_ansible_lint # testing only
+
+
+- name: Start loading XOS config
+  command: "python /opt/xos/tosca/run.py none /opt/cord_profile/{{ item }}"
+  with_items:
+    - "fixtures.yaml"
+    - "deployment.yaml"
+  tags:
+    - skip_ansible_lint # TOSCA loading should be idempotent
+
+
+- name: Continue loading XOS config (as admin user)
+  command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/{{ item }}"
+  with_items:
+    - "sample.yaml"
+    - "management-net.yaml"
+    - "services.yaml"
+    - "volt-devices.yaml"
+  tags:
+    - skip_ansible_lint # TOSCA loading should be idempotent
+
