@@ -1,0 +1,22 @@
+---
+# xos-bootstrap/tasks/main.yml
+
+- name: Create docker networks
+  docker_network:
+    name: "{{ item }}"
+  with_items: "{{ xos_docker_networks }}"
+
+- name: Start XOS bootstrap containers
+  docker_service:
+    project_name: "{{ cord_profile }}bs"
+    project_src: "{{ cord_dir }}/{{ cord_profile }}"
+    files: "xos-bootstrap-docker-compose.yaml"
+  register: xos_bootstrap_out
+
+- name: Add the containers to Ansible groups on a per-container type basis
+  add_host:
+    name: "{{ xos_bootstrap_out.ansible_facts[item].keys() | first }}"
+    groups: "{{ item }}"
+    ansible_connection: "docker"
+  with_items: "{{ xos_bootstrap_out.ansible_facts.keys() | list }}"
+
