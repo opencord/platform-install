@@ -1,0 +1,7 @@
+---
+# xos-bootstrap/defaults/main.yml
+
+cord_dir: "{{ ansible_user_dir + '/opencord' }}"
+
+cord_profile: "test-standalone"
+
