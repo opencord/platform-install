@@ -1,6 +1,0 @@
----
-# file: group_vars/stanford.yml
-
-mgmt_net_prefix: 192.168.101
-cloudlab: false
-
