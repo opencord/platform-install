@@ -1,0 +1,28 @@
+---
+# cord-profile/tasks/main.yml
+# Constructs a CORD profile from a service-profile vars description
+
+- name: Create CORD profile directory
+  file:
+    path: "{{ cord_dir }}/{{ cord_profile }}"
+    state: directory
+    mode: 0755
+
+- name: Create key_import directory
+  file:
+    path: "{{ cord_dir }}/{{ cord_profile }}/key_import"
+    state: directory
+    mode: 0755
+
+- name: Create xos-bootstrap-docker-compose.yaml file
+  template:
+    src: "xos-bootstrap-docker-compose.yaml.j2"
+    dest: "{{ cord_dir }}/{{ cord_profile }}/xos-bootstrap-docker-compose.yaml"
+    mode: 0644
+
+- name: Create xos_config_common file
+  template:
+    src: "xos_config_common.j2"
+    dest: "{{ cord_dir }}/{{ cord_profile }}/xos_config_common"
+    mode: 0644
+
