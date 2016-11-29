@@ -13,6 +13,21 @@
     chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
     target: vtn
 
+- name: Get name of compute node
+  shell: bash -c "source ~/admin-openrc.sh; nova service-list|grep nova-compute|cut -d '|' -f 3"
+  register: node_name
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Ensure br-int has been created on compute node
+  shell: ssh -l ubuntu {{ node_name.stdout }} sudo ovs-vsctl br-exists br-int
+  register: result
+  until: result | success
+  retries: 10
+  delay: 10
+  tags:
+    - skip_ansible_lint # running a sub job
+
 - name: Wait for vSG VM to come up
   shell: bash -c "source ~/admin-openrc.sh; nova list --all-tenants|grep 'vsg.*ACTIVE' > /dev/null"
   register: result
@@ -31,12 +46,6 @@
 - name: Get mgmt IP of VM
   shell: bash -c "source ~/admin-openrc.sh; nova interface-list {{ nova_id.stdout }}|grep -o -m 1 '172\.27\.[[:digit:]]*\.[[:digit:]]*'"
   register: mgmt_ip
-  tags:
-    - skip_ansible_lint # running a sub job
-
-- name: Get name of compute node
-  shell: bash -c "source ~/admin-openrc.sh; nova service-list|grep nova-compute|cut -d '|' -f 3"
-  register: node_name
   tags:
     - skip_ansible_lint # running a sub job
 
