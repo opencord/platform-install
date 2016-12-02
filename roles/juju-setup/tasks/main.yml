@@ -10,28 +10,26 @@
     src=environments.yaml.j2
     dest={{ ansible_user_dir }}/.juju/environments.yaml
 
+# Sometimes this fails yet the bootstrap eventually succeeds.
+# Handle this case by waiting for juju_facts after this step.
 - name: Bootstrap Juju
   command: juju bootstrap
     creates={{ ansible_user_dir }}/.juju/environments/manual.jenv
-
-- name: Copy over juju-config.yml for configuring Juju services
-  become: yes
-  template:
-    src={{ juju_config_name }}_juju_config.yml.j2
-    dest={{ juju_config_path }}
+  ignore_errors: yes
 
 # Code for this is in library/juju_facts.py
 - name: Obtain Juju Facts for creating machines
   juju_facts:
   register: result
   until: result | success
-  retries: 3
+  retries: 40
   delay: 15
 
-- name: Pause to let Juju settle before adding machines
-  pause:
-    prompt="Waiting for Juju..."
-    seconds=20
+- name: Copy over juju-config.yml for configuring Juju services
+  become: yes
+  template:
+    src={{ juju_config_name }}_juju_config.yml.j2
+    dest={{ juju_config_path }}
 
 # For setwise operations on desired vs Juju state:
 # list of active juju_machines names: juju_machines.keys()
