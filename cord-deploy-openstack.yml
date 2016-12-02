@@ -1,0 +1,34 @@
+---
+# Installs the single node cord-pod XOS configuration, using Juju to provision
+# the OpenStack installation inside of VM's on the head node.
+#
+# This is used by `scripts/single-node-pod.sh` for E2E testing.
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - vars/cord_defaults.yml
+        - vars/cord.yml
+        - vars/example_keystone.yml
+
+- name: Configure head node, create containers
+  hosts: head
+  roles:
+    - { role: head-prep, become: yes }
+    - create-lxd
+
+- name: Start OpenStack install
+  hosts: head
+  roles:
+    - juju-setup
+
+# Put plays here that will execute in parallel to
+# the OpenStack installation
+
+- name: Finish OpenStack install
+  hosts: head
+  roles:
+    - juju-finish

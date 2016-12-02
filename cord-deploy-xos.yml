@@ -1,0 +1,27 @@
+---
+# Installs the single node cord-pod XOS configuration, using Juju to provision
+# the OpenStack installation inside of VM's on the head node.
+#
+# This is used by `scripts/single-node-pod.sh` for E2E testing.
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - vars/cord_defaults.yml
+        - vars/cord.yml
+        - vars/example_keystone.yml
+
+- name: XOS setup
+  hosts: head
+  roles:
+    - { role: xos-build, when: xos_container_rebuild }
+    - xos-install
+
+- name: Start XOS
+  hosts: head
+  roles:
+    - xos-config
+    - xos-head-start
