@@ -1,0 +1,24 @@
+---
+# Deploys XOS in Docker containers on the CORD head node
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - vars/cord_defaults.yml
+        - vars/cord.yml
+        - vars/example_keystone.yml
+
+- name: XOS setup
+  hosts: head
+  roles:
+    - { role: xos-build, when: xos_container_rebuild }
+    - xos-install
+
+- name: Start XOS
+  hosts: head
+  roles:
+    - xos-config
+    - xos-head-start

@@ -64,7 +64,7 @@ ext {
         ? project.getProperty('targetTag')
         : config.docker && config.docker.imageVersion
             ? config.docker.imageVersion
-            : 'candidate'    
+            : 'candidate'
 
     println "targetReg = $targetReg, targetTag = $targetTag"
 
@@ -144,7 +144,7 @@ tasks.addRule(new DockerPublishRule(project))
 tasks.addRule(new DockerTagRule(project))
 tasks.addRule(new GitSubmoduleUpdateRule(project))
 
-task deployPlatform (type: Exec) {
+task prepPlatform(type: Exec) {
     dependsOn copyAnsibleInventory
 
     executable = "ansible-playbook"
@@ -187,12 +187,10 @@ task deployPlatform (type: Exec) {
 
     def skipTags = [].p(config.seedServer.skipTags)
 
-    args = args.p(skipTags.asParam("skip-tags", ",")).p(extraVars.asParam("extra-vars", " ")) << "cord-head-playbook.yml"
+    args = args.p(skipTags.asParam("skip-tags", ",")).p(extraVars.asParam("extra-vars", " ")) << "cord-prep-platform.yml"
 }
 
-task deploySingle (type: Exec) {
-    dependsOn copyAnsibleInventory
-
+task deployOpenStack (type: Exec) {
     executable = "ansible-playbook"
     args = ["-i", "inventory/single-prod"]
 
@@ -233,12 +231,155 @@ task deploySingle (type: Exec) {
 
     def skipTags = [].p(config.seedServer.skipTags)
 
-    args = args.p(skipTags.asParam("skip-tags", ",")).p(extraVars.asParam("extra-vars", " ")) << "cord-single-playbook.yml"
+    args = args.p(skipTags.asParam("skip-tags", ",")).p(extraVars.asParam("extra-vars", " ")) << "cord-deploy-openstack.yml"
+}
+
+task deployONOS (type: Exec) {
+    executable = "ansible-playbook"
+    args = ["-i", "inventory/single-prod"]
+
+    if ( config.seedServer.user != null && config.seedServer.user != "" ) {
+        args = args << "--user=$config.seedServer.user"
+    }
+
+    def extraVars = []
+    if (config.seedServer) {
+        extraVars = extraVars.p(config.seedServer.extraVars)
+            .p(config.seedServer.password, "ansible_ssh_pass")
+            .p(config.seedServer.sudoPassword, "ansible_sudo_pass")
+            .p(config.seedServer.fabric_ip, "fabric_ip")
+            .p(config.seedServer.management_ip, "management_ip")
+            .p(config.seedServer.management_network, "management_network")
+            .p(config.seedServer.management_iface, "management_iface")
+            .p(config.seedServer.external_ip, "external_ip")
+            .p(config.seedServer.external_network, "external_network")
+            .p(config.seedServer.external_iface, "external_iface")
+            .p(config.seedServer.fabric_ip, "fabric_ip")
+            .p(config.seedServer.fabric_network, "fabric_network")
+            .p(config.seedServer.fabric_iface, "fabric_iface")
+            .p(config.seedServer.domain, "domain")
+            .p(config.seedServer.virtualbox_support, "virtualbox_support")
+            .p(config.seedServer.power_helper_user, "power_helper_user")
+            .p(config.seedServer.power_helper_host, "power_helper_host")
+            .p(config.seedServer.port, "ansible_ssh_port")
+    }
+
+    if (config.otherServers) {
+        extraVars = extraVars.p(config.otherServers.location, "prov_location")
+            .p(config.otherServers.rolesPath, "prov_role_path")
+            .p(config.otherServers.role, "prov_role")
+    }
+
+    extraVars = extraVars.p("$targetReg", "deploy_docker_registry")
+        .p("$targetTag", "deploy_docker_tag")
+
+    def skipTags = [].p(config.seedServer.skipTags)
+
+    args = args.p(skipTags.asParam("skip-tags", ",")).p(extraVars.asParam("extra-vars", " ")) << "cord-deploy-onos.yml"
+}
+
+task deployXOS (type: Exec) {
+    executable = "ansible-playbook"
+    args = ["-i", "inventory/single-prod"]
+
+    if ( config.seedServer.user != null && config.seedServer.user != "" ) {
+        args = args << "--user=$config.seedServer.user"
+    }
+
+    def extraVars = []
+    if (config.seedServer) {
+        extraVars = extraVars.p(config.seedServer.extraVars)
+            .p(config.seedServer.password, "ansible_ssh_pass")
+            .p(config.seedServer.sudoPassword, "ansible_sudo_pass")
+            .p(config.seedServer.fabric_ip, "fabric_ip")
+            .p(config.seedServer.management_ip, "management_ip")
+            .p(config.seedServer.management_network, "management_network")
+            .p(config.seedServer.management_iface, "management_iface")
+            .p(config.seedServer.external_ip, "external_ip")
+            .p(config.seedServer.external_network, "external_network")
+            .p(config.seedServer.external_iface, "external_iface")
+            .p(config.seedServer.fabric_ip, "fabric_ip")
+            .p(config.seedServer.fabric_network, "fabric_network")
+            .p(config.seedServer.fabric_iface, "fabric_iface")
+            .p(config.seedServer.domain, "domain")
+            .p(config.seedServer.virtualbox_support, "virtualbox_support")
+            .p(config.seedServer.power_helper_user, "power_helper_user")
+            .p(config.seedServer.power_helper_host, "power_helper_host")
+            .p(config.seedServer.port, "ansible_ssh_port")
+    }
+
+    if (config.otherServers) {
+        extraVars = extraVars.p(config.otherServers.location, "prov_location")
+            .p(config.otherServers.rolesPath, "prov_role_path")
+            .p(config.otherServers.role, "prov_role")
+    }
+
+    extraVars = extraVars.p("$targetReg", "deploy_docker_registry")
+        .p("$targetTag", "deploy_docker_tag")
+
+    def skipTags = [].p(config.seedServer.skipTags)
+
+    args = args.p(skipTags.asParam("skip-tags", ",")).p(extraVars.asParam("extra-vars", " ")) << "cord-deploy-xos.yml"
+}
+
+task setupAutomation (type: Exec) {
+    executable = "ansible-playbook"
+    args = ["-i", "inventory/single-prod"]
+
+    if ( config.seedServer.user != null && config.seedServer.user != "" ) {
+        args = args << "--user=$config.seedServer.user"
+    }
+
+    def extraVars = []
+    if (config.seedServer) {
+        extraVars = extraVars.p(config.seedServer.extraVars)
+            .p(config.seedServer.password, "ansible_ssh_pass")
+            .p(config.seedServer.sudoPassword, "ansible_sudo_pass")
+            .p(config.seedServer.fabric_ip, "fabric_ip")
+            .p(config.seedServer.management_ip, "management_ip")
+            .p(config.seedServer.management_network, "management_network")
+            .p(config.seedServer.management_iface, "management_iface")
+            .p(config.seedServer.external_ip, "external_ip")
+            .p(config.seedServer.external_network, "external_network")
+            .p(config.seedServer.external_iface, "external_iface")
+            .p(config.seedServer.fabric_ip, "fabric_ip")
+            .p(config.seedServer.fabric_network, "fabric_network")
+            .p(config.seedServer.fabric_iface, "fabric_iface")
+            .p(config.seedServer.domain, "domain")
+            .p(config.seedServer.virtualbox_support, "virtualbox_support")
+            .p(config.seedServer.power_helper_user, "power_helper_user")
+            .p(config.seedServer.power_helper_host, "power_helper_host")
+            .p(config.seedServer.port, "ansible_ssh_port")
+    }
+
+    if (config.otherServers) {
+        extraVars = extraVars.p(config.otherServers.location, "prov_location")
+            .p(config.otherServers.rolesPath, "prov_role_path")
+            .p(config.otherServers.role, "prov_role")
+    }
+
+    extraVars = extraVars.p("$targetReg", "deploy_docker_registry")
+        .p("$targetTag", "deploy_docker_tag")
+
+    def skipTags = [].p(config.seedServer.skipTags)
+
+    args = args.p(skipTags.asParam("skip-tags", ",")).p(extraVars.asParam("extra-vars", " ")) << "cord-automation.yml"
+}
+
+deployOpenStack.mustRunAfter prepPlatform
+deployONOS.mustRunAfter deployOpenStack
+deployXOS.mustRunAfter deployONOS
+setupAutomation.mustRunAfter deployXOS
+
+task deployPlatform {
+     dependsOn prepPlatform
+     dependsOn deployOpenStack
+     dependsOn deployONOS
+     dependsOn deployXOS
+     dependsOn setupAutomation
 }
 
 task postDeployTests (type: Exec) {
-    dependsOn copyAnsibleInventory
-
     executable = "ansible-playbook"
     args = ["-i", "inventory/single-prod"]
 
@@ -281,4 +422,3 @@ task postDeployTests (type: Exec) {
 
     args = args.p(skipTags.asParam("skip-tags", ",")).p(extraVars.asParam("extra-vars", " ")) << "cord-post-deploy-playbook.yml"
 }
-
