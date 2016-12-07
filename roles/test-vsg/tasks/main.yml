@@ -8,11 +8,6 @@
     chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
     target: cord-subscriber
 
-- name: Re-run 'make vtn' (work around bug in synchronizer)
-  make:
-    chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
-    target: vtn
-
 - name: Get name of compute node
   shell: bash -c "source ~/admin-openrc.sh; nova service-list|grep nova-compute|cut -d '|' -f 3"
   register: node_name
