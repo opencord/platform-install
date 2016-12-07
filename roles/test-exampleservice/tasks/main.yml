@@ -8,11 +8,6 @@
     chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
     target: exampleservice
 
-- name: Re-run 'make vtn' (work around bug in synchronizer)
-  make:
-    chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
-    target: vtn
-
 - name: Wait for ExampleService VM to come up
   shell: bash -c "source ~/admin-openrc.sh; nova list --all-tenants|grep 'exampleservice.*ACTIVE' > /dev/null"
   register: result

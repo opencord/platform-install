@@ -8,23 +8,9 @@
     chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
     target: cord-subscriber
 
-- name: Re-run 'make vtn' (work around bug in synchronizer)
-  make:
-    chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
-    target: vtn
-
 - name: Get name of compute node
   shell: bash -c "source ~/admin-openrc.sh; nova service-list|grep nova-compute|cut -d '|' -f 3"
   register: node_name
-  tags:
-    - skip_ansible_lint # running a sub job
-
-- name: Ensure br-int has been created on compute node
-  shell: ssh -l ubuntu {{ node_name.stdout }} sudo ovs-vsctl br-exists br-int
-  register: result
-  until: result | success
-  retries: 10
-  delay: 10
   tags:
     - skip_ansible_lint # running a sub job
 

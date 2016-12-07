@@ -1,0 +1,38 @@
+---
+# platform-check/tasks/main.yml
+
+- name: Ensure br-int exists on all compute nodes (check VTN)
+  shell: ansible -i /etc/maas/ansible/pod-inventory compute -u ubuntu -m shell -s -a "ovs-vsctl br-exists br-int"
+  register: result
+  until: result | success
+  retries: 6
+  delay: 10
+  ignore_errors: yes
+  tags:
+    - skip_ansible_lint # running a sub job
+
+# Work around issues with ONOS intialization
+- name: Restart ONOS when VTN initialization failed
+  when: result | failed
+  shell: docker-compose stop; docker-compose rm -f; docker-compose up -d
+  args:
+    chdir: "{{ onos_cord_dest }}"
+  tags:
+    - skip_ansible_lint
+
+- name: Tell XOS to refresh VTN configuration
+  when: result | failed
+  make:
+    chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
+    target: vtn
+
+- name: Ensure br-int exists on all compute nodes (check VTN #2)
+  when: result | failed
+  shell: ansible -i /etc/maas/ansible/pod-inventory compute -u ubuntu -m shell -s -a "ovs-vsctl br-exists br-int"
+  register: result2
+  until: result2 | success
+  retries: 12
+  delay: 10
+  tags:
+    - skip_ansible_lint # running a sub job
+

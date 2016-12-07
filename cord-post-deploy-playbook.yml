@@ -11,6 +11,12 @@
         - vars/cord.yml
         - vars/example_keystone.yml
 
+- name: Run platform checks
+  hosts: head
+  become: no
+  roles:
+    - platform-check
+
 - name: Create test client
   hosts: head
   become: yes
