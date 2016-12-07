@@ -23,6 +23,7 @@ xos_config_targets:
   - xos
   - vtn
   - fabric
+  - vrouter
   - cord
 
 xos_tosca_templates:
