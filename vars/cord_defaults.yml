@@ -23,8 +23,8 @@ xos_config_targets:
   - xos
   - vtn
   - fabric
-  - vrouter
   - cord
+  - vrouter
 
 xos_tosca_templates:
   - cord-services.yaml
