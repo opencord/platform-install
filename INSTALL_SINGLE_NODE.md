@@ -23,7 +23,7 @@ It should be run on the target server in a user account with password-less
 *sudo* capability.  The most basic way to run the script is as follows:
 
 ```
-$ wget https://raw.githubusercontent.com/opencord/platform-install/master/scripts/single-node-pod.sh
+$ wget https://raw.githubusercontent.com/opencord/platform-install/cord-1.0/scripts/single-node-pod.sh
 $ bash single-node-pod.sh
 ```
 
