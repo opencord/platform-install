@@ -96,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "fa0f191f_63a6b0c3",
+        "filename": "roles/cord-profile/templates/fabric.yaml.j2",
+        "patchSetId": 46
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2016-12-14T18:29:46Z",
+      "side": 1,
+      "message": "I agree. Further, I would rather see us generate a config even in the CiaB scenario. The config generator discovers information from ONOS (switch, compute nodes) and generates a config from that. \n\nThe default config actually brought up an API discussion around ONOS two days ago because you can\u0027t delete hosts from ONOS using the API, only the CLI. So I could not programmatically clean up ONOS and generate a fresh config.\n\nFor CiaB is the switch and host information in the fabric ONOS? (i.e. have they sent a packet to ONOS so ONOS knows about them)",
+      "parentUuid": "fa0f191f_a3c4c85f",
+      "range": {
+        "startLine": 23,
+        "startChar": 10,
+        "endLine": 23,
+        "endChar": 76
+      },
+      "revId": "fb700e599ae93171e5b53be04d9714cd82c160d7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fa0f191f_83d30438",
         "filename": "roles/cord-profile/templates/volt-devices.yaml.j2",
         "patchSetId": 46
