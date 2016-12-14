@@ -72,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "fa0f191f_a3c4c85f",
+        "filename": "roles/cord-profile/templates/fabric.yaml.j2",
+        "patchSetId": 46
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2016-12-14T18:19:13Z",
+      "side": 1,
+      "message": "So one issue I have seen during the deployment is that this config gets loaded by default which makes things hard because we need to back track. I think we should not load a config until we know that it is the right one. David could help here.",
+      "parentUuid": "fa0f191f_63bfd0d1",
+      "range": {
+        "startLine": 23,
+        "startChar": 10,
+        "endLine": 23,
+        "endChar": 76
+      },
+      "revId": "fb700e599ae93171e5b53be04d9714cd82c160d7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fa0f191f_83d30438",
         "filename": "roles/cord-profile/templates/volt-devices.yaml.j2",
         "patchSetId": 46
@@ -107,6 +131,30 @@
       "side": 1,
       "message": "Yes, they should be - who would be best to ask about how to name/group these parameters? (I\u0027m not an expert on the vOLT service)",
       "parentUuid": "fa0f191f_83d30438",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 19
+      },
+      "revId": "fb700e599ae93171e5b53be04d9714cd82c160d7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa0f191f_c3c7bc63",
+        "filename": "roles/cord-profile/templates/volt-devices.yaml.j2",
+        "patchSetId": 46
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2016-12-14T18:19:13Z",
+      "side": 1,
+      "message": "I can help you with that.",
+      "parentUuid": "fa0f191f_83bae4df",
       "range": {
         "startLine": 20,
         "startChar": 0,
