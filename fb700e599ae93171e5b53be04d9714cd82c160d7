@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa0f191f_23e2f803",
+        "filename": "roles/cord-profile/templates/fabric-network-cfg.json.j2",
+        "patchSetId": 46
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2016-12-14T17:28:11Z",
+      "side": 1,
+      "message": "Most of these fields should be parameterized.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 1
+      },
+      "revId": "fb700e599ae93171e5b53be04d9714cd82c160d7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa0f191f_43ddec41",
+        "filename": "roles/cord-profile/templates/fabric.yaml.j2",
+        "patchSetId": 46
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2016-12-14T17:28:11Z",
+      "side": 1,
+      "message": "should this be passed through a variable?",
+      "range": {
+        "startLine": 23,
+        "startChar": 10,
+        "endLine": 23,
+        "endChar": 76
+      },
+      "revId": "fb700e599ae93171e5b53be04d9714cd82c160d7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa0f191f_83d30438",
+        "filename": "roles/cord-profile/templates/volt-devices.yaml.j2",
+        "patchSetId": 46
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2016-12-14T17:28:11Z",
+      "side": 1,
+      "message": "these fields need to be parameterized",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 19
+      },
+      "revId": "fb700e599ae93171e5b53be04d9714cd82c160d7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa0f191f_63d8f053",
+        "filename": "roles/cord-profile/templates/volt-devices.yaml.j2",
+        "patchSetId": 46
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2016-12-14T17:28:11Z",
+      "side": 1,
+      "message": "same here",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 51
+      },
+      "revId": "fb700e599ae93171e5b53be04d9714cd82c160d7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa0f191f_03e7f413",
+        "filename": "scripts/cord-bootstrap.sh",
+        "patchSetId": 46
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2016-12-14T17:28:11Z",
+      "side": 1,
+      "message": "What is this script for?",
+      "revId": "fb700e599ae93171e5b53be04d9714cd82c160d7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
