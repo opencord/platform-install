@@ -1,0 +1,4 @@
+---
+# platform-check/defaults/main.yml
+
+onos_cord_dest: "{{ ansible_user_dir }}/onos-cord/"
