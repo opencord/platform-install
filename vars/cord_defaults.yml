@@ -232,9 +232,8 @@ xos_images:
 
   - name: "ceilometer-trusty-server-multi-nic"
     url: "http://www.vicci.org/cord/ceilometer-trusty-server-multi-nic.compressed.qcow2"
-    checksum: "sha256:afde3f0448483902693be4d52ae76bb683fd74b1c7728019094bf81b37d86105"
+    checksum: "sha256:b77ef8d692b640568dea13df99fe1dfcb1f4bb4ac05408db9ff77399b34f754f"
 
   - name: "ceilometer-service-trusty-server-multi-nic"
     url: "http://www.vicci.org/cord/ceilometer-service-trusty-server-multi-nic.compressed.qcow2"
-    checksum: "sha256:9c346ff15727e9a98942835d6bd34b3d033f868234425f517e53d64b5a124a13"
-
+    checksum: "sha256:ab4b792cab0e901c4af0accdb85629bfdd1166f7de158014a50f37aefe0ba6a5"
