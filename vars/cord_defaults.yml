@@ -18,6 +18,9 @@ service_profile_repo_dest: "{{ ansible_user_dir }}/service-profile"
 
 xos_configuration: cord-pod
 
+#onos_docker_image: docker-registry:5000/onosproject/onos:candidate
+onos_docker_image: onosproject/onos:1.8
+
 xos_config_targets:
   - local_containers
   - xos
