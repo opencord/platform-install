@@ -4,7 +4,7 @@ version: '2'
 services:
 
    xos-onos:
-      image: onosproject/onos:latest
+      image: docker-registry:5000/onosproject/onos:candidate
       ports:
        - "6653:6653"
        - "8101:8101"
