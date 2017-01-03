@@ -1,0 +1,6 @@
+---
+# xos-config/defaults/main.yml
+
+xos_admin_user: "xosadmin@opencord.org"
+
+xos_tosca_config_templates: []

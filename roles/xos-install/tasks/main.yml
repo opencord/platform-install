@@ -203,7 +203,3 @@
   command: docker tag {{ docker_registry }}/node:{{ docker_tag }} node:argon
   when: docker_registry_check|succeeded
 
-
-
-
-
