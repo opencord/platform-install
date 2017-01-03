@@ -6,8 +6,9 @@ services:
    xos-onos:
       image: docker-registry:5000/onosproject/onos:candidate
       ports:
-       - "6653:6653"
-       - "8101:8101"
-       - "8181:8181"
-       - "9876:9876"
+       - "6653:6653" # OpenFlow
+       - "8101:8101" # ONOS SSH
+       - "8181:8181" # ONOS UI/API
+       - "9876:9876" # ONOS Clustering
+       - "2620:2620" # vRouter
 
