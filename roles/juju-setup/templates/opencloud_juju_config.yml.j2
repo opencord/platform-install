@@ -14,10 +14,11 @@ keystone:
   use-https: "yes"
   https-service-endpoints: "True"
   openstack-origin: "cloud:trusty-kilo"
+  ssl_key: "{{ keystone_ssl_cert_key }}"
+  ssl_cert: "{{ keystone_ssl_cert }}"
+  ssl_ca: "{{ keystone_ssl_ca_key }}"
 
 mongodb: {}
-
-nagios: {}
 
 neutron-api:
   flat-network-providers: "*"
@@ -46,8 +47,6 @@ nova-compute:
   virt-type: kvm
   config-flags: "firewall_driver=nova.virt.firewall.NoopFirewallDriver"
   openstack-origin: "cloud:trusty-kilo"
-
-nrpe: {}
 
 ntp:
   source: "0.ubuntu.pool.ntp.org 1.ubuntu.pool.ntp.org 2.ubuntu.pool.ntp.org 3.ubuntu.pool.ntp.org"
