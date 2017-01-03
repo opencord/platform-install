@@ -1,0 +1,24 @@
+---
+# vars/frontend.yaml
+
+site_name: frontend
+deployment_type: "Frontend Mock"
+
+frontend_only: True
+openstack_enabled: False
+redis_enabled: True
+use_vtn: False
+
+build_xos_base_image: True
+
+xos_admin_user: xosadmin@opencord.org
+xos_admin_pass: "{{ lookup('password', 'credentials/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+xos_admin_first: XOS
+xos_admin_last: admin
+
+xos_bootstrap_ui_port: 9998
+xos_ui_port: 9999
+
+xos_tosca_config_templates:
+  - sample.yaml
+
