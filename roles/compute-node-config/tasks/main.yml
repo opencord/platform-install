@@ -1,0 +1,12 @@
+---
+# compute-node-config/tasks/main.yml
+#
+# Tell XOS that a new compute node has been added
+
+- name: Create nodes.yaml TOSCA config
+  template:
+    src: nodes.yaml.j2
+    dest: "{{ cord_profile_dir }}/nodes.yaml"
+    owner: "{{ ansible_user_id }}"
+    mode: 0644
+
