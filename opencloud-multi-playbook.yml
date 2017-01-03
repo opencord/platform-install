@@ -1,4 +1,5 @@
 ---
+# opencloud-multi-playbook.yml
 # Install an OpenCloud site, with multi-node Juju configured OpenStack
 
 - name: Include vars
@@ -7,9 +8,8 @@
     - name: Include variables
       include_vars: "{{ item }}"
       with_items:
-        - vars/opencloud_defaults.yml
-        - vars/aztest.yml
-        - vars/aztest_keystone.yml
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
 
 - name: Turn on virtualization
   hosts: all
@@ -42,14 +42,16 @@
     - { role: head-prep, become: yes }
     - { role: config-virt, become: yes }
 
-- name: Create VM's, Configure Juju, install XOS
+- name: Create LXD's, Configure Juju, install XOS
   hosts: head
   roles:
     - create-lxd
-    - create-vms
-    - xos-install
     - onos-vm-install
     - juju-setup
+    - juju-finish
+    - cord-profile
+    - xos-docker-images
+    - xos-bootstrap
     - docker-compose
     - xos-head-start
 
