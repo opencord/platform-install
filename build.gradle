@@ -205,7 +205,7 @@ task prepPlatform(type: Exec) {
 
     def skipTags = [].p(config.seedServer.skipTags)
 
-    args = args.p(skipTags.asParam("skip-tags", ",")).p(extraVars.asParam("extra-vars", " ")) << "cord-prep-platform.yml"
+    args = args.p(skipTags.asParam("skip-tags", ",")).p(extraVars.asParam("extra-vars", " ")) << "prep-platform-playbook.yml"
 }
 
 task deployOpenStack (type: Exec) {
@@ -250,7 +250,7 @@ task deployOpenStack (type: Exec) {
 
     def skipTags = [].p(config.seedServer.skipTags)
 
-    args = args.p(skipTags.asParam("skip-tags", ",")).p(extraVars.asParam("extra-vars", " ")) << "cord-deploy-openstack.yml"
+    args = args.p(skipTags.asParam("skip-tags", ",")).p(extraVars.asParam("extra-vars", " ")) << "deploy-openstack-playbook.yml"
 }
 
 task deployONOS (type: Exec) {
@@ -295,7 +295,7 @@ task deployONOS (type: Exec) {
 
     def skipTags = [].p(config.seedServer.skipTags)
 
-    args = args.p(skipTags.asParam("skip-tags", ",")).p(extraVars.asParam("extra-vars", " ")) << "cord-deploy-onos.yml"
+    args = args.p(skipTags.asParam("skip-tags", ",")).p(extraVars.asParam("extra-vars", " ")) << "deploy-onos-playbook.yml"
 }
 
 task deployXOS (type: Exec) {
@@ -340,7 +340,7 @@ task deployXOS (type: Exec) {
 
     def skipTags = [].p(config.seedServer.skipTags)
 
-    args = args.p(skipTags.asParam("skip-tags", ",")).p(extraVars.asParam("extra-vars", " ")) << "cord-deploy-xos.yml"
+    args = args.p(skipTags.asParam("skip-tags", ",")).p(extraVars.asParam("extra-vars", " ")) << "deploy-xos-playbook.yml"
 }
 
 task setupAutomation (type: Exec) {
@@ -385,7 +385,7 @@ task setupAutomation (type: Exec) {
 
     def skipTags = [].p(config.seedServer.skipTags)
 
-    args = args.p(skipTags.asParam("skip-tags", ",")).p(extraVars.asParam("extra-vars", " ")) << "cord-automation.yml"
+    args = args.p(skipTags.asParam("skip-tags", ",")).p(extraVars.asParam("extra-vars", " ")) << "cord-automation-playbook.yml"
 }
 
 deployOpenStack.mustRunAfter prepPlatform
@@ -399,6 +399,12 @@ task deployPlatform {
      dependsOn deployONOS
      dependsOn deployXOS
      dependsOn setupAutomation
+}
+
+task deployPreXOS {
+     dependsOn prepPlatform
+     dependsOn deployOpenStack
+     dependsOn deployONOS
 }
 
 task postDeployTests (type: Exec) {
@@ -443,5 +449,5 @@ task postDeployTests (type: Exec) {
 
     def skipTags = [].p(config.seedServer.skipTags)
 
-    args = args.p(skipTags.asParam("skip-tags", ",")).p(extraVars.asParam("extra-vars", " ")) << "cord-post-deploy-playbook.yml"
+    args = args.p(skipTags.asParam("skip-tags", ",")).p(extraVars.asParam("extra-vars", " ")) << "pod-test-playbook.yml"
 }
