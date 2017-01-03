@@ -1,0 +1,12 @@
+---
+# xos-service-onboard/defaults/main.yml
+
+cord_dir: "{{ ansible_user_dir + '/cord' }}"
+
+xos_bootstrap_ui_port: 9001
+
+xos_libraries:
+  - "ng-xos-lib"
+
+xos_services: []
+
