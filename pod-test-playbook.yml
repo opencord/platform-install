@@ -1,0 +1,52 @@
+---
+# pod-test-playbook.yml
+# Tests CiaB cord-pod XOS configuration
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+# - name: Run platform checks
+#   hosts: head
+#   become: no
+#   roles:
+#    - platform-check
+
+- name: Create test client
+  hosts: head
+  become: yes
+  roles:
+    - maas-test-client-install
+
+- name: Create test subscriber
+  hosts: head
+  roles:
+    - test-subscriber-config
+
+- include: add-onboard-containers-playbook.yml
+
+- name: Enable the test subscriber
+  hosts: xos_ui
+  connection: docker
+  roles:
+    - test-subscriber-enable
+
+- name: Test VSG
+  hosts: head
+  become: no
+  roles:
+    - test-vsg
+
+- include: onboard-exampleservice-playbook.yml
+
+- name: Test ExampleService
+  hosts: head
+  become: no
+  roles:
+    - test-exampleservice
+

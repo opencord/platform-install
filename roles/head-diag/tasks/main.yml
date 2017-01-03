@@ -14,6 +14,7 @@
 
 - name: Head node diag collection
   shell: "{{ item }} > ~/{{ diag_dir }}/head/{{ item | regex_replace('[^\\w-]', '_')}}"
+  ignore_errors: yes
   args:
     creates: "~/{{ diag_dir }}/head/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
@@ -30,6 +31,7 @@
 
 - name: Juju diag collection
   shell: "{{ item }} > ~/{{ diag_dir }}/juju/{{ item | regex_replace('[^\\w-]', '_')}}"
+  ignore_errors: yes
   args:
     creates: "~/{{ diag_dir }}/juju/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
@@ -38,6 +40,7 @@
 
 - name: OpenStack diag collection
   shell: "source ~/admin-openrc.sh && {{ item }} > ~/{{ diag_dir }}/openstack/{{ item | regex_replace('[^\\w-]', '_')}}"
+  ignore_errors: yes
   args:
     executable: "/bin/bash"
     creates: "~/{{ diag_dir }}/openstack/{{ item | regex_replace('[^\\w-]', '_')}}"
@@ -52,7 +55,8 @@
    - "neutron port-list"
 
 - name: ONOS diag collection - REST API
-  shell: "curl -X GET -u karaf:karaf http://onos-cord-1:8181/onos/v1/{{ item }} | python -m json.tool > ~/{{ diag_dir }}/onos/rest_{{ item | regex_replace('[^\\w-]', '_') }}"
+  shell: "curl -X GET -u karaf:karaf http://onos-cord:8182/onos/v1/{{ item }} | python -m json.tool > ~/{{ diag_dir }}/onos/rest_{{ item | regex_replace('[^\\w-]', '_') }}"
+  ignore_errors: yes
   args:
     creates: "~/{{ diag_dir }}/onos/rest_{{ item | regex_replace('[^\\w-]', '_')}}"
     warn: False # get_url or uri can't easily redirect to a file
@@ -60,7 +64,8 @@
    - "hosts"
 
 - name: ONOS diag collection - ONOS CLI
-  shell: "sshpass -p 'karaf' ssh -p 8101 karaf@onos-cord {{ item }} > ~/{{ diag_dir }}/onos/{{ item | regex_replace('[^\\w-]', '_') }}"
+  shell: "sshpass -p 'karaf' ssh -p 8102 karaf@onos-cord {{ item }} > ~/{{ diag_dir }}/onos/{{ item | regex_replace('[^\\w-]', '_') }}"
+  ignore_errors: yes
   args:
     creates: "~/{{ diag_dir }}/onos/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
@@ -79,17 +84,18 @@
    - "summary"
 
 - name: Docker diag collection - Find names for all running Docker containers
-  shell: "sudo docker ps --format '{{ '{{' }} .Names {{ '}}' }}'"
+  command: sudo docker ps --format '{{'{{'}} .Names {{'}}'}}'
+  ignore_errors: yes
   register: docker_containers
   tags:
     - skip_ansible_lint # collecting docker container names
 
 - name: Docker diag collection - Collect logs from Docker containers
   shell: "sudo docker logs {{ item }} > ~/{{ diag_dir }}/docker/{{ item | regex_replace('[^\\w-]', '_')}} 2>&1"
+  ignore_errors: yes
   args:
     creates: "~/{{ diag_dir }}/docker/{{ item | regex_replace('[^\\w-]', '_')}}"
-  with_items: "{{ docker_containers.stdout.split('\n') }}"
+  with_items: "{{ docker_containers.stdout_lines }}"
   tags:
     - skip_ansible_lint # ansible-lint interprets the \n incorrectly
-
 
