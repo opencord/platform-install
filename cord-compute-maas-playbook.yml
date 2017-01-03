@@ -1,0 +1,44 @@
+---
+# cord-compute-maas-playbook.yml
+# Installs and configures compute nodes when using MaaS
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Configure compute hosts to use DNS server
+  hosts: all
+  become: yes
+  roles:
+    - { role: dns-configure, when: not on_maas }
+
+- name: Prep systems
+  hosts: compute
+  become: yes
+  roles:
+    - common-prep
+    - { role: cloudlab-prep, when: on_cloudlab }
+
+- name: Configure head node (for sshkey)
+  hosts: head
+  roles:
+    - { role: head-prep, become: yes }
+
+- name: Configure compute nodes
+  hosts: compute
+  become: yes
+  roles:
+    - compute-prep
+
+- name: Deploy compute nodes, create configuration
+  hosts: head
+  roles:
+    - juju-compute-setup
+    - compute-node-config
+    - compute-node-enable-maas
+
