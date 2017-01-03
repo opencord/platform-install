@@ -1,0 +1,37 @@
+---
+# api-test-playbook.yml
+
+- include: deploy-xos-playbook.yml
+
+- name: Prep for the API tests
+  hosts: xos_ui
+  connection: docker
+  roles:
+    - api-test-prep
+
+- name: Clear the XOS database
+  hosts: xos_db
+  connection: docker
+  roles:
+    - xos-clear-db
+
+- name: Run API tests
+  hosts: xos_ui
+  connection: docker
+  roles:
+    - xos-test-restore-db
+    - api-tests
+
+- name: Clear the XOS database (again)
+  hosts: xos_db
+  connection: docker
+  roles:
+    - xos-clear-db
+
+- name: Run TOSCA tests
+  hosts: xos_ui
+  connection: docker
+  roles:
+    - xos-test-restore-db
+    - tosca-tests
+
