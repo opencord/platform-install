@@ -1,0 +1,13 @@
+---
+# xos-clear-db/tasks/main.yml
+
+- name: Copy over database cleanup script
+  copy:
+    src: xos_clear_db.sql
+    dest: /tmp/xos_clear_db.sql
+
+- name: Run database cleanup script
+  command: "psql -U postgres -d xos -f /tmp/xos_clear_db.sql"
+  tags:
+    - skip_ansible_lint # test scenario destructive script
+

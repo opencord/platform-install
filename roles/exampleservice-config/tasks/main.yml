@@ -1,0 +1,29 @@
+---
+# exampleservice-config/tasks/main.yml
+
+- name: Create fake/empty ssh keys if profile hasn't created them
+  copy:
+    remote_src: True # file is local to the remote machine
+    force: False # only copy if destination file doesn't exist
+    src: "/dev/null"
+    dest: "{{ cord_profile_dir }}/key_import/{{ item }}"
+    mode: 0600
+  with_items:
+    - exampleservice_rsa
+    - exampleservice_rsa.pub
+
+- name: Copy exampleservice onboarding TOSCA files to cord_profile
+  copy:
+    src: "{{ cord_dir }}/orchestration/xos_services/exampleservice/xos/exampleservice-onboard.yaml"
+    dest: "{{ cord_profile_dir }}/exampleservice-onboard.yaml"
+
+- name: TOSCA to mount exampleservice volume in XOS container
+  template:
+    src: "xos-exampleservice.yaml.j2"
+    dest: "{{ cord_profile_dir }}/xos-exampleservice.yaml"
+
+- name: TOSCA to create exampleservice test config
+  template:
+    src: "test-exampleservice.yaml.j2"
+    dest: "{{ cord_profile_dir }}/test-exampleservice.yaml"
+

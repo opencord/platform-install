@@ -1,0 +1,34 @@
+---
+# cord-prep-platform.yml
+# Prepares the CORD head node for installing OpenStack, ONOS, and XOS
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: DNS Server and apt-cacher-ng Setup
+  hosts: head
+  become: yes
+  roles:
+    - { role: dns-nsd, when: not on_maas }
+    - { role: dns-unbound, when: not on_maas }
+    - apt-cacher-ng
+
+- name: Configure all hosts to use DNS server
+  hosts: all
+  become: yes
+  roles:
+    - { role: dns-configure, when: not on_maas }
+
+- name: Prep systems
+  hosts: all
+  become: yes
+  roles:
+    - common-prep
+    - { role: cloudlab-prep, when: on_cloudlab }
+

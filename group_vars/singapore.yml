@@ -1,5 +1,0 @@
----
-# file: group_vars/singapore.yml
-
-mgmt_net_prefix: 192.168.103
-cloudlab: false

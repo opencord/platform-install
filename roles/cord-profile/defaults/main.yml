@@ -1,0 +1,85 @@
+---
+# cord-profile/defaults/main.yml
+
+cord_dir: "{{ ansible_user_dir + '/cord' }}"
+cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
+
+# used in xos.yaml.j2, if True, other synchronizer container will not be started
+frontend_only: False
+
+# Set to True if you want to copy the admin-openrc.sh openstack config file
+use_openstack: True
+
+# set to True to create the xos_redis container in the bootstrap context
+use_redis: True
+
+use_vtn: True
+
+xos_docker_networks:
+  - "xos"
+
+xos_docker_volumes: []
+
+xos_bootstrap_ui_port: 9001
+xos_ui_port: 9000
+
+xos_users: []
+
+xos_libraries:
+  - "ng-xos-lib"
+
+xos_services: []
+xos_service_sshkeys: []
+
+xos_images: []
+
+xos_tosca_config_templates: []
+
+xos_other_templates: []
+
+# GUI branding, used in xos_common_config.j2
+disable_minidashboard: "True"
+gui_branding_name: "OpenCloud"
+gui_branding_icon: "/static/logo.png"
+gui_branding_favicon: "/static/favicon.png"
+gui_branding_bg: "/static/bg.jpg"
+gui_service_view_class: False
+
+# used in deployment.yaml.j2
+xos_admin_user: "xosadmin@opencord.org"
+xos_admin_pass: "{{ lookup('password', 'credentials/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+xos_admin_first: XOS
+xos_admin_last: Admin
+
+site_name: sitename
+site_humanname: "Site HumanName"
+
+deployment_type: deploymenttype
+
+deployment_flavors:
+  - m1.small
+  - m1.medium
+  - m1.large
+  - m1.xlarge
+
+# used in management-net.yaml.j2
+management_network_cidr: 172.27.0.0/24
+
+use_management_hosts: False
+management_hosts_net_cidr: 10.1.0.1/24
+management_hosts_net_range_xos_low: "10.1.0.128"
+management_hosts_net_range_xos_high: "10.1.0.254"
+
+# used in fabric.yaml.j2
+use_fabric: False
+fabric_network_cfg_json: "/opt/cord_profile/fabric-network-cfg.json"
+
+# used in volt-devices.yaml.j2
+volt_devices:
+  - name: voltdev
+    openflow_id: "of:1000000000000001"
+    access_devices: "2 222, 3 223, 4 224"
+    agent_mac: "AA:BB:CC:DD:EE:FF"
+    agent_port_mappings: "of:0000000000000002/2 DE:AD:BE:EF:BA:11, of:0000000000000002/3 BE:EF:DE:AD:BE:EF"
+
+cord_app_version: "1.2-SNAPSHOT"

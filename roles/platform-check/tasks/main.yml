@@ -20,11 +20,31 @@
   tags:
     - skip_ansible_lint
 
-- name: Tell XOS to refresh VTN configuration
+- name: Tell XOS to refresh VTN Service and compute nodes
   when: result | failed
-  make:
-    chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
-    target: vtn
+  xostosca:
+    url: "http://xos.{{ site_suffix }}:{{ xos_ui_port }}/api/utility/tosca/run/"
+    user: "{{ xos_admin_user }}"
+    password:  "{{ xos_admin_pass }}"
+    recipe: "{{ lookup('file', cord_profile_dir + '/' + item ) }}"
+  with_items:
+    - openstack.yaml
+    - openstack-compute.yaml
+    - vtn-service.yaml
+
+- name: Pause to work around race in VTN or ONOS synchronizers
+  pause:
+    seconds: 20
+
+- name: Enable VTN for OpenStack Compute nodes
+  when: result | failed
+  xostosca:
+    url: "http://xos.{{ site_suffix }}:{{ xos_ui_port }}/api/utility/tosca/run/"
+    user: "{{ xos_admin_user }}"
+    password:  "{{ xos_admin_pass }}"
+    recipe: "{{ lookup('file', cord_profile_dir + '/' + item ) }}"
+  with_items:
+    - openstack-compute-vtn.yaml
 
 - name: Ensure br-int exists on all compute nodes (check VTN #2)
   when: result | failed

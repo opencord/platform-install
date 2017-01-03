@@ -1,0 +1,8 @@
+---
+# xos-bootstrap/defaults/main.yml
+
+cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
+
+xos_docker_networks:
+  - "xos"
+

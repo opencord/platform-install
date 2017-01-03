@@ -3,11 +3,6 @@
 #
 # Run tests to check that the CORD-in-a-Box deployment has worked.
 
-- name: Create cord subscriber
-  make:
-    chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
-    target: cord-subscriber
-
 - name: Get name of compute node
   shell: bash -c "source ~/admin-openrc.sh; nova service-list|grep nova-compute|cut -d '|' -f 3"
   register: node_name
@@ -69,3 +64,4 @@
 
 - name: Output from ping test
   debug: var=pingtest.stdout_lines
+

@@ -1,0 +1,8 @@
+---
+# test-subscriber-enable/tasks/main.yml
+
+- name: Run TOSCA to add test-subscriber
+  command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/test-subscriber.yaml"
+  tags:
+    - skip_ansible_lint # TOSCA loading should be idempotent
+

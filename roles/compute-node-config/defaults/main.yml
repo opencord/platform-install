@@ -1,0 +1,14 @@
+---
+# compute-node-config/defaults/main.yml
+
+cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
+
+# service configs referenced here are likely located in cord-profile/templates
+
+# used in openstack-compute-vtn.yaml.j2, referencing network in management-net.yaml.j2
+use_management_hosts: False
+vtn_management_host_net_interface: veth3
+
+# used in openstack-compute-vtn.yaml.j2, referencing service in fabric.yaml.j2
+use_fabric: False
+

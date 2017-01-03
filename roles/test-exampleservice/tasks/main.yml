@@ -1,12 +1,13 @@
 ---
 # test-examplservice/tasks/main.yml
-#
 # Run tests to check that the single-node deployment has worked
 
-- name: Onboard ExampleService and instantiate a VM
-  make:
-    chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
-    target: exampleservice
+- name: Load TOSCA to apply test config for ExampleService, over REST
+  xostosca:
+    url: "http://xos.{{ site_suffix }}:{{ xos_ui_port }}/api/utility/tosca/run/"
+    user: "{{ xos_admin_user }}"
+    password:  "{{ xos_admin_pass }}"
+    recipe: "{{ lookup('file', cord_profile_dir + '/test-exampleservice.yaml' ) }}"
 
 - name: Wait for ExampleService VM to come up
   shell: bash -c "source ~/admin-openrc.sh; nova list --all-tenants|grep 'exampleservice.*ACTIVE' > /dev/null"
@@ -82,3 +83,4 @@
 
 - name: Output from curl test
   debug: var=curltest.stdout_lines
+

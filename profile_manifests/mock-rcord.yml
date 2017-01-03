@@ -1,0 +1,72 @@
+---
+# vars/frontend-rcord.yaml
+# creates a mock R-CORD pod
+
+site_name: mock-rcord
+deployment_type: "Mock R-CORD Pod"
+
+xos_admin_user: xosadmin@opencord.org
+xos_admin_pass: "{{ lookup('password', 'credentials/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+xos_admin_first: XOS
+xos_admin_last: admin
+
+frontend_only: True
+use_openstack: False
+use_vtn: False
+
+build_xos_base_image: True
+
+xos_tosca_config_templates:
+  - sample.yaml
+  - management-net.yaml
+  - mock-onos.yaml
+  - cord-services.yaml
+  - public-net.yaml
+    #  - test-subscriber.yaml # broken? Missing lan_network config on vOLT ?
+  - volt-devices.yaml
+
+# GUI branding
+gui_branding_name: "CORD"
+gui_branding_icon: "/static/cord-logo.png"
+gui_branding_favicon: "/static/cord-favicon.png"
+gui_branding_bg: "/static/cord-bg.jpg"
+
+# paths defined in manifest/default.xml
+xos_services:
+  - name: volt
+    path: onos-apps/apps/olt
+  - name: onos
+    path: orchestration/xos_services/onos-service
+  - name: vrouter
+    path: orchestration/xos_services/vrouter
+  - name: vsg
+    path: orchestration/xos_services/vsg
+  - name: vtr
+    path: orchestration/xos_services/vtr
+  - name: fabric
+    path: orchestration/xos_services/fabric
+
+xos_service_sshkeys:
+  - name: onos_rsa
+    source_path: "/dev/null"
+  - name: onos_rsa.pub
+    source_path: "/dev/null"
+  - name: volt_rsa
+    source_path: "/dev/null"
+  - name: volt_rsa.pub
+    source_path: "/dev/null"
+  - name: vsg_rsa
+    source_path: "/dev/null"
+  - name: vsg_rsa.pub
+    source_path: "/dev/null"
+
+# site domain suffix
+site_suffix: opencloud.us
+
+# SSL server certificate generation
+server_certs:
+  - cn: "xos-core.{{ site_suffix }}"
+    subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=xos-core.{{ site_suffix }}"
+    altnames:
+      - "DNS:xos-core.{{ site_suffix }}"
+

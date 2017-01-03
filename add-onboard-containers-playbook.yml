@@ -1,0 +1,17 @@
+---
+# add-onboard-containers-playbook.yml
+
+- name: Add onboarded containers to inventory
+  hosts: head
+  roles:
+    - xos-onboard-hosts
+
+- name: Re-include vars after adding onboarded containers
+  hosts: xos_ui
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+

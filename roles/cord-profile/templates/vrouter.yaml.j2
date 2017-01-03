@@ -1,0 +1,174 @@
+tosca_definitions_version: tosca_simple_yaml_1_0
+
+description: Just enough Tosca to get the vSG slice running on the CORD POD
+
+imports:
+   - custom_types/xos.yaml
+   - custom_types/vrouter.yaml
+
+topology_template:
+  node_templates:
+
+    service#vrouter:
+      type: tosca.nodes.VRouterService
+      properties:
+          view_url: /admin/vrouter/
+          no-delete: true
+          no-create: true
+          rest_hostname: onos-fabric
+          rest_port: 8181
+          rest_user: onos
+          rest_pass: rocks
+    
+    device#of:00000000000000b1:
+      type: tosca.nodes.VRouterDevice
+      properties:
+        openflow_id: of:00000000000000b1
+        driver: softrouter
+        # config_key: basic
+      requirements:
+        - service#vrouter:
+            node: service#vrouter
+            relationship: tosca.relationships.MemberOfService
+
+    # Port 1
+    port#port1/1:
+      type: tosca.nodes.VRouterPort
+      properties:
+        openflow_id: of:00000000000000b1/1
+      requirements:
+        - device#of:00000000000000b1:
+            node: device#of:00000000000000b1
+            relationship: tosca.relationships.PortOfDevice
+        - service#vrouter:
+            node: service#vrouter
+            relationship: tosca.relationships.MemberOfService
+
+    interface#b1-1:
+      type: tosca.nodes.VRouterInterface
+      properties:
+        name: b1-1
+        mac: 00:00:00:00:00:01
+      requirements:
+        - port#port1/1:
+            node: port#port1/1
+            relationship: tosca.relationships.InterfaceOfPort
+
+    ips#10.0.1.2/24:
+      type: tosca.nodes.VRouterIp
+      properties:
+        ip: 10.0.1.2/24
+      requirements:
+        - interface#b1-1:
+            node: interface#b1-1
+            relationship: tosca.relationships.IpOfInterface
+
+    # Port 2
+    port#port1/2:
+      type: tosca.nodes.VRouterPort
+      properties:
+        openflow_id: of:00000000000000b1/2
+      requirements:
+        - device#of:00000000000000b1:
+            node: device#of:00000000000000b1
+            relationship: tosca.relationships.PortOfDevice
+        - service#vrouter:
+            node: service#vrouter
+            relationship: tosca.relationships.MemberOfService
+
+    interface#b1-2:
+      type: tosca.nodes.VRouterInterface
+      properties:
+        name: b1-2
+        mac: 00:00:00:00:00:01
+      requirements:
+        - port#port1/2:
+            node: port#port1/2
+            relationship: tosca.relationships.InterfaceOfPort
+
+    ips#10.0.2.2/24:
+      type: tosca.nodes.VRouterIp
+      properties:
+        ip: 10.0.2.2/24
+      requirements:
+        - interface#b1-1:
+            node: interface#b1-2
+            relationship: tosca.relationships.IpOfInterface
+
+    # Port 3
+    port#port1/3:
+      type: tosca.nodes.VRouterPort
+      properties:
+        openflow_id: of:00000000000000b1/3
+      requirements:
+        - device#of:00000000000000b1:
+            node: device#of:00000000000000b1
+            relationship: tosca.relationships.PortOfDevice
+        - service#vrouter:
+            node: service#vrouter
+            relationship: tosca.relationships.MemberOfService
+
+    interface#b1-3:
+      type: tosca.nodes.VRouterInterface
+      properties:
+        name: b1-3
+        mac: 00:00:00:00:00:01
+      requirements:
+        - port#port1/3:
+            node: port#port1/3
+            relationship: tosca.relationships.InterfaceOfPort
+
+    ips#10.0.3.2/24:
+      type: tosca.nodes.VRouterIp
+      properties:
+        ip: 10.0.3.2/24
+      requirements:
+        - interface#b1-1:
+            node: interface#b1-3
+            relationship: tosca.relationships.IpOfInterface
+
+    # Port 4
+    port#port1/4:
+      type: tosca.nodes.VRouterPort
+      properties:
+        openflow_id: of:00000000000000b1/4
+      requirements:
+        - device#of:00000000000000b1:
+            node: device#of:00000000000000b1
+            relationship: tosca.relationships.PortOfDevice
+        - service#vrouter:
+            node: service#vrouter
+            relationship: tosca.relationships.MemberOfService
+
+    interface#b1-4:
+      type: tosca.nodes.VRouterInterface
+      properties:
+        name: b1-4
+        mac: 00:00:00:00:00:01
+        vlan: 100
+      requirements:
+        - port#port1/4:
+            node: port#port1/4
+            relationship: tosca.relationships.InterfaceOfPort
+
+    ips#10.0.4.2/24:
+      type: tosca.nodes.VRouterIp
+      properties:
+        ip: 10.0.4.2/24
+      requirements:
+        - interface#b1-1:
+            node: interface#b1-4
+            relationship: tosca.relationships.IpOfInterface
+
+    app#vrouterApp:
+      type: tosca.nodes.VRouterApp
+      properties:
+        name: org.onosproject.router
+        # can we use a relation to specify the connect point port?
+        control_plane_connect_point: of:00000000000000b1/5
+        ospf_enabled: true
+      requirements:
+          - service#vrouter:
+              node: service#vrouter
+              relationship: tosca.relationships.MemberOfService
+

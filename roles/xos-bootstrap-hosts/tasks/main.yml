@@ -1,0 +1,20 @@
+---
+# xos-bootstrap-hosts/tasks/main.yml
+
+- name: Get the Docker container names for bootstrap containers
+  docker_service:
+    project_name: "{{ cord_profile | regex_replace('\\W','') }}bs"
+    project_src: "{{ cord_profile_dir }}"
+    files: "xos-bootstrap-docker-compose.yaml"
+    recreate: never
+  register: xos_bootstrap_out
+
+- name: Add the containers to Ansible groups on a per-container type basis
+  add_host:
+    name: "{{ xos_bootstrap_out.ansible_facts[item].keys() | first }}"
+    groups: "{{ item }}"
+    ansible_connection: "docker"
+    cord_profile: "{{ cord_profile }}"
+    ansible_ssh_user: "root"
+  with_items: "{{ xos_bootstrap_out.ansible_facts.keys() | list }}"
+

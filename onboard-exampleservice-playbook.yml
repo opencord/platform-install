@@ -1,0 +1,35 @@
+---
+# onboard-exampleservice.yml
+# Adds the exampleservice to the currently running pod
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Create exampleservice config
+  hosts: head
+  roles:
+    - exampleservice-config
+
+- include: add-bootstrap-containers-playbook.yml
+
+- name: Onboard exampleservice services
+  hosts: xos_bootstrap_ui
+  connection: docker
+  roles:
+    - exampleservice-onboard
+
+- include: add-onboard-containers-playbook.yml
+
+- name: Check to see if XOS UI is ready
+  hosts: xos_ui
+  connection: docker
+  roles:
+    - xos-ready
+
+

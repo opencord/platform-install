@@ -1,15 +1,9 @@
 ---
-# xos-head-start/tasks/main.yml
+# xos-config/tasks/main.yml
 
-# Performs any configuration of XOS that should be done right before starting
-# XOS. This includes copying the admin-openrc.sh, since we had to wait for juju
-# to finish before admin-openrc.sh was present.
-
-- name: Copy admin-openrc.sh to service-profile
-#  command: cp ~/admin-openrc.sh {{ service_profile_repo_dest }}/{{ xos_configuration }}
-  copy:
-      remote_src=True
-      src=~/admin-openrc.sh
-      dest={{ service_profile_repo_dest }}/{{ xos_configuration }}
-
+- name: Configure XOS with profile specific TOSCA
+  command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/{{ item }}"
+  with_items: "{{ xos_tosca_config_templates }}"
+  tags:
+    - skip_ansible_lint # TOSCA loading should be idempotent
 

@@ -1,0 +1,19 @@
+---
+# tosca-tests/tasks/main.yml
+
+- name: Run TOSCA tests
+  command: "python ./alltests.py"
+  args:
+    chdir: "/opt/xos/tosca/tests"
+  register: tosca_tests_out
+  ignore_errors: yes
+  tags:
+    - skip_ansible_lint # run during testing only
+
+- name: Save output from TOSCA tests
+  copy:
+    content: "{{ tosca_tests_out.stdout_lines }}"
+    dest: "/tmp/tosca-tests.out"
+
+- name: Print output from TOSCA test
+  debug: var=tosca_tests_out.stdout_lines

@@ -1,0 +1,63 @@
+---
+# vars/api-test.yaml
+
+site_name: mysite
+deployment_type: MyDeployment
+
+frontend_only: True
+use_openstack: False
+use_vtn: False
+
+build_xos_base_image: True
+build_xos_test_image: True
+
+source_ui_image: "xosproject/xos-test"
+
+xos_admin_user: padmin@vicci.org
+xos_admin_pass: letmein
+xos_admin_first: XOS
+xos_admin_last: admin
+
+xos_tosca_config_templates:
+  - management-net.yaml
+  - sample.yaml
+  - services.yaml
+  - volt-devices.yaml
+
+# paths relative to repo checkout, defined in manifest/default.xml
+xos_services:
+  - name: volt
+    path: onos-apps/apps/olt
+  - name: onos
+    path: orchestration/xos_services/onos-service
+  - name: vrouter
+    path: orchestration/xos_services/vrouter
+  - name: vsg
+    path: orchestration/xos_services/vsg
+  - name: vtr
+    path: orchestration/xos_services/vtr
+
+xos_service_sshkeys:
+  - name: onos_rsa
+    source_path: "/dev/null"
+  - name: onos_rsa.pub
+    source_path: "/dev/null"
+  - name: volt_rsa
+    source_path: "/dev/null"
+  - name: volt_rsa.pub
+    source_path: "/dev/null"
+  - name: vsg_rsa
+    source_path: "/dev/null"
+  - name: vsg_rsa.pub
+    source_path: "/dev/null"
+
+# site domain suffix
+site_suffix: opencloud.us
+
+# SSL server certificate generation
+server_certs:
+  - cn: "xos-core.{{ site_suffix }}"
+    subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=xos-core.{{ site_suffix }}"
+    altnames:
+      - "DNS:xos-core.{{ site_suffix }}"
+

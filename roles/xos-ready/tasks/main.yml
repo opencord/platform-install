@@ -1,0 +1,9 @@
+---
+# xos-ready/tasks/main.yml
+
+- name: Wait for XOS to be ready after service onboarding
+  wait_for:
+    host: localhost
+    port: "{{ xos_ui_port }}"
+    timeout: 60
+

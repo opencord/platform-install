@@ -1,0 +1,21 @@
+---
+# repo/defaults/main.yml
+
+cord_dir: "{{ ansible_user_dir + '/cord' }}"
+repo_dl_url: "https://storage.googleapis.com/git-repo-downloads/repo"
+
+# This is for repo v1.23, and will change, as repo_dl_url unfortunately lacks a version...
+repo_checksum: "sha256:e147f0392686c40cfd7d5e6f332c6ee74c4eab4d24e2694b3b0a0c037bf51dc5"
+
+repo_manifest_url: "https://gerrit.opencord.org/manifest"
+
+# Used to download specific gerrit changesets. Syntax is:
+#
+# gerrit_changsets:
+#  - path: build/platform-install
+#    revision: 2934/19
+#  - path: ....
+#    revision: #/#
+#
+gerrit_changesets: []
+

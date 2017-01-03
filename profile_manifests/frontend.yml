@@ -1,0 +1,30 @@
+---
+# vars/frontend.yaml
+
+site_name: frontend
+deployment_type: "Frontend Mock"
+
+frontend_only: True
+use_openstack: False
+use_vtn: False
+
+build_xos_base_image: True
+
+xos_admin_user: xosadmin@opencord.org
+xos_admin_pass: "{{ lookup('password', 'credentials/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+xos_admin_first: XOS
+xos_admin_last: admin
+
+xos_tosca_config_templates:
+  - sample.yaml
+
+# site domain suffix
+site_suffix: opencloud.us
+
+# SSL server certificate generation
+server_certs:
+  - cn: "xos-core.{{ site_suffix }}"
+    subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=xos-core.{{ site_suffix }}"
+    altnames:
+      - "DNS:xos-core.{{ site_suffix }}"
+

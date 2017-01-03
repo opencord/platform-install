@@ -1,0 +1,8 @@
+; api-test configuration
+
+[all:vars]
+cord_profile=api-test
+
+[head]
+localhost ansible_connection=local
+

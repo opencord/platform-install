@@ -1,0 +1,14 @@
+---
+# api-test-prep/tasks/main.yml
+
+- name: Install node packages for api tests with npm
+  command: "npm install --production"
+  args:
+    chdir: "/opt/xos/tests/api"
+  tags:
+    - skip_ansible_lint # run during testing only
+
+- name: Install dredd-hooks with pip
+  pip:
+    name: dredd-hooks
+

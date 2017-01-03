@@ -1,0 +1,48 @@
+---
+# docker-install/tasks/main.yml
+# note - all tasks run with become to preserve the `ansible_user_id` var
+
+- name: Prereqs and SSL support for apt for SSL
+  become: yes
+  apt:
+    name={{ item }}
+    update_cache=yes
+    cache_valid_time=3600
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - python-pip
+
+- name: Trust docker apt key
+  become: yes
+  apt_key:
+    data: "{{ lookup('file', 'docker_apt_key.gpg') }}"
+
+- name: Add docker apt repo
+  become: yes
+  apt_repository:
+    repo: "{{ docker_apt_repo }}"
+
+- name: Install docker
+  become: yes
+  apt:
+    update_cache=yes
+    cache_valid_time=3600
+    name=docker-engine
+
+# docker fails without docker-py, docker-compose >1.9 fails with docker-py installed
+- name: Install docker-compose and docker-py
+  become: yes
+  pip:
+    name: "{{ item }}"
+  with_items:
+    - docker-py
+    - docker-compose==1.9
+
+- name: Make current user part of the Docker group
+  become: yes
+  user:
+    name: "{{ ansible_user_id }}"
+    groups: "docker"
+    append: yes
+
