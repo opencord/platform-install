@@ -1,0 +1,16 @@
+---
+# compute-node-enable-maas/tasks/main.yml
+
+- name: Fetch generated nodes.yaml file
+  fetch:
+    src: "{{ cord_profile_dir + '/nodes.yaml' }}"
+    dest: /tmp/nodes.yaml
+    flat: yes
+
+- name: POST TOSCA to add nodes
+  xostosca:
+    url: "http://xos.{{ site_suffix }}:{{ xos_ui_port }}/api/utility/tosca/run/"
+    user: "{{ xos_admin_user }}"
+    password:  "{{ xos_admin_pass }}"
+    recipe: "{{ lookup('file', '/tmp/nodes.yaml') }}"
+
