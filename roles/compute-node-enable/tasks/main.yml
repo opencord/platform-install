@@ -1,0 +1,8 @@
+---
+# node-enable/tasks/main.yml
+
+- name: Run TOSCA to add nodes
+  command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/nodes.yaml"
+  tags:
+    - skip_ansible_lint # TOSCA loading should be idempotent
+
