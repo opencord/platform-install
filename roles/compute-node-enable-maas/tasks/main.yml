@@ -1,0 +1,13 @@
+---
+# compute-node-enable-maas/tasks/main.yml
+
+- name: POST TOSCA to add nodes
+  uri:
+    url: "http://xos.{{ site_suffix }}:{{ xos_ui_port }}/api/utility/tosca/run"
+    method: POST
+    force_basic_auth: yes
+    user: "{{ xos_admin_user }}"
+    password:  "{{ xos_admin_pass }}"
+    body: "{{ lookup('file', cord_profile_dir + '/nodes.yaml') }}"
+    body_format: raw
+
