@@ -1,0 +1,15 @@
+---
+# compute-node-config/tasks/main.yml
+#
+# Build TOSCA to tell XOS that a new OpenStack compute node has been added
+
+- name: Create OpenStack compute node TOSCA
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ cord_profile_dir }}/{{ item }}"
+    owner: "{{ ansible_user_id }}"
+    mode: 0644
+  with_items:
+    - openstack-compute.yaml
+    - openstack-compute-vtn.yaml
+
