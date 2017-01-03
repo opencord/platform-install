@@ -1,0 +1,10 @@
+---
+# test-subscriber/tasks/main.yml
+
+- name: Create test-subscriber.yaml TOSCA config
+  template:
+    src: test-subscriber.yaml.j2
+    dest: "{{ cord_profile_dir }}/test-subscriber.yaml"
+    owner: "{{ ansible_user_id }}"
+    mode: 0644
+
