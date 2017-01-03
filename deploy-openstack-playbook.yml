@@ -1,0 +1,45 @@
+---
+# deploy-openstack-playbook.yml
+# Deploys OpenStack in LXD containers on the CORD head node
+
+- name: Include vars
+  hosts: all, localhost
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Configure head node, create containers
+  hosts: head
+  roles:
+    - { role: head-prep, become: yes }
+    - create-lxd
+
+- name: Create SSL root/intermediate CAs and server certificates
+  connection: local
+  hosts: localhost
+  roles:
+    - pki-root-ca
+    - pki-intermediate-ca
+    - pki-cert
+
+- name: Install CA certificates
+  hosts: head
+  roles:
+    - pki-install
+
+- name: Start OpenStack install
+  hosts: head
+  roles:
+    - juju-setup
+
+# Put plays here that will execute in parallel to
+# the OpenStack installation
+
+- name: Finish OpenStack install
+  hosts: head
+  roles:
+    - juju-finish
+

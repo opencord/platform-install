@@ -1,0 +1,59 @@
+---
+# xos-docker-images/tasks/main.yml
+
+- name: Build xos-base docker image
+  when: build_xos_base_image
+  docker_image:
+    name: "xosproject/xos-base"
+    path: "{{ cord_dir }}/orchestration/xos/containers/xos"
+    dockerfile: "Dockerfile.base"
+
+- name: Pull xos-base docker image from Dockerhub
+  when: not build_xos_base_image
+  docker_image:
+    name: "xosproject/xos-base"
+
+- name: Obtain XOS git repo metadata
+  command: "git log --pretty=format:'{\"XOS_GIT_COMMIT_DATE\":\"%ci\", \"XOS_GIT_COMMIT_HASH\":\"%H\"}' -n 1"
+  args:
+    chdir: "{{ cord_dir }}/orchestration/xos/"
+  register: xos_git_metadata
+  tags:
+    - skip_ansible_lint # idempotent git metadata retrieval, git module can't do this
+
+- name: Copy over SSL CA certificates
+  copy:
+    src: "{{ playbook_dir }}/pki/intermediate_ca/certs/im_cert_chain.pem"
+    dest: "{{ cord_dir }}/orchestration/xos/containers/xos/local_certs.crt"
+    mode: 0644
+
+- name: Build xosproject/xos devel image
+  docker_image:
+    name: "xosproject/xos"
+    path: "{{ cord_dir }}/orchestration/xos/"
+    dockerfile: "containers/xos/Dockerfile.devel"
+    buildargs: "{{ xos_git_metadata.stdout }}"
+    pull: False # should use locally created, or already pulled xos-base image
+
+- name: Build xosproject/xos-test testing image
+  when: build_xos_test_image
+  docker_image:
+    name: "xosproject/xos-test"
+    path: "{{ cord_dir }}/orchestration/xos/"
+    dockerfile: "containers/xos/Dockerfile.test"
+    pull: False # use the locally built copy of xosproject/xos
+
+- name: Tag and push xos-base image to docker registry
+  when: push_xos_base_image
+  docker_image:
+    name: "{{ deploy_docker_registry }}/xosproject/xos-base"
+    tag: "{{ deploy_docker_tag }}"
+    push: yes
+
+- name: Tag and push xos image to docker registry
+  when: push_xos_image
+  docker_image:
+    name: "{{ deploy_docker_registry }}/xosproject/xos"
+    tag: "{{ deploy_docker_tag }}"
+    push: True
+
