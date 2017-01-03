@@ -1,0 +1,19 @@
+---
+# xos-onboard-hosts/tasks/main.yml
+
+- name: Get the Docker container names for onboarded containers
+  docker_service:
+    project_name: "{{ cord_profile | regex_replace('\\W','') }}"
+    project_src: "{{ cord_profile_dir }}/onboarding-docker-compose/"
+    recreate: never
+  register: xos_onboard_out
+
+- name: Add the containers to Ansible groups on a per-container type basis
+  add_host:
+    name: "{{ xos_onboard_out.ansible_facts[item].keys() | first }}"
+    groups: "{{ item }}"
+    ansible_connection: "docker"
+    cord_profile: "{{ cord_profile }}"
+    ansible_ssh_user: "root"
+  with_items: "{{ xos_onboard_out.ansible_facts.keys() | list }}"
+

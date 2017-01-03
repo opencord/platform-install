@@ -1,0 +1,4 @@
+---
+# xos-ready/defaults/main.yml
+
+xos_ui_port: 9000
