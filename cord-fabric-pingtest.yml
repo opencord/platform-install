@@ -8,9 +8,9 @@
     - name: Include variables
       include_vars: "{{ item }}"
       with_items:
-        - vars/cord_defaults.yml
-        - vars/cord.yml
-        - vars/example_keystone.yml
+        - profile_manifests/cord_defaults.yml
+        - profile_manifests/cord.yml
+        - profile_manifests/example_keystone.yml
 
 - name: Fabric ping test to gateway
   hosts: compute

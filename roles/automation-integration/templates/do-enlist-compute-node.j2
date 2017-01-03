@@ -3,6 +3,7 @@
 ID=$1
 HOSTNAME=$2
 LOG=/etc/maas/ansible/logs/$ID.log
+COMPUTE_USER=ubuntu
 
 INV=$(mktemp)
 cat >$INV <<EO_INV
@@ -10,17 +11,17 @@ cat >$INV <<EO_INV
 juju-head-node.cord.lab ansible_user={{ ansible_user_id }}
 
 [compute]
-$HOSTNAME ansible_user=ubuntu
+$HOSTNAME ansible_user=$COMPUTE_USER
 EO_INV
 
 echo "BEGIN INVENTORY FILE" >> $LOG
 cat $INV >> $LOG
 echo "END INVENTORY_FILE" >> $LOG
 
-echo "cd /opt/cord/build/platform-install; ansible-playbook --private-key=/etc/maas/ansible/id_rsa --extra-vars 'cord_in_a_box={{ cord_in_a_box }}' -i $INV cord-compute-playbook.yml" >> $LOG
+echo "cd /opt/cord/build/platform-install; ansible-playbook --private-key=/etc/maas/ansible/id_rsa -u $COMPUTE_USER --extra-vars '@{{ cord_dir }}/build/genconfig/config.yml' -i $INV cord-compute-playbook.yml" >> $LOG
 
 cd /opt/cord/build/platform-install
-ansible-playbook --private-key=/etc/maas/ansible/id_rsa --extra-vars 'cord_in_a_box={{ cord_in_a_box }}' -i $INV cord-compute-playbook.yml >> $LOG
+ansible-playbook --private-key=/etc/maas/ansible/id_rsa -u $COMPUTE_USER --extra-vars '@{{ cord_dir }}/build/genconfig/config.yml' -i $INV cord-compute-maas-playbook.yml >> $LOG
 
 RESULT=$?
 rm $INV
