@@ -1,0 +1,186 @@
+---
+# pki-ca/tasks/main.yml
+
+- name: Create root/intermediate CA directories
+  file:
+    dest: "{{ pki_dir }}/{{ item }}"
+    state: directory
+  with_items:
+    - root_ca
+    - im_ca
+
+- name: Create root CA openssl.cnf from template
+  template:
+    src: openssl_root.cnf.j2
+    dest: "{{ pki_dir }}/root_ca/openssl.cnf"
+    force: no
+
+- name: Create subdirs for root CA
+  file:
+    dest: "{{ pki_dir }}/root_ca/{{ item }}"
+    state: directory
+  with_items:
+    - certs
+    - crl
+    - newcerts
+
+- name: Create private CA directories
+  file:
+    dest: "{{ pki_dir }}/root_ca/private"
+    state: directory
+    mode: 0700
+
+- name: Create serial files
+  copy:
+    dest: "{{ pki_dir }}/root_ca/serial"
+    content: "1000"
+    force: no
+
+- name: Create index files
+  copy:
+    dest: "{{ pki_dir }}/root_ca/index.txt"
+    content: ""
+    force: no
+
+- name: Save root passphrase to root_ca/private/ca_root_phrase
+  copy:
+    dest: "{{ pki_dir }}/root_ca/private/ca_root_phrase"
+    content: "{{ ca_root_phrase }}"
+    mode: 0400
+
+- name: Generate root key
+  command: >
+    openssl genrsa -aes256
+      -out {{ pki_dir }}/root_ca/private/ca_key.pem
+      -passout file:{{ pki_dir }}/root_ca/private/ca_root_phrase
+      {{ ca_size }}
+  args:
+    creates: "{{ pki_dir }}/root_ca/private/ca_key.pem"
+
+- name: Set permissions on root key
+  file:
+    dest: "{{ pki_dir }}/root_ca/private/ca_key.pem"
+    mode: 0400
+
+- name: Create root certificate
+  command: >
+    openssl req -config {{ pki_dir }}/root_ca/openssl.cnf
+      -key {{ pki_dir }}/root_ca/private/ca_key.pem
+      -passin file:{{ pki_dir }}/root_ca/private/ca_root_phrase
+      -new -x509 -days {{ ca_root_days }}
+      -sha256 -extensions v3_ca
+      -subj "{{ ca_root_subj }}"
+      -out {{ pki_dir }}/root_ca/certs/ca_cert.pem
+  args:
+    creates: "{{ pki_dir }}/root_cacerts/ca_cert.pem"
+
+- name: Get the root cert into ca_cert var
+  command: openssl x509 -in {{ pki_dir }}/root_ca/certs/ca_cert.pem
+  register: ca_cert
+  tags:
+     - skip_ansible_lint # concat of files
+
+# intermediate CA
+
+- name: Create intermediate CA openssl.cnf from template
+  template:
+    src: openssl_im.cnf.j2
+    dest: "{{ pki_dir }}/im_ca/openssl.cnf"
+    force: no
+
+- name: Create subdirs for intermediate CA
+  file:
+    dest: "{{ pki_dir }}/im_ca/{{ item }}"
+    state: directory
+  with_items:
+    - certs
+    - crl
+    - csr
+    - newcerts
+
+- name: Create private CA directories
+  file:
+    dest: "{{ pki_dir }}/im_ca/private"
+    state: directory
+    mode: 0700
+
+- name: Create serial files
+  copy:
+    dest: "{{ pki_dir }}/im_ca/serial"
+    content: "01"
+    force: no
+
+- name: Create index files
+  copy:
+    dest: "{{ pki_dir }}/im_ca/index.txt"
+    content: ""
+    force: no
+
+- name: Save intermediate passphrase to im_ca/private/ca_im_phrase
+  copy:
+    dest: "{{ pki_dir }}/im_ca/private/ca_im_phrase"
+    content: "{{ ca_im_phrase }}"
+    mode: 0400
+
+- name: Generate intermediate key
+  command: >
+    openssl genrsa -aes256
+      -out {{ pki_dir }}/im_ca/private/im_key.pem
+      -passout file:{{ pki_dir }}/im_ca/private/ca_im_phrase
+      {{ ca_size }}
+  args:
+    creates: "{{ pki_dir }}/im_ca/private/im_key.pem"
+
+- name: Set permissions on intermediate key
+  file:
+    dest: "{{ pki_dir }}/im_ca/private/im_key.pem"
+    mode: 0400
+
+- name: Create intermediate CSR
+  command: >
+    openssl req -config {{ pki_dir }}/im_ca/openssl.cnf
+      -key {{ pki_dir }}/im_ca/private/im_key.pem
+      -passin file:{{ pki_dir }}/im_ca/private/ca_im_phrase
+      -new -sha256 -subj "{{ ca_im_subj }}"
+      -out {{ pki_dir }}/im_ca/csr/im_ca_csr.pem
+  args:
+    creates: "{{ pki_dir }}/im_ca/certs/im_ca_csr.pem"
+
+- name: Create intermediate cert from CSR with root CA
+  command: >
+    openssl ca -config {{ pki_dir }}/root_ca/openssl.cnf -batch
+      -extensions v3_intermediate_ca
+      -passin file:{{ pki_dir }}/root_ca/private/ca_root_phrase
+      -days {{ ca_im_days }} -md {{ ca_digest }}
+      -in {{ pki_dir }}/im_ca/csr/im_ca_csr.pem
+      -out {{ pki_dir }}/im_ca/certs/im_cert.pem
+  args:
+    creates: "{{ pki_dir }}/im_ca/certs/im_cert.pem"
+
+- name: Verify intemediate cert
+  command: >
+    openssl verify
+      -CAfile {{ pki_dir }}/root_ca/certs/ca_cert.pem
+      {{ pki_dir }}/im_ca/certs/im_cert.pem
+  register: im_verify
+  tags:
+     - skip_ansible_lint # diagnostic command
+
+- name: Assert that verify of intermediate cert succeeded
+  assert:
+    that: "'OK' in '{{ im_verify.stdout }}'"
+
+- name: Get the intermediate cert into im_cert var
+  command: >
+    openssl x509 -in {{ pki_dir }}/im_ca/certs/im_cert.pem
+  register: im_cert
+  tags:
+     - skip_ansible_lint # concat of files
+
+- name: Create intermediate cert chain
+  copy:
+    dest: "{{ pki_dir }}/im_ca/certs/im_cert_chain.pem"
+    content: "{{ im_cert.stdout }}\n{{ ca_cert.stdout }}"
+
+
+

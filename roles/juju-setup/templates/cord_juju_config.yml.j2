@@ -14,9 +14,15 @@ keystone:
   admin-password: "{{ keystone_admin_password }}"
   os-public-hostname: "keystone.{{ site_suffix }}"
   ha-mcastport: 5403
-  https-service-endpoints: "True"
   openstack-origin: "cloud:trusty-kilo"
   use-https: "yes"
+  https-service-endpoints: "True"
+  ssl_key: |
+   {{ keystone_ssl_key.stdout }}
+  ssl_cert: |
+   {{ keystone_ssl_cert.stdout }}
+  ssl_ca: |
+   {{ ca_cert.stdout }}
 
 mongodb: {}
 
