@@ -15,6 +15,13 @@
     name: ubuntu
     groups: adm
 
+- name: Copy over CA certs
+  synchronize:
+    src: "/usr/local/share/ca-certificates/"
+    dest: "/usr/local/share/ca-certificates/"
+  notify:
+    - update-ca-certifictes on compute node
+
 - name: Add head node ubuntu user key
   authorized_key:
     user: ubuntu

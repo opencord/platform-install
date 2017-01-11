@@ -3,3 +3,7 @@
 
 - name: run rc.local
   command: /etc/rc.local
+
+- name: update-ca-certifictes on compute node
+  command: update-ca-certificates
+
