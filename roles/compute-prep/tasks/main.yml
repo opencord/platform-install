@@ -15,6 +15,22 @@
     name: ubuntu
     groups: adm
 
+- name: Copy over CA certs
+  synchronize:
+    src: "/usr/local/share/ca-certificates/"
+    dest: "/usr/local/share/ca-certificates/"
+  notify:
+    - update-ca-certifictes on compute node
+
+- name: List certs in /usr/local/share/ca-certificates/
+  command: "ls -la /usr/local/share/ca-certificates/"
+  register: certs_on_compute
+  tags:
+    - skip_ansible_lint # diagnostics
+
+- name: Output from listing certs
+  debug: var=certs_on_compute
+
 - name: Add head node ubuntu user key
   authorized_key:
     user: ubuntu

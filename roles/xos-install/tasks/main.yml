@@ -16,18 +16,10 @@
    - python-keystoneclient
    - python-glanceclient
 
-# ---- copy repos from the dev machine to the head node ----
-
-- name: Check to see if orchestration directory exists
-  local_action: stat path="{{ playbook_dir }}/../../orchestration"
-  register: orchestration
-
 - name: Copy repositories to the head node
   synchronize:
       src: "{{ playbook_dir }}/../../orchestration/{{ item }}"
       dest: "{{ ansible_user_dir }}/"
-  when:
-      False # orchestration.stat.exists == True  # XXX
   with_items:
       - service-profile
       - xos
@@ -45,22 +37,6 @@
   with_items:
       - vtn
       - olt
-  when:
-      False # (orchestration.stat.exists == True) and (onos_apps.stat.exists == True)   # XXX
-
-
-# ----  alternatively, check out repos from Internet ---
-
-- name: Clone service-profile repo
-  git:
-    repo={{ service_profile_repo_url }}
-    dest={{ service_profile_repo_dest }}
-    version={{ service_profile_repo_branch }}
-    force=yes
-  when:
-    True # orchestration.stat.exists == False # XXX
-
-# ----  install keys ----
 
 - name: Copy over SSH keys
   command: cp ~/.ssh/{{ item }} {{ service_profile_repo_dest }}/{{ xos_configuration }}/
