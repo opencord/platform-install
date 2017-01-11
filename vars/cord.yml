@@ -23,13 +23,21 @@ virt_nets:
 # site domain suffix
 site_suffix: cord.lab
 
+# SSL server certificate generation
+server_certs:
+  - cn: "keystone.{{ site_suffix }}"
+    subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=keystone.{{ site_suffix }}"
+    altnames:
+      - "DNS:keystone.{{ site_suffix }}"
+      - "DNS:{{ site_suffix }}"
+
 # resolv.conf settings
 dns_search:
-  - cord.lab
+  - "{{ site_suffix }}"
 
 # NSD/Unbound settings
 nsd_zones:
-  - name: cord.lab
+  - name: "{{ site_suffix }}"
     ipv4_first_octets: 192.168.122
     name_reverse_unbound: "168.192.in-addr.arpa"
     soa: ns1

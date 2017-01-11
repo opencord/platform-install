@@ -1,0 +1,73 @@
+---
+# pki-root-ca/tasks/main.yml
+
+- name: Create root CA directory
+  file:
+    dest: "{{ pki_dir }}/root_ca"
+    state: directory
+
+- name: Create root CA openssl.cnf from template
+  template:
+    src: openssl_root.cnf.j2
+    dest: "{{ pki_dir }}/root_ca/openssl.cnf"
+    force: no
+
+- name: Create subdirs for root CA
+  file:
+    dest: "{{ pki_dir }}/root_ca/{{ item }}"
+    state: directory
+  with_items:
+    - certs
+    - crl
+    - newcerts
+
+- name: Create private CA directory
+  file:
+    dest: "{{ pki_dir }}/root_ca/private"
+    state: directory
+    mode: 0700
+
+- name: Create serial file
+  copy:
+    dest: "{{ pki_dir }}/root_ca/serial"
+    content: "1000"
+    force: no
+
+- name: Create empty index file if it doesn't exist
+  copy:
+    dest: "{{ pki_dir }}/root_ca/index.txt"
+    content: ""
+    force: no
+
+- name: Save root passphrase to root_ca/private/ca_root_phrase
+  copy:
+    dest: "{{ pki_dir }}/root_ca/private/ca_root_phrase"
+    content: "{{ ca_root_phrase }}"
+    mode: 0400
+
+- name: Generate root key
+  command: >
+    openssl genrsa -aes256
+      -out {{ pki_dir }}/root_ca/private/ca_key.pem
+      -passout file:{{ pki_dir }}/root_ca/private/ca_root_phrase
+      {{ ca_size }}
+  args:
+    creates: "{{ pki_dir }}/root_ca/private/ca_key.pem"
+
+- name: Set permissions on root key
+  file:
+    dest: "{{ pki_dir }}/root_ca/private/ca_key.pem"
+    mode: 0400
+
+- name: Create root certificate
+  command: >
+    openssl req -config {{ pki_dir }}/root_ca/openssl.cnf
+      -key {{ pki_dir }}/root_ca/private/ca_key.pem
+      -passin file:{{ pki_dir }}/root_ca/private/ca_root_phrase
+      -new -x509 -days {{ ca_root_days }}
+      -sha256 -extensions v3_ca
+      -subj "{{ ca_root_subj }}"
+      -out {{ pki_dir }}/root_ca/certs/ca_cert.pem
+  args:
+    creates: "{{ pki_dir }}/root_ca/certs/ca_cert.pem"
+
