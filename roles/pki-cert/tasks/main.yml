@@ -1,0 +1,68 @@
+---
+# pki-cert/tasks/main.yml
+
+- name: Generate private key (no pw)
+  command: >
+    openssl genrsa
+      -out {{ pki_dir }}/im_ca/private/{{ cert_cn }}_key.pem
+  args:
+    creates: "{{ pki_dir }}/im_ca/private/{{ cert_cn }}_key.pem"
+
+- name: Generate CSR
+  command: >
+    openssl req -config {{ pki_dir }}/im_ca/openssl.cnf
+      -key {{ pki_dir }}/im_ca/private/{{ cert_cn }}_key.pem
+      -new -sha256 -subj "{{ cert_subj }}"
+      -out {{ pki_dir }}/im_ca/csr/{{ cert_cn }}_csr.pem
+  args:
+    creates: "{{ pki_dir }}/im_ca/csr/{{ cert_cn }}_csr.pem"
+
+- name: Sign CSR
+  command: >
+    openssl ca -config {{ pki_dir }}/im_ca/openssl.cnf -batch
+      -passin file:{{ pki_dir }}/im_ca/private/ca_im_phrase
+      -extensions server_cert
+      -days {{ cert_days }} -md {{ cert_digest }}
+      -in {{ pki_dir }}/im_ca/csr/{{ cert_cn }}_csr.pem
+      -out {{ pki_dir }}/im_ca/certs/{{ cert_cn }}_cert.pem
+  args:
+    creates: "{{ pki_dir }}/im_ca/certs/{{ cert_cn }}_cert.pem"
+
+- name: Verify cert against root + im chain
+  command: >
+    openssl verify -purpose sslserver
+      -CAfile {{ pki_dir }}/im_ca/certs/im_cert_chain.pem
+      {{ pki_dir }}/im_ca/certs/{{ cert_cn }}_cert.pem
+  register: chain_verify
+  tags:
+     - skip_ansible_lint # diagnostic command
+
+- name: Assert that verify of cert succeeded
+  assert:
+    that: "'OK' in '{{ chain_verify.stdout }}'"
+
+- name: Get the cert into server_cert var
+  command: >
+    openssl x509 -in {{ pki_dir }}/im_ca/certs/{{ cert_cn }}_cert.pem
+  register: server_cert
+  tags:
+     - skip_ansible_lint # concat of files
+
+- name: Create chained server cert
+  copy:
+    dest: "{{ pki_dir }}/im_ca/certs/{{ cert_cn }}_cert_chain.pem"
+    content: "{{ server_cert.stdout }}\n{{ im_cert.stdout }}"
+
+- name: Get server key into keystone_ssl_key
+  command: >
+    cat {{ pki_dir }}/im_ca/private/{{ cert_cn }}_key.pem
+  register: keystone_ssl_key
+  tags:
+     - skip_ansible_lint # concat of files
+
+- name: Get chained server cert into keystone_ssl_cert
+  command: >
+    cat {{ pki_dir }}/im_ca/certs/{{ cert_cn }}_cert_chain.pem
+  register: keystone_ssl_cert
+  tags:
+     - skip_ansible_lint # concat of files

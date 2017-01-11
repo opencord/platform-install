@@ -1,0 +1,12 @@
+---
+# pki-cert/defaults/main.yml
+
+cert_size: 2048
+cert_digest: "sha256"
+
+cert_days: 180
+
+cert_cn: "keystone.{{ site_suffix }}"
+
+cert_subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN={{ cert_cn }}"
+
