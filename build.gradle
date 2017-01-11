@@ -35,6 +35,15 @@ allprojects {
     }
 }
 
+def getCordAppVersion = { ->
+    def StdOut = new ByteArrayOutputStream()
+    exec {
+        commandLine "xpath", "-q", "-e", "project/version/text()", "../../onos-apps/apps/pom.xml"
+        standardOutput = StdOut
+    }
+    return StdOut.toString().trim()
+}
+
 ext {
 
     // Upstream registry to simplify filling out the comps table below
@@ -67,6 +76,14 @@ ext {
             : 'candidate'
 
     println "targetReg = $targetReg, targetTag = $targetTag"
+
+
+    // Version of the CORD apps to load into ONOS
+    cordAppVersion = project.hasProperty('cordAppVersion')
+        ? project.getProperty('cordAppVersion')
+        : getCordAppVersion()
+
+    println "CORD app version: $cordAppVersion"
 
     // Component table
     comps = [
@@ -184,6 +201,7 @@ task prepPlatform(type: Exec) {
 
     extraVars = extraVars.p("$targetReg", "deploy_docker_registry")
         .p("$targetTag", "deploy_docker_tag")
+        .p("$cordAppVersion", "cord_app_version")
 
     def skipTags = [].p(config.seedServer.skipTags)
 
@@ -228,6 +246,7 @@ task deployOpenStack (type: Exec) {
 
     extraVars = extraVars.p("$targetReg", "deploy_docker_registry")
         .p("$targetTag", "deploy_docker_tag")
+        .p("$cordAppVersion", "cord_app_version")
 
     def skipTags = [].p(config.seedServer.skipTags)
 
@@ -272,6 +291,7 @@ task deployONOS (type: Exec) {
 
     extraVars = extraVars.p("$targetReg", "deploy_docker_registry")
         .p("$targetTag", "deploy_docker_tag")
+        .p("$cordAppVersion", "cord_app_version")
 
     def skipTags = [].p(config.seedServer.skipTags)
 
@@ -316,6 +336,7 @@ task deployXOS (type: Exec) {
 
     extraVars = extraVars.p("$targetReg", "deploy_docker_registry")
         .p("$targetTag", "deploy_docker_tag")
+        .p("$cordAppVersion", "cord_app_version")
 
     def skipTags = [].p(config.seedServer.skipTags)
 
@@ -360,6 +381,7 @@ task setupAutomation (type: Exec) {
 
     extraVars = extraVars.p("$targetReg", "deploy_docker_registry")
         .p("$targetTag", "deploy_docker_tag")
+        .p("$cordAppVersion", "cord_app_version")
 
     def skipTags = [].p(config.seedServer.skipTags)
 
@@ -417,6 +439,7 @@ task postDeployTests (type: Exec) {
 
     extraVars = extraVars.p("$targetReg", "deploy_docker_registry")
         .p("$targetTag", "deploy_docker_tag")
+        .p("$cordAppVersion", "cord_app_version")
 
     def skipTags = [].p(config.seedServer.skipTags)
 
