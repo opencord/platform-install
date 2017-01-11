@@ -8,30 +8,16 @@
     - skip_ansible_lint # Should replace with http://docs.ansible.com/ansible/docker_module.html, when replacements are stable
 
 - name: Create dest directory
-  file: path="{{ onos_fabric_dest }}" state=directory
+  file:
+    path: "{{ onos_fabric_dest }}"
+    state: directory
 
 - name: Create templated ONOS files
   template:
     src: "{{ item }}.j2"
     dest: "{{ onos_fabric_dest }}/{{ item }}"
   with_items:
-    - Dockerfile
-    - onos-service
-
-- name: Copy over ONOS playbook and other files
-  copy:
-    src: "onos-fabric-docker-compose.yml"
-    dest: "{{ onos_fabric_dest }}/docker-compose.yml"
-
-# TODO: Find the proper place for this on the dev machine rather than
-#       copying it within the head node machine.
-
-- name: Copy SSL Certs to ONOS so docker-compose can find it
-  copy:
-    src: "/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt"
-    dest: "{{ onos_fabric_dest }}/xos-certs.crt"
-    owner: "{{ ansible_user_id }}"
-    remote_src: True
+    - docker-compose.yml
 
 # Note: we do not rebuild onos container for the fabric
 
