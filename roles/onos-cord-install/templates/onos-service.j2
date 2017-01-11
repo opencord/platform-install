@@ -10,7 +10,7 @@
 # Do modify the keystore location/password and truststore location/password accordingly
 #export JAVA_OPTS="${JAVA_OPTS:--DenableNettyTLS=true -Djavax.net.ssl.keyStore=/home/ubuntu/onos.jks -Djavax.net.ssl.keyStorePassword=222222 -Djavax.net.ssl.trustStore=/home/ubuntu/onos.jks -Djavax.net.ssl.trustStorePassword=222222}"
 
-export JAVA_OPTS="-Djavax.net.ssl.trustStore=/usr/local/share/ca-certificates/xos-certs.jks -Djavax.net.ssl.trustStorePassword={{ trust_store_pw }}" 
+export JAVA_OPTS="-Djavax.net.ssl.trustStore=/usr/local/share/ca-certificates/cord_ca_certs.jks -Djavax.net.ssl.trustStorePassword={{ trust_store_pw }}"
 
 set -e  # exit on error
 set -u  # exit on undefined variable
