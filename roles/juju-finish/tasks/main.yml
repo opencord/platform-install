@@ -31,22 +31,13 @@
    src=admin-openrc.sh.j2
    dest={{ ansible_user_dir }}/admin-openrc.sh
 
-- name: Copy nova-cloud-controller CA certificate to head
-  command: juju scp {{ juju_services['nova-cloud-controller']['units'].keys()[0] }}:/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt {{ ansible_user_dir }}
-  register: result
-  until: result | success
-  retries: 40
-  delay: 15
-  tags:
-   - skip_ansible_lint # checking/waiting on file availibilty
-
 - name: Copy cert to system location
   become: yes
   copy:
-    src: "{{ ansible_user_dir }}/keystone_juju_ca_cert.crt"
-    dest: "/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt"
-    remote_src: true
+    src: "{{ playbook_dir }}/pki/root_ca/certs/ca_cert.pem"
+    dest: "/usr/local/share/ca-certificates/cord_ca_cert.pem"
   notify:
     - update-ca-certificates
     - Move cert to all service VMs
     - update-ca-certificates in service VMs
+
