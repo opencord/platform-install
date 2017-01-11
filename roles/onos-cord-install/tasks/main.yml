@@ -38,10 +38,13 @@
 
 - name: Copy SSL Certs to ONOS so docker-compose can find it
   copy:
-    src: "/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt"
-    dest: "{{ onos_cord_dest }}/xos-certs.crt"
+    src: "/usr/local/share/ca-certificates/{{ item }}"
+    dest: "{{ onos_cord_dest }}/{{ item }}"
     owner: "{{ ansible_user_id }}"
     remote_src: True
+  with_items:
+    - "cord_root_ca.crt"
+    - "cord_intermediate_ca.crt"
 
 - name: Build onos image
   command: docker-compose build chdir={{ onos_cord_dest }}

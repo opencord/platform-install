@@ -19,7 +19,7 @@
 #- name: Copy SSL Certs to ONOS so docker-compose can find it
 #  when: "{{ head_vm_list | map(attribute='name') | list | intersect(['onos-cord-1']) | list | length }}"
 #  command: ansible onos-cord-1 -u ubuntu -m copy \
-#    -a "src=/usr/local/share/ca-certificates/keystone_juju_ca_cert.crt dest=~/cord/xos-certs.crt"
+#    -a "src=/usr/local/share/ca-certificates/cord_ca_cert.pem dest=~/cord/xos-certs.crt"
 
 #- name: Build ONOS image with docker-compose
 #  when: "{{ head_vm_list | map(attribute='name') | list | intersect(['onos-cord-1']) | list | length }}"

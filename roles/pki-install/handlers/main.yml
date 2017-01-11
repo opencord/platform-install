@@ -1,0 +1,16 @@
+---
+# pki-install/handlers/main.yml
+
+- name: Run update-ca-certificates on head node
+  become: yes
+  command: update-ca-certificates
+
+- name: Copy root CA cert to all service VMs
+  command: ansible services -b -u ubuntu -m copy -a "src=/usr/local/share/ca-certificates/cord_root_ca.crt dest=/usr/local/share/ca-certificates/cord_root_ca.crt owner=root group=root mode=0644"
+
+- name: Copy intermediate CA cert to all service VMs
+  command: ansible services -b -u ubuntu -m copy -a "src=/usr/local/share/ca-certificates/cord_intermediate_ca.crt dest=/usr/local/share/ca-certificates/cord_intermediate_ca.crt owner=root group=root mode=0644"
+
+- name: update-ca-certificates in service VMs
+  command: ansible services -b -u ubuntu -m command -a "update-ca-certificates"
+
