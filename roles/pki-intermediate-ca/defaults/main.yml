@@ -1,0 +1,16 @@
+---
+# pki-intermediate-ca/defaults/main.yml
+
+pki_dir: "{{ playbook_dir }}/pki"
+
+# crypto parameters
+ca_digest: "sha256"
+ca_size: 4096
+ca_im_days: 730
+
+# passphrases for the certificate
+ca_im_phrase: "{{ lookup('password', 'credentials/ca_im_phrase length=64') }}"
+
+# noninteractive csr subject
+ca_im_subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=CORD Test Deployment Intermediate CA"
+
