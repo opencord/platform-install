@@ -2,7 +2,7 @@
 # Deploys OpenStack in LXD containers on the CORD head node
 
 - name: Include vars
-  hosts: all
+  hosts: all, localhost
   tasks:
     - name: Include variables
       include_vars: "{{ item }}"
@@ -17,6 +17,14 @@
     - { role: head-prep, become: yes }
     - create-lxd
 
+- name: Create SSL CA and certificate for keystone
+  connection: local
+  hosts: localhost
+  roles:
+    - pki-root-ca
+    - pki-intermediate-ca
+    - pki-cert
+
 - name: Start OpenStack install
   hosts: head
   roles:
@@ -29,3 +37,4 @@
   hosts: head
   roles:
     - juju-finish
+

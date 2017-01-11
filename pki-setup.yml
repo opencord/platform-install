@@ -1,0 +1,21 @@
+---
+# Create a SSL CA for CORD pod use
+
+- name: Include vars
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "vars/{{ cord_profile }}.yml"
+        - vars/local_vars.yml
+
+- name: Create Root CA, Intermediate CA, Server certs
+  hosts: localhost
+  connection: local
+  roles:
+    - pki-root-ca
+    - pki-intermediate-ca
+    - pki-cert
+
