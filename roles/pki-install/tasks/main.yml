@@ -1,0 +1,18 @@
+---
+# pki-install/tasks/main.yml
+
+- name: Copy CA certificates to head node
+  become: yes
+  copy:
+    src: "{{ playbook_dir }}/pki/{{ item.src }}"
+    dest: "/usr/local/share/ca-certificates/{{ item.dest }}"
+  with_items:
+    - src: "root_ca/certs/ca_cert.pem"
+      dest: "cord_root_ca.crt"
+    - src: "intermediate_ca/certs/im_cert.pem"
+      dest: "cord_intermediate_ca.crt"
+  notify:
+    - Run update-ca-certificates on head node
+    - Copy root CA cert to all service VMs
+    - Copy intermediate CA cert to all service VMs
+    - update-ca-certificates in service VMs
