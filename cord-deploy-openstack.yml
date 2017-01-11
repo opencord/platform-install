@@ -2,7 +2,7 @@
 # Deploys OpenStack in LXD containers on the CORD head node
 
 - name: Include vars
-  hosts: all
+  hosts: all, localhost
   tasks:
     - name: Include variables
       include_vars: "{{ item }}"
