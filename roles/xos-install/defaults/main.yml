@@ -9,7 +9,7 @@ xos_configuration: "devel"
 
 service_profile_repo_url: "https://gerrit.opencord.org/p/service-profile.git"
 service_profile_repo_dest: "{{ ansible_user_dir }}/service-profile"
-service_profile_repo_branch: "HEAD"
+service_profile_repo_branch: "cord-2.0"
 
 docker_tag: "latest"
 docker_registry: "docker.io"
