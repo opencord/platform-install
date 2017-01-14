@@ -19,7 +19,7 @@ service_profile_repo_dest: "{{ ansible_user_dir }}/service-profile"
 xos_configuration: cord-pod
 
 # Pull ONOS from local Docker registry rather than Docker Hub
-onos_docker_image: "docker-registry:5000/onosproject/onos:candidate"
+onos_docker_image: "docker-registry:5000/opencord/onos:candidate"
 
 xos_config_targets:
   - local_containers
