@@ -16,27 +16,101 @@
    - python-keystoneclient
    - python-glanceclient
 
-- name: Copy repositories to the head node
+# ---- copy repos from the dev machine to the head node ----
+
+- name: Create cord destination directory
+  become: yes
+  file:
+    path: "{{ cord_dest_dir }}"
+    state: directory
+    mode: 0755
+    owner: "{{ ansible_user_id }}"
+
+- name: Copy the whole repo tree
   synchronize:
-      src: "{{ playbook_dir }}/../../orchestration/{{ item }}"
-      dest: "{{ ansible_user_dir }}/"
+      src: "{{ playbook_dir }}/../../../cord/"
+      dest: "{{ cord_dest_dir }}/"
+
+- name: Create directory xos_services
+  file:
+    path: "{{ ansible_user_dir }}/xos_services"
+    state: directory
+    mode: 0755
+
+- name: Create directory xos_libraries
+  file:
+    path: "{{ ansible_user_dir }}/xos_libraries"
+    state: directory
+    mode: 0755
+
+- name: Create bindings to service-profile and xos
+  become: yes
+  mount:
+      src: "{{ cord_dest_dir }}/orchestration/{{ item }}"
+      name: "{{ ansible_user_dir }}/{{ item }}"
+      fstype: none
+      opts: rw,bind
+      state: mounted
   with_items:
       - service-profile
       - xos
-      - xos_libraries
-      - xos_services
 
-- name: Check to see if onos_apps directory exists
-  local_action: stat path="{{ playbook_dir }}/../../onos-apps/apps"
-  register: onos_apps
+- name: Create bindings for xos services
+  become: yes
+  mount:
+      src: "{{ cord_dest_dir }}/orchestration/xos_services/{{ item }}"
+      name: "{{ ansible_user_dir }}/xos_services/{{ item }}"
+      fstype: none
+      opts: rw,bind
+      state: mounted
+  with_items:
+      - exampleservice
+      - fabric
+      - globalxos
+      - hypercache
+      - metro-net
+      - monitoring
+      - onos-service
+      - openstack
+      - vrouter
+      - vsg
+      - vtr
 
-- name: Copy in onos-apps that have XOS code
-  synchronize:
-      src: "{{ playbook_dir }}/../../onos-apps/apps/{{ item }}"
-      dest: "{{ ansible_user_dir }}/xos_services/"
+- name: Create bindings for xos services that reside in onos
+  become: yes
+  mount:
+      src: "{{ cord_dest_dir }}/onos-apps/apps/{{ item }}"
+      name: "{{ ansible_user_dir }}/xos_services/{{ item }}"
+      fstype: none
+      opts: rw,bind
+      state: mounted
   with_items:
       - vtn
       - olt
+
+- name: Create bindings for xos libraries
+  become: yes
+  mount:
+      src: "{{ cord_dest_dir }}/orchestration/xos_libraries/{{ item }}"
+      name: "{{ ansible_user_dir }}/xos_libraries/{{ item }}"
+      fstype: none
+      opts: rw,bind
+      state: mounted
+  with_items:
+      - ng-xos-lib
+
+# ----  alternatively, check out repos from Internet ---
+
+- name: Clone service-profile repo
+  git:
+    repo={{ service_profile_repo_url }}
+    dest={{ service_profile_repo_dest }}
+    version={{ service_profile_repo_branch }}
+    force=yes
+  when:
+    False
+
+# ----  install keys ----
 
 - name: Copy over SSH keys
   command: cp ~/.ssh/{{ item }} {{ service_profile_repo_dest }}/{{ xos_configuration }}/
