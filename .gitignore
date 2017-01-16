@@ -1,5 +1,44 @@
-*.pyc
-*.retry
 credentials/*
-.vagrant
 cord_profile/
+
+# Java
+*.class
+*.jar
+*.war
+*.oar
+
+# Python
+*.pyc
+
+# Eclipse
+.project
+.classpath
+.settings
+
+# Idea
+.idea
+*.iml
+*.iws
+*.ipr
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Vagrant
+.vagrant
+
+# Docker registry
+/registry
+
+# Build
+build
+
+# Gradle
+.gradle
+
+# Ansible
+ansible/*.retry
+
+# Backup files
+*.bak
