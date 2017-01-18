@@ -1,0 +1,28 @@
+#!/bin/bash
+
+ID=$1
+HOSTNAME=$2
+LOG=/etc/maas/ansible/logs/$ID.log
+
+INV=$(tempfile)
+cat >$INV <<EO_INV
+[head]
+juju-head-node ansible_user={{ ansible_user_id }}
+
+[compute]
+$HOSTNAME ansible_user=ubuntu
+EO_INV
+
+echo "BEGIN INVENTORY FILE" >> $LOG
+cat $INV >> $LOG
+echo "END INVENTORY_FILE" >> $LOG
+
+echo "cd /opt/cord/build/platform-install; ansible-playbook --private-key=/etc/maas/ansible/id_rsa --extra-vars 'cord_in_a_box={{ cord_in_a_box }}' -i $INV cord-compute-playbook.yml" >> $LOG
+
+cd /opt/cord/build/platform-install
+ansible-playbook --private-key=/etc/maas/ansible/id_rsa --extra-vars 'cord_in_a_box={{ cord_in_a_box }}' -i $INV cord-compute-playbook.yml >> $LOG
+
+RESULT=$?
+rm $INV
+
+exit $RESULT
