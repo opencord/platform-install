@@ -172,6 +172,8 @@
     - xosproject/xos-postgres
     - xosproject/cord-app-build
     - redis
+    - nginx
+    - node
   tags:
     - skip_ansible_lint
 
@@ -182,6 +184,11 @@
     - xosproject/xos-postgres
     - xosproject/cord-app-build
     - redis
+    - nginx
+  when: docker_registry_check|succeeded
+
+- name: Separately tag the node image with tag argon
+  command: docker tag {{ docker_registry }}/node:{{ docker_tag }} node:argon
   when: docker_registry_check|succeeded
 
 
