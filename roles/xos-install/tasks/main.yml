@@ -172,6 +172,8 @@
     - xosproject/xos-postgres
     - xosproject/cord-app-build
     - redis
+    - nginx
+    - node
   tags:
     - skip_ansible_lint
 
@@ -182,6 +184,8 @@
     - xosproject/xos-postgres
     - xosproject/cord-app-build
     - redis
+    - nginx
+    - node
   when: docker_registry_check|succeeded
 
 
