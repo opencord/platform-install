@@ -49,6 +49,22 @@ topology_template:
         no-update: true
 
 # ExampleService/ExampleTenant
+    exampleservice_network:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+          ip_version: 4
+          labels: exampleservice_private_network
+      requirements:
+          - network_template:
+              node: Private
+              relationship: tosca.relationships.UsesNetworkTemplate
+          - owner:
+              node: {{ site_name }}_exampleservice
+              relationship: tosca.relationships.MemberOfSlice
+          - connection:
+              node: {{ site_name }}_exampleservice
+              relationship: tosca.relationships.ConnectsToSlice
+
 
     {{ site_name }}_exampleservice:
       description: This slice holds the ExampleService
