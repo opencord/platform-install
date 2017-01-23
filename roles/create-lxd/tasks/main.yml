@@ -87,10 +87,11 @@
   delay: 10
   failed_when: all_resolved.everyone != "OK"
 
-- name: wait for containers to come up
+- name: Wait for containers to be accessible via SSH
   wait_for:
-    host={{ item.name }}
-    port=22
+    host: "{{ item.name }}"
+    port: 22
+    search_regex: "OpenSSH"
   with_items: "{{ head_lxd_list }}"
 
 - name: Create /etc/ansible/hosts file
