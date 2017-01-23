@@ -1,0 +1,7 @@
+; used to bootstrap CiaB configs
+
+[head]
+localhost ansible_connection=local
+
+[compute]
+; empty, but needed to avoid template issues

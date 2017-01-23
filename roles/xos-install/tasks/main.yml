@@ -17,19 +17,20 @@
    - python-glanceclient
 
 # ---- copy repos from the dev machine to the head node ----
+# note: this happens in the `cord` repo now
 
-- name: Create cord destination directory
-  become: yes
-  file:
-    path: "{{ cord_dest_dir }}"
-    state: directory
-    mode: 0755
-    owner: "{{ ansible_user_id }}"
+# - name: Create cord destination directory
+#   become: yes
+#   file:
+#     path: "{{ cord_dest_dir }}"
+#     state: directory
+#     mode: 0755
+#     owner: "{{ ansible_user_id }}"
 
-- name: Copy the whole repo tree
-  synchronize:
-      src: "{{ playbook_dir }}/../../../cord/"
-      dest: "{{ cord_dest_dir }}/"
+# - name: Copy the whole repo tree
+#   synchronize:
+#       src: "{{ playbook_dir }}/../../../cord/"
+#       dest: "{{ cord_dest_dir }}/"
 
 - name: Create directory xos_services
   file:

@@ -1,6 +1,8 @@
 ---
 # pki-root-ca/defaults/main.yml
+
 pki_dir: "{{ playbook_dir }}/pki"
+credentials_dir: "{{ playbook_dir }}/credentials"
 
 # ca parameters
 ca_digest: "sha256"
