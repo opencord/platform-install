@@ -2,9 +2,12 @@
 # pki-root-ca/tasks/main.yml
 
 - name: Create root CA directory
+  become: yes
   file:
     dest: "{{ pki_dir }}/root_ca"
     state: directory
+    owner: "{{ ansible_user_id }}"
+    mode: 0755
 
 - name: Create root CA openssl.cnf from template
   template:
