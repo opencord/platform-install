@@ -23,12 +23,10 @@
     update_cache: yes
     default_release: trusty-backports
 
-# For lookup() below
-- name: Fetch remote key
-  fetch:
-    src: .ssh/id_rsa.pub
-    dest: /tmp/id_rsa.pub
-    flat: yes
+# For lxd_profile, has to be run as normal user
+- name: Get user's SSH public key into lxd_ssh_pubkey to create LXD profile
+  set_fact:
+    lxd_ssh_pubkey: "{{ lookup('file', '{{ ansible_user_dir }}/.ssh/id_rsa.pub') }}"
 
 - name: Create openstack LXD profile
   become: yes
@@ -39,7 +37,7 @@
       user.user-data: |
         #cloud-config
         ssh_authorized_keys:
-          - "{{ lookup('file', '/tmp/id_rsa.pub') }}"
+          - "{{ lxd_ssh_pubkey }}"
     description: 'OpenStack services on CORD'
     devices:
       eth0:
@@ -87,10 +85,11 @@
   delay: 10
   failed_when: all_resolved.everyone != "OK"
 
-- name: wait for containers to come up
+- name: Wait for containers to be accessible via SSH
   wait_for:
-    host={{ item.name }}
-    port=22
+    host: "{{ item.name }}"
+    port: 22
+    search_regex: "OpenSSH"
   with_items: "{{ head_lxd_list }}"
 
 - name: Create /etc/ansible/hosts file
@@ -137,3 +136,4 @@
 - name: Verify that we can log into every container after restarting network interfaces
   when: not on_maas
   command: ansible containers -m ping -u ubuntu
+

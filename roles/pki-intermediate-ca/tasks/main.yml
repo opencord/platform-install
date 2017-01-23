@@ -2,9 +2,12 @@
 # pki-ca/tasks/main.yml
 
 - name: Create intermediate CA directory
+  become: yes
   file:
     dest: "{{ pki_dir }}/intermediate_ca"
     state: directory
+    owner: "{{ ansible_user_id }}"
+    mode: 0755
 
 - name: Create intermediate CA openssl.cnf from template
   template:

@@ -1,10 +1,21 @@
 ---
 # pki-root-ca/tasks/main.yml
 
+- name: Make sure credentials directory has proper ownership
+  become: yes
+  file:
+    dest: "{{ credentials_dir }}"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    mode: 0700
+
 - name: Create root CA directory
+  become: yes
   file:
     dest: "{{ pki_dir }}/root_ca"
     state: directory
+    owner: "{{ ansible_user_id }}"
+    mode: 0755
 
 - name: Create root CA openssl.cnf from template
   template:
@@ -16,6 +27,8 @@
   file:
     dest: "{{ pki_dir }}/root_ca/{{ item }}"
     state: directory
+    owner: "{{ ansible_user_id }}"
+    mode: 0755
   with_items:
     - certs
     - crl
@@ -25,6 +38,7 @@
   file:
     dest: "{{ pki_dir }}/root_ca/private"
     state: directory
+    owner: "{{ ansible_user_id }}"
     mode: 0700
 
 - name: Create serial file
@@ -38,11 +52,14 @@
     dest: "{{ pki_dir }}/root_ca/index.txt"
     content: ""
     force: no
+    owner: "{{ ansible_user_id }}"
+    mode: 0755
 
 - name: Save root passphrase to root_ca/private/ca_root_phrase
   copy:
     dest: "{{ pki_dir }}/root_ca/private/ca_root_phrase"
     content: "{{ ca_root_phrase }}"
+    owner: "{{ ansible_user_id }}"
     mode: 0400
 
 - name: Generate root key
@@ -57,6 +74,7 @@
 - name: Set permissions on root key
   file:
     dest: "{{ pki_dir }}/root_ca/private/ca_key.pem"
+    owner: "{{ ansible_user_id }}"
     mode: 0400
 
 - name: Create root certificate
