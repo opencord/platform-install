@@ -1,0 +1,6 @@
+- name: Ping gateway IP addresses
+  command: ping -i 5 -c 4 {{ item }}
+  with_items:
+  - 10.6.1.1
+  - 10.6.1.129
+  - 10.6.1.193
