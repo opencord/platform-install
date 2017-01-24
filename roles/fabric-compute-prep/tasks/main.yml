@@ -1,0 +1,10 @@
+- name: Check that br-int exists
+  command: ifconfig br-int
+
+# Needed for CPqD switch
+- name: Turn off TCP checksum offload on fabric interface
+  command: ethtool -K fabric tx off
+
+- name: Send ping on fabric
+  command: ping -I br-int -c 3 10.6.1.254
+  ignore_errors: true
