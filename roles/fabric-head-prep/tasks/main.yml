@@ -1,0 +1,6 @@
+- name: Check that fabric exists
+  command: ifconfig fabric > /dev/null
+
+- name: Send ping on fabric
+  command: ping -I fabric -c 3 10.6.1.254
+  ignore_errors: true

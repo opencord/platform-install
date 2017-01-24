@@ -1,0 +1,6 @@
+- name: Check that br-int exists
+  command: ifconfig br-int > /dev/null
+
+- name: Send ping on fabric
+  command: ping -I br-int -c 3 10.6.1.254
+  ignore_errors: true
