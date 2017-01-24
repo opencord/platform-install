@@ -1,0 +1,14 @@
+- name: Remove old ONOS fabric configuration file
+  file:
+    path: "{{ service_profile_repo_dest }}/{{ xos_configuration }}/network-cfg-quickstart.json"
+    state: absent
+
+- name: Rebuild and reinstall ONOS fabric configuration
+  make:
+    chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
+    target: "{{ item }}"
+  with_items:
+  - network-cfg-quickstart.json
+  - delete_fabric_config
+  - fabric
+  - reactivate_fabric_apps
