@@ -1,0 +1,19 @@
+---
+# Send some pings from compute nodes to head node over the fabri
+# Mainly useful for CiaB right now
+
+- name: Include vars
+  hosts: head
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - vars/cord_defaults.yml
+        - vars/cord.yml
+        - vars/example_keystone.yml
+
+- name: Fabric ping test to gateway
+  hosts: compute
+  remote_user: ubuntu
+  roles:
+    - fabric-pingtest
