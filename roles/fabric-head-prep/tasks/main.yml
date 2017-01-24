@@ -1,0 +1,20 @@
+- name: Check that fabric exists
+  command: ifconfig fabric
+  changed_when: false
+  tags:
+    - skip_ansible_lint # running a sub job
+
+# Needed for CPqD switch
+- name: Turn off TCP checksum offload on fabric interface
+  become: yes
+  command: ethtool -K fabric tx off
+  changed_when: false
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Send ping on fabric, expected to fail b/c fabric not set up
+  command: ping -I fabric -c 3 10.6.1.254
+  ignore_errors: true
+  changed_when: false
+  tags:
+    - skip_ansible_lint # running a sub job

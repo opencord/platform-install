@@ -1,0 +1,9 @@
+- name: Ping gateway IP addresses
+  command: ping -c 20 {{ item }}
+  with_items:
+  - 10.6.1.1
+  - 10.6.1.129
+  - 10.6.1.193
+  changed_when: false
+  tags:
+    - skip_ansible_lint # running a sub job

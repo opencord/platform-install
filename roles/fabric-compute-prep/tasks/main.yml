@@ -1,0 +1,28 @@
+- name: Ensure no host entry for fabric interface
+  uri:
+    url: http://10.1.0.1:8181/onos/v1/hosts/{{ ansible_fabric.macaddress | replace(":", "%3A") }}/None
+    method: DELETE
+    user: onos
+    password: rocks
+  ignore_errors: true
+
+- name: Check that br-int exists
+  command: ifconfig br-int
+  changed_when: false
+  tags:
+    - skip_ansible_lint # running a sub job
+
+# Needed for CPqD switch
+- name: Turn off TCP checksum offload on fabric interface
+  become: yes
+  command: ethtool -K fabric tx off
+  changed_when: false
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Send ping on fabric, expected to fail b/c fabric not set up
+  command: ping -I br-int -c 3 10.6.1.254
+  ignore_errors: true
+  changed_when: false
+  tags:
+    - skip_ansible_lint # running a sub job
