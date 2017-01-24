@@ -1,0 +1,29 @@
+---
+# Creates a fabric configuration using 'cord generate'
+# Mainly useful for CiaB right now
+
+- name: Include vars
+  hosts: head
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - vars/cord_defaults.yml
+        - vars/cord.yml
+        - vars/example_keystone.yml
+
+- name: Prep fabric on head node
+  hosts: head
+  roles:
+    - fabric-head-prep
+
+- name: Prep fabric on compute nodes
+  hosts: compute
+  remote_user: ubuntu
+  roles:
+    - fabric-compute-prep
+
+- name: Refresh fabric config
+  hosts: head
+  roles:
+    - fabric-refresh
