@@ -24,7 +24,7 @@
     devices:
       eth0:
         nictype: macvlan
-        parent: eth3
+        parent: fabric
         type: nic
 
 - name: Create testclient container
