@@ -1,13 +1,13 @@
-#!/bin/bash
+#!/bin/ash
 
 ID=$1
 HOSTNAME=$2
 LOG=/etc/maas/ansible/logs/$ID.log
 
-INV=$(tempfile)
+INV=$(mktemp)
 cat >$INV <<EO_INV
 [head]
-juju-head-node ansible_user={{ ansible_user_id }}
+juju-head-node.cord.lab ansible_user={{ ansible_user_id }}
 
 [compute]
 $HOSTNAME ansible_user=ubuntu
