@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa0f191f_8b12ef60",
+        "filename": "roles/xos-install/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-01-27T04:39:14Z",
+      "side": 1,
+      "message": "Some tools take issue with file modes that aren\u0027t 600 or similar on private keys, so you might set that here.",
+      "range": {
+        "startLine": 140,
+        "startChar": 0,
+        "endLine": 140,
+        "endChar": 7
+      },
+      "revId": "28552fc7cc2835623751abe91f10a7c269ff7649",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa0f191f_ab1db375",
+        "filename": "vars/cord.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-01-27T04:39:14Z",
+      "side": 1,
+      "message": "This should probably be just `xos-core` (the one above is a bit wrong...), or any other name that might be used to access this endpoint.",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 31
+      },
+      "revId": "28552fc7cc2835623751abe91f10a7c269ff7649",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
