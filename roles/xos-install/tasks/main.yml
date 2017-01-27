@@ -136,6 +136,17 @@
    - id_rsa.pub
    - node_key
 
+- name: Copy over core api key
+  copy:
+    src: "{{ playbook_dir }}/pki/intermediate_ca/private/xos-core.{{ site_suffix }}_key.pem"
+    dest: "{{ service_profile_repo_dest }}/{{ xos_configuration }}/core_api_key.pem"
+    mode: 0600
+
+- name: Copy over core api cert
+  copy:
+    src: "{{ playbook_dir }}/pki/intermediate_ca/certs/xos-core.{{ site_suffix }}_cert_chain.pem"
+    dest: "{{ service_profile_repo_dest }}/{{ xos_configuration }}/core_api_cert.pem"
+
 - name: Create templated TOSCA files
   template:
     src: "{{ item }}.j2"
