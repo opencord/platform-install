@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa0f191f_916ea0c8",
+        "filename": "vars/cord_defaults.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000019
+      },
+      "writtenOn": "2017-02-01T01:29:37Z",
+      "side": 1,
+      "message": "The location of this file also need to be updated otherwise it would break the earlier releases...",
+      "range": {
+        "startLine": 241,
+        "startChar": 10,
+        "endLine": 241,
+        "endChar": 95
+      },
+      "revId": "a1be572ea4939675d8b9471c33d589888c58bbc3",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
