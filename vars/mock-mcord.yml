@@ -10,9 +10,6 @@ xos_admin_pass: "{{ lookup('password', 'credentials/xosadmin@opencord.org chars=
 xos_admin_first: XOS
 xos_admin_last: admin
 
-xos_bootstrap_ui_port: 9001
-xos_ui_port: 9000
-
 frontend_only: True
 openstack_enabled: False
 redis_enabled: True
@@ -31,4 +28,14 @@ gui_branding_icon: "/static/cord-logo.png"
 gui_branding_favicon: "/static/cord-favicon.png"
 gui_branding_bg: "/static/mcord-bg.jpg"
 gui_service_view_class: "core.views.mCordServiceGrid.ServiceGridView"
+
+# site domain suffix
+site_suffix: opencloud.us
+
+# SSL server certificate generation
+server_certs:
+  - cn: "xos-core.{{ site_suffix }}"
+    subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=xos-core.{{ site_suffix }}"
+    altnames:
+      - "DNS:xos-core.{{ site_suffix }}"
 

@@ -16,8 +16,6 @@ xos_users: []
 
 use_vtn: True
 
-xos_ui_port: 9000
-
 xos_tosca_config_templates:
   - openstack.yaml
   - vtn-service.yaml
@@ -30,6 +28,8 @@ xos_tosca_config_templates:
 
 xos_other_templates:
   - fabric-network-cfg.json
+
+cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
 
 xos_docker_volumes:
   - host: "{{ cord_profile_dir }}/images"
@@ -83,7 +83,7 @@ site_suffix: cord.lab
 
 # resolv.conf settings
 dns_search:
-  - cord.lab
+  - "{{ site_suffix }}"
 
 # SSL server certificate generation
 server_certs:
@@ -99,7 +99,7 @@ server_certs:
 
 # NSD/Unbound settings
 nsd_zones:
-  - name: cord.lab
+  - name: "{{ site_suffix }}"
     ipv4_first_octets: 192.168.122
     name_reverse_unbound: "168.192.in-addr.arpa"
     soa: ns1

@@ -19,9 +19,6 @@ xos_admin_pass: letmein
 xos_admin_first: XOS
 xos_admin_last: admin
 
-xos_bootstrap_ui_port: 9001
-xos_ui_port: 9000
-
 xos_tosca_config_templates:
   - management-net.yaml
   - sample.yaml
@@ -54,4 +51,14 @@ xos_service_sshkeys:
     source_path: "/dev/null"
   - name: vsg_rsa.pub
     source_path: "/dev/null"
+
+# site domain suffix
+site_suffix: opencloud.us
+
+# SSL server certificate generation
+server_certs:
+  - cn: "xos-core.{{ site_suffix }}"
+    subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=xos-core.{{ site_suffix }}"
+    altnames:
+      - "DNS:xos-core.{{ site_suffix }}"
 

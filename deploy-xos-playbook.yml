@@ -13,6 +13,9 @@
 # for docker, docker-compose
 - include: devel-tools-playbook.yml
 
+# for generating SSL certs
+- include: pki-setup-playbook.yml
+
 - name: Create CORD profile, create docker images, bootstrap XOS in docker
   hosts: head
   roles:

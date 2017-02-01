@@ -16,13 +16,13 @@ xos_users: []
 
 use_vtn: True
 
-xos_ui_port: 9000
-
 xos_tosca_config_templates:
   - openstack.yaml
   - nodes.yaml
   - vtn-service.yaml
   - management-net.yaml
+
+cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
 
 xos_docker_volumes:
   - host: "{{ cord_profile_dir }}/images"
@@ -57,11 +57,23 @@ virt_nets:
 site_suffix: generic.infra.opencloud.us
 
 dns_search:
-  - generic.infra.opencloud.us
-  - opencloud.cs.arizona.edu
+  - "{{ site_suffix }}"
 
+# SSL server certificate generation
+server_certs:
+  - cn: "keystone.{{ site_suffix }}"
+    subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=keystone.{{ site_suffix }}"
+    altnames:
+      - "DNS:keystone.{{ site_suffix }}"
+      - "DNS:keystone"
+  - cn: "xos-core.{{ site_suffix }}"
+    subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=xos-core.{{ site_suffix }}"
+    altnames:
+      - "DNS:xos-core.{{ site_suffix }}"
+
+# NSD/Unbound settings
 nsd_zones:
-  - name: generic.infra.opencloud.us
+  - name: "{{ site_suffix }}"
     ipv4_first_octets: 192.168.250
     name_reverse_unbound: "168.192.in-addr.arpa"
     soa: ns1
