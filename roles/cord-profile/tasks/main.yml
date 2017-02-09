@@ -29,13 +29,6 @@
     mode: 0600
   with_items: "{{ xos_service_sshkeys }}"
 
-- name: Copy node_key to cord_profile directory
-  copy:
-    remote_src: True # file is local to the remote machine
-    src: "{{ ansible_user_dir }}/node_key"
-    dest: "{{ cord_profile_dir }}/node_key"
-    mode: 0600
-
 - name: Copy over core api key
   copy:
     src: "{{ playbook_dir }}/pki/intermediate_ca/private/xos-core.{{ site_suffix }}_key.pem"
@@ -92,4 +85,12 @@
     remote_src: True
     src: "{{ ansible_user_dir }}/admin-openrc.sh"
     dest: "{{ cord_profile_dir }}/admin-openrc.sh"
+
+- name: Copy node_key to cord_profile directory
+  when: use_openstack
+  copy:
+    remote_src: True # file is local to the remote machine
+    src: "{{ ansible_user_dir }}/node_key"
+    dest: "{{ cord_profile_dir }}/node_key"
+    mode: 0600
 

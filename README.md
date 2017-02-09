@@ -22,7 +22,7 @@ that will install development environment prerequisites on a Ubuntu 14.04 node.
 You can download it with:
 
 ```
-curl -O ~/cord-bootstrap.sh https://github.com/opencord/platform-install/raw/master/scripts/cord-bootstrap.sh
+curl -o ~/cord-bootstrap.sh https://raw.githubusercontent.com/opencord/platform-install/master/scripts/cord-bootstrap.sh
 ```
 
 Running the script will install the [repo](https://code.google.com/p/git-repo/)
@@ -135,5 +135,7 @@ to `rcord`.
 
 Used as a part of the [R-CORD](https://github.com/opencord/cord) deployment.
 Sets up infrastructure pieces including OpenStack (via Juju) and ONOS as well
-as XOS.
+as XOS.  See the [CORD-in-a-Box Quick Start
+Guide](https://github.com/opencord/cord/blob/master/docs/quickstart.md) for how
+to set up a virtual multi-node R-CORD pod on a single host.
 
