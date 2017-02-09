@@ -10,3 +10,5 @@ xos_libraries:
 
 xos_services: []
 
+xos_components:
+  - "xos-rest-gw"
