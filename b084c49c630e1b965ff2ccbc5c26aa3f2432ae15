@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa0f191f_5d87f90f",
+        "filename": "inventory/ecord",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-02-10T21:38:55Z",
+      "side": 1,
+      "message": "s/rcord/ecord/ in comments",
+      "range": {
+        "startLine": 1,
+        "startChar": 2,
+        "endLine": 1,
+        "endChar": 7
+      },
+      "revId": "b084c49c630e1b965ff2ccbc5c26aa3f2432ae15",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa0f191f_7d82bd01",
+        "filename": "inventory/mock-ecord",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-02-10T21:38:55Z",
+      "side": 1,
+      "message": "s/rcord/ecord/ in comments",
+      "range": {
+        "startLine": 1,
+        "startChar": 7,
+        "endLine": 1,
+        "endChar": 12
+      },
+      "revId": "b084c49c630e1b965ff2ccbc5c26aa3f2432ae15",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa0f191f_3d7c4520",
+        "filename": "profile_manifests/ecord.yml",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-02-10T21:38:55Z",
+      "side": 1,
+      "message": "should be profile_manifests/ecord.yml",
+      "range": {
+        "startLine": 2,
+        "startChar": 2,
+        "endLine": 2,
+        "endChar": 15
+      },
+      "revId": "b084c49c630e1b965ff2ccbc5c26aa3f2432ae15",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa0f191f_1d79812f",
+        "filename": "profile_manifests/mock-ecord.yml",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-02-10T21:38:55Z",
+      "side": 1,
+      "message": "fix to have right path and E-CORD",
+      "range": {
+        "startLine": 2,
+        "startChar": 2,
+        "endLine": 3,
+        "endChar": 27
+      },
+      "revId": "b084c49c630e1b965ff2ccbc5c26aa3f2432ae15",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
