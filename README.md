@@ -58,7 +58,7 @@ For most profiles the XOS admin user is named `xosadmin@opencord.org`.
 ### Development Loop
 
 Most profiles are run by specifying an inventory file when running
-`ansible-playbook`.  Most of the time, you want to run the
+`ansible-playbook`. For most frontend or mock profiles, you'll want to run the
 `deploy-xos-playbook.yml` playbook.
 
 For example, to run the `frontend` config, you would run:
@@ -75,9 +75,11 @@ ansible-playbook -i inventory/frontend teardown-playbook.yml
 ```
 
 This will destroy all the docker containers created, and delete the
-`~/cord_profile` directory.
+`~/cord_profile` directory.  Note that you must run the
+`teardown-playbook.yml` using the same inventory file it was created with,
+otherwise rogue docker containers may still be running after the teardown.
 
-You can then re-run, or run a different profile.
+You can then make chnages to code and re-run the same or a different profile.
 
 ### Creating a new CORD profile
 
@@ -133,9 +135,28 @@ to `rcord`.
 
 ### rcord
 
-Used as a part of the [R-CORD](https://github.com/opencord/cord) deployment.
-Sets up infrastructure pieces including OpenStack (via Juju) and ONOS as well
-as XOS.  See the [CORD-in-a-Box Quick Start
+This is a part of the [R-CORD](https://github.com/opencord/cord) deployment -
+start using the steps specified in that repo.
+
+This profile is designed to integrate XOS with physical infrastructure pieces
+like MaaS, OpenStack, and ONOS.  See the [CORD-in-a-Box Quick Start
 Guide](https://github.com/opencord/cord/blob/master/docs/quickstart.md) for how
 to set up a virtual multi-node R-CORD pod on a single host.
+
+If you've already built a CiaB and want to go through the dev loop described
+above on the head/production node, when running `ansible-playbook`, you must
+pass the path to the configuration file that was generated during the build to
+the `ansible-playbook` command:
+
+```
+ansible-playbook -i inventory/rcord --extra-vars @../genconfig/config.yml -playbook.yml
+```
+
+You may find the following shell aliases to be helpful during development:
+
+```
+alias xos-teardown="pushd /opt/cord/build/platform-install; ansible-playbook -i inventory/rcord --extra-vars @../genconfig/config.yml teardown-playbook.yml"
+alias xos-deploy="pushd /opt/cord/build/platform-install; ansible-playbook -i inventory/rcord --extra-vars @../genconfig/config.yml deploy-xos-playbook.yml"
+alias xos-cleanup-images="docker rmi xosproject/xos-ui xosproject/xos"
+```
 
