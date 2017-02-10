@@ -66,6 +66,7 @@
     - deployment.yaml
     - xos.yaml
     - xos-bootstrap-docker-compose.yaml
+    - chameleon.yaml
 
 - name: Create profile specific templated TOSCA config files
   template:
