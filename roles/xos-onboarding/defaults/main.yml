@@ -8,5 +8,9 @@ xos_bootstrap_ui_port: 9001
 xos_libraries:
   - "ng-xos-lib"
 
+xos_components:
+  - name: Chameleon
+    recipe_filename: onboard-chameleon.yaml
+
 xos_services: []
 

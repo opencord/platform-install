@@ -43,6 +43,23 @@
     dockerfile: "containers/xos/Dockerfile.test"
     pull: False # use the locally built copy of xosproject/xos
 
+- name: Clean up chameleon temp directory
+  shell: rm -rf {{ cord_dir }}/orchestration/xos/containers/chameleon/tmp.chameleon
+  tags:
+    - skip_ansible_lint # docker can't access files outside of build context, so we must copy
+
+- name: Populate chameleon temp directory
+  shell: cp -a "{{ cord_dir }}/component/chameleon" "{{ cord_dir }}/orchestration/xos/containers/chameleon/tmp.chameleon"
+  tags:
+    - skip_ansible_lint # docker can't access files outside of build context, so we must copy
+
+- name: Build xosproject/chameleon image
+  docker_image:
+    name: "xosproject/chameleon"
+    path: "{{ cord_dir }}/orchestration/xos/containers/chameleon"
+    dockerfile: "Dockerfile.chameleon"
+    pull: False # use the locally built copy of xosproject/xos
+
 - name: Tag and push xos-base image to docker registry
   when: push_xos_base_image
   docker_image:
