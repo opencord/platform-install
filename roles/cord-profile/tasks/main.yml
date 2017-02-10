@@ -40,10 +40,26 @@
     src: "{{ playbook_dir }}/pki/intermediate_ca/certs/xos-core.{{ site_suffix }}_cert_chain.pem"
     dest: "{{ cord_profile_dir }}/core_api_cert.pem"
 
+- name: Make Image directory ( outside of profile directory to avoid repeat downloads on sequential runs)
+  become: yes
+  file:
+    path: "{{ cord_dir }}/images"
+    state: directory
+    mode: 0755
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+
 - name: Download Glance VM images
   get_url:
     url: "{{ item.url }}"
     checksum: "{{ item.checksum }}"
+    dest: "{{ cord_dir }}/images/{{ item.name }}.qcow2"
+  with_items: "{{ xos_images }}"
+
+- name: Copy Glance VM images to profile directory
+  copy:
+    remote_src: True
+    src: "{{ cord_dir }}/images/{{ item.name }}.qcow2"
     dest: "{{ cord_profile_dir }}/images/{{ item.name }}.qcow2"
   with_items: "{{ xos_images }}"
 
