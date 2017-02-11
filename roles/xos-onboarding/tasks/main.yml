@@ -5,7 +5,7 @@
   wait_for:
     host: localhost
     port: "{{ xos_bootstrap_ui_port }}"
-    timeout: 120
+    timeout: 240
 
 - name: Bootstrap XOS database - create site, deployment, admin user
   command: "python /opt/xos/tosca/run.py none /opt/cord_profile/{{ item }}"
