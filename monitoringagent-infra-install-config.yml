@@ -1,0 +1,19 @@
+---
+# monitoringagent-infra-install-config.yml
+# Generates the inventory file to be used to run the monitoringagent-infra-install.yml playbook
+# should be run with /etc/maas/ansible/pod-inventory as inventory file
+# ansible-playbook -i /etc/maas/ansible/pod-inventory --extra-vars=@/opt/cord/build/genconfig/config.yml monitoringagent-infra-install-config.yml
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Create monitoringagent config
+  hosts: head
+  roles:
+    - monitoringagent-infra-install-config
