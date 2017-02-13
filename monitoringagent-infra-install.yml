@@ -1,0 +1,13 @@
+---
+# monitoringagent-infra-install.yml
+# Install the monitoringagents on head node ceilometer-1 and all compute nodes
+# should be run with config generated inventory file /opt/cord_profile/monitoringagent_install.hosts
+# ansible-playbook -i /opt/cord_profile/monitoringagent_install.hosts monitoringagent-infra-install.yml
+
+- include: "/opt/cord/orchestration/xos_services/monitoring/xos/synchronizer/ceilometer/monitoring_agent/ceilometer_config.yaml"
+  vars:
+     instance_name: head
+
+- include: "/opt/cord/orchestration/xos_services/monitoring/xos/synchronizer/ceilometer/monitoring_agent/ceilometer_config.yaml"
+  vars:
+     instance_name: compute
