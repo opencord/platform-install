@@ -1,0 +1,12 @@
+
+---
+# monitoringservice-config/tasks/main.yml
+
+- name: TOSCA files to enable infrastructure monitoring
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ cord_profile_dir }}/{{ item }}"
+  with_items:
+    - "inframonitoring.yaml"
+    - "onos_monitoring_service_endpoints.json"
+

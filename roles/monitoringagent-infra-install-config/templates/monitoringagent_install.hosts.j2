@@ -1,0 +1,7 @@
+[head]
+ceilometer-1.cord.lab
+
+[compute]
+{% for node in groups["compute"] %}
+{{ node }}
+{% endfor %}

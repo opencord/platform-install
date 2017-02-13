@@ -1,0 +1,36 @@
+---
+# instantiate-monitoringservice.yml
+# Adds the monitoringservice to the currently running pod
+# TODO: Due to some timing issues, the monitroing service synchronizer is not completely getting
+# onboarded with in the retries of onboard-monitoringservice.yml, so the ansible script would
+# eventually fail. Until it is fixed, once monitoring service synchronizer is ready, run this
+# ansible playbook which has only tasks for instantiating the monitoring service models.
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Create monitoringservice config
+  hosts: head
+  roles:
+    - monitoringservice-config
+
+- include: add-onboard-containers-playbook.yml
+
+- name: Check to see if XOS UI is ready
+  hosts: xos_ui
+  connection: docker
+  roles:
+    - xos-ready
+
+- name: Instantiate monitoringservice and channel
+  hosts: xos_ui
+  connection: docker
+  roles:
+    - monitoringservice-instantiate
+

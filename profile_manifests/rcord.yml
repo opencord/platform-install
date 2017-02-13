@@ -62,6 +62,8 @@ xos_services:
 # needed onboarding synchronizer doesn't require service code to be present when started
   - name: exampleservice
     path: orchestration/xos_services/exampleservice
+  - name: monitoring
+    path: orchestration/xos_services/monitoring
 
 xos_service_sshkeys:
   - name: onos_rsa
@@ -80,6 +82,10 @@ xos_service_sshkeys:
   - name: exampleservice_rsa
     source_path: "~/.ssh/id_rsa"
   - name: exampleservice_rsa.pub
+    source_path: "~/.ssh/id_rsa.pub"
+  - name: monitoringservice_rsa
+    source_path: "~/.ssh/id_rsa"
+  - name: monitoringservice_rsa.pub
     source_path: "~/.ssh/id_rsa.pub"
 
 # VM networks/bridges on head

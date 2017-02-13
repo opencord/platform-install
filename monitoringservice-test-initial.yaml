@@ -1,0 +1,18 @@
+---
+# monitoringservice_test_initial.yml
+# Tests the monitoringservice after it is onboarded
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Invoke common+test-initial roles
+  hosts: head
+  roles:
+    - {role: "/opt/cord/orchestration/xos_services/monitoring/xos/test/roles/common", auth: {user: "{{ xos_admin_user }}", pass: "{{ xos_admin_pass }}"} }
+    - {role: "/opt/cord/orchestration/xos_services/monitoring/xos/test/roles/test-initial", auth: {user: "{{ xos_admin_user }}", pass: "{{ xos_admin_pass }}"} }

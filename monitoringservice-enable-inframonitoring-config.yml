@@ -1,0 +1,19 @@
+---
+# monitoringservice-enable-inframonitoring-config.yml
+# Generates the TOSCA files to be used to run the monitoringservice-enable-inframonitoring.yml playbook
+# should be run with /etc/maas/ansible/pod-inventory as inventory file
+# ansible-playbook -i /etc/maas/ansible/pod-inventory --extra-vars=@/opt/cord/build/genconfig/config.yml monitoringservice-enable-inframonitoring-config.yml
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Create config files for enabling infrastructure monitoring
+  hosts: head
+  roles:
+    - monitoringservice-enable-inframonitoring-config

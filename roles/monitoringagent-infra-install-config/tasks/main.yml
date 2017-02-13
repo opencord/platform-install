@@ -1,0 +1,10 @@
+---
+# monitoringagent-config/tasks/main.yml
+
+- name: Variable file holding all target nodes where infra monitoring agent to be installed
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ cord_profile_dir }}/{{ item }}"
+  with_items:
+    - "monitoringagent_install.hosts"
+
