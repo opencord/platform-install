@@ -83,6 +83,8 @@
     - xos.yaml
     - xos-bootstrap-docker-compose.yaml
     - onboard-chameleon.yaml
+    - onboard-gui.yaml
+    - onboard-rest-gw.yaml
 
 - name: Create profile specific templated TOSCA config files
   template:
