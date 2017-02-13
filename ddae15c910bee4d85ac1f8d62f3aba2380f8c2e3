@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa0f191f_af7c9873",
+        "filename": "roles/xos-onboarding/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-02-13T19:32:47Z",
+      "side": 1,
+      "message": "Is the `xos_services` directory correct?  Should the path be `xos_components`? We have`xos_libraries`as well.",
+      "range": {
+        "startLine": 51,
+        "startChar": 67,
+        "endLine": 51,
+        "endChar": 79
+      },
+      "revId": "ddae15c910bee4d85ac1f8d62f3aba2380f8c2e3",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
