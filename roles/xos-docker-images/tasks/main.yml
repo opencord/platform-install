@@ -60,6 +60,20 @@
     dockerfile: "Dockerfile.chameleon"
     pull: False # use the locally built copy of xosproject/xos
 
+- name: Build xosproject/xos-rest-gw container image
+  docker_image:
+    name: "xosproject/xos-rest-gw"
+    path: "{{ cord_dir }}/orchestration/xos-rest-gw"
+    dockerfile: "Dockerfile"
+    pull: False # use the locally built copy of xosproject/xos
+
+- name: Build xosproject/xos-gui container image
+  docker_image:
+    name: "xosproject/xos-gui"
+    path: "{{ cord_dir }}/orchestration/xos-gui"
+    dockerfile: "Dockerfile"
+    pull: False # use the locally built copy of xosproject/xos
+
 - name: Tag and push xos-base image to docker registry
   when: push_xos_base_image
   docker_image:

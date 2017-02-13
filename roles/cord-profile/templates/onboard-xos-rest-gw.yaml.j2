@@ -1,0 +1,50 @@
+tosca_definitions_version: tosca_simple_yaml_1_0
+
+description: Onboard the exampleservice
+
+imports:
+   - custom_types/xos.yaml
+
+topology_template:
+  node_templates:
+
+    # API Gateway
+    xos-rest-gateway:
+      type: tosca.nodes.Component
+      properties:
+        image: xosproject/xos-rest-gw
+        command: npm start -- --config gateway-config.yml
+        ports: 3000:3000
+
+    # API Gateway config file
+    /var/www/src/config/gateway-config.yml:
+      type: tosca.nodes.ComponentVolume
+      properties:
+          host_path: "{{ cord_profile_dir }}/gateway-config.yml"
+          read_only: false
+      requirements:
+          - xos:
+             node: xos-rest-gateway
+             relationship: tosca.relationships.VolumeOfComponent
+
+    gw-to-xos:
+      type: tosca.nodes.ComponentLink
+      properties:
+          container: xos_ui
+          alias: xos
+          kind: internal
+      requirements:
+          - xos:
+             node: xos-rest-gateway
+             relationship: tosca.relationships.LinkOfComponent
+
+    gw-to-redis:
+      type: tosca.nodes.ComponentLink
+      properties:
+          container: cordpodbs_xos_redis_1
+          alias: redis
+          kind: external
+      requirements:
+          - xos:
+             node: xos-rest-gateway
+             relationship: tosca.relationships.LinkOfComponent
