@@ -1,0 +1,29 @@
+---
+# monitoringservice-config/tasks/main.yml
+
+- name: Copy ssh keys to key_import directory
+  copy:
+    remote_src: True # file is local to the remote machine
+    src: "{{ item.source_path | expanduser }}"
+    dest: "{{ cord_profile_dir }}/key_import/{{ item.name }}"
+    mode: 0600
+  with_items: "{{ xos_monitoringservice_sshkeys }}"
+
+- name: Copy monitoringservice onboarding TOSCA files to cord_profile
+  copy:
+    src: "{{ cord_dir }}/orchestration/xos_services/monitoring/xos/monitoring-onboard.yaml"
+    dest: "{{ cord_profile_dir }}/monitoring-onboard.yaml"
+
+- name: TOSCA to mount monitoringservice volume in XOS container
+  template:
+    src: "xos-monitoringservice.yaml.j2"
+    dest: "{{ cord_profile_dir }}/xos-monitoringservice.yaml"
+
+- name: TOSCA files to instantiate monitoringservice
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ cord_profile_dir }}/{{ item }}"
+  with_items:
+    - "monitoringservice.yaml"
+    - "monitoringtenant.yaml"
+
