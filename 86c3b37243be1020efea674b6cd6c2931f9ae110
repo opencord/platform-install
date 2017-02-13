@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "fa0f191f_6f968096",
+        "filename": "profile_manifests/rcord.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000019
+      },
+      "writtenOn": "2017-02-13T19:36:22Z",
+      "side": 1,
+      "message": "Yes, I was originally trying to define the process such that we can onboard monitoring service independently after the (r/m/e)cord-profile installation is complete. Now that u have indicated that the above type of mechanism is not yet supported, I will knock-off the redundant pieces",
+      "parentUuid": "fa0f191f_af09382e",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 36
+      },
+      "revId": "86c3b37243be1020efea674b6cd6c2931f9ae110",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fa0f191f_efff3000",
         "filename": "roles/monitoringservice-config/templates/monitoringservice.yaml.j2",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2017-02-13T05:30:25Z",
       "side": 1,
       "message": "The site object can be renamed now - `mysite` should become `{{ site_name }}` here and other places where it\u0027s mentioned.",
+      "range": {
+        "startLine": 58,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 10
+      },
+      "revId": "86c3b37243be1020efea674b6cd6c2931f9ae110",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa0f191f_2f908894",
+        "filename": "roles/monitoringservice-config/templates/monitoringservice.yaml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000019
+      },
+      "writtenOn": "2017-02-13T19:36:22Z",
+      "side": 1,
+      "message": "Sure, will take care of this...",
+      "parentUuid": "fa0f191f_efff3000",
       "range": {
         "startLine": 58,
         "startChar": 4,
