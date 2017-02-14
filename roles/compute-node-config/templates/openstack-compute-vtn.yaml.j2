@@ -28,7 +28,13 @@ topology_template:
 
 # VTN networking for OpenStack Compute Nodes
 {% for node in groups["compute"] %}
-{% if 'ipv4' in hostvars[node]['ansible_fabric'] %}
+{% if (('ipv4' in hostvars[node]['ansible_fabric']) or
+       ('ipv4' in hostvars[node]['ansible_br_int'])) %}
+{% if ('ipv4' in hostvars[node]['ansible_fabric']) %}
+{% set node_interface = hostvars[node]['ansible_fabric'] %}
+{% else %}
+{% set node_interface = hostvars[node]['ansible_br_int'] %}
+{% endif %}
 
 # Compute node, fully defined in compute-nodes.yaml
     {{ hostvars[node]['ansible_hostname'] }}:
@@ -43,7 +49,7 @@ topology_template:
       type: tosca.nodes.Tag
       properties:
         name: bridgeId
-        value: of:0000{{ hostvars[node]['ansible_fabric']['macaddress'] | hwaddr('bare') }}
+        value: of:0000{{ node_interface['macaddress'] | hwaddr('bare') }}
       requirements:
         - target:
             node: {{ hostvars[node]['ansible_hostname'] }}
@@ -71,7 +77,7 @@ topology_template:
       type: tosca.nodes.Tag
       properties:
         name: dataPlaneIp
-        value: {{ ( hostvars[node]['ansible_fabric']['ipv4']['address'] ~ '/' ~ hostvars[node]['ansible_fabric']['ipv4']['netmask'] ) | ipaddr('cidr') }}
+        value: {{ ( node_interface['ipv4']['address'] ~ '/' ~ node_interface['ipv4']['netmask'] ) | ipaddr('cidr') }}
       requirements:
         - target:
             node: {{ hostvars[node]['ansible_hostname'] }}
