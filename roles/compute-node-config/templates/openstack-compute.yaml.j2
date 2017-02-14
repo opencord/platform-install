@@ -25,7 +25,8 @@ topology_template:
 
 # OpenStack compute nodes
 {% for node in groups["compute"] %}
-{% if 'ipv4' in hostvars[node]['ansible_fabric'] %}
+{% if (('ipv4' in hostvars[node]['ansible_fabric']) or
+       ('ipv4' in hostvars[node]['ansible_br_int'])) %}
     {{ hostvars[node]['ansible_hostname'] }}:
       type: tosca.nodes.Node
       requirements:

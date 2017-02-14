@@ -66,7 +66,7 @@
   register: xos_onboard_status
   until: '"true" in xos_onboard_status.content'
   retries: 60
-  delay: 5
+  delay: 10
   with_items: "{{ xos_libraries }}"
 
 - name: Wait for services to be onboarded
@@ -77,7 +77,7 @@
   register: xos_onboard_status
   until: '"true" in xos_onboard_status.content'
   retries: 60
-  delay: 5
+  delay: 10
   with_items: "{{ xos_services }}"
 
 - name: Wait for XOS to be onboarded after service onboarding
@@ -88,5 +88,5 @@
   register: xos_onboard_status
   until: '"true" in xos_onboard_status.content'
   retries: 60
-  delay: 5
+  delay: 10
 
