@@ -1,0 +1,29 @@
+---
+# compute-node-refresh-playbook.yml
+# Re-adds compute nodes to a XOS after a teardown cycle
+# This analogous to the legacy `make vtn` command in service-profile
+# On physical/CiaB w/MaaS:
+#  ansible-playbook -i /etc/maas/ansible/pod-inventory --extra-vars=@/opt/cord/build/genconfig/config.yml compute-node-refresh-playbook.yml
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Recreate compute node configuration
+  hosts: head
+  roles:
+    - compute-node-config
+
+- include: add-onboard-containers-playbook.yml
+
+- name: Enable compute nodes in XOS
+  hosts: xos_ui
+  connection: docker
+  roles:
+    - compute-node-enable
+

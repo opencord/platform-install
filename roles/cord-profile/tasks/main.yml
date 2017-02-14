@@ -11,6 +11,12 @@
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_gid }}"
 
+- name: Create cord_profile/profile_name with the name of the profile
+  copy:
+    dest: "{{ cord_profile_dir }}/profile_name"
+    content: "{{ cord_profile }}"
+    mode: 0644
+
 - name: Create subdirectories inside cord_profile directory
   file:
     path: "{{ cord_profile_dir }}/{{ item }}"
