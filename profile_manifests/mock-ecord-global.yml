@@ -1,0 +1,58 @@
+---
+# profile_manifests/mock-ecord.yml
+# creates a mock E-CORD pod
+
+site_name: mock-ecord
+deployment_type: "Mock E-CORD Global Pod"
+
+xos_admin_user: xosadmin@opencord.org
+xos_admin_pass: "{{ lookup('password', 'credentials/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+xos_admin_first: XOS
+xos_admin_last: admin
+
+frontend_only: False
+use_openstack: False
+use_vtn: False
+
+build_xos_base_image: True
+
+xos_tosca_config_templates:
+  - management-net.yaml
+  - mock-onos.yaml
+  - ecord-services.yaml
+
+# GUI branding
+gui_branding_name: "ECORD"
+gui_branding_icon: "/static/cord-logo.png"
+gui_branding_favicon: "/static/cord-favicon.png"
+gui_branding_bg: "/static/cord-bg.jpg"
+
+# paths defined in manifest/default.xml
+xos_services:
+  - name: openstack
+    path: orchestration/xos_services/openstack
+  - name: onos
+    path: orchestration/xos_services/onos-service
+  - name: vrouter
+    path: orchestration/xos_services/vrouter
+  - name: fabric
+    path: orchestration/xos_services/fabric
+  - name: metronetwork
+    path: orchestration/xos_services/metro-net
+
+xos_service_sshkeys:
+  - name: onos_rsa
+    source_path: "/dev/null"
+  - name: onos_rsa.pub
+    source_path: "/dev/null"
+
+# site domain suffix
+site_suffix: opencloud.us
+
+# SSL server certificate generation
+server_certs:
+  - cn: "xos-core.{{ site_suffix }}"
+    subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=xos-core.{{ site_suffix }}"
+    altnames:
+      - "DNS:xos-core.{{ site_suffix }}"
+

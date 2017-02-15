@@ -1,0 +1,8 @@
+; ecord configuration
+
+[all:vars]
+cord_profile=ecord
+
+[head]
+localhost ansible_connection=local
+
