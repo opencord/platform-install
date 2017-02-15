@@ -1,0 +1,8 @@
+; mock-ecord-global configuration
+
+[all:vars]
+cord_profile=mock-ecord-global
+
+[head]
+localhost ansible_connection=local
+
