@@ -1,0 +1,20 @@
+---
+# vtn-refresh/defaults/main.yml
+
+- name: Refresh VTN state
+  shell: "sshpass -p 'karaf' ssh -p 8102 karaf@onos-cord {{ item }}"
+  ignore_errors: yes
+  with_items:
+    - "cordvtn-sync-neutron-states https://keystone.cord.lab:5000/v2.0 admin {{ keystone_admin_pass }}"
+    - "cordvtn-sync-xos-states http://xos:{{ xos_ui_port }} {{ xos_admin_user }} {{ xos_admin_pass }}"
+    - "cordvtn-purge-rules"
+  tags:
+    - skip_ansible_lint # running commands on ONOS
+
+- name: Reload compute nodes in VTN
+  shell: "sshpass -p 'karaf' ssh -p 8102 karaf@onos-cord cordvtn-node-init {{ hostvars[item]['ansible_hostname'] }}"
+  ignore_errors: yes
+  with_items: "{{ groups['compute'] }}"
+  tags:
+    - skip_ansible_lint # running commands on ONOS
+
