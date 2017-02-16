@@ -1,0 +1,12 @@
+# xos-gui-extension-onboard/tasks/main.yml
+
+- name: Execute xos-gui-extensions onboard TOSCA recipe
+  command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/xos-gui-extensions-onboard.yml"
+  tags:
+    - skip_ansible_lint # TOSCA loading should be idempotent
+
+- name: Execute xos-gui-extensions persist TOSCA recipe
+  command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/xos-gui-extensions.yml"
+  tags:
+    - skip_ansible_lint # TOSCA loading should be idempotent
+

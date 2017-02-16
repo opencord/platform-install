@@ -1,0 +1,24 @@
+---
+# deploy-xos-gui-extensions-playbook.yml
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Build GUI Extensions docker images
+  hosts: head
+  roles:
+    - xos-gui-extension-build
+
+- include: add-bootstrap-containers-playbook.yml
+
+- name: Onboard GUI Extensions
+  hosts: xos_bootstrap_ui
+  connection: docker
+  roles:
+    - xos-gui-extension-onboard

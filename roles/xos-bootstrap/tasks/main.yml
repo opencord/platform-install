@@ -12,4 +12,3 @@
     project_src: "{{ cord_profile_dir }}"
     files: "xos-bootstrap-docker-compose.yaml"
   register: xos_bootstrap_out
-

@@ -41,9 +41,6 @@ gui_routes:
     state: "xos.core.node"
   - label: "Instances"
     state: "xos.core.instance"
-  - label: "AAAAAAA"
-    state: "xos.core.instance"
-    parent: "xos.core"
 
 # GUI branding [OLD GUI to be removed]
 gui_branding_name: "CORD"

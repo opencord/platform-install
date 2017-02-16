@@ -89,6 +89,7 @@
     - xos.yaml
     - xos-bootstrap-docker-compose.yaml
     - onboard-chameleon.yaml
+    - onboard-gui-extensions-store.yaml
     - onboard-xos-gui.yaml
     - onboard-xos-rest-gw.yaml
     - gateway-config.yml
