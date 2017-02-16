@@ -37,6 +37,16 @@ topology_template:
              node: xos-spa-gui
              relationship: tosca.relationships.VolumeOfComponent
 
+    # Mounting volume from volume container
+    gui-extensions-store:
+      type: tosca.nodes.ComponentVolumeContainer
+      properties:
+          container: gui-extensions-store
+      requirements:
+          - xos:
+             node: xos-spa-gui
+             relationship: tosca.relationships.VolumeContainerOfComponent
+
     gui-to-chameleon:
       type: tosca.nodes.ComponentLink
       properties:
