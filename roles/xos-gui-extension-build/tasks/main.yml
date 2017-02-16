@@ -1,0 +1,35 @@
+# xos-gui-extension-build/tasks/main.yml
+# Dockerfile.xos-gui-extension-builder
+
+# TASKS:
+# [ ] create a base image
+# `docker build -t xosproject/xos-gui-extension-builder -f ../../orchestration/xos-gui/Dockerfile.xos-gui-extension-builder ../../orchestration/xos-gui/`
+
+# [ ] create a data volume container "gui-extensions-store"
+# docker create -v /var/www/dist/extensions --name gui-extensions-store $(BUILDER-IMAGE) /bin/true
+
+# [ ] for each extension create a docker image (node:argon) that place minified files in "gui-extensions-store"
+# [ ] for each extension create a small container (alpine) that read files from "gui-extensions-store" and is called "gui-extension-<extension-name>"
+# [ ] for each extension create an image from the container "gui-extension-<extension-name>"
+# [ ] deploy the data volume container "gui-extensions-store"
+# [ ] for each extension deploy "gui-extension-<extension-name>" (use XOSComponents)
+# [ ] for each extension register it in xos-core "tosca.nodes.XOSGuiExtension"
+
+- name: Build xos gui extension builder image 
+  docker_image:
+    name: "xosproject/xos-gui-extension-builder"
+    path: "{{ cord_dir }}/orchestration/xos-gui/"
+    dockerfile: "Dockerfile.xos-gui-extension-builder"
+  register: "xos-gui-extension-builder"
+
+- debug:
+    msg: "Container-image: {{ item.name }}, from {{ cord_dir }}/{{ item.path }}"
+  with_items: "{{ enabled_gui_extensions }}"
+
+
+# - name: Build xos gui extensions docker images
+#   docker_image:
+#     name: "xosproject/gui-extension-{{ item.name }}"
+#     path: "{{ cord_dir }}/{{ item.path }}"
+#     pull: false
+#   with_items: "{{ enabled_gui_extensions }}"

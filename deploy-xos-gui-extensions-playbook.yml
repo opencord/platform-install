@@ -1,0 +1,23 @@
+---
+# deploy-xos-gui-extensions-playbook.yml
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+# for docker, docker-compose
+# - include: devel-tools-playbook.yml
+
+# for generating SSL certs
+# - include: pki-setup-playbook.yml
+
+- name: Build GUI Extensions docker images
+  hosts: head
+  roles:
+    - xos-gui-extension-build
+

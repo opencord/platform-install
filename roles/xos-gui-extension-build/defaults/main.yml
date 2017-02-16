@@ -1,0 +1,9 @@
+---
+# xos-gui-extension-build/defaults/main.yml
+
+cord_dir: "{{ ansible_user_dir + '/cord' }}"
+
+enabled_gui_extensions:
+  - name: sample
+    path: orchestration/xos-sample-gui-extension
+
