@@ -1,0 +1,59 @@
+# xos-gui-extension-build/tasks/main.yml
+# Dockerfile.xos-gui-extension-builder
+
+# store extensions with TOSCA
+
+# Create a base image with installed deps (to speedup the process)
+- name: Build xos-gui-extension-builder image
+  docker_image:
+    name: "xosproject/xos-gui-extension-builder"
+    path: "{{ cord_dir }}/orchestration/xos-gui/"
+    dockerfile: "Dockerfile.xos-gui-extension-builder"
+  register: "xos-gui-extension-builder"
+
+# Build extensions images
+- name: Build xos-gui-extensions docker images
+  docker_image:
+    name: "xosproject/gui-extension-{{ item.name }}"
+    path: "{{ cord_dir }}/{{ item.path }}"
+    pull: false
+  with_items: "{{ enabled_gui_extensions }}"
+
+# ----- TEST ENV ----------------------
+# - name: Build xos-gui image
+#   docker_image:
+#     name: "xosproject/xos-gui"
+#     path: "{{ cord_dir }}/orchestration/xos-gui/"
+#     dockerfile: "Dockerfile"
+#   register: "xos-gui-extension-builder"
+
+# # Alias of: docker run -p 4000:4000 --volumes-from gui-extensions-store --name xos-spa-gui -d xosproject/xos-gui
+# - name: Run xos-spa-gui container
+#   docker_container:
+#     name: "xos-spa-gui"
+#     image: "xosproject/xos-gui"
+#     volumes_from:
+#       - gui-extensions-store
+#   register: "xos-gui-extension-builder"
+# ----- END TEST ENV ----------------------
+
+# Run the containers
+- name: Run gui-extensions containers
+  docker_container:
+    name: "gui-extensions-{{ item.name }}"
+    image: "xosproject/gui-extension-{{ item.name }}"
+    volumes:
+      - "{{ cord_dir }}/{{ item.path }}/"
+    command: npm run build
+    volumes_from:
+      - gui-extensions-store
+  with_items: "{{ enabled_gui_extensions }}"
+
+# Compile the TOSCA to persist extensions
+- name: Create templated TOSCA to persist extensions
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ cord_profile_dir }}/{{ item }}"
+    mode: 0644
+  with_items:
+    - xos-gui-extensions.yml

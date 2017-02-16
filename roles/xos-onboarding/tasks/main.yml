@@ -47,6 +47,17 @@
   tags:
     - skip_ansible_lint # TOSCA loading should be idempotent
 
+# This container is meant to store GUI extensions
+# NOTE: It may be generalized to read a {{ var }} and create multiple volume-containers (if needed)
+# Alias of: docker create -v /var/www/dist/extensions --name gui-extensions-store node:argon /bin/true
+- name: Create gui-extensions-store container
+  docker_container:
+    name: gui-extensions-store
+    image: node:argon
+    command: /bin/true
+    volumes:
+      - /var/www/dist/extensions
+
 - name: Onboard components
   command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/{{ item.recipe_filename }}"
   with_items: "{{ xos_components }}"
