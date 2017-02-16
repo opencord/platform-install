@@ -1,0 +1,21 @@
+# xos-gui-extension-build/tasks/main.yml
+# Dockerfile.xos-gui-extension-builder
+
+- name: Build xos gui extension builder image 
+  docker_image:
+    name: "xosproject/xos-gui-extension-builder"
+    path: "{{ cord_dir }}/orchestration/xos-gui/"
+    dockerfile: "Dockerfile.xos-gui-extension-builder"
+  register: "gui-builder"
+
+- debug:
+    msg: "Container-image: {{ item.name }}, from {{ cord_dir }}/{{ item.path }}"
+  with_items: "{{ enabled_gui_extensions }}"
+
+
+- name: Build xos gui extensions docker images
+  docker_image:
+    name: "xosproject/gui-extension-{{ item.name }}"
+    path: "{{ cord_dir }}/{{ item.path }}"
+    pull: false
+  with_items: "{{ enabled_gui_extensions }}"
