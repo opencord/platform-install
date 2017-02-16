@@ -94,6 +94,13 @@
     - style.config.js
     - app.config.js
 
+- name: Create synchronizer config if required
+  when: "{{ xos_services | selectattr('sync-properties', 'defined') | list | length }}"
+  template:
+    src: "synchronizers.yaml.j2"
+    dest: "{{ cord_profile_dir }}/synchronizers.yaml"
+    mode: 0644
+
 - name: Create profile specific templated TOSCA config files
   template:
     src: "{{ item }}.j2"

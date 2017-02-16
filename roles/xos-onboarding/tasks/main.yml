@@ -53,6 +53,17 @@
   tags:
     - skip_ansible_lint # TOSCA loading should be idempotent
 
+- name: Check to see if profile synchronizer.yaml customization file exists
+  stat:
+    path: "/opt/cord_profile/synchronizers.yaml"
+  register: synchronizers_yaml
+
+- name: Apply profile synchronizer customization
+  when: synchronizers_yaml.stat.exists
+  command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/synchronizers.yaml"
+  tags:
+    - skip_ansible_lint # TOSCA loading should be idempotent
+
 - name: Enable onboarding
   command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/enable-onboarding.yaml"
   tags:
