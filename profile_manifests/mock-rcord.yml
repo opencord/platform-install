@@ -10,7 +10,7 @@ xos_admin_pass: "{{ lookup('password', 'credentials/xosadmin@opencord.org chars=
 xos_admin_first: XOS
 xos_admin_last: admin
 
-frontend_only: True
+frontend_only: False
 use_openstack: False
 use_vtn: False
 
@@ -35,16 +35,28 @@ gui_branding_bg: "/static/cord-bg.jpg"
 xos_services:
   - name: volt
     path: onos-apps/apps/olt
+    sync-properties:
+      no-create: true
   - name: onos
     path: orchestration/xos_services/onos-service
+    sync-properties:
+      no-create: true
   - name: vrouter
     path: orchestration/xos_services/vrouter
+    sync-properties:
+      no-create: true
   - name: vsg
     path: orchestration/xos_services/vsg
+    sync-properties:
+      no-create: true
   - name: vtr
     path: orchestration/xos_services/vtr
+    sync-properties:
+      no-create: true
   - name: fabric
     path: orchestration/xos_services/fabric
+    sync-properties:
+      no-create: true
 
 xos_service_sshkeys:
   - name: onos_rsa
