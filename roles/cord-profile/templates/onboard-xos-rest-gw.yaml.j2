@@ -41,7 +41,7 @@ topology_template:
     gw-to-redis:
       type: tosca.nodes.ComponentLink
       properties:
-          container: cordpodbs_xos_redis_1
+          container: {{ cord_profile | regex_replace('\\W','') }}bs_xos_redis_1
           alias: redis
           kind: external
       requirements:
