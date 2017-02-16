@@ -13,3 +13,14 @@ topology_template:
         command: python chameleon/chameleon/main.py -R 9101 -G xos-core:50055
         image: xosproject/chameleon
         ports: 9101:9101
+
+    chameleon-to-core:
+      type: tosca.nodes.ComponentLink
+      properties:
+          container: xos_core
+          alias: xos-core
+          kind: internal
+      requirements:
+          - xos:
+             node: xos_chameleon
+             relationship: tosca.relationships.LinkOfComponent
