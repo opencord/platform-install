@@ -41,7 +41,7 @@
 
 - name: Pause to allow juju to become ready
   pause:
-    seconds: 15
+    seconds: 30
 
 # For setwise operations on desired vs Juju state:
 # list of active juju_machines names: juju_machines.keys()
