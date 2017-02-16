@@ -6,14 +6,14 @@ angular.module('app')
     payoff: '{{ gui_payoff }}',
     logo: '{{ gui_logo }}',
     routes: [
-    {% for route in gui_routes %}
-    {
+{% for route in gui_routes %}
+        {
             label: '{{ route.label }}',
             state: '{{ route.state }}',
-            {% if route.parent is defined %}
+{% if route.parent is defined %}
             parent: '{{ route.parent }}'
-            {% endif %}
-    },
-    {% endfor %}
+{% endif %}
+        },
+{% endfor %}
     ]
 });
