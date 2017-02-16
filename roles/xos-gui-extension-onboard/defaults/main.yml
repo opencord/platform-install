@@ -1,0 +1,5 @@
+---
+# xos-gui-extension-onboard/defaults/main.yml
+
+xos_admin_user: "xosadmin@opencord.org"
+
