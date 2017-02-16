@@ -1,0 +1,22 @@
+tosca_definitions_version: tosca_simple_yaml_1_0
+
+description: Apply properties to synchronizers, if required
+
+imports:
+   - custom_types/xos.yaml
+
+topology_template:
+  node_templates:
+{% for service in xos_services %}
+{% if service.sync-properties is defined %}
+    servicecontroller#{{ service.name }}
+{% if service['sync-properties'] is defined %}
+    servicecontroller#{{ service.name }}:
+      type: tosca.nodes.ServiceController
+      properties:
+{{ service.sync-properties | to_nice_yaml(indent=8) }}
+{{ service['sync-properties'] | to_nice_yaml | indent(8, true) }}
+
+{% endif %}
+{% endfor %}
+
