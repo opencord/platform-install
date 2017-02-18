@@ -15,6 +15,17 @@ topology_template:
         image: xosproject/xos-gui
         ports: 4000:4000
 
+    gui-to-chameleon:
+      type: tosca.nodes.ComponentLink
+      properties:
+          container: xos_chameleon
+          alias: xos-chameleon
+          kind: internal
+      requirements:
+          - xos:
+             node: xos-spa-gui
+             relationship: tosca.relationships.LinkOfComponent
+    
     gui-to-gw:
       type: tosca.nodes.ComponentLink
       properties:
