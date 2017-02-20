@@ -24,3 +24,6 @@ RUN openssl x509 -in /usr/local/share/ca-certificates/cord_root_ca.crt \
 COPY onos-service /root/onos/bin/onos-service
 RUN chmod 755 /root/onos/bin/onos-service
 
+# Configure ONOS to log with log4j to ElasticStack
+COPY org.ops4j.pax.logging.cfg /root/onos/apache-karaf-3.0.5/etc/org.ops4j.pax.logging.cfg
+

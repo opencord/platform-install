@@ -9,3 +9,8 @@ onos_docker_image: "onosproject/onos:latest"
 onos_cord_dest: "{{ ansible_user_dir }}/onos-cord/"
 
 node_private_key: "{{ ansible_user_dir }}/node_key"
+
+# log host is currently set to IP of `elastic` VM, created by build repo
+logging_host: "10.100.198.222"
+log4j_port: 4560
+

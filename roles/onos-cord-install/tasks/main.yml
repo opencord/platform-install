@@ -27,6 +27,7 @@
   with_items:
     - Dockerfile
     - onos-service
+    - org.ops4j.pax.logging.cfg
 
 - name: Copy over ONOS playbook and other files
   copy:
