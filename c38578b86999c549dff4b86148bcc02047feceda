@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da141535_5cc151e3",
+        "filename": "roles/cord-profile/templates/ecord-services.yaml.j2",
+        "patchSetId": 9
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-02-22T05:38:46Z",
+      "side": 1,
+      "message": "You need to import `- custom_types/veg.yaml`, or XOS won\u0027t know what to do with the `tosca.nodes.VEGService` further down the file and will error out.",
+      "revId": "c38578b86999c549dff4b86148bcc02047feceda",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
