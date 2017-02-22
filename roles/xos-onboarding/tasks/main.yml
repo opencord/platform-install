@@ -27,8 +27,8 @@
     return_content: yes
   register: xos_onboard_status
   until: '"true" in xos_onboard_status.content'
-  retries: 120
-  delay: 2
+  retries: 60
+  delay: 10
 
 - name: Disable onboarding
   command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/disable-onboarding.yaml"
