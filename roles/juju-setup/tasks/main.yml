@@ -31,6 +31,20 @@
     src={{ juju_config_name }}_juju_config.yml.j2
     dest={{ juju_config_path }}
 
+# check that containers are ready to be accessed, juju add-machine may error
+- name: Check that machines are available for Juju
+  command: ansible containers -m ping -u ubuntu
+  tags:
+    - skip_ansible_lint # connectivity check
+  retries: 3
+  delay: 10
+
+- name: Check that Juju is actually ready
+  juju_facts:
+  until: juju_machines["juju.cord.lab"] is defined and juju_machines["juju.cord.lab"]["agent_state"] == "started"
+  retries: 40
+  delay: 15
+
 # For setwise operations on desired vs Juju state:
 # list of active juju_machines names: juju_machines.keys()
 # list of active juju_services names: juju_services.keys()
@@ -39,6 +53,10 @@
   when: "{{ head_lxd_list | map(attribute='service') | list | reject('undefined') | map('format_string', '%s.'~site_suffix ) | difference( juju_machines.keys() ) | length }}"
   command: "juju add-machine ssh:{{ item }}"
   with_items: "{{ head_lxd_list | map(attribute='service') | list | reject('undefined') | map('format_string', '%s.'~site_suffix ) | difference( juju_machines.keys() ) }}"
+  register: result
+  until: result | success
+  retries: 3
+  delay: 10
 
 # run this again, so machines will be in the juju_machines list
 - name: Obtain Juju Facts after machine creation
