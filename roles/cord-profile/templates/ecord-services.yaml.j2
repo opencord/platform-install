@@ -116,6 +116,11 @@ topology_template:
         translation: none
         vtn_kind: VEG
 
+    service#vnodlocal:
+      type: tosca.nodes.VNodLocalService
+      properties:
+      requirements:
+
     # Networks required by the CORD setup
     {{ site_name }}_veg-access:
       type: tosca.nodes.network.Network
