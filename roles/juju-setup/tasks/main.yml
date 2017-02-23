@@ -39,9 +39,11 @@
   retries: 3
   delay: 10
 
-- name: Pause to allow juju to become ready
-  pause:
-    seconds: 15
+- name: Check that Juju is actually ready
+  juju_facts:
+  until: juju_machines["juju.cord.lab"] is defined and juju_machines["juju.cord.lab"]["agent_state"] == "started"
+  retries: 40
+  delay: 15
 
 # For setwise operations on desired vs Juju state:
 # list of active juju_machines names: juju_machines.keys()
@@ -51,6 +53,10 @@
   when: "{{ head_lxd_list | map(attribute='service') | list | reject('undefined') | map('format_string', '%s.'~site_suffix ) | difference( juju_machines.keys() ) | length }}"
   command: "juju add-machine ssh:{{ item }}"
   with_items: "{{ head_lxd_list | map(attribute='service') | list | reject('undefined') | map('format_string', '%s.'~site_suffix ) | difference( juju_machines.keys() ) }}"
+  register: result
+  until: result | success
+  retries: 3
+  delay: 10
 
 # run this again, so machines will be in the juju_machines list
 - name: Obtain Juju Facts after machine creation
