@@ -1,0 +1,114 @@
+tosca_definitions_version: tosca_simple_yaml_1_0
+
+description: Creates a CORD test subscriber, created by platform-install
+
+imports:
+   - custom_types/xos.yaml
+   - custom_types/vee.yaml
+   - custom_types/veg.yaml
+   - custom_types/vnodlocal.yaml
+
+topology_template:
+  node_templates:
+
+# site, fully created in deployment.yaml
+    {{ site_name }}:
+      type: tosca.nodes.Site
+      properties:
+        no-delete: true
+        no-create: true
+        no-update: true
+# vsg slice, volt service, fully created in cord-services.yaml
+    {{ site_name }}_veg:
+      type: tosca.nodes.Slice
+      properties:
+        no-delete: true
+        no-create: true
+        no-update: true
+
+    service#vee:
+      type: tosca.nodes.VEEService
+      properties:
+        no-delete: true
+        no-create: true
+        no-update: true
+
+    service#vrouter:
+      type: tosca.nodes.VRouterService
+      properties:
+        no-delete: true
+        no-create: true
+        no-update: true
+
+    service#veg:
+      type: tosca.nodes.VEGService
+      requirements:
+      properties:
+        no-delete: true
+        no-create: true
+        no-update: true
+
+    service#vnodlocal:
+      type: tosca.nodes.VNodLocalService
+      properties:
+        no-delete: true
+        no-create: true
+        no-update: true
+      requirements:
+
+# Test subscriber
+
+    # Let's add a user who can be administrator of the household
+    johndoe@myhouse.com:
+      type: tosca.nodes.User
+      properties:
+        password: letmein
+        firstname: john
+        lastname: doe
+      requirements:
+        - site:
+            node: {{ site_name }}
+            relationship: tosca.relationships.MemberOfSite
+        - dependency:
+            node: {{ site_name }}_veg
+            relationship: tosca.relationships.DependsOn
+
+    # A subscriber
+    My Enterprise:
+      type: tosca.nodes.Subscriber
+      properties:
+      requirements:
+
+    My vEG:
+      type: tosca.nodes.Tenant
+      properties:
+        service_specific_id: 123
+      requirements:
+        - provider_service:
+            node: service#vrouter
+            relationship: tosca.relationships.MemberOfService
+        - subscriber_tenant:
+            node: service#vrouter
+            relationship: tosca.relationships.BelongsToTenant
+
+    My vEE:
+      type: tosca.nodes.Tenant
+      properties:
+        service_specific_id: 123
+      requirements:
+        - provider_service:
+            node: service#veg
+            relationship: tosca.relationships.MemberOfService
+            node: service#vnodlocal
+            relationship: tosca.relationships.MemberOfService
+        - subscriber_tenant:
+            node: service#vee
+            relationship: tosca.relationships.BelongsToTenant
+            node: service#vnodlocal
+            relationship: tosca.relationships.BelongsToTenant
+        - subscriber:
+            node: My Enterprise
+            relationship: tosca.relationships.BelongsToSubscriber
+        - dependency:
+            node: {{ site_name }}_veg
+            relationship: tosca.relationships.DependsOn

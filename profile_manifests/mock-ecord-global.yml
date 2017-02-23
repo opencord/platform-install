@@ -18,9 +18,13 @@ needs_pki_install: True
 build_xos_base_image: True
 
 xos_tosca_config_templates:
-  - management-net.yaml
   - mock-onos.yaml
-  - ecord-services.yaml
+  - vnodglobal-service.yaml
+
+# GUI Config [new GUI]
+gui_project_name: "E-CORD"
+gui_background: "cord-bg.jpg" # TODO find ecord image
+gui_payoff: "Your Enterprise VNF orchestrator"
 
 # GUI branding
 gui_branding_name: "ECORD"
@@ -30,14 +34,8 @@ gui_branding_bg: "/static/cord-bg.jpg"
 
 # paths defined in manifest/default.xml
 xos_services:
-  - name: openstack
-    path: orchestration/xos_services/openstack
   - name: onos
     path: orchestration/xos_services/onos-service
-  - name: vrouter
-    path: orchestration/xos_services/vrouter
-  - name: fabric
-    path: orchestration/xos_services/fabric
   - name: metronetwork
     path: orchestration/xos_services/metro-net
 

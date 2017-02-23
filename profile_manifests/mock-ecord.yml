@@ -20,7 +20,10 @@ build_xos_base_image: True
 xos_tosca_config_templates:
   - management-net.yaml
   - mock-onos.yaml
+#  - vtn-service.yaml # rimosso
+#  - fabric-service.yaml # rimosso
   - ecord-services.yaml
+  - vee-service.yaml
 
 # GUI Config [new GUI]
 gui_project_name: "E-CORD"
@@ -39,14 +42,18 @@ xos_services:
     path: orchestration/xos_services/openstack
   - name: onos
     path: orchestration/xos_services/onos-service
+  - name: vtn
+    path: onos-apps/apps/vtn
+  - name: fabric
+    path: orchestration/xos_services/fabric
   - name: vrouter
     path: orchestration/xos_services/vrouter
   - name: veg
     path: orchestration/xos_services/vEG
   - name: vnodlocal
     path: orchestration/xos_services/metronet-local
-  - name: fabric
-    path: orchestration/xos_services/fabric
+  - name: vee
+    path: orchestration/xos_services/vEE
 
 xos_service_sshkeys:
   - name: onos_rsa
