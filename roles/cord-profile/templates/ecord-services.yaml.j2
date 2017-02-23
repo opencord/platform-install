@@ -5,6 +5,7 @@ description: Just enough Tosca to get the vEG slice running on the CORD POD, cre
 imports:
    - custom_types/xos.yaml
    - custom_types/veg.yaml
+   - custom_types/vee.yaml
 
 topology_template:
   node_templates:
@@ -43,6 +44,14 @@ topology_template:
 
 # ONOS_Fabric, fully created in fabric.yaml
     service#ONOS_Fabric:
+      type: tosca.nodes.ONOSService
+      properties:
+        no-delete: true
+        no-create: true
+        no-update: true
+
+# ONOS_VEE, fully created in vee.yaml
+    service#ONOS_VEE:
       type: tosca.nodes.ONOSService
       properties:
         no-delete: true
@@ -122,6 +131,22 @@ topology_template:
         visibility: private
         translation: none
         vtn_kind: VEG
+
+    service#VEE:
+      type: tosca.nodes.VEEService
+      properties:
+        view_url: /admin/vEE/veeservice/$id$/
+      requirements:
+
+    CarrierEthernet_ONOS_app:
+      type: tosca.nodes.ONOSCarrierEthernetApp
+      requirements:
+        - vee_service:
+            node: service#ONOS_VEE
+            relationship: tosca.relationships.UsedByService
+      properties:
+        dependencies: org.onosproject.ecord.carrierethernet
+        autogenerate: <name_of_config>
 
     # Networks required by the CORD setup
     {{ site_name }}_veg-access:
