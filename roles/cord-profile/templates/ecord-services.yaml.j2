@@ -13,7 +13,7 @@ topology_template:
     {{ site_name }}:
       type: tosca.nodes.Site
 
-    image#veg-1.1:
+    image#vsg-1.1:
       type: tosca.nodes.Image
 
 # management networks, fully created in management-net.yaml
@@ -161,6 +161,6 @@ topology_template:
             relationship: tosca.relationships.ConnectsToNetwork
 {% endif %}
         - image:
-            node: image#veg-1.1
+            node: image#vsg-1.1
             relationship: tosca.relationships.DefaultImage
 
