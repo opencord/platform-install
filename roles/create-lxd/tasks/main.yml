@@ -103,6 +103,11 @@
   tags:
     - skip_ansible_lint # connectivity check
 
+- name: Verify that containers have external connectivity
+  command: ansible containers -m uri -u ubuntu -a "url=http://www.google.com"
+  tags:
+    - skip_ansible_lint # connectivity check
+
 - name: Have containers use the apt-cache
   command: ansible containers -b -u ubuntu -m lineinfile -a "dest=/etc/apt/apt.conf.d/02apt-cacher-ng create=yes mode=0644 owner=root group=root regexp='^Acquire' line='Acquire::http { Proxy \"http://{{ apt_cacher_name }}:{{ apt_cacher_port | default('3142') }}\"; };'"
   tags:
@@ -136,4 +141,3 @@
 - name: Verify that we can log into every container after restarting network interfaces
   when: not on_maas
   command: ansible containers -m ping -u ubuntu
-
