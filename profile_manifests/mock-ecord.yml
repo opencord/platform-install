@@ -33,14 +33,16 @@ xos_services:
     path: orchestration/xos_services/openstack
   - name: onos
     path: orchestration/xos_services/onos-service
+  - name: fabric
+    path: orchestration/xos_services/fabric
   - name: vrouter
     path: orchestration/xos_services/vrouter
   - name: veg
     path: orchestration/xos_services/vEG
   - name: vnodlocal
     path: orchestration/xos_services/metronet-local
-  - name: fabric
-    path: orchestration/xos_services/fabric
+  - name: vee
+    path: orchestration/xos_services/vee
 
 xos_service_sshkeys:
   - name: onos_rsa

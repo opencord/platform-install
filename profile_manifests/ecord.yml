@@ -39,18 +39,20 @@ gui_branding_bg: "/static/cord-bg.jpg"
 
 # paths defined in manifest/default.xml
 xos_services:
-  - name: vtn
-    path: onos-apps/apps/vtn
   - name: openstack
     path: orchestration/xos_services/openstack
   - name: onos
     path: orchestration/xos_services/onos-service
+  - name: fabric
+    path: orchestration/xos_services/fabric
   - name: vrouter
     path: orchestration/xos_services/vrouter
   - name: veg
     path: orchestration/xos_services/vEG
-  - name: fabric
-    path: orchestration/xos_services/fabric
+  - name: vnodlocal
+    path: orchestration/xos_services/metronet-local
+  - name: vee
+    path: orchestration/xos_services/vee
   - name: veg_rsa
     source_path: "/dev/null"
   - name: veg_rsa.pub
