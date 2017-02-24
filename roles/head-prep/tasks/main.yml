@@ -15,6 +15,10 @@
   with_items:
      - "{{ juju_apt_repo | default('ppa:juju/stable') }}"
      - "{{ ansible_apt_repo | default('ppa:ansible/ansible') }}"
+  register: result
+  until: result | success
+  retries: 3
+  delay: 10
 
 - name: Install packages
   apt:
