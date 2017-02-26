@@ -92,6 +92,8 @@
     - onboard-xos-gui.yaml
     - onboard-xos-rest-gw.yaml
     - gateway-config.yml
+    - style.config.js
+    - app.config.js
 
 - name: Create profile specific templated TOSCA config files
   template:

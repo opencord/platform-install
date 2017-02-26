@@ -25,7 +25,27 @@ xos_tosca_config_templates:
     #  - test-subscriber.yaml # broken? Missing lan_network config on vOLT ?
   - volt-devices.yaml
 
-# GUI branding
+# GUI Config [new GUI]
+gw_port: 3000
+gui_api_endpoint: "/xosapi/v1"
+gui_websocket: "/"
+gui_project_name: "R-CORD"
+gui_favicon: "cord-favicon.png"
+gui_background: "cord-bg.jpg"
+gui_payoff: "Your VNF orchestrator"
+gui_logo: "cord-logo.png"
+gui_routes:
+  - label: "Slices"
+    state: "xos.core.slice"
+  - label: "Nodes"
+    state: "xos.core.node"
+  - label: "Instances"
+    state: "xos.core.instance"
+  - label: "AAAAAAA"
+    state: "xos.core.instance"
+    parent: "xos.core"
+
+# GUI branding [OLD GUI to be removed]
 gui_branding_name: "CORD"
 gui_branding_icon: "/static/cord-logo.png"
 gui_branding_favicon: "/static/cord-favicon.png"

@@ -1,0 +1,19 @@
+angular.module('app')
+  .constant('StyleConfig', {
+    projectName: '{{ gui_project_name }}',
+    favicon: '{{ gui_favicon }}',
+    background: '{{ gui_background }}',
+    payoff: '{{ gui_payoff }}',
+    logo: '{{ gui_logo }}',
+    routes: [
+    {% for route in gui_routes %}
+    {
+            label: '{{ route.label }}',
+            state: '{{ route.state }}',
+            {% if route.parent is defined %}
+            parent: '{{ route.parent }}'
+            {% endif %}
+    },
+    {% endfor %}
+    ]
+});

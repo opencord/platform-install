@@ -37,6 +37,23 @@ xos_tosca_config_templates: []
 
 xos_other_templates: []
 
+# GUI Config [new GUI], used in app.config.js.j2 and style.config.js.j2
+gw_port: 3000
+gui_api_endpoint: "/xosapi/v1"
+gui_websocket: "/"
+gui_project_name: "R-CORD"
+gui_favicon: "cord-favicon.png"
+gui_background: "cord-bg.jpg"
+gui_payoff: "Your VNF orchestrator"
+gui_logo: "cord-logo.png"
+gui_routes:
+  - label: "Slices"
+    state: "xos.core.slice"
+  - label: "Nodes"
+    state: "xos.core.node"
+  - label: "Instances"
+    state: "xos.core.instance"
+
 # GUI branding, used in xos_common_config.j2
 disable_minidashboard: "True"
 gui_branding_name: "OpenCloud"

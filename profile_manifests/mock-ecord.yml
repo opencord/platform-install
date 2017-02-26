@@ -21,6 +21,11 @@ xos_tosca_config_templates:
   - mock-onos.yaml
   - ecord-services.yaml
 
+# GUI Config [new GUI]
+gui_project_name: "E-CORD"
+gui_background: "cord-bg.jpg" # TODO find ecord image
+gui_payoff: "Your Enterprise VNF orchestrator"
+
 # GUI branding
 gui_branding_name: "ECORD"
 gui_branding_icon: "/static/cord-logo.png"
