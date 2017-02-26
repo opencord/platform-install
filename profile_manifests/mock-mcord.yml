@@ -21,6 +21,22 @@ xos_tosca_config_templates:
   - management-net.yaml
   - mock-mcord.yaml
 
+# GUI Config [new GUI]
+gui_project_name: "M-CORD"
+gui_payoff: "Your way toward 5G"
+gui_routes:
+  - label: "Slices"
+    state: "xos.core.slice"
+  - label: "Nodes"
+    state: "xos.core.node"
+  - label: "Instances"
+    state: "xos.core.instance"
+  - label: "MCORD"
+    state: "xos.mcord"
+  - label: "Topology"
+    state: "xos.mcord.topology"
+    parent: "xos.mcord"
+
 # GUI branding
 gui_branding_name: "M-CORD"
 gui_branding_icon: "/static/cord-logo.png"
