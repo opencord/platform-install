@@ -15,6 +15,28 @@ topology_template:
         image: xosproject/xos-gui
         ports: 4000:4000
 
+    # UI App Config
+    /var/www/dist/app.config.js:
+      type: tosca.nodes.ComponentVolume
+      properties:
+          host_path: {{ cord_profile_dir }}/app.config.js
+          read_only: false
+      requirements:
+          - xos:
+             node: xos-spa-gui
+             relationship: tosca.relationships.VolumeOfComponent
+
+    # UI Style Config
+    /var/www/dist/style.config.js:
+      type: tosca.nodes.ComponentVolume
+      properties:
+          host_path: {{ cord_profile_dir }}/style.config.js
+          read_only: false
+      requirements:
+          - xos:
+             node: xos-spa-gui
+             relationship: tosca.relationships.VolumeOfComponent
+
     gui-to-chameleon:
       type: tosca.nodes.ComponentLink
       properties:
