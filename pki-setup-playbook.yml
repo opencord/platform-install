@@ -11,11 +11,12 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
-- name: Create Root CA, Intermediate CA, Server certs
+- name: Create SSL Root CA, Intermediate CA, Server certs, SSH CA and keypairs
   hosts: localhost
   connection: local
   roles:
     - pki-root-ca
     - pki-intermediate-ca
     - pki-cert
+    - ssh-pki
 
