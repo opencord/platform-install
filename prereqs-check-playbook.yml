@@ -1,0 +1,10 @@
+---
+# prereqs-check-playbook.yml
+# Checks that virtual machine host is suitable
+
+- name: Check Prereqs
+  hosts: localhost
+  connection: local
+  roles:
+    - prereqs-common
+

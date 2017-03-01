@@ -1,5 +1,5 @@
 ---
-# file: roles/common-prep/tasks/main.yml
+# file: common-prep/tasks/main.yml
 
 - name: Upgrade system to current using apt
   when: run_dist_upgrade
@@ -20,10 +20,9 @@
 
 - name: Install standard packages
   apt:
-    pkg={{ item }}
-    state=present
-    update_cache=yes
-    cache_valid_time=3600
+    pkg: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
   with_items:
    - tmux
    - vim
@@ -39,12 +38,13 @@
    - jove
 
 - name: Enable vim syntax highlighting
-  lineinfile: dest=/etc/vim/vimrc
-    regexp="^\s*syntax on"
-    line="syntax on"
+  lineinfile:
+    dest: '/etc/vim/vimrc'
+    regexp: '^\s*syntax on'
+    line: 'syntax on'
 
 - name: Configure tmux
   copy:
-    src=tmux.conf
-    dest="{{ ansible_user_dir }}/.tmux.conf"
+    src: tmux.conf
+    dest: "{{ ansible_user_dir }}/.tmux.conf"
 

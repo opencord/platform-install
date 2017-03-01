@@ -21,7 +21,7 @@
   roles:
     - { role: copy-profile, become: yes }
     - { role: ssh-install, become: yes }
-    - { role: glance-images, become: yes }
+    - { role: glance-images, become: yes, when: on_maas }
     - { role: copy-credentials, become: yes, when: on_maas }
 
 - name: Install ssh keys when using MaaS

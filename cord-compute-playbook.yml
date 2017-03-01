@@ -2,50 +2,7 @@
 # cord-compute-playbook.yml
 # Installs and configures compute nodes
 
-- name: Include vars
-  hosts: all
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "profile_manifests/{{ cord_profile }}.yml"
-        - profile_manifests/local_vars.yml
-
-- name: Configure compute hosts to use DNS server
-  hosts: all
-  become: yes
-  roles:
-    - { role: dns-configure, when: not on_maas }
-
-- name: Prep systems
-  hosts: compute
-  become: yes
-  roles:
-    - common-prep
-    - { role: cloudlab-prep, when: on_cloudlab }
-
-- name: Configure head node (for sshkey)
-  hosts: head
-  roles:
-    - { role: head-prep, become: yes }
-
-- name: Configure compute nodes
-  hosts: compute
-  become: yes
-  roles:
-    - compute-prep
-
-- name: Deploy compute nodes, create configuration
-  hosts: head
-  roles:
-    - juju-compute-setup
-    - compute-node-config
-
-- include: add-onboard-containers-playbook.yml
-
-- name: Enable compute nodes in XOS
-  hosts: xos_ui
-  connection: docker
-  roles:
-    - compute-node-enable
+- include: prep-computenode-playbook.yml
+- include: deploy-computenode-playbook.yml
+- include: onboard-openstack-playbook.yml
 

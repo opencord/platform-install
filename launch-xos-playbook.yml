@@ -1,28 +1,9 @@
 ---
 # launch-xos-playbook.yml
 
-- name: Include vars
-  hosts: all
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "profile_manifests/{{ cord_profile }}.yml"
-        - profile_manifests/local_vars.yml
-
-# for docker, docker-compose
 - include: devel-tools-playbook.yml
 
-- name: Bring up XOS containers
-  hosts: head
-  roles:
-    - xos-up
+- include: start-xos-playbook.yml
 
-- include: add-onboard-containers-playbook.yml
+- include: onboard-profile-playbook.yml
 
-- name: Check to see if XOS UI is ready, apply profile config
-  hosts: xos_ui
-  connection: docker
-  roles:
-    - xos-ready
-    - xos-config

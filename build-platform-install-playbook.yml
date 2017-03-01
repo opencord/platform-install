@@ -1,17 +1,5 @@
 ---
 # build-platform-install-playbook.yml
 
-- name: Include vars
-  hosts: build
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "profile_manifests/{{ cord_profile }}.yml"
-        - profile_manifests/local_vars.yml
-
-- name: Build the core image
-  hosts: build
-  roles:
-    - xos-core-build
+- include: build-core-image-playbook.yml
 

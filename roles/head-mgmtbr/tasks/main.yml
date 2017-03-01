@@ -1,0 +1,31 @@
+---
+# head-mgmtbr/tasks/main.yml
+
+- name: Create mgmtbr bridge configuration
+  template:
+    src: "mgmtbr.cfg.j2"
+    dest: /etc/network/interfaces.d/mgmtbr.cfg
+    owner: root
+    group: root
+    mode: 0644
+  register: mgmtbr_config
+
+- name: Bring up mgmtbr if reconfigured
+  when: mgmtbr_config.changed and ansible_mgmtbr is not defined
+  command: ifup mgmtbr
+  tags:
+    - skip_ansible_lint # needs to be run here or the next steps will fail
+
+- name: Configure NAT for mgmtbr
+  iptables:
+    table: nat
+    chain: POSTROUTING
+    out_interface: "{{ mgmtbr_nat_interface }}"
+    jump: MASQUERADE
+
+- name: Configure forwarding for mgmtbr
+  iptables:
+    chain: FORWARD
+    in_interface: mgmtbr
+    jump: ACCEPT
+

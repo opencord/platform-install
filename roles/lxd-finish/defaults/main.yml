@@ -1,0 +1,5 @@
+---
+# lxd-finish/defaults/main.yml
+
+apt_cacher_name: apt-cache
+

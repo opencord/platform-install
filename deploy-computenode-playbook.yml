@@ -1,6 +1,6 @@
 ---
-# cord-compute-maas-playbook.yml
-# Installs and configures compute nodes when using MaaS
+# deploy-computenode-playbook.yml
+# deploys compute nodes with Juju, creates config
 
 - name: Include vars
   hosts: all
@@ -11,11 +11,9 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
-- include: prep-computenode-playbook.yml
-- include: deploy-computenode-playbook.yml
-
-- name:  Enable Compute Node (MaaS)
+- name: Deploy compute nodes, create configuration
   hosts: head
   roles:
-    - compute-node-enable-maas
+    - juju-compute-setup
+    - compute-node-config
 

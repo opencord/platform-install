@@ -1,0 +1,8 @@
+---
+# head-mgmtbr/defaults/main.yml
+
+# public internet facing NAT interface
+mgmtbr_nat_interface: eth0
+
+# management interface bridged to mgmtbr
+mgmtbr_ext_interface: eth1

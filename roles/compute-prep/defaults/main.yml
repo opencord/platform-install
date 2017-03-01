@@ -1,9 +1,7 @@
 ---
-# head-prep/defaults/main.yml
-
-on_maas: false
+# compute-prep/defaults/main.yml
 
 ssh_pki_dir: "{{ playbook_dir }}/ssh_pki"
-ssh_keytype: rsa
+
 pod_sshkey_name: "headnode"
 

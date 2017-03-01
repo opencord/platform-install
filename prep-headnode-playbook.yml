@@ -1,0 +1,66 @@
+---
+# prep-headnode-playbook.yml
+# Preps the head node of a CORD pod for thr est of the install
+
+- name: Include vars
+  hosts: head, config
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Prep head node
+  hosts: head
+  roles:
+    - { role: head-prep, become: yes }
+
+- name: Common prep, install certificates
+  become: yes
+  hosts: head
+  roles:
+    - common-prep
+    - pki-install
+
+- name: Install docker and configure it
+  hosts: head
+  roles:
+    - docker-install
+
+- name: Configure management network
+  hosts: head
+  become: yes
+  roles:
+    - { role: interface-config, when: not on_maas }
+
+- name: Networking and DNS server on head node
+  hosts: head
+  become: yes
+  roles:
+    - { role: head-mgmtbr, when: not on_maas }
+    - { role: dns-unbound, when: not on_maas }
+    - { role: dns-nsd, when: not on_maas }
+
+# needs to be in another set of plays so that nsd/unbound restart handlers run
+- name: Configure DNS resolution, DHCP on head node
+  hosts: head
+  become: yes
+  roles:
+    - { role: dns-configure, when: not on_maas }
+    - { role: dhcpd, when: not on_maas }
+
+- name: Install apt-cacher-ng
+  hosts: head
+  become: yes
+  roles:
+    - apt-cacher-ng
+
+- name: Install elasticstack, and apache proxy
+  hosts: head
+  become: yes
+  roles:
+    - java-oracle
+    - elasticstack
+    - apache-proxy
+

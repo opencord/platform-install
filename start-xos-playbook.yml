@@ -1,6 +1,6 @@
 ---
-# cord-compute-maas-playbook.yml
-# Installs and configures compute nodes when using MaaS
+# start-xos-playbook.yml
+# Start and configure XOS docker containers
 
 - name: Include vars
   hosts: all
@@ -11,11 +11,8 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
-- include: prep-computenode-playbook.yml
-- include: deploy-computenode-playbook.yml
-
-- name:  Enable Compute Node (MaaS)
+- name: Start XOS containers with docker-compose
   hosts: head
   roles:
-    - compute-node-enable-maas
+    - xos-up
 

@@ -1,57 +1,44 @@
 ---
 # file: create-lxd/tasks/main.yml
-- name: Ensure DIG
-  become: yes
-  apt:
-    name: dnsutils=1:9*
-    state: present
 
-- name: Enable trusty-backports
-  become: yes
+- name: Enable trusty-backports apt repository
   apt_repository:
     repo: "{{ item }}"
     state: present
   with_items:
-    - "deb http://us.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe"
-    - "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe"
+    - "deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe multiverse"
 
-- name: Ensure LXD
-  become: yes
+- name: Install LXD from trusty-backports
   apt:
     name: lxd
-    state: present
-    update_cache: yes
     default_release: trusty-backports
+    update_cache: yes
+    cache_valid_time: 3600
 
-# For lxd_profile, has to be run as normal user
-- name: slurp user's SSH public key on remote machine to create LXD profile
-  slurp:
-    src: "{{ ansible_user_dir }}/.ssh/id_rsa.pub"
-  register: slurped_pubkey
-
-- name: Create openstack LXD profile
-  become: yes
+- name: Create LXD profiles for OpenStack services
   lxd_profile:
-    name: openstack
+    name: "openstack-{{ item.name }}"
     state: present
     config:
       user.user-data: |
         #cloud-config
         ssh_authorized_keys:
-          - "{{ slurped_pubkey['content'] | b64decode }}"
-    description: 'OpenStack services on CORD'
+          - "{{ lookup('file', ssh_pki_dir ~ '/client_certs/{{ pod_sshkey_name }}_sshkey.pub') }}"
+    description: 'OpenStack service {{ item.name }} for CORD'
     devices:
       eth0:
-        nictype: bridged
-        parent: mgmtbr
         type: nic
+        parent: mgmtbr
+        nictype: bridged
+        # ipv4.address: "{{ mgmt_ipv4_first_octets }}.{{ item.ipv4_last_octet }}"
+        hwaddr: "{{ item.hwaddr | default(hwaddr_prefix ~ ((mgmt_ipv4_first_octets ~ '.' ~ item.ipv4_last_octet) | ip4_hex)) | hwaddr('unix') }}"
       certs:
         type: disk
         path: /usr/local/share/ca-certificates/cord/
         source: /usr/local/share/ca-certificates/
+  with_items: "{{ head_lxd_list }}"
 
 - name: Create containers for the OpenStack services
-  become: yes
   lxd_container:
     name: "{{ item.name }}"
     architecture: x86_64
@@ -62,7 +49,7 @@
       server: https://cloud-images.ubuntu.com/releases
       protocol: simplestreams
       alias: "{{ ansible_distribution_release }}"
-    profiles: ["openstack"]
+    profiles: ["openstack-{{ item.name }}"]
     wait_for_ipv4_addresses: true
     timeout: 600
   with_items: "{{ head_lxd_list }}"
@@ -98,60 +85,18 @@
   with_items: "{{ head_lxd_list }}"
 
 - name: Ensure /etc/ansible directory exists
-  become: yes
-  file: path=/etc/ansible state=directory
+  file:
+    path: /etc/ansible
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
 
-- name: Create /etc/ansible/hosts file
-  become: yes
+- name: Create /etc/ansible/hosts file with containers list
   template:
-    src=ansible_hosts.j2
-    dest=/etc/ansible/hosts
+    src: ansible_hosts.j2
+    dest: /etc/ansible/hosts
+    owner: root
+    group: root
+    mode: 0644
 
-- name: Verify that we can log into every container
-  command: ansible containers -m ping -u ubuntu
-  tags:
-    - skip_ansible_lint # connectivity check
-
-- name: Verify that containers have external connectivity
-  command: ansible containers -m uri -u ubuntu -a "url=http://www.google.com"
-  tags:
-    - skip_ansible_lint # connectivity check
-
-- name: Have containers use the apt-cache
-  command: ansible containers -b -u ubuntu -m lineinfile -a "dest=/etc/apt/apt.conf.d/02apt-cacher-ng create=yes mode=0644 owner=root group=root regexp='^Acquire' line='Acquire::http { Proxy \"http://{{ apt_cacher_name }}:{{ apt_cacher_port | default('3142') }}\"; };'"
-  tags:
-    - skip_ansible_lint # running a sub job
-
-- name: Update apt cache
-  command: ansible containers -m apt -b -u ubuntu -a "update_cache=yes cache_valid_time=3600"
-  tags:
-    - skip_ansible_lint # running a sub job
-
-- name: Update software in all the containers
-  when: run_dist_upgrade
-  command: ansible containers -m apt -b -u ubuntu -a "upgrade=dist"
-  tags:
-    - skip_ansible_lint # running a sub job
-
-- name: Update CA certificates in containers
-  command: ansible containers -m shell -b -u ubuntu -a "update-ca-certificates"
-  tags:
-    - skip_ansible_lint # running a sub job
-
-- name: Create containers' eth0 interface config file for DNS config via resolvconf program
-  when: not on_maas
-  template:
-    src=eth0.cfg.j2
-    dest={{ ansible_user_dir }}/eth0.cfg
-
-- name: Copy eth0 interface config file to all containers
-  when: not on_maas
-  command: ansible containers -b -u ubuntu -m copy -a "src={{ ansible_user_dir }}/eth0.cfg dest=/etc/network/interfaces.d/eth0.cfg owner=root group=root mode=0644"
-
-- name: Restart eth0 interface on all containers
-  when: not on_maas
-  command: ansible containers -b -u ubuntu -m shell -a "ifdown eth0 ; ifup eth0"
-
-- name: Verify that we can log into every container after restarting network interfaces
-  when: not on_maas
-  command: ansible containers -m ping -u ubuntu

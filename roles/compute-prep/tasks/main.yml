@@ -1,62 +1,52 @@
 ---
-# file: roles/compute-prep/tasks/main.yml
+# file: compute-prep/tasks/main.yml
 
 - name: Install packages
   apt:
     name: "{{ item }}"
-    state: present
     update_cache: yes
     cache_valid_time: 3600
   with_items:
     - python-yaml
+    - python-pip
 
 - name: Add ubuntu user
   user:
     name: ubuntu
     groups: adm
 
-- name: Copy over CA certs
+- name: Add pod public key to user accounts
+  when: not on_maas
+  authorized_key:
+    user: "{{ item }}"
+    key: "{{ lookup('file', '{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey.pub') }}"
+  with_items:
+    - root
+    - ubuntu
+
+- name: Add pod public key to user accounts (MaaS)
+  when: on_maas
+  authorized_key:
+    user: "{{ item }}"
+    key: "{{ lookup('file', '/opt/cord_profile/node_key.pub') }}"
+  with_items:
+    - root
+    - ubuntu
+
+- name: Copy over CA certs from head node (MaaS)
+  when: on_maas
   synchronize:
     src: "/usr/local/share/ca-certificates/"
     dest: "/usr/local/share/ca-certificates/"
   notify:
-    - update-ca-certifictes on compute node
-
-- name: List certs in /usr/local/share/ca-certificates/
-  command: "ls -la /usr/local/share/ca-certificates/"
-  register: certs_on_compute
-  tags:
-    - skip_ansible_lint # diagnostics
-
-- name: Output from listing certs
-  debug: var=certs_on_compute
-
-- name: Add head node ubuntu user key
-  authorized_key:
-    user: ubuntu
-    key: "{{ hostvars[groups['head'][0]]['sshkey']['stdout'] }}"
-
-- name: Add head node root user key
-  authorized_key:
-    user: root
-    key: "{{ hostvars[groups['head'][0]]['sshkey']['stdout'] }}"
-
-- name: Add route via /etc/rc.local
-  when: not on_maas
-  template:
-    src=rc.local.j2
-    dest=/etc/rc.local
-    mode=0755
-  notify:
-    - run rc.local
+    - update-ca-certificates
 
 - name: Create /var/lib/nova dir
   file:
-    path=/var/lib/nova
-    state=directory
+    path: /var/lib/nova
+    state: directory
 
-- name: Remove superfluous requests package
+- name: Remove requests package which causes SSL errors
   pip:
-    name=requests
-    state=absent
-
+    name: "requests"
+    state: absent
