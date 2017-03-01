@@ -49,7 +49,7 @@ topology_template:
     /opt/xos_libraries/{{ library }}:
       type: tosca.nodes.XOSVolume
       properties:
-          host_path: {{ cord_dir }}/orchestration/xos_libraries/{{ library }}
+          host_path: /opt/cord/orchestration/xos_libraries/{{ library }}
           read_only: True
       requirements:
           - xos:
@@ -63,7 +63,7 @@ topology_template:
     /opt/xos_services/{{ service.path | basename }}:
       type: tosca.nodes.XOSVolume
       properties:
-          host_path: {{ cord_dir }}/{{ service.path }}
+          host_path: /opt/cord/{{ service.path }}
           read_only: {{ service.read_only | default("True") }}
       requirements:
           - xos:

@@ -1,0 +1,32 @@
+---
+# prep-computenode-playbook.yml
+# Prepares a compute node on a CORD pod
+
+- name: Include vars
+  hosts: compute
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Install SSL certificates
+  hosts: compute
+  become: yes
+  roles:
+    - pki-install
+
+- name: Use headnode DNS server
+  when: not on_maas
+  hosts: compute
+  become: yes
+  roles:
+    - dns-configure
+
+- name: Prep compute node
+  hosts: compute
+  become: yes
+  roles:
+    - compute-prep
+
