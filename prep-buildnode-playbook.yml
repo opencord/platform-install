@@ -1,0 +1,18 @@
+---
+# prep-buildnode-playbook.yml
+# Prep build node to create artifacts
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Install docker on buildnode, configure
+  hosts: build
+  roles:
+    - docker-install
+
