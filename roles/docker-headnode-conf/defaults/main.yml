@@ -1,0 +1,5 @@
+---
+# docker-headnode-conf/defaults/main.yml
+
+pki_dir: "{{ playbook_dir }}/pki"
+
