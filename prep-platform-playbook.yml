@@ -19,10 +19,11 @@
     - { role: dns-unbound, when: not on_maas }
     - apt-cacher-ng
 
-- name: Configure all hosts to use DNS server
+- name: Configure all hosts networks and DNS server
   hosts: all
   become: yes
   roles:
+    - { role: interface-config, when: not on_maas }
     - { role: dns-configure, when: not on_maas }
 
 - name: Prep systems
@@ -30,5 +31,4 @@
   become: yes
   roles:
     - common-prep
-    - { role: cloudlab-prep, when: on_cloudlab }
 

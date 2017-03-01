@@ -1,0 +1,9 @@
+auto {{ mgmt_interface }}
+
+iface {{ mgmt_interface }} inet static
+    address {{ mgmt_ipv4_first_octets }}.{{ physical_node_list[ansible_hostname].ipv4.last_octet }}
+    network {{ mgmt_ipv4_first_octets }}.0
+    netmask 255.255.255.0
+    broadcast {{ mgmt_ipv4_first_octets }}.255
+    gateway {{ mgmt_ipv4_first_octets }}.1
+
