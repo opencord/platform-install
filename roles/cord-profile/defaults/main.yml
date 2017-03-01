@@ -1,15 +1,14 @@
 ---
 # cord-profile/defaults/main.yml
 
-cord_dir: "{{ ansible_user_dir + '/cord' }}"
+# where the cord_profile directory is on the build node
 cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
-pki_dir: "/opt/pki"
+
+pki_dir: "{{ playbook_dir }}/pki"
+ssh_pki_dir: "{{ playbook_dir }}/ssh_pki"
 
 deploy_docker_registry: ""
 deploy_docker_tag: "candidate"
-
-# For storing OpenStack images
-image_dir: /opt/images
 
 # used in xos.yaml.j2, if True, other synchronizer container will not be started
 frontend_only: False
@@ -40,8 +39,6 @@ xos_libraries:
 
 xos_services: []
 xos_service_sshkeys: []
-
-xos_images: []
 
 xos_tosca_config_templates: []
 
@@ -80,6 +77,7 @@ xos_admin_last: Admin
 
 site_name: sitename
 site_humanname: "Site HumanName"
+site_suffix: sitename.test
 
 deployment_type: deploymenttype
 

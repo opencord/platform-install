@@ -1,0 +1,17 @@
+---
+# glance-images-playbook.yml
+# Downloads glance images required by profile
+
+- name: Include vars
+  hosts: head
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Download images for Glance
+  hosts: head
+  roles:
+    - glance-images

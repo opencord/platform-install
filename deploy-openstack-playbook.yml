@@ -11,21 +11,21 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
-- name: Configure head node, create containers
+- name: Create containers
   hosts: head
   roles:
-    - { role: head-prep, become: yes }
     - create-lxd
+    - lxd-finish
 
-- name: Start OpenStack install
+- name: Juju OpenStack install
   hosts: head
   roles:
     - juju-setup
+    - juju-finish
 
-# Put plays here that will execute in parallel to
-# the OpenStack installation
-
-- name: Finish OpenStack install
+- name: Deploy compute nodes, create configuration
   hosts: head
   roles:
-    - juju-finish
+    - juju-compute-setup
+    - compute-node-config
+
