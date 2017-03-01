@@ -1,0 +1,15 @@
+---
+# copy-cord/tasks/main.yml
+
+- name: Copy (sync) the CORD directory structure to the head node
+  synchronize:
+    src: "{{ playbook_dir }}/../.."
+    dest: "{{ cord_dir }}"
+
+- name: Set ownership on CORD dir on head node
+  file:
+    dest: "{{ cord_dir }}"
+    state: directory
+    recurse: yes
+    owner: "{{ headnode_user }}"
+
