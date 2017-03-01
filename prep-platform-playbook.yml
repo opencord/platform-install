@@ -11,6 +11,24 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
+- name: Configure head node, create containers
+  hosts: head
+  roles:
+    - { role: head-prep, become: yes }
+
+- name: Configure management network
+  hosts: all
+  become: yes
+  roles:
+    - { role: interface-config, when: not on_maas }
+    - { role: copy-cord, when: copy_cord }
+
+- name: Configure head node management bridge
+  hosts: head
+  become: yes
+  roles:
+    - { role: head-mgmtbr, when: not on_maas }
+
 - name: DNS Server and apt-cacher-ng Setup
   hosts: head
   become: yes
@@ -19,7 +37,7 @@
     - { role: dns-unbound, when: not on_maas }
     - apt-cacher-ng
 
-- name: Configure all hosts to use DNS server
+- name: Configure DNS lookups
   hosts: all
   become: yes
   roles:
@@ -30,5 +48,4 @@
   become: yes
   roles:
     - common-prep
-    - { role: cloudlab-prep, when: on_cloudlab }
 
