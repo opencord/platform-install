@@ -1,0 +1,7 @@
+---
+# compute-prep/defaults/main.yml
+
+ssh_pki_dir: "{{ playbook_dir }}/ssh_pki"
+
+pod_sshkey_name: "headnode"
+
