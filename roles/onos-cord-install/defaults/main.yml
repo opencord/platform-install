@@ -3,12 +3,13 @@
 
 trust_store_pw: 222222
 
-# ONOS 1.7 not tagged yet, but latest is 1.7
+pki_dir: "{{ playbook_dir }}/pki"
+ssh_pki_dir: "{{ playbook_dir }}/ssh_pki"
+
+# you probably don't want "latest", so override this
 onos_docker_image: "onosproject/onos:latest"
 
-onos_cord_dest: "{{ ansible_user_dir }}/onos-cord/"
-
-node_private_key: "{{ ansible_user_dir }}/node_key"
+onos_cord_dest: "/opt/onos_cord/"
 
 # logging_host should be set to DNS or IP addr of logstash host
 logging_host: "cordloghost"
