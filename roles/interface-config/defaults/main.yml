@@ -1,0 +1,9 @@
+---
+# interface-config/defaults/main.yml
+
+mgmt_interface: eth1
+
+mgmt_ipv4_first_octets: "192.168.200"
+
+physical_node_list: []
+
