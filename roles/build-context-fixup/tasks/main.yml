@@ -1,0 +1,14 @@
+---
+# build-context-fixup/tasks/main.yml
+
+- name: Sync chameleon.tmp directories with chameleon repo
+  synchronize:
+    src: "{{ build_cord_dir }}/component/chameleon/"
+    dest: "{{ item }}"
+    delete: yes
+    rsync_opts:
+      - "--exclude=.git"
+  with_items:
+    - "{{ build_cord_dir }}/orchestration/xos/containers/chameleon/tmp.chameleon/"
+    - "{{ build_cord_dir }}/orchestration/xos/containers/xos/tmp.chameleon/"
+
