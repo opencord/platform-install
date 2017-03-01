@@ -20,7 +20,7 @@ topology_template:
     /var/www/src/config/gateway-config.yml:
       type: tosca.nodes.ComponentVolume
       properties:
-          host_path: "{{ cord_profile_dir }}/gateway-config.yml"
+          host_path: "/opt/cord_profile/gateway-config.yml"
           read_only: false
       requirements:
           - xos:

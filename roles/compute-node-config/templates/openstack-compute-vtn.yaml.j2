@@ -29,11 +29,14 @@ topology_template:
 # VTN networking for OpenStack Compute Nodes
 {% for node in groups["compute"] %}
 {% if (('ipv4' in hostvars[node]['ansible_fabric']) or
-       ('ipv4' in hostvars[node]['ansible_br_int'])) %}
+       ('ipv4' in hostvars[node]['ansible_br_int']) or
+       ('ipv4' in hostvars[node][opencloud_external_interface])) %}
 {% if ('ipv4' in hostvars[node]['ansible_fabric']) %}
 {% set node_interface = hostvars[node]['ansible_fabric'] %}
 {% else %}
 {% set node_interface = hostvars[node]['ansible_br_int'] %}
+{% else %}
+{% set node_interface = hostvars[node][opencloud_external_interface] %}
 {% endif %}
 
 # Compute node, fully defined in compute-nodes.yaml
