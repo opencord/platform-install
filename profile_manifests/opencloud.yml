@@ -22,7 +22,7 @@ xos_tosca_config_templates:
   - vtn-service.yaml
   - management-net.yaml
 
-cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
+cord_profile_dir: "/opt/cord_profile"
 
 xos_docker_volumes:
   - host: "{{ cord_profile_dir }}/images"
@@ -83,6 +83,7 @@ nsd_zones:
     aliases:
       - { name: "ns1" , dest: "head" }
       - { name: "ns" , dest: "head" }
+      - { name: "loghost" , dest: "head" }
       - { name: "apt-cache" , dest: "head" }
 
 name_on_public_interface: head
@@ -96,6 +97,7 @@ management_network_ip: 172.27.0.1/24
 data_plane_ip: 10.168.0.253/24
 
 on_maas: False
+on_cloudlab: False
 
 run_dist_upgrade: True
 
@@ -118,6 +120,7 @@ apt_ssl_sites:
   - apt.dockerproject.org
   - butler.opencloud.cs.arizona.edu
   - deb.nodesource.com
+  - artifacts.elastic.co
 
 charm_versions:
   neutron-api: "cs:~cordteam/trusty/neutron-api-3"
