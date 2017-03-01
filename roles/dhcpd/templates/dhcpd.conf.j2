@@ -1,0 +1,65 @@
+# dhcpd.conf
+# Managed by Ansible!
+
+{% if dns_search %}
+option domain-name "{{ dns_search[0] }}";
+option domain-search "{{ dns_search | join('", "') }}";
+{% endif %}
+
+{% if dns_servers %}
+option domain-name-servers {{ dns_servers | join(", ") }};
+{% endif %}
+
+{% for subnet in dhcpd_subnets %}
+subnet {{ subnet.cidr | ipaddr('network') }} netmask {{ subnet.cidr | ipaddr('netmask') }} {
+  option routers {{ subnet.router | default(subnet.cidr | ipaddr('1') | ipaddr('address')) }};
+  range {{ subnet.cidr | ipaddr(subnet.dhcp_first | default("129")) | ipaddr('address') }} {{ subnet.cidr | ipaddr(subnet.dhcp_last | default("254")) | ipaddr('address') }};
+{% if subnet.dns_search is defined %}
+  option domain-name {{ subnet.dns_search [0] }};
+  option domain-search {{ subnet.dns_search| join(", ") }};
+{% endif %}
+{% if subnet.dns_servers is defined %}
+  option domain-name-servers {{ subnet.dns_servers | join(", ") }};
+{% endif %}
+  default-lease-time {{ subnet.lease_time | default("240") }};
+  max-lease-time {{ subnet.max_lease_time | default("480") }};
+{% if subnet.pxe_filename is defined %}
+  filename "{{ subnet.pxe_filename }}";
+  next-server {{ subnet.tftp_server | default(subnet.cidr | ipaddr('1') | ipaddr('address')) }};
+{% endif %}
+{% if subnet.static_nodes is defined %}
+  # hosts from list: static_nodes
+{% for node in subnet.static_nodes %}
+  host {{ node.name }} {
+    option host-name "{{ node.name }}";
+{% set host_ipaddr = (subnet.cidr | ipaddr(node.ipv4_last_octet) | ipaddr('address')) %}
+    fixed-address {{ host_ipaddr }};
+    hardware ethernet {{ node.hwaddr | default(hwaddr_prefix ~ (host_ipaddr | ip4_hex)) | hwaddr('unix') }};
+{% if node.pxe_filename is defined %}
+    filename "{{ node.pxe_filename }}";
+    next-server {{ subnet.tftp_server | default(subnet.cidr | ipaddr('1') | ipaddr('address')) }};
+{% endif %}
+  }
+{% endfor %}
+{% endif %}
+{% if subnet.other_static is defined %}
+{% for hostlist in subnet.other_static %}
+  # hosts from list: {{ hostlist }}
+{% set nodes = vars[hostlist] %}
+{% for node in nodes %}
+  host {{ node.name }} {
+    option host-name "{{ node.name }}";
+{% set host_ipaddr = (subnet.cidr | ipaddr(node.ipv4_last_octet) | ipaddr('address')) %}
+    fixed-address {{ host_ipaddr }};
+    hardware ethernet {{ node.hwaddr | default(hwaddr_prefix ~ (host_ipaddr | ip4_hex)) | hwaddr('unix') }};
+{% if node.pxe_filename is defined %}
+    filename "{{ subnet.pxe_filename }}";
+    next-server {{ subnet.tftp_server | default(subnet.cidr | ipaddr('1') | ipaddr('address')) }};
+{% endif %}
+  }
+{% endfor %}
+{% endfor %}
+{% endif %}
+}
+
+{% endfor %}

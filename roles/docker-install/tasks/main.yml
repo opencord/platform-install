@@ -5,9 +5,9 @@
 - name: Prereqs and SSL support for apt for SSL
   become: yes
   apt:
-    name={{ item }}
-    update_cache=yes
-    cache_valid_time=3600
+    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
   with_items:
     - apt-transport-https
     - ca-certificates
@@ -26,9 +26,9 @@
 - name: Install docker
   become: yes
   apt:
-    update_cache=yes
-    cache_valid_time=3600
-    name=docker-engine
+    name: docker-engine
+    update_cache: yes
+    cache_valid_time: 3600
 
 # docker fails without docker-py, docker-compose >1.9 fails with docker-py installed
 - name: Install docker-compose and docker-py
@@ -45,4 +45,72 @@
     name: "{{ ansible_user_id }}"
     groups: "docker"
     append: yes
+
+- name: Copy over dockerd SSL keys
+  become: yes
+  copy:
+    src: "{{ item.src }}"
+    dest:  "/etc/docker/{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner: root
+    group: root
+  with_items:
+    - src: "{{ pki_dir }}/root_ca/certs/ca_cert.pem"
+      dest: "ca_cert.pem"
+      mode: "0444"
+    - src: "{{ pki_dir }}/intermediate_ca/certs/docker.{{ site_suffix }}_cert_chain.pem"
+      dest: "docker_server.pem"
+      mode: "0444"
+    - src: "{{ pki_dir }}/intermediate_ca/private/docker.{{ site_suffix }}_key.pem"
+      dest: "docker_server_key.pem"
+      mode: "0400"
+
+- name: Create dockerd config that requires SSL auth
+  become: yes
+  template:
+    src: "docker.j2"
+    dest: "/etc/default/docker"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - docker-restart
+
+- name: Create the ~/.docker file if it doesn't exist
+  file:
+    dest:  "~/.docker"
+    state: directory
+    owner:  "{{ ansible_user_id }}"
+
+- name: Copy over docker client SSL keys
+  copy:
+    src: "{{ item.src }}"
+    dest:  "{{ ansible_user_dir }}/.docker/{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner:  "{{ ansible_user_id }}"
+  with_items:
+    - src: "{{ pki_dir }}/root_ca/certs/ca_cert.pem"
+      dest: "ca.pem"
+      mode: "0444"
+    - src: "{{ pki_dir }}/intermediate_ca/certs/dockerclient_cert_chain.pem"
+      dest: "cert.pem"
+      mode: "0444"
+    - src: "{{ pki_dir }}/intermediate_ca/private/dockerclient_key.pem"
+      dest: "key.pem"
+      mode: "0400"
+
+- name: Create ~/.docker/config.json file
+  template:
+    src: config.json.j2
+    dest: "{{ ansible_user_dir }}/.docker/config.json"
+    owner:  "{{ ansible_user_id }}"
+    mode: 0444
+
+- name: Configure docker CLI tool to verify TLS and use docker host
+  lineinfile:
+    dest: "{{ ansible_user_dir }}/.profile"
+    regexp: "^export DOCKER_TLS_VERIFY"
+    line: "export DOCKER_TLS_VERIFY=1 DOCKER_HOST=tcp://docker.{{ site_suffix }}:2376"
+    create: yes
+    insertafter: EOF
 
