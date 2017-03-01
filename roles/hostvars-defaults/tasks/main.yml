@@ -1,0 +1,17 @@
+---
+# hostvars-defaults/tasks/main.yml
+# Sets default variables in multiple hosts to allow them to accessed on other
+# hosts via the hostvars['otherhost']['defaultvar']
+
+- name: List host group specific values of default variables
+  debug:
+    var: "{{ item }}"
+  with_items:
+    - config_cord_dir
+    - build_cord_dir
+    - head_cord_dir
+    - config_cord_profile_dir
+    - head_cord_profile_dir
+    - head_onos_cord_dir
+    - head_onos_fabric_dir
+
