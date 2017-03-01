@@ -1,7 +1,7 @@
 ---
 # xos-docker-images/defaults/main.yml
 
-pki_dir: "/opt/pki"
+pki_dir: "{{ playbook_dir }}/pki"
 cord_dir: "{{ ansible_user_dir + '/cord' }}"
 
 build_xos_base_image: False
