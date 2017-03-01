@@ -90,45 +90,45 @@ topology_template:
     Customize:
       type: tosca.nodes.DashboardView
       properties:
-          url: template:xosDashboardManager
-          custom_icon: true
+        url: template:xosDashboardManager
+        custom_icon: true
 
     Diagnostic:
       type: tosca.nodes.DashboardView
       properties:
-          url: template:xosDiagnostic
-          custom_icon: true
+        url: template:xosDiagnostic
+        custom_icon: true
 
     Truckroll:
       type: tosca.nodes.DashboardView
       properties:
-          url: template:xosTruckroll
-          custom_icon: true
+        url: template:xosTruckroll
+        custom_icon: true
 
     Monitoring:
       type: tosca.nodes.DashboardView
       properties:
-          url: template:xosCeilometerDashboard
+        url: template:xosCeilometerDashboard
 
     Subscribers:
       type: tosca.nodes.DashboardView
       properties:
-          url: template:xosSubscribers
+        url: template:xosSubscribers
 
     Tenant:
       type: tosca.nodes.DashboardView
       properties:
-          url: template:xosTenant
+        url: template:xosTenant
 
     Developer:
       type: tosca.nodes.DashboardView
       properties:
-          url: template:xosDeveloper
+        url: template:xosDeveloper
 
     Services Grid:
       type: tosca.nodes.DashboardView
       properties:
-          url: template:xosServiceGrid
+        url: template:xosServiceGrid
 
 # -----------------------------------------------------------------------------
 # Network Templates
@@ -137,20 +137,20 @@ topology_template:
     Private:
       type: tosca.nodes.NetworkTemplate
       properties:
-          visibility: private
-          translation: none
+        visibility: private
+        translation: none
 
     Public shared IPv4:
       type: tosca.nodes.NetworkTemplate
       properties:
-          visibility: private
-          translation: NAT
-          shared_network_name: nat-net
+        visibility: private
+        translation: NAT
+        shared_network_name: nat-net
 
     Public dedicated IPv4:
       type: tosca.nodes.NetworkTemplate
       properties:
-          visibility: public
-          translation: none
-          shared_network_name: ext-net
+        visibility: public
+        translation: none
+        shared_network_name: ext-net
 
