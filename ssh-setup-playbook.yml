@@ -1,0 +1,19 @@
+---
+# Create a SSH CA and client/host keypairs
+
+- name: Include vars
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Create SSH CA and keypairs
+  hosts: localhost
+  connection: local
+  roles:
+    - ssh-pki
+

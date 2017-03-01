@@ -26,7 +26,7 @@ server:
 {% if unbound_interfaces is defined %}
   # allow from local networks
 {% for cidr_ipv4 in unbound_interfaces %}
-  access-control: {{ cidr_ipv4 }} allow
+  access-control: {{ cidr_ipv4 | ipaddr('0') }} allow
 {% endfor %}
 {% endif %}
 
