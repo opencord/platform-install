@@ -1,5 +1,5 @@
 ---
-# copy-profile-book.yml
+# copy-profile-playbook.yml
 # Copies the profile to the head node
 
 - name: Include vars
@@ -11,13 +11,18 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
+- name: Set hostvars with defaults for each node
+  hosts: head, config
+  roles:
+    - hostvars-defaults
+
 - name: Copy cord_profile to head node from config node
   hosts: head
   roles:
     - { role: copy-profile, become: yes }
     - { role: ssh-install, become: yes }
-    - { role: glance-images, become: yes }
-    - { role: copy-credentials, become: yes, when: on_maas }
+    - { role: glance-images, become: yes, when: on_maas }
+    - { role: copy-credentials, become: yes }
 
 - name: Install ssh keys when using MaaS
   hosts: build
