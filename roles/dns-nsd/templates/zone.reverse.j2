@@ -1,9 +1,9 @@
 ;## NSD authoritative only DNS
 ;## REVERSE Zone for {{ item.name }}
+;# created by ansible
 
 $ORIGIN {{ item.name }}. ; default zone domain
 $TTL {{ item.ttl | default(dns_ttl) }} ; default time to live
-
 
 {{ (item.ipv4_first_octets ~ ".0") | ipaddr('revdns') | regex_replace('^0\.','') }} IN SOA {{ item.soa }}.{{ item.name }}. admin.{{ item.name }}. (
          {{ item.serial | default(ansible_date_time.epoch) }}   ; Serial, must be incremented every time you change this file
@@ -13,9 +13,18 @@ $TTL {{ item.ttl | default(dns_ttl) }} ; default time to live
          60          ; Min TTL [1m]
          )
 
-{% set nodes = vars[item.nodelist] %}
+; -- PTR records --
 
-;PTR records
+; from list of nodes
+{% set nodes = vars[item.nodelist] %}
 {% for node in nodes %}
 {{ (item.ipv4_first_octets ~ "." ~ node.ipv4_last_octet) | ipaddr('revdns') }} IN PTR {{ node.name }}
 {% endfor %}
+
+; from extra records
+{% if item.extra_records is defined %}
+{% for extra in item.extra_records %}
+{{ item.ipv4_first_octets ~ "." ~ extra.ipv4_last_octet | ipaddr('revdns') }} IN PTR {{ extra.name }}
+{% endfor %}
+{% endif %}
+
