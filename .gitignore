@@ -1,5 +1,7 @@
 credentials/*
 cord_profile/
+*.retry
+*.swp
 
 # Java
 *.class
