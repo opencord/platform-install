@@ -1,0 +1,21 @@
+---
+# openstack-onboard-playbook.yml
+# Onboards OpenStack service into XOS
+
+- name: Include vars
+  hosts: head
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- include: add-onboard-containers-playbook.yml
+
+- name: Onboard OpenStack into XOS
+  hosts: xos_ui
+  connection: docker
+  roles:
+    - compute-node-enable
+
