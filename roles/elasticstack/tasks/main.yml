@@ -1,0 +1,56 @@
+---
+# elasticstack/tasks/main.yml
+
+- name: Add ElasticStack apt-key
+  apt_key:
+    data: "{{ lookup('file','elastic.asc') }}"
+    state: present
+
+- name: Add ElasticStack repositories
+  apt_repository:
+    repo: "deb https://artifacts.elastic.co/packages/5.x/apt stable main"
+
+- name: Install ElasticStack
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - elasticsearch
+    - kibana
+    - logstash
+
+- name: Configure Kibana for HTTP proxy
+  lineinfile:
+    dest: /etc/kibana/kibana.yml
+    regexp: '^server.basePath:'
+    line: 'server.basePath: "/kibana"'
+    insertafter: '^#server.basePath*'
+  notify:
+    - restart kibana
+
+- name: Configure Logstash inputs and outputs
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/logstash/conf.d/{{ item }}"
+    owner: root
+    group: root
+    mode: "0644"
+  with_items:
+    - 10-udp-input.conf
+    - 11-log4j-input.conf
+    - 12-syslog-input.conf
+    - 30-elasticsearch-output.conf
+  notify:
+    - restart logstash
+
+- name: Start ElasticStack
+  service:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  with_items:
+    - logstash
+    - elasticsearch
+    - kibana
+
