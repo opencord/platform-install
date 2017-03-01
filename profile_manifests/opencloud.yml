@@ -65,11 +65,6 @@ server_certs:
     altnames:
       - "DNS:xos-core.{{ site_suffix }}"
 
-# docker registry users
-docker_registry_users:
-  - name: "{{ xos_admin_user }}"
-    password: "{{ xos_admin_pass }}"
-
 # Network/DNS settings
 site_suffix: generic.infra.opencloud.us
 
