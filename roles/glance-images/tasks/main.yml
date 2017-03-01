@@ -1,0 +1,33 @@
+---
+# glance-images/tasks/main.yml
+
+- name: Make images directory
+  when: use_openstack
+  become: yes
+  file:
+    path: "{{ image_dir }}"
+    state: directory
+    mode: 0755
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+
+- name: Download Glance VM images
+  when: use_openstack
+  get_url:
+    url: "{{ item.url }}"
+    checksum: "{{ item.checksum }}"
+    dest: "{{ image_dir }}/{{ item.name }}.qcow2"
+  with_items: "{{ xos_images }}"
+  register: glance_vm_result
+  until: glance_vm_result|success
+  retries: 5
+  delay: 10
+
+- name: Copy Glance VM images to profile directory
+  when: use_openstack
+  copy:
+    remote_src: yes
+    src: "{{ image_dir }}/{{ item.name }}.qcow2"
+    dest: "/opt/cord_profile/images/{{ item.name }}.qcow2"
+  with_items: "{{ xos_images }}"
+

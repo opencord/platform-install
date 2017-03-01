@@ -30,7 +30,7 @@
 
 - name: Create the BUILD directory
   file:
-    path: "{{ cord_dir | realpath }}/orchestration/xos/containers/xos/BUILD"
+    path: "{{ build_cord_dir | realpath }}/orchestration/xos/containers/xos/BUILD"
     state: directory
     mode: 0755
 
@@ -41,9 +41,9 @@
   shell: >
     docker run
     --rm
-    -v {{ cord_dir | realpath }}:/opt/cord
-    -v {{ cord_dir | realpath }}/orchestration/xos/containers/xos/BUILD:/opt/xos_corebuilder/BUILD
-    xosproject/xos-corebuilder:candidate
+    -v {{ build_cord_dir | realpath }}:/opt/cord
+    -v {{ build_cord_dir ~ "/orchestration/xos/containers/xos/BUILD" | realpath }}:/opt/xos_corebuilder/BUILD
+    xosproject/xos-corebuilder:{{ build_docker_tag }}
     {{ recipes_string }}
   tags:
    - skip_ansible_lint # running a build task
@@ -51,7 +51,7 @@
 - name: Build UI image
   docker_image:
     name: "xosproject/xos-ui"
-    path: "{{ cord_dir | realpath }}/orchestration/xos"
+    path: "{{ build_cord_dir | realpath }}/orchestration/xos"
     tag: "{{ build_docker_tag }}"
     dockerfile: "containers/xos/Dockerfile.UI"
     pull: False

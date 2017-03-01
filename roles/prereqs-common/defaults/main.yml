@@ -17,7 +17,7 @@ dns_roots:
   - 199.7.91.13
 
 http_dl_url: "http://cord.staging.wpengine.com/wp-content/uploads/2016/07/cord-tm-logo.png"
-http_dl_cksum: "sha256:9a69c741a4bb609ad7e49bd0fd335a95db2e66dc0d72866569e11385df9dcc28"
+http_dl_cksum: "sha256:099c777e4c8ad76a066299159622b4fa6bd2515cefafc2851df67f7f4cce6ee8"
 
 https_dl_url: "https://jenkins.opencord.org/static/8d0f081d/images/headshot.png"
 https_dl_cksum: "sha256:690e82fb98ffb2b4b232d9b9cf9cc52eb7972e56a84902f6d1150b75456058c6"
