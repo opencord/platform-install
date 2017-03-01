@@ -11,24 +11,30 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
-- name: DNS Server and apt-cacher-ng Setup
+- name: Head node prep
+  hosts: head
+  roles:
+    - { role: head-prep, become: yes }
+
+- name: Configure management network on all nodes
+  hosts: all
+  become: yes
+  roles:
+    - { role: interface-config, when: not on_maas }
+
+- name: Head node setup, mgmtbr, DNS servers, apt-cacher-ng
   hosts: head
   become: yes
   roles:
-    - { role: dns-nsd, when: not on_maas }
+    - { role: head-mgmtbr, when: not on_maas }
     - { role: dns-unbound, when: not on_maas }
+    - { role: dns-nsd, when: not on_maas }
     - apt-cacher-ng
 
-- name: Configure all hosts to use DNS server
+- name: Configure DNS lookups on all nodes, prep
   hosts: all
   become: yes
   roles:
     - { role: dns-configure, when: not on_maas }
-
-- name: Prep systems
-  hosts: all
-  become: yes
-  roles:
     - common-prep
-    - { role: cloudlab-prep, when: on_cloudlab }
 
