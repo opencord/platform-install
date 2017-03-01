@@ -1,0 +1,7 @@
+---
+# create-lxd-opencloud/defaults/main.yml
+
+hwaddr_prefix: "c2a4"
+
+ssh_pki_dir: "/opt/ssh_pki"
+

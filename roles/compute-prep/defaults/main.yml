@@ -1,0 +1,5 @@
+---
+# compute-prep/defaults/main.yml
+
+ssh_pki_dir: "/opt/ssh_pki"
+

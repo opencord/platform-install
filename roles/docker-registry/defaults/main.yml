@@ -1,0 +1,12 @@
+---
+# docker-registry/defaults/main.yml
+
+docker_registry_image: "registry:2"
+docker_registry_ext_port: "5000"
+
+docker_registry_htpaswd_realm: "CORD Registry"
+
+docker_registry_users: []
+
+pki_dir: "/opt/ssh_pki"
+
