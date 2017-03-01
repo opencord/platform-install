@@ -1,59 +1,56 @@
 ---
 # juju configuration file for OpenCloud deployments
 
-ceilometer: {}
+ceilometer:
+  openstack-origin: "cloud:trusty-kilo"
 
 ceilometer-agent: {}
 
 glance:
   openstack-origin: "cloud:trusty-kilo"
+  ha-mcastport: 5402
 
 keystone:
+  openstack-origin: "cloud:trusty-kilo"
   admin-password: "{{ keystone_admin_password }}"
   os-public-hostname: "keystone.{{ site_suffix }}"
+  ha-mcastport: 5403
   use-https: "yes"
-  openstack-origin: "cloud:trusty-kilo"
-  ssl_key: {{ lookup('file', '{{ pki_dir }}/keystone.{{ site_suffix }}_key.pem') | b64encode }}
-  ssl_cert: {{ lookup('file', '{{ pki_dir }}/keystone.{{ site_suffix }}_cert_chain.pem') | b64encode }}
-  ssl_ca: {{ lookup('file', '{{ pki_dir }}/im_cert_chain.pem') | b64encode }}
+  ssl_key: {{ lookup('file', '{{ pki_dir }}/{{ site_name }}_im_ca/private/keystone.{{ site_suffix }}_key.pem') | b64encode }}
+  ssl_cert: {{ lookup('file', '{{ pki_dir }}/{{ site_name }}_im_ca/certs/keystone.{{ site_suffix }}_cert.pem') | b64encode }}
+  ssl_ca: {{ lookup('file', '{{ pki_dir }}//{{ site_name }}_im_ca/certs/im_cert_chain.pem') | b64encode }}
 
 mongodb: {}
 
 neutron-api:
-  flat-network-providers: "*"
   openstack-origin: "cloud:trusty-kilo"
-  vlan-ranges: "physnet1:1000:2000 nat"
+  neutron-plugin: onosvtn
+  onos-vtn-ip: onos-cord
+  onos-vtn-port: 8182
+  neutron-security-groups: "True"
+  overlay-network-type: vxlan
 
-neutron-gateway:
-  bridge-mappings: "physnet1:br-data nat:br-nat"
-  flat-network-providers: "*"
-  instance-mtu: "1400"
-  openstack-origin: "cloud:trusty-kilo"
-  vlan-ranges: "physnet1:1000:2000 nat"
-
-neutron-openvswitch:
-  bridge-mappings: "physnet1:br-data nat:br-nat"
-  disable-security-groups: "True"
-  flat-network-providers: "*"
-  vlan-ranges: "physnet1:1000:2000 nat"
+neutron-openvswitch: {}
 
 nova-cloud-controller:
-  console-access-protocol: "novnc"
-  network-manager: "Neutron"
   openstack-origin: "cloud:trusty-kilo"
+  config-flags: "force_config_drive=always"
+  console-access-protocol: novnc
+  network-manager: Neutron
 
 nova-compute:
+  openstack-origin: "cloud:trusty-kilo"
   virt-type: kvm
   config-flags: "firewall_driver=nova.virt.firewall.NoopFirewallDriver"
-  openstack-origin: "cloud:trusty-kilo"
 
-ntp:
-  source: "0.ubuntu.pool.ntp.org 1.ubuntu.pool.ntp.org 2.ubuntu.pool.ntp.org 3.ubuntu.pool.ntp.org"
+ntp: {}
 
 openstack-dashboard:
   openstack-origin: "cloud:trusty-kilo"
 
-percona-cluster: {}
+percona-cluster:
+  max-connections: 20000
 
 rabbitmq-server:
   ssl: "on"
+
