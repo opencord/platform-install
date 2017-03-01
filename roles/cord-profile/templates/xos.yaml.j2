@@ -29,7 +29,7 @@ topology_template:
     /opt/xos/xos_configuration/xos_common_config:
       type: tosca.nodes.XOSVolume
       properties:
-          host_path: {{ cord_profile_dir }}/xos_common_config
+          host_path: /opt/cord_profile/xos_common_config
           read_only: True
       requirements:
           - xos:
@@ -39,7 +39,7 @@ topology_template:
     /opt/cord_profile:
       type: tosca.nodes.XOSVolume
       properties:
-          host_path: {{ cord_profile_dir }}
+          host_path: /opt/cord_profile
           read_only: True
       requirements:
           - xos:
@@ -50,7 +50,7 @@ topology_template:
     /opt/xos_libraries/{{ library }}:
       type: tosca.nodes.XOSVolume
       properties:
-          host_path: {{ cord_dir }}/orchestration/xos_libraries/{{ library }}
+          host_path: /opt/cord/orchestration/xos_libraries/{{ library }}
           read_only: True
       requirements:
           - xos:
@@ -64,7 +64,7 @@ topology_template:
     /opt/xos_services/{{ service.path | basename }}:
       type: tosca.nodes.XOSVolume
       properties:
-          host_path: {{ cord_dir }}/{{ service.path }}
+          host_path: /opt/cord/{{ service.path }}
           read_only: {{ service.read_only | default("True") }}
       requirements:
           - xos:
