@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  registry:
+    restart: always
+    image: {{ docker_registry_image }}
+    ports:
+      - {{ docker_registry_ext_port }}:5000
+    environment:
+      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/docker_registry.pem
+      REGISTRY_HTTP_TLS_KEY: /certs/docker_registry_key.pem
+      REGISTRY_AUTH: htpasswd
+      REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
+      REGISTRY_AUTH_HTPASSWD_REALM: {{ docker_registry_htpaswd_realm }}
+    volumes:
+      - /etc/docker/registry/certs:/certs
+      - /etc/docker/registry/auth:/auth
+
