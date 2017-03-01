@@ -1,5 +1,6 @@
 ;## NSD authoritative only DNS
 ;## FORWARD Zone
+;# created by ansible
 
 $ORIGIN {{ item.name }}. ; default zone domain
 $TTL {{ item.ttl | default(dns_ttl) }} ; default time to live
@@ -37,4 +38,11 @@ $TTL {{ item.ttl | default(dns_ttl) }} ; default time to live
 {% endfor %}
 {% endif %}
 {% endfor %}
+
+; from extra records
+{% if item.extra_records is defined %}
+{% for extra in item.extra_records %}
+{{ extra.name }}    IN    A    {{ item.ipv4_first_octets ~ "." ~ extra.ipv4_last_octet }}
+{% endfor %}
+{% endif %}
 
