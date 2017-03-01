@@ -5,6 +5,7 @@ cert_size: 2048
 cert_digest: "sha256"
 cert_days: 180
 
-# list of server certificates to create
+# lists of certificates to create
 server_certs: []
+client_certs: []
 
