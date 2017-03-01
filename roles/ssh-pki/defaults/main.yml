@@ -1,0 +1,20 @@
+---
+# ssh-pki/tasks/main.yml
+
+pki_dir: "/opt/pki"
+ssh_pki_dir: "/opt/ssh_pki"
+credentials_dir: "/opt/credentials"
+
+# password on SSH CA
+ssh_ca_phrase: "{{ lookup('password', credentials_dir ~ '/ssh_ca_phrase length=64') }}"
+
+# ssh-keygen parameters
+ssh_keytype: rsa
+ssh_keysize: 4096
+
+# lists of keys to generate
+ssh_client_genkeys:
+  - name: headnode
+
+ssh_host_genkeys: []
+
