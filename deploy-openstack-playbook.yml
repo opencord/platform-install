@@ -3,7 +3,7 @@
 # Deploys OpenStack in LXD containers on the CORD head node
 
 - name: Include vars
-  hosts: all, localhost
+  hosts: all
   tasks:
     - name: Include variables
       include_vars: "{{ item }}"
@@ -11,21 +11,20 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
-- name: Configure head node, create containers
+- name: Create LXD containers
   hosts: head
+  become: yes
   roles:
-    - { role: head-prep, become: yes }
     - create-lxd
 
-- name: Start OpenStack install
+- name: Finish container configuration
+  hosts: head
+  roles:
+    - lxd-finish
+
+- name: Juju OpenStack install
   hosts: head
   roles:
     - juju-setup
-
-# Put plays here that will execute in parallel to
-# the OpenStack installation
-
-- name: Finish OpenStack install
-  hosts: head
-  roles:
     - juju-finish
+

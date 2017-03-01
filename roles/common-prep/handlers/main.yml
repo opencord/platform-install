@@ -1,9 +1,10 @@
 ---
-# file: roles/common-prep/handlers/main.yml
+# file: common-prep/handlers/main.yml
 
 # from https://support.ansible.com/hc/en-us/articles/201958037-Reboot-a-server-and-wait-for-it-to-come-back
 - name: restart host
-  shell: sleep 2 && shutdown -r now "Ansible updates triggered"
+  shell: >
+    sleep 2 && shutdown -r now "Ansible updates triggered"
   async: 1
   poll: 0
   ignore_errors: true
@@ -12,8 +13,10 @@
 - name: wait for host
   become: false
   local_action:
-     wait_for host={{ inventory_hostname }}
+     wait_for
+     host={{ inventory_hostname }}
      port=22
-     delay=60 timeout=600
-     state=started
+     search_regex=OpenSSH
+     delay=60
+     timeout=600
 
