@@ -33,6 +33,13 @@
     mode: 0600
     remote_src: True
 
+- name: Copy ssh public key to node_key.pub file
+  copy:
+    src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey.pub"
+    dest: "{{ config_cord_profile_dir }}/node_key.pub"
+    mode: 0600
+    remote_src: True
+
 - name: Copy ssh private key to key_import directory for services that require it
   copy:
     src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey"
