@@ -15,6 +15,7 @@ xos_admin_last: Admin
 xos_users: []
 
 use_vtn: True
+use_fabric: True
 
 xos_tosca_config_templates:
   - openstack.yaml
