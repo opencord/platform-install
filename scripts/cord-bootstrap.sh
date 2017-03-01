@@ -13,7 +13,7 @@ function bootstrap() {
   then
     echo "Installing Ansible..."
     sudo apt-get update
-    sudo apt-get install -y software-properties-common
+    sudo apt-get install -y software-properties-common apt-transport-https
     sudo apt-add-repository -y ppa:ansible/ansible
     sudo apt-get update
     sudo apt-get install -y ansible python-netaddr
