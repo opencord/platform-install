@@ -1,0 +1,57 @@
+---
+# ssh-pki/tasks/main.yml
+
+- Create SSH CA Directory
+  file:
+    dest: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    mode: 0700
+  with_items:
+    - "{{ ssh_pki_dir }}"
+    - "{{ ssh_pki_dir }}/ca"
+    - "{{ ssh_pki_dir }}/certs"
+
+- name: Generate SSH CA Cert
+  command: >
+    ssh-keygen
+      -q -N "{{ ssh_ca_phrase }}"
+      -t {{ ssh_keytype }}
+      -b {{ ssh_keysize }}
+      -c "CORD SSH CA"
+      -f {{ ssh_pki_dir }}/ca/cord_ssh_ca_cert
+  args:
+    creates: "{{ ssh_pki_dir }}/ca/cord_ssh_ca_cert.pub"
+
+- name: Generate SSH Client Certs
+  command: >
+    ssh-keygen
+      -q -N ""
+      -t {{ item.keytype | default(ssh_keytype) }}
+      -b {{ item.keysize | default(ssh_keysize) }}
+      -c "CORD SSH client key for {{ item.name }}"
+      -I "{{ item.name }}"
+      -n "{{ item.name }}"
+      -s {{ ssh_pki_dir }}/ca/cord_ssh_ca_cert
+      -f {{ ssh_pki_dir }}/client_certs/{{ item.name }}_sshkey
+  args:
+    creates: "{{ ssh_pki_dir }}/certs/{{ item.name }}_sshkey"
+    with_items: "{{ ssh_client_genkeys }}"
+    register: client_ssh_keys_generated
+
+- name: Generate SSH Host Certs
+  command: >
+    ssh-keygen
+      -q -N "" -h
+      -t {{ item.keytype | default(ssh_keytype) }}
+      -b {{ item.keysize | default(ssh_keysize) }}
+      -c "CORD SSH host key for {{ item.name }}"
+      -I "{{ item.name }}"
+      -n "{{ item.name }}"
+      -s {{ ssh_pki_dir }}/ca/cord_ssh_ca_cert
+      -f {{ ssh_pki_dir }}/host_certs/{{ item.name }}_sshkey
+  args:
+    creates: "{{ ssh_pki_dir }}/certs/host_{{ item.name }}_sshkey"
+    with_items: "{{ ssh_host_genkeys }}"
+    register: host_ssh_keys_generated
+
