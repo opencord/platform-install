@@ -1,0 +1,38 @@
+---
+# apache-proxy/tasks/main.yml
+
+- name: Install Apache
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - apache2
+    - apache2-utils
+
+- name: Enable Apache2 Modules
+  apache2_module:
+    name: "{{ item }}"
+  notify: reload apache2
+  with_items:
+    - proxy
+    - proxy_http
+    - proxy_wstunnel
+    - rewrite
+    - headers
+
+- name: Apache configuration for CORD sites
+  copy:
+    src: files/cord-http.conf
+    dest: /etc/apache2/conf-available/cord-http.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: reload apache2
+
+- name: Enable CORD Apache Configuration
+  command: a2enconf cord-http
+  register: en_cord_http
+  changed_when: en_cord_http.stdout.find('already enabled') == -1
+  notify: reload apache2
+
