@@ -43,10 +43,14 @@
     url: "{{ http_dl_url }}"
     checksum: "{{ http_dl_cksum }}"
     dest: /tmp/http_dl_check
+  retries: 3
+  delay: 1
 
 - name: HTTPS Download Check
   get_url:
     url: "{{ https_dl_url }}"
     checksum: "{{ https_dl_cksum }}"
     dest: /tmp/https_dl_check
+  retries: 3
+  delay: 1
 
