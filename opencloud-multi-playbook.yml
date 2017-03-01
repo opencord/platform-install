@@ -14,55 +14,48 @@
 - name: Turn on virtualization
   hosts: all
   become: yes
-    - dell-virt
-
-- name: Check prerequisites
-  hosts: all
   roles:
-    - prereqs-common
+   - { role: dell-virt, when: not virtual_install }
 
-- name: DNS Server and apt-cacher-ng Setup
+- include: pki-setup-playbook.yml
+- include: prep-platform-playbook.yml
+
+- name: Install Docker
+  hosts: head
+  roles:
+    - docker-install
+
+- name: Install ElasticStack, Apache proxy, DHCP server
   hosts: head
   become: yes
   roles:
-    - dns-nsd
-    - dns-unbound
-    - apt-cacher-ng
+    - java-oracle
+    - elasticstack
+    - apache-proxy
+    - dhcpd
 
-- name: Use the new DNS server, prep systems
-  hosts: all
+- name: Create LXD containers
+  hosts: head
   become: yes
   roles:
-    - dns-configure
-    - common-prep
+    - create-lxd-opencloud
 
-- name: Configure head node, configure virtualization
+- name: Test LXD containers
   hosts: head
   roles:
-    - { role: head-prep, become: yes }
-    - { role: config-virt, become: yes }
+    - lxd-tests
 
-- name: Create LXD's, Configure Juju, install XOS
+- name: Install OpenStack with Juju
   hosts: head
   roles:
-    - create-lxd
-    - onos-vm-install
     - juju-setup
-    - juju-finish
-    - cord-profile
-    - xos-docker-images
-    - xos-bootstrap
-    - docker-compose
-    - xos-head-start
 
-- name: Configure compute nodes
-  hosts: compute
-  become: yes
-  roles:
-    - compute-prep
+- include: deploy-xos-playbook.yml
 
-- name: Deploy compute nodes
+- name: Finish OpenStack install
   hosts: head
   roles:
-    - juju-compute-setup
+    - juju-finish
+
+- include: cord-compute-playbook.yml
 
