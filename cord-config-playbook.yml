@@ -1,9 +1,9 @@
 ---
-# Create a SSL CA for CORD pod use
+# cord-config-playbook.yml
+# Creates all configuration for a CORD pod
 
 - name: Include vars
-  hosts: localhost
-  connection: local
+  hosts: all
   tasks:
     - name: Include variables
       include_vars: "{{ item }}"
@@ -11,11 +11,16 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
-- name: Create Root CA, Intermediate CA, Server certs
-  hosts: localhost
-  connection: local
+- name: Create SSL Root CA, Intermediate CA, Server certs, SSH CA and keypairs
+  hosts: config
   roles:
     - pki-root-ca
     - pki-intermediate-ca
     - pki-cert
+    - ssh-pki
+
+- name: Create CORD profile
+  hosts: config
+  roles:
+    - cord-profile
 
