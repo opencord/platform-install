@@ -12,3 +12,6 @@ vtn_management_host_net_interface: veth3
 # used in openstack-compute-vtn.yaml.j2, referencing service in fabric.yaml.j2
 use_fabric: False
 
+# opencloud external
+opencloud_external_interface: eth0
+
