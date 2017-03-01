@@ -1,5 +1,11 @@
 ---
+# dns-unbound/defaults/main.yml
 
 unbound_conf: "/var/unbound/etc/unbound.conf"
 unbound_group: "wheel"
 
+unbound_listen_on_default: False
+
+unbound_listen_all: False
+
+unbound_interfaces: []
