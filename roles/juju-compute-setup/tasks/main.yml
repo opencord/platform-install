@@ -58,7 +58,7 @@
   delay: 30
   with_items: "{{ groups['compute'] }}"
 
-- name: verify that the nodes appear in nova
+- name: Verify that the nodes appear in nova
   action: shell bash -c "source /opt/cord_profile/admin-openrc.sh; nova hypervisor-list | grep '{{ item }}'"
   register: result
   until: result | success

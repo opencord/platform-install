@@ -1,6 +1,10 @@
 ---
 # compute-node-config/defaults/main.yml
 
+# default site/deployment placeholder names
+site_name: sitename
+deployment_type: deploymenttype
+
 # location of cord_profile on head node
 head_cord_profile_dir: /opt/cord_profile
 
@@ -15,5 +19,4 @@ vtn_management_host_net_interface: veth3
 
 # used in openstack-compute-vtn.yaml.j2, referencing service in fabric.yaml.j2
 use_fabric: False
-
 
