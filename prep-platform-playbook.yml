@@ -11,6 +11,12 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
+- name: Configure management network
+  hosts: all
+  become: yes
+  roles:
+    - { role: interface-config, when: not on_maas }
+
 - name: DNS Server and apt-cacher-ng Setup
   hosts: head
   become: yes
@@ -19,7 +25,7 @@
     - { role: dns-unbound, when: not on_maas }
     - apt-cacher-ng
 
-- name: Configure all hosts to use DNS server
+- name: Configure DNS lookups
   hosts: all
   become: yes
   roles:
@@ -30,5 +36,4 @@
   become: yes
   roles:
     - common-prep
-    - { role: cloudlab-prep, when: on_cloudlab }
 
