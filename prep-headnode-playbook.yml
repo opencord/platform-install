@@ -1,0 +1,53 @@
+---
+# prep-headnode-playbook.yml
+# Preps the head node of a CORD pod for thr est of the install
+
+- name: Include vars
+  hosts: head
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Install head node software, SSL CA certificates, Docker
+  hosts: head
+  roles:
+    - { role: head-prep, become: yes }
+    - pki-install
+    - docker-install
+    - docker-head-conf
+
+- name: Configure management network on all nodes
+  when: not on_maas
+  hosts: all
+  become: yes
+  roles:
+    - interface-config
+
+- name: Networking and DNS server on head node
+  when: not on_maas
+  hosts: head
+  become: yes
+  roles:
+    - head-mgmtbr
+    - dns-unbound
+    - dns-nsd
+    - dns-configure
+    - dhcpd
+
+- name: Install apt-cacher-ng
+  become: yes
+  hosts: head
+    - apt-cacher-ng
+
+- name: Install docker registry, elasticstack, and apache proxy
+  become: yes
+  hosts: head
+  roles:
+    - docker-registry
+    - java-oracle
+    - elasticstack
+    - apache-proxy
+

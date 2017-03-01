@@ -1,0 +1,5 @@
+---
+# docker-head-conf/defaults/main.yml
+
+pki_dir: "/opt/ssh_pki"
+

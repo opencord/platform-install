@@ -1,8 +1,9 @@
 ---
-# cord-profile-playbook.yml
+# glance-images-playbook.yml
+# Downloads glance images required by profile
 
 - name: Include vars
-  hosts: all
+  hosts: head
   tasks:
     - name: Include variables
       include_vars: "{{ item }}"
@@ -10,7 +11,7 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
-- name: Create CORD profile and copy Glance images
+- name: Download images for Glance
   hosts: head
   roles:
-    - cord-profile
+    - glance-images

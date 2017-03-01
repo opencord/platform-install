@@ -1,0 +1,38 @@
+---
+# glance-images/tasks/main.yml
+
+- name: Get localhost facts (to get local uid and gid)
+  setup:
+  delegate_to: localhost
+  delegate_facts: True
+
+- name: Make local images directory
+  delegate_to: localhost
+  become: yes
+  file:
+    path: "{{ image_dir }}"
+    state: directory
+    mode: 0755
+    owner: "{{ hostvars['localhost']['ansible_user_id'] }}"
+    group: "{{ hostvars['localhost']['ansible_user_gid'] }}"
+
+- name: Download Glance VM images
+  when: use_openstack
+  delegate_to: localhost
+  get_url:
+    url: "{{ item.url }}"
+    checksum: "{{ item.checksum }}"
+    dest: "{{ image_dir }}/{{ item.name }}.qcow2"
+  with_items: "{{ xos_images }}"
+  register: glance_vm_result
+  until: glance_vm_result|success
+  retries: 5
+  delay: 10
+
+- name: Copy Glance VM images to profile directory
+  when: use_openstack
+  copy:
+    src: "{{ image_dir }}/{{ item.name }}.qcow2"
+    dest: "{{ cord_profile_dir }}/images/{{ item.name }}.qcow2"
+  with_items: "{{ xos_images }}"
+
