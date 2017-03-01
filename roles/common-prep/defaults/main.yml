@@ -1,3 +1,4 @@
 ---
+# file: common-prep/defaults/main.yml
 
-run_dist_upgrade: true
+run_dist_upgrade: False

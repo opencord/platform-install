@@ -1,7 +1,7 @@
 ---
 # platform-check/defaults/main.yml
 
-config_cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
+config_cord_profile_dir: "{{ ansible_user_dir ~ '/cord_profile' }}"
 head_onos_cord_dir: "/opt/onos-cord/"
 
 xos_ui_port: 9000

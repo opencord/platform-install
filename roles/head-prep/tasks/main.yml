@@ -3,18 +3,18 @@
 
 - name:  Install prerequisites for using PPA repos
   apt:
-    name={{ item }}
-    update_cache=yes
+    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
   with_items:
     - python-pycurl
     - software-properties-common
 
-- name: Add Ansible/Juju repositories
+- name: Add Ansible PPA
   apt_repository:
     repo={{ item }}
   with_items:
-     - "{{ juju_apt_repo | default('ppa:juju/stable') }}"
-     # - "{{ ansible_apt_repo | default('ppa:ansible/ansible') }}"
+    - "{{ ansible_apt_repo | default('ppa:ansible/ansible') }}"
   register: result
   until: result | success
   retries: 3
@@ -22,27 +22,29 @@
 
 - name: Install packages
   apt:
-    name={{ item }}
-    state=present
-    update_cache=yes
+    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
   with_items:
-    - uvtool
+    - bridge-utils
+    - dnsutils
     - git
-    - bzr
     - juju-core
-    - python-pip
-    - python-novaclient
-    - python-neutronclient
-    - python-keystoneclient
-    - python-glanceclient
-    - python-lxml
-    - virt-top
     - libssl-dev
+    - libvirt-bin
     - python-dev
+    - python-glanceclient
+    - python-keystoneclient
+    - python-lxml
+    - python-neutronclient
+    - python-novaclient
+    - python-pip
     - sshpass
+    - virt-top
 
 - name: Install Ansible via pip
-  pip: name=ansible version=2.2.2.0
+  pip: name=ansible version=2.2.3.0
+
 # - name: Make sure Ansible is newest version
 #   apt:
 #     name: "ansible"
@@ -50,44 +52,58 @@
 #     update_cache: yes
 #     cache_valid_time: 3600
 #   tags:
-#     - skip_ansible_lint # ansible-lint complains about latest, need this or old built in 1.5.x version may be used if already installed.
+#     - skip_ansible_lint # ansible-lint complains about latest, need this as distro provided 1.5.x version may be used if already installed.
 
 - name: Install Python packages
   pip:
-    name={{ item}}
-    state=present
+    name: "{{ item }}"
   with_items:
-    - urllib3
-    - pyopenssl
     - ndg-httpsclient
+    - passlib
     - pyasn1
+    - pyopenssl
+    - urllib3
+    - gitpython
+    - graphviz
 
-- name: Prep user account by adding to libvirtd group and generating SSH key
-  user:
-    name={{ ansible_user_id }}
-    generate_ssh_key=yes
-    groups="libvirtd" append=yes
+- name: Add pod ssh private key to head node user
+  copy:
+    src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey"
+    dest: "{{ ansible_user_dir }}/.ssh/id_{{ ssh_keytype }}"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: 0600
 
-- name: Register public key in variable
-  shell: cat {{ ansible_user_dir }}/.ssh/id_rsa.pub
-  register: sshkey
-  tags:
-    - skip_ansible_lint # FIXME: this should be done a different way
+- name: Add pod ssh public key to head user
+  copy:
+    src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey.pub"
+    dest: "{{ ansible_user_dir }}/.ssh/id_{{ ssh_keytype }}.pub"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: 0644
 
-- name: Add public key to this user account
-  authorized_key:
-    user={{ ansible_user_id }}
-    key="{{ sshkey.stdout }}"
+- name: Add pod ssh signed public key to head node user
+  copy:
+    src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey-cert.pub"
+    dest: "{{ ansible_user_dir }}/.ssh/id_{{ ssh_keytype }}-cert.pub"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: 0644
 
 - name: Disable host key checking in ~/.ssh/config
   lineinfile:
-    dest={{ ansible_user_dir }}/.ssh/config
-    line="StrictHostKeyChecking no"
-    create=yes
-    owner={{ ansible_user_id }} mode=0600
+    dest: "{{ ansible_user_dir }}/.ssh/config"
+    line: "StrictHostKeyChecking no"
+    create: yes
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: 0600
 
 - name: Disable host key checking in ~/.ansible.cfg
   copy:
-    src=ansible.cfg
-    dest={{ ansible_user_dir }}/.ansible.cfg
-    owner={{ ansible_user_id }} mode=0644
+    src: ansible.cfg
+    dest: "{{ ansible_user_dir }}/.ansible.cfg"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: 0644
+

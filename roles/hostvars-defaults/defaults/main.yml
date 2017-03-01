@@ -1,0 +1,24 @@
+---
+# hostvars-defaults/defaults/main.yml
+
+# list of all defaults to set as hostvars
+hostvars_defaults_list:
+  - config_cord_dir
+  - build_cord_dir
+  - head_cord_dir
+  - config_cord_profile_dir
+  - head_cord_profile_dir
+  - head_onos_cord_dir
+  - head_onos_fabric_dir
+
+# default values
+config_cord_dir: "{{ ansible_user_dir ~ '/cord' }}"
+build_cord_dir: "{{ playbook_dir ~ '/../..' }}"
+head_cord_dir: "/opt/cord"
+
+config_cord_profile_dir: "{{ ansible_user_dir ~ '/cord_profile' }}"
+head_cord_profile_dir: "/opt/cord_profile"
+
+head_onos_cord_dir: "/opt/onos-cord/"
+head_onos_fabric_dir: "/opt/onos_fabric/"
+
