@@ -1,5 +1,5 @@
 ---
-# copy-profile-book.yml
+# copy-profile-playbook.yml
 # Copies the profile to the head node
 
 - name: Include vars
@@ -17,7 +17,7 @@
     - { role: copy-profile, become: yes }
     - { role: ssh-install, become: yes }
     - { role: glance-images, become: yes }
-    - { role: copy-credentials, become: yes, when: on_maas }
+    - { role: copy-credentials, become: yes }
 
 - name: Install ssh keys when using MaaS
   hosts: build
