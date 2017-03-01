@@ -22,7 +22,7 @@ xos_tosca_config_templates:
   - vtn-service.yaml
   - management-net.yaml
 
-cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
+cord_profile_dir: "/opt/cord_profile"
 
 xos_docker_volumes:
   - host: "{{ cord_profile_dir }}/images"
@@ -46,18 +46,17 @@ xos_service_sshkeys:
   - name: onos_rsa.pub
     source_path: "~/.ssh/id_rsa.pub"
 
-
-# IP prefix for VMs
-virt_nets:
-  - name: mgmtbr
-    ipv4_prefix: 192.168.250
-    head_vms: true
+# Network settings
+mgmt_ipv4_first_octets: "192.168.200"
 
 # DNS/domain settings
 site_suffix: generic.infra.opencloud.us
 
 dns_search:
   - "{{ site_suffix }}"
+
+dns_servers:
+  - "{{ mgmt_ipv4_first_octets }}"
 
 # SSL server certificate generation
 server_certs:
@@ -74,21 +73,22 @@ server_certs:
 # NSD/Unbound settings
 nsd_zones:
   - name: "{{ site_suffix }}"
-    ipv4_first_octets: 192.168.250
+    ipv4_first_octets: "{{ mgmt_ipv4_first_octets }}"
     name_reverse_unbound: "168.192.in-addr.arpa"
     soa: ns1
     ns:
       - { name: ns1 }
-    nodelist: head_vm_list
+    nodelist: head_lxd_list
     aliases:
       - { name: "ns1" , dest: "head" }
       - { name: "ns" , dest: "head" }
+      - { name: "loghost" , dest: "head" }
       - { name: "apt-cache" , dest: "head" }
 
 name_on_public_interface: head
 
 # If true, unbound listens on the head node's `ansible_default_ipv4` interface
-unbound_listen_on_default: True
+unbound_listen_on_default: False
 
 # VTN network configuration
 management_network_cidr: 172.27.0.0/24
@@ -96,6 +96,7 @@ management_network_ip: 172.27.0.1/24
 data_plane_ip: 10.168.0.253/24
 
 on_maas: False
+on_cloudlab: False
 
 run_dist_upgrade: True
 
@@ -118,12 +119,11 @@ apt_ssl_sites:
   - apt.dockerproject.org
   - butler.opencloud.cs.arizona.edu
   - deb.nodesource.com
+  - artifacts.elastic.co
 
 charm_versions:
   neutron-api: "cs:~cordteam/trusty/neutron-api-3"
   nova-compute: "cs:~cordteam/trusty/nova-compute-2"
-
-head_vm_list: []
 
 head_lxd_list:
   - name: "juju-1"
@@ -180,14 +180,6 @@ head_lxd_list:
     forwarded_ports:
       - { ext: 8774, int: 8774 }
 
-  - name: "openstack-dashboard-1"
-    service: "openstack-dashboard"
-    aliases:
-      - "openstack-dashboard"
-    ipv4_last_octet: 100
-    forwarded_ports:
-      - { ext: 8080, int: 80 }
-
   - name: "rabbitmq-server-1"
     service: "rabbitmq-server"
     aliases:
@@ -197,7 +189,7 @@ head_lxd_list:
   - name: "onos-cord-1"
     aliases:
       - "onos-cord"
-    ipv4_last_octet: 110
+    ipv4_last_octet: 120
     docker_path: "cord"
 
   - name: "xos-1"
@@ -212,7 +204,6 @@ lxd_service_list:
   - keystone
   - neutron-api
   - nova-cloud-controller
-  - openstack-dashboard
   - percona-cluster
   - rabbitmq-server
 
@@ -232,9 +223,6 @@ service_relations:
 
   - name: neutron-api
     relations: [ "keystone", "percona-cluster", "rabbitmq-server", "nova-cloud-controller", ]
-
-  - name: openstack-dashboard
-    relations: [ "keystone", ]
 
   - name: ceilometer
     relations: [ "mongodb", "rabbitmq-server" ]

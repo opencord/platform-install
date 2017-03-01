@@ -1,0 +1,4 @@
+---
+# create-lxd-opencloud/defaults/main.yml
+
+mgmtbr_ext_interface: eth1
