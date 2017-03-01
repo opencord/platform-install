@@ -1,0 +1,51 @@
+---
+# lxd-finish/tasks/main.yml
+
+- name: Verify that we can log into every container
+  command: >
+    ansible containers -u ubuntu
+     -m ping
+  tags:
+    - skip_ansible_lint # connectivity check
+
+- name: Verify that containers have external connectivity
+  command: >
+    ansible containers -u ubuntu
+     -m uri
+     -a "url=http://www.google.com"
+  tags:
+    - skip_ansible_lint # connectivity check
+
+- name: Update CA certificates in containers
+  command: >
+    ansible containers -b -u ubuntu
+      -m command
+      -a "update-ca-certificates"
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Have containers use the apt-cache
+  command: >
+    ansible containers -b -u ubuntu
+     -m lineinfile
+     -a "dest=/etc/apt/apt.conf.d/02apt-cacher-ng create=yes mode=0644 owner=root group=root regexp='^Acquire' line='Acquire::http { Proxy \"http://{{ apt_cacher_name }}:{{ apt_cacher_port | default('3142') }}\"; };'"
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Update apt cache
+  command: >
+    ansible containers -b -u ubuntu
+      -m apt
+      -a "update_cache=yes cache_valid_time=3600"
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Update software in all the containers
+  when: run_dist_upgrade
+  command: >
+    ansible containers -b -u ubuntu
+      -m apt
+      -a "upgrade=dist"
+  tags:
+    - skip_ansible_lint # running a sub job
+

@@ -1,15 +1,17 @@
 ---
 # cord-profile/defaults/main.yml
 
-cord_dir: "{{ ansible_user_dir + '/cord' }}"
+# where the cord_profile directory is on the build node
 cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
-pki_dir: "/opt/pki"
 
-deploy_docker_registry: ""
+pki_dir: "{{ playbook_dir }}/pki"
+ssh_pki_dir: "{{ playbook_dir }}/ssh_pki"
+
+deploy_docker_registry: "localhost:5000"
 deploy_docker_tag: "candidate"
 
 # name of docker image to use in onboarding synchronizer
-xos_docker_image: "xosproject/xos:candidate"
+xos_docker_image: "{{ deploy_docker_registry }}/xosproject/xos:{{ deploy_docker_tag }}"
 
 # For storing OpenStack images
 image_dir: /opt/images
@@ -44,13 +46,14 @@ xos_libraries:
 xos_services: []
 xos_service_sshkeys: []
 
-xos_images: []
-
 xos_tosca_config_templates: []
 
 xos_other_templates: []
 
 # GUI Config [new GUI], used in app.config.js.j2 and style.config.js.j2
+
+enabled_gui_extensions: []
+
 gw_port: 3000
 gui_api_endpoint: "/xosapi/v1"
 gui_websocket: "/"
@@ -83,6 +86,7 @@ xos_admin_last: Admin
 
 site_name: sitename
 site_humanname: "Site HumanName"
+site_suffix: sitename.test
 
 deployment_type: deploymenttype
 
