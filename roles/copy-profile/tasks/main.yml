@@ -1,0 +1,17 @@
+---
+# copy-profile/tasks/main.yml
+
+- name: Copy (sync) the cord_profile directory structure
+  synchronize:
+    src: "~/cord_profile/"
+    dest: "/opt/cord_profile/"
+    delete: yes
+
+- name: Set ownership on cord_profile dir
+  file:
+    dest: "/opt/cord_profile"
+    state: directory
+    recurse: yes
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+
