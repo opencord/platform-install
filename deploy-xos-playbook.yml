@@ -10,24 +10,6 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
-# for docker, docker-compose
-- include: devel-tools-playbook.yml
-
-# setup PKI when needed for development
-- name: Create Root CA, Intermediate CA, Server certs
-  hosts: localhost
-  connection: local
-  roles:
-    - { role: pki-root-ca,         when: needs_pki_install is defined and needs_pki_install }
-    - { role: pki-intermediate-ca, when: needs_pki_install is defined and needs_pki_install }
-    - { role: pki-cert,            when: needs_pki_install is defined and needs_pki_install }
-
-# install PKI when needed for development
-- name: Install CA certificates
-  hosts: head
-  roles:
-    - { role: pki-install,         when: needs_pki_install is defined and needs_pki_install }
-
 - name: Create CORD profile, create docker images, bootstrap XOS in docker
   hosts: head
   roles:
@@ -53,3 +35,4 @@
     - xos-config
 
 - include: deploy-xos-gui-extensions-playbook.yml
+

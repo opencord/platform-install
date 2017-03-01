@@ -11,49 +11,43 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
-- name: Turn on virtualization
-  hosts: all
-  become: yes
-    - dell-virt
-
-- name: Check prerequisites
-  hosts: all
-  roles:
-    - prereqs-common
-
-- name: DNS Server and apt-cacher-ng Setup
+- name: Install ElasticStack, Apache proxy, DHCP server
   hosts: head
   become: yes
   roles:
-    - dns-nsd
-    - dns-unbound
-    - apt-cacher-ng
+    - docker-registry
+    - java-oracle
+    - elasticstack
+    - apache-proxy
+    - dhcpd
 
-- name: Use the new DNS server, prep systems
-  hosts: all
+- name: Create LXD containers
+  hosts: head
   become: yes
   roles:
-    - dns-configure
-    - common-prep
+    - create-lxd-opencloud
 
-- name: Configure head node, configure virtualization
+- name: Test LXD containers
   hosts: head
   roles:
-    - { role: head-prep, become: yes }
-    - { role: config-virt, become: yes }
+    - lxd-tests
 
-- name: Create LXD's, Configure Juju, install XOS
+- name: Install OpenStack with Juju
   hosts: head
   roles:
-    - create-lxd
-    - onos-vm-install
     - juju-setup
+
+- name: Deploy and start ONOS containers
+  hosts: head
+  roles:
+    - onos-cord-install
+
+- include: deploy-xos-playbook.yml
+
+- name: Finish OpenStack install
+  hosts: head
+  roles:
     - juju-finish
-    - cord-profile
-    - xos-docker-images
-    - xos-bootstrap
-    - docker-compose
-    - xos-head-start
 
 - name: Configure compute nodes
   hosts: compute
@@ -61,8 +55,15 @@
   roles:
     - compute-prep
 
-- name: Deploy compute nodes
+- name: Deploy compute nodes, create configuration
   hosts: head
   roles:
     - juju-compute-setup
+    - compute-node-config
+
+- name: Enable compute nodes in XOS
+  hosts: xos_ui
+  connection: docker
+  roles:
+    - compute-node-enable
 
