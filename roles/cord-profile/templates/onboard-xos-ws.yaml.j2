@@ -12,7 +12,7 @@ topology_template:
     xos-ws:
       type: tosca.nodes.Component
       properties:
-        image: {{ deploy_docker_registry }}xosproject/xos-ws:{{ deploy_docker_tag }}
+        image: {{ deploy_docker_registry }}xosproject/xos-ws{{ deploy_docker_tag }}
         command: npm start -- --config gateway-config.yml
         ports: 3000:3000
 
@@ -20,7 +20,7 @@ topology_template:
     /var/www/src/config/gateway-config.yml:
       type: tosca.nodes.ComponentVolume
       properties:
-          host_path: "{{ cord_profile_dir }}/gateway-config.yml"
+          host_path: "/opt/cord_profile/gateway-config.yml"
           read_only: false
       requirements:
           - xos:

@@ -24,7 +24,7 @@
 # Should mount certs in the image rather than baking them in
 - name: Copy over SSL CA certificates
   copy:
-    src: "{{ pki_dir }}/im_cert_chain.pem"
+    src: "{{ pki_dir }}/{{ site_name }}_im_ca/certs/im_cert_chain.pem"
     dest: "{{ cord_dir }}/orchestration/xos/containers/xos/local_certs.crt"
     mode: 0644
 

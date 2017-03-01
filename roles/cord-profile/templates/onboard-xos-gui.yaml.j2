@@ -12,14 +12,14 @@ topology_template:
     xos-spa-gui:
       type: tosca.nodes.Component
       properties:
-        image: {{ deploy_docker_registry }}xosproject/xos-gui:{{ deploy_docker_tag }}
+        image: {{ deploy_docker_registry }}xosproject/xos-gui{{ deploy_docker_tag }}
         ports: 4000:4000
 
     # UI App Config
     /var/www/dist/app.config.js:
       type: tosca.nodes.ComponentVolume
       properties:
-          host_path: {{ cord_profile_dir }}/app.config.js
+          host_path: /opt/cord_profile/app.config.js
           read_only: false
       requirements:
           - xos:
@@ -30,7 +30,7 @@ topology_template:
     /var/www/dist/style.config.js:
       type: tosca.nodes.ComponentVolume
       properties:
-          host_path: {{ cord_profile_dir }}/style.config.js
+          host_path: /opt/cord_profile/style.config.js
           read_only: false
       requirements:
           - xos:
