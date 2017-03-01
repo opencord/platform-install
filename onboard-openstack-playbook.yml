@@ -1,0 +1,13 @@
+---
+# onboard-openstack-playbook.yml
+# Onboard Openstack into XOS
+
+- include: add-onboard-containers-playbook.yml
+
+- name: Check to see if XOS UI is ready, apply profile config
+  hosts: xos_ui
+  connection: docker
+  roles:
+    - xos-ready
+    - compute-node-enable
+

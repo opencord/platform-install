@@ -1,5 +1,12 @@
 ---
 # create-lxd/defaults/main.yml
 
-apt_cacher_name: apt-cache
+ssh_pki_dir: "{{ playbook_dir }}/ssh_pki"
+pod_sshkey_name: "headnode"
+
+head_lxd_list: []
+
+# For programatic generation of MAC addresses for LXD containers
+hwaddr_prefix: "c2a4"
+mgmt_ipv4_first_octets: "192.168.200"
 
