@@ -13,7 +13,7 @@ topology_template:
     gui-extensions-{{ext.name}}:
       type: tosca.nodes.Component
       properties:
-        image: {{ deploy_docker_registry }}xosproject/gui-extension-{{ ext.name }}:{{ deploy_docker_tag }}
+        image: {{ deploy_docker_registry }}xosproject/gui-extension-{{ ext.name }}{{ deploy_docker_tag }}
         command: npm run build
 
     gui-extensions-store-{{ ext.name }}:

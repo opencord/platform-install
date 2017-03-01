@@ -1,0 +1,5 @@
+---
+# build-context-fixup/tasks/main.yml
+
+build_cord_dir: "{{ ansible_user_dir + '/cord' }}"
+
