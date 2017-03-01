@@ -13,20 +13,14 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
-# for docker, docker-compose
-- include: devel-tools-playbook.yml
-
 # pull / build base XOS images
 - include: ../../orchestration/xos/pull-xos-playbook.yml
 - include: ../../orchestration/xos/build-xos-playbook.yml
 
-- include: pki-install-playbook.yml
-
-- include: cord-profile-playbook.yml
-
-- name: Pull other docker images if not present
+- name: Create CORD profile, create docker images, bootstrap XOS in docker
   hosts: head
   roles:
-    - pull-xos-docker-images
+    - cord-profile
 
 - include: launch-xos-playbook.yml
+

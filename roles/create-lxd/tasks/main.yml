@@ -26,7 +26,7 @@
 # For lxd_profile, has to be run as normal user
 - name: Get user's SSH public key into lxd_ssh_pubkey to create LXD profile
   set_fact:
-    lxd_ssh_pubkey: "{{ lookup('file', '{{ ansible_user_dir }}/.ssh/id_rsa.pub') }}"
+    lxd_ssh_pubkey: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 
 - name: Create openstack LXD profile
   become: yes
@@ -46,7 +46,7 @@
         type: nic
       certs:
         type: disk
-        path: /usr/local/share/ca-certificates/cord/
+        path: /usr/local/share/ca-certificates/
         source: /usr/local/share/ca-certificates/
 
 - name: Create containers for the OpenStack services
