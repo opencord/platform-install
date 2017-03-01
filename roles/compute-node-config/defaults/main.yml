@@ -1,12 +1,16 @@
 ---
 # compute-node-config/defaults/main.yml
 
+# default site/deployment placeholder names
+site_name: sitename
+deployment_type: deploymenttype
+
 # location of cord_profile on head node
 head_cord_profile_dir: /opt/cord_profile
 
-# name of the external interface on compute nodes. Should have the ansible_ prefix.
+# name of the external interface on compute nodes
 # `fabric` is default in R-CORD
-compute_external_interface: ansible_fabric
+compute_external_interface: fabric
 
 # service configs referenced here are likely located in cord-profile/templates
 # used in openstack-compute-vtn.yaml.j2, referencing network in management-net.yaml.j2
@@ -15,5 +19,4 @@ vtn_management_host_net_interface: veth3
 
 # used in openstack-compute-vtn.yaml.j2, referencing service in fabric.yaml.j2
 use_fabric: False
-
 
