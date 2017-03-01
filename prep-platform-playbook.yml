@@ -1,36 +1,9 @@
 ---
-# cord-prep-platform.yml
+# prep-platform-playbook.yml
 # Prepares the CORD head node for installing OpenStack, ONOS, and XOS
 
-- name: Include vars
-  hosts: all
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "profile_manifests/{{ cord_profile }}.yml"
-        - profile_manifests/local_vars.yml
+# Transitional note - this should only be called by gradle, not make.  The
+# included playbooks should be called individually by make.
 
-- name: DNS Server and apt-cacher-ng Setup
-  hosts: head
-  become: yes
-  roles:
-    - { role: dns-nsd, when: not on_maas }
-    - { role: dns-unbound, when: not on_maas }
-    - apt-cacher-ng
-
-- name: Configure all hosts to use DNS server
-  hosts: head, compute
-  become: yes
-  roles:
-    - { role: dns-configure, when: not on_maas }
-
-- name: Prep systems
-  hosts: head, compute
-  become: yes
-  roles:
-    - common-prep
-    - pki-install
-    - { role: cloudlab-prep, when: on_cloudlab }
-
-- include: deploy-elasticstack-playbook.yml
+- include: prep-headnode-playbook.yml
+- include: prep-computenode-playbook.yml
