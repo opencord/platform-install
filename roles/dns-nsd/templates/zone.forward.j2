@@ -1,5 +1,6 @@
 ;## NSD authoritative only DNS
 ;## FORWARD Zone
+;# created by ansible
 
 $ORIGIN {{ item.name }}. ; default zone domain
 $TTL {{ item.ttl | default(dns_ttl) }} ; default time to live
@@ -27,8 +28,9 @@ $TTL {{ item.ttl | default(dns_ttl) }} ; default time to live
 {% endfor %}
 {% endif %}
 
-; Set from list of nodes
-{% set nodes = vars[item.nodelist] %}
+{% for nodelist in item.nodelists %}
+; Created from nodelist: {{ nodelist }}
+{% set nodes = vars[nodelist] %}
 {% for node in nodes %}
 {{ node.name }}    IN    A    {{ item.ipv4_first_octets ~ "." ~ node.ipv4_last_octet }}
 {% if node.aliases is defined %}
@@ -36,5 +38,6 @@ $TTL {{ item.ttl | default(dns_ttl) }} ; default time to live
 {{ alias }}    IN    CNAME    {{ node.name }}
 {% endfor %}
 {% endif %}
+{% endfor %}
 {% endfor %}
 
