@@ -1,0 +1,18 @@
+---
+# copy-cord-playbook.yml
+# Copy the cord directory to the build node
+
+- name: Include vars
+  hosts: build, config
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Copy cord directory structure to build node
+  hosts: build
+  roles:
+    - copy-cord
+
