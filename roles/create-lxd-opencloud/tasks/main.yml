@@ -1,0 +1,127 @@
+---
+# file: create-lxd-opencloud/tasks/main.yml
+
+- name: Enable trusty-backports apt repositories
+  become: yes
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  with_items:
+    - "deb http://us.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe"
+    - "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe"
+
+- name: Install LXD from trusty-backports
+  become: yes
+  apt:
+    name: lxd
+    default_release: trusty-backports
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install tools used for configuring LXD containers
+  become: yes
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - dnsutils
+    - bridge-utils
+
+- name: Create mgmtbr bridge configuration
+  become: yes
+  template:
+    src: "mgmtbr.cfg.j2"
+    dest: /etc/network/interfaces.d/mgmtbr.cfg
+    owner: root
+    group: root
+    mode: 0644
+  register: mgmtbr_config
+
+- name: Bring up mgmtbr if reconfigured
+  become: yes
+  when: mgmtbr_config.changed and ansible_mgmtbr is not defined
+  command: ifup mgmtbr
+  tags:
+    - skip_ansible_lint # needs to be run here or the next steps will fail
+
+# For lxd_profile, has to be run as normal user
+- name: Get user's SSH public key into lxd_ssh_pubkey to create LXD profile
+  set_fact:
+    lxd_ssh_pubkey: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+- name: Create LXD profiles for OpenStack services
+  become: yes
+  lxd_profile:
+    name: "openstack-{{ item.name }}"
+    state: present
+    config:
+      user.user-data: |
+        #cloud-config
+        ssh_authorized_keys:
+          - "{{ lxd_ssh_pubkey }}"
+    description: 'OpenStack services on CORD'
+    devices:
+      eth0:
+        type: nic
+        parent: mgmtbr
+        nictype: bridged
+        ipv4.address: "{{ mgmt_ipv4_first_octets }}.{{ item.ipv4_last_octet }}"
+  with_items: "{{ head_lxd_list }}"
+
+- name: Create containers for the OpenStack services
+  become: yes
+  lxd_container:
+    name: "{{ item.name }}"
+    architecture: x86_64
+    state: started
+    source:
+      type: image
+      mode: pull
+      server: https://cloud-images.ubuntu.com/releases
+      protocol: simplestreams
+      alias: "{{ ansible_distribution_release }}"
+    profiles: ["openstack-{{ item.name }}"]
+    wait_for_ipv4_addresses: true
+    timeout: 600
+  with_items: "{{ head_lxd_list }}"
+
+- name: Wait for containers to be accessible via SSH
+  wait_for:
+    host: "{{ item.name }}"
+    port: 22
+    search_regex: "OpenSSH"
+  with_items: "{{ head_lxd_list }}"
+
+- name: Create /etc/ansible/hosts file
+  become: yes
+  template:
+    src=ansible_hosts.j2
+    dest=/etc/ansible/hosts
+
+- name: Verify that we can log into every container
+  command: ansible containers -m ping -u ubuntu
+  tags:
+    - skip_ansible_lint # connectivity check
+
+- name: Verify that containers have external connectivity
+  command: ansible containers -m uri -u ubuntu -a "url=http://www.google.com"
+  tags:
+    - skip_ansible_lint # connectivity check
+
+- name: Have containers use the apt-cache
+  command: ansible containers -b -u ubuntu -m lineinfile -a "dest=/etc/apt/apt.conf.d/02apt-cacher-ng create=yes mode=0644 owner=root group=root regexp='^Acquire' line='Acquire::http { Proxy \"http://{{ apt_cacher_name }}:{{ apt_cacher_port | default('3142') }}\"; };'"
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Update apt cache
+  command: ansible containers -m apt -b -u ubuntu -a "update_cache=yes cache_valid_time=3600"
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Update software in all the containers
+  when: run_dist_upgrade
+  command: ansible containers -m apt -b -u ubuntu -a "upgrade=dist"
+  tags:
+    - skip_ansible_lint # running a sub job
+
