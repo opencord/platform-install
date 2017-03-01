@@ -1,0 +1,17 @@
+---
+# build-core-image-playbook.yml
+
+- name: Include vars
+  hosts: build
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Build the XOS core image
+  hosts: build
+  roles:
+    - xos-core-build
+
