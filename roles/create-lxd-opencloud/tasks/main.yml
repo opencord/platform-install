@@ -1,0 +1,70 @@
+---
+# file: create-lxd-opencloud/tasks/main.yml
+
+- name: Enable trusty-backports apt repositories
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  with_items:
+    - "deb http://us.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe"
+    - "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe"
+
+- name: Install LXD from trusty-backports
+  apt:
+    name: lxd
+    default_release: trusty-backports
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Create LXD profiles for OpenStack services
+  lxd_profile:
+    name: "openstack-{{ item.name }}"
+    state: present
+    config:
+      user.user-data: |
+        #cloud-config
+        ssh_authorized_keys:
+          - "{{ lookup('file', ssh_pki_dir ~ '/client_certs/headnode_sshkey.pub') }}"
+    description: 'OpenStack service {{ item.name }} for CORD'
+    devices:
+      eth0:
+        type: nic
+        parent: mgmtbr
+        nictype: bridged
+        #        ipv4.address: "{{ mgmt_ipv4_first_octets }}.{{ item.ipv4_last_octet }}"
+        hwaddr: "{{ item.hwaddr | default(hwaddr_prefix ~ ((mgmt_ipv4_first_octets ~ '.' ~ item.ipv4_last_octet) | ip4_hex)) | hwaddr('unix') }}"
+      certs:
+        type: disk
+        path: /usr/local/share/ca-certificates/
+        source: /usr/local/share/ca-certificates/
+  with_items: "{{ head_lxd_list }}"
+
+- name: Create containers for the OpenStack services
+  lxd_container:
+    name: "{{ item.name }}"
+    architecture: x86_64
+    state: started
+    source:
+      type: image
+      mode: pull
+      server: https://cloud-images.ubuntu.com/releases
+      protocol: simplestreams
+      alias: "{{ ansible_distribution_release }}"
+    profiles: ["openstack-{{ item.name }}"]
+  with_items: "{{ head_lxd_list }}"
+
+- name: Wait for containers to be accessible via SSH
+  wait_for:
+    host: "{{ item.name }}"
+    port: 22
+    search_regex: "OpenSSH"
+  with_items: "{{ head_lxd_list }}"
+
+- name: Create /etc/ansible/hosts file with containers in it
+  template:
+    src: ansible_hosts.j2
+    dest: /etc/ansible/hosts
+    owner: root
+    group: root
+    mode: 0644
+

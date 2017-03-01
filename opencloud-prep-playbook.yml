@@ -1,0 +1,48 @@
+---
+# opencloud-prep-playbook.yml
+# Prep buildhost to create OpenCloud site
+
+- name: ping all hosts to get network interface info using setup
+  hosts: all
+  tasks:
+    - name: ping all hosts
+      ping:
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Copy cord directory structure to head node
+  hosts: head
+  become: yes
+  roles:
+    - { role: copy-cord, when: copy_cord }
+
+- include: pki-setup-playbook.yml
+
+- name: Install docker on buildhost, configure
+  hosts: localhost
+  connection: local
+  roles:
+    - docker-install
+    - docker-buildhost-conf
+
+- name: Turn on virtualization
+  hosts: all
+  become: yes
+  roles:
+   - { role: dell-virt, when: not virtual_install }
+
+- include: prep-platform-playbook.yml
+
+- name: Install Docker on head node, configure
+  hosts: head
+  roles:
+    - docker-install
+    - docker-head-conf
+
