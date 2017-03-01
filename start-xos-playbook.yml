@@ -1,5 +1,6 @@
 ---
-# cord-profile-playbook.yml
+# start-xos-playbook.yml
+# Start and configure XOS docker containers
 
 - name: Include vars
   hosts: all
@@ -10,7 +11,13 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
-- name: Create CORD profile and copy Glance images
+- name: Build the core image
+  hosts: build
+  roles:
+    - xos-core-build
+
+- name: Start XOS containers with docker-compose
   hosts: head
   roles:
-    - cord-profile
+    - xos-up
+
