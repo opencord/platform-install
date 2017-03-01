@@ -87,21 +87,20 @@
     dest={{ ansible_user_dir }}/.ansible.cfg
     owner={{ ansible_user_id }} mode=0644
 
-- name: Copy node key
+- name: Copy SSH key for compute node access
   when: not on_maas
   copy:
-    src={{ ansible_user_dir }}/.ssh/id_rsa
-    dest={{ ansible_user_dir }}/node_key
-    owner={{ ansible_user }}
-    mode=0600
-    remote_src=True
+    src: "~/.ssh/id_rsa"
+    dest: "{{ ansible_user_dir }}/node_key"
+    owner: "{{ ansible_user_id }}"
+    mode: "0600"
 
 - name: Copy node key (MaaS)
   when: on_maas
   copy:
     src={{ maas_node_key }}
     dest={{ ansible_user_dir }}/node_key
-    owner={{ ansible_user }}
+    owner={{ ansible_user_id }}
     mode=0600
     remote_src=True
 
