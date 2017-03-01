@@ -1,0 +1,11 @@
+---
+# opencloud-prep-playbook.yml
+# Prep build node to create artifacts
+
+- name: Install docker on buildhost, configure
+  hosts: build
+  become: yes
+  roles:
+    - docker-install
+    - docker-buildhost-conf
+

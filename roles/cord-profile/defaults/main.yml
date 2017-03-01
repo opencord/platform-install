@@ -8,9 +8,6 @@ pki_dir: "/opt/pki"
 deploy_docker_registry: ""
 deploy_docker_tag: "candidate"
 
-# For storing OpenStack images
-image_dir: /opt/images
-
 # used in xos.yaml.j2, if True, other synchronizer container will not be started
 frontend_only: False
 
@@ -40,8 +37,6 @@ xos_libraries:
 
 xos_services: []
 xos_service_sshkeys: []
-
-xos_images: []
 
 xos_tosca_config_templates: []
 

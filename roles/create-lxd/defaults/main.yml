@@ -1,5 +1,7 @@
 ---
 # create-lxd/defaults/main.yml
 
-apt_cacher_name: apt-cache
+hwaddr_prefix: "c2a4"
+
+ssh_pki_dir: "/opt/ssh_pki"
 
