@@ -7,6 +7,4 @@ cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
 enabled_gui_extensions:
   - name: sample
     path: orchestration/xos-sample-gui-extension
-  - name: other-sample
-    path: orchestration/xos-sample-gui-extension
 
