@@ -50,8 +50,8 @@
   shell: lxc exec testclient -- route | grep default | grep "eth0.222.111"
   register: result
   until: result | success
-  retries: 3
-  delay: 10
+  retries: 20
+  delay: 30
   tags:
     - skip_ansible_lint # running a sub job
 
