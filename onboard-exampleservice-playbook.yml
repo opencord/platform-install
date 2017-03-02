@@ -3,7 +3,7 @@
 # Adds the exampleservice to the currently running pod
 
 - name: Include vars
-  hosts: all
+  hosts: head
   tasks:
     - name: Include variables
       include_vars: "{{ item }}"
