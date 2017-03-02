@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da141535_688d6b31",
+        "filename": "roles/xos-gui-extension-build/templates/xos-gui-extensions-onboard.yml.j2",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-03-02T00:19:53Z",
+      "side": 1,
+      "message": "This looks funny to me - most of the time, Jinja2 conditionals shouldn\u0027t be indented.\n\nHas this been tested with \u003e1 extension in the `enabled_gui_extensions` list?  \n\nThe whitespace before the {% for ... %} might be put before the {{ ext.name }} but only for the first extension.",
+      "revId": "4072ae1f6233a879ef0f97b50783e8a1348afad2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da141535_8888bf23",
+        "filename": "roles/xos-gui-extension-build/templates/xos-gui-extensions.yml.j2",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-03-02T00:19:53Z",
+      "side": 1,
+      "message": "Same whitespace issue as other TOSCA .j2 file",
+      "revId": "4072ae1f6233a879ef0f97b50783e8a1348afad2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
