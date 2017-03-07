@@ -12,7 +12,7 @@ xos_admin_last: admin
 
 frontend_only: True
 use_openstack: False
-use_vtn: False
+use_vtn: True
 
 build_xos_base_image: True
 
