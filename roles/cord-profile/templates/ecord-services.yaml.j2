@@ -5,6 +5,7 @@ description: Just enough Tosca to get the vEG slice running on the CORD POD, cre
 imports:
    - custom_types/xos.yaml
    - custom_types/veg.yaml
+   - custom_types/vtr.yaml
 
 topology_template:
   node_templates:
@@ -51,7 +52,7 @@ topology_template:
 
 # CORD Services
     service#vtr:
-      type: tosca.nodes.Service
+      type: tosca.nodes.VTRService
       properties:
         view_url: /admin/vtr/vtrservice/$id$/
         kind: vTR
