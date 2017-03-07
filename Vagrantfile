@@ -4,6 +4,7 @@ Vagrant.configure("2") do |config|
 
   # share the folder
   config.vm.synced_folder "../../", "/home/vagrant/cord/", create: true
+  config.vm.synced_folder "../../", "/home/vagrant/cord_profile/", create: true
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
   # set the frontend vm
