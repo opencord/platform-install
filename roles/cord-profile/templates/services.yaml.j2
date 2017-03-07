@@ -4,13 +4,14 @@ description: Created by platform-install/roles/cord-profile/templates/services.y
 
 imports:
    - custom_types/xos.yaml
+   - custom_types/vtr.yaml
 
 topology_template:
   node_templates:
 
     # CORD Services
     service#vtr:
-      type: tosca.nodes.Service
+      type: tosca.nodes.VTRService
       properties:
           view_url: /admin/vtr/vtrservice/$id$/
           kind: vTR
