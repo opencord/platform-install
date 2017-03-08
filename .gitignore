@@ -2,3 +2,4 @@
 *.retry
 credentials/*
 .vagrant
+cord_profile/
