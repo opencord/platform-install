@@ -28,3 +28,7 @@ server_certs:
     altnames:
       - "DNS:xos-core.{{ site_suffix }}"
 
+enabled_gui_extensions:
+  - name: sample
+    path: orchestration/xos-sample-gui-extension
+
