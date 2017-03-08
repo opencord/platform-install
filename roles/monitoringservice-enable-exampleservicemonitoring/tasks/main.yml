@@ -1,0 +1,8 @@
+---
+# monitoringservice-enable-exampleservicemonitoring/tasks/main.yml
+
+- name: Run TOSCA to enable exampleservice monitoring
+  command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/exampleservicemonitoring.yaml"
+  tags:
+    - skip_ansible_lint # TOSCA loading should be idempotent
+
