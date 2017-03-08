@@ -1,0 +1,11 @@
+
+---
+# monitoringservice-enable-vsgmonitoring-config/tasks/main.yml
+
+- name: TOSCA files to enable vSG service monitoring
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ cord_profile_dir }}/{{ item }}"
+  with_items:
+    - "vsgmonitoring.yaml"
+

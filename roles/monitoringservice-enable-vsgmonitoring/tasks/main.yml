@@ -1,0 +1,8 @@
+---
+# monitoringservice-enable-vsgmonitoring/tasks/main.yml
+
+- name: Run TOSCA to enable vSG monitoring
+  command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/vsgmonitoring.yaml"
+  tags:
+    - skip_ansible_lint # TOSCA loading should be idempotent
+

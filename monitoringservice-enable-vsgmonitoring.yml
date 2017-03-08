@@ -1,0 +1,27 @@
+---
+# monitoringservice-enable-vsgmonitoring.yml
+# Enables monitoring for vSG service
+# ansible-playbook -i inventory/rcord --extra-vars @../genconfig/config.yml monitoringservice-enable-vsgmonitoring.yml
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Create config files for enabling vSG monitoring
+  hosts: head
+  roles:
+    - monitoringservice-enable-vsgmonitoring-config
+
+- include: add-onboard-containers-playbook.yml
+
+- name: Run role to execute TOSCA file
+  hosts: xos_ui
+  connection: docker
+  roles:
+    - monitoringservice-enable-vsgmonitoring
+

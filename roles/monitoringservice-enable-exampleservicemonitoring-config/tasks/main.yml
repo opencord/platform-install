@@ -1,0 +1,11 @@
+
+---
+# monitoringservice-enable-exampleservicemonitoring-config/tasks/main.yml
+
+- name: TOSCA files to enable exampleservice monitoring
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ cord_profile_dir }}/{{ item }}"
+  with_items:
+    - "exampleservicemonitoring.yaml"
+
