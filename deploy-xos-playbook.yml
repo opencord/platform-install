@@ -51,3 +51,5 @@
   roles:
     - xos-ready
     - xos-config
+
+- include: deploy-xos-gui-extensions-playbook.yml

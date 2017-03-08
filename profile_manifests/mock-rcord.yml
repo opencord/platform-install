@@ -43,6 +43,10 @@ gui_routes:
   - label: "Instances"
     state: "xos.core.instance"
 
+enabled_gui_extensions:
+  - name: vtr
+    path: orchestration/xos_services/vtr/xos/gui
+
 # GUI branding [OLD GUI to be removed]
 gui_branding_name: "CORD"
 gui_branding_icon: "/static/cord-logo.png"
