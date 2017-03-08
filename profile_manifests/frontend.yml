@@ -28,3 +28,7 @@ server_certs:
     subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=xos-core.{{ site_suffix }}"
     altnames:
       - "DNS:xos-core.{{ site_suffix }}"
+
+enabled_gui_extensions:
+  - name: sample
+    path: orchestration/xos-sample-gui-extension

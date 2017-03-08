@@ -35,11 +35,15 @@ xos_docker_volumes:
   - host: "{{ cord_profile_dir }}/images"
     container: /opt/xos/images
 
-# GUI branding
+# GUI branding [OLD GUI to be removed]
 gui_branding_name: "CORD"
 gui_branding_icon: "/static/cord-logo.png"
 gui_branding_favicon: "/static/cord-favicon.png"
 gui_branding_bg: "/static/cord-bg.jpg"
+
+enabled_gui_extensions:
+  - name: vtr
+    path: orchestration/xos_services/vtr/xos/gui
 
 # paths defined in manifest/default.xml
 xos_services:

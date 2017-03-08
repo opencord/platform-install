@@ -2,7 +2,7 @@
 # deploy-xos-gui-extensions-playbook.yml
 
 - name: Include vars
-  hosts: all
+  hosts: head
   tasks:
     - name: Include variables
       include_vars: "{{ item }}"
