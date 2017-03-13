@@ -1,8 +1,8 @@
 ---
 # pki-root-ca/defaults/main.yml
 
-pki_dir: "{{ playbook_dir }}/pki"
-credentials_dir: "{{ playbook_dir }}/credentials"
+pki_dir: "/opt/pki"
+credentials_dir: "/opt/credentials"
 
 # ca parameters
 ca_digest: "sha256"
@@ -10,7 +10,7 @@ ca_size: 4096
 ca_root_days: 3650
 
 # passphrases for the key
-ca_root_phrase: "{{ lookup('password', 'credentials/ca_root_phrase length=64') }}"
+ca_root_phrase: "{{ lookup('password', credentials_dir+'/ca_root_phrase length=64') }}"
 
 # noninteractive csr subject
 ca_root_subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=CORD Test Deployment Root CA"

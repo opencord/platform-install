@@ -39,7 +39,7 @@
 
 - name: Copy SSL Certs to ONOS so docker-compose can find it
   copy:
-    src: "/usr/local/share/ca-certificates/{{ item }}"
+    src: "/usr/local/share/ca-certificates/cord/{{ item }}"
     dest: "{{ onos_cord_dest }}/{{ item }}"
     owner: "{{ ansible_user_id }}"
     remote_src: True
