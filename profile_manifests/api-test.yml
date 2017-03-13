@@ -7,6 +7,7 @@ deployment_type: MyDeployment
 frontend_only: True
 use_openstack: False
 use_vtn: False
+needs_pki_install: True
 
 build_xos_base_image: True
 build_xos_test_image: True
@@ -60,4 +61,3 @@ server_certs:
     subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=xos-core.{{ site_suffix }}"
     altnames:
       - "DNS:xos-core.{{ site_suffix }}"
-

@@ -1,13 +1,21 @@
 ---
 # pki-root-ca/tasks/main.yml
 
-- name: Make sure credentials directory has proper ownership
+- name: Create credentials directory
   become: yes
   file:
     dest: "{{ credentials_dir }}"
     state: directory
     owner: "{{ ansible_user_id }}"
     mode: 0700
+
+- name: Create PKI directory
+  become: yes
+  file:
+    dest: "{{ pki_dir }}"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    mode: 0755
 
 - name: Create root CA directory
   become: yes
@@ -88,4 +96,3 @@
       -out {{ pki_dir }}/root_ca/certs/ca_cert.pem
   args:
     creates: "{{ pki_dir }}/root_ca/certs/ca_cert.pem"
-
