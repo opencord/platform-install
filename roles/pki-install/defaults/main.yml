@@ -1,0 +1,3 @@
+# pki-install/defaults/main.yml
+
+pki_dir: "/opt/pki"

@@ -13,6 +13,7 @@ xos_admin_last: admin
 frontend_only: False
 use_openstack: False
 use_vtn: False
+needs_pki_install: True
 
 build_xos_base_image: True
 
@@ -66,4 +67,3 @@ server_certs:
     subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=xos-core.{{ site_suffix }}"
     altnames:
       - "DNS:xos-core.{{ site_suffix }}"
-
