@@ -1,0 +1,19 @@
+---
+# pki-install-playbook.yml
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+# for generating SSL certs
+- include: pki-setup-playbook.yml
+
+- name: Install CA certificates
+  hosts: head
+  roles:
+    - pki-install
