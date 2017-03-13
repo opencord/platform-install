@@ -44,6 +44,10 @@
         nictype: bridged
         parent: mgmtbr
         type: nic
+      certs:
+        type: disk
+        path: /usr/local/share/ca-certificates/cord/
+        source: /usr/local/share/ca-certificates/
 
 - name: Create containers for the OpenStack services
   become: yes
@@ -121,6 +125,11 @@
 - name: Update software in all the containers
   when: run_dist_upgrade
   command: ansible containers -m apt -b -u ubuntu -a "upgrade=dist"
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Update CA certificates in containers
+  command: ansible containers -m shell -b -u ubuntu -a "update-ca-certificates"
   tags:
     - skip_ansible_lint # running a sub job
 
