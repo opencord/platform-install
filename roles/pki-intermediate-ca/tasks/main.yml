@@ -1,6 +1,14 @@
 ---
 # pki-ca/tasks/main.yml
 
+- name: Create PKI directory
+  become: yes
+  file:
+    dest: "{{ pki_dir }}"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    mode: 0755
+
 - name: Create intermediate CA directory
   become: yes
   file:
@@ -29,7 +37,7 @@
   file:
     dest: "{{ pki_dir }}/intermediate_ca/private"
     state: directory
-    mode: 0700
+    mode: 0755
 
 - name: Create serial file
   copy:
@@ -117,4 +125,3 @@
   copy:
     dest: "{{ pki_dir }}/intermediate_ca/certs/im_cert_chain.pem"
     content: "{{ im_cert.stdout }}\n{{ ca_cert.stdout }}"
-
