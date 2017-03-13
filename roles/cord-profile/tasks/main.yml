@@ -35,17 +35,6 @@
     mode: 0600
   with_items: "{{ xos_service_sshkeys }}"
 
-- name: Copy over core api key
-  copy:
-    src: "{{ playbook_dir }}/pki/intermediate_ca/private/xos-core.{{ site_suffix }}_key.pem"
-    dest: "{{ cord_profile_dir }}/core_api_key.pem"
-    mode: 0600
-
-- name: Copy over core api cert
-  copy:
-    src: "{{ playbook_dir }}/pki/intermediate_ca/certs/xos-core.{{ site_suffix }}_cert_chain.pem"
-    dest: "{{ cord_profile_dir }}/core_api_cert.pem"
-
 - name: Make Image directory ( outside of profile directory to avoid repeat downloads on sequential runs)
   become: yes
   file:
@@ -122,4 +111,3 @@
     src: "{{ ansible_user_dir }}/node_key"
     dest: "{{ cord_profile_dir }}/node_key"
     mode: 0600
-

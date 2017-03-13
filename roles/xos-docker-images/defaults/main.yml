@@ -1,6 +1,7 @@
 ---
 # xos-docker-images/defaults/main.yml
 
+pki_dir: "/opt/pki"
 cord_dir: "{{ ansible_user_dir + '/cord' }}"
 
 build_xos_base_image: False
@@ -11,4 +12,3 @@ deploy_docker_tag: "latest"
 
 push_xos_base_image: False
 push_xos_image: False
-

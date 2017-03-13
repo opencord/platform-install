@@ -4,7 +4,7 @@
 - name: Copy CA certificates to head node
   become: yes
   copy:
-    src: "{{ playbook_dir }}/pki/{{ item.src }}"
+    src: "{{ pki_dir }}/{{ item.src }}"
     dest: "/usr/local/share/ca-certificates/{{ item.dest }}"
   with_items:
     - src: "root_ca/certs/ca_cert.pem"
@@ -13,6 +13,30 @@
       dest: "cord_intermediate_ca.crt"
   notify:
     - Run update-ca-certificates on head node
-    - Copy root CA cert to all service VMs
-    - Copy intermediate CA cert to all service VMs
-    - update-ca-certificates in service VMs
+
+- name: Ensure PKI directory
+  become: yes
+  file:
+    path: "{{ pki_dir }}"
+    state: directory
+
+- name: Copy certs needed by XOS
+  become: yes
+  copy:
+    src: "{{ pki_dir }}/{{ item.src }}"
+    dest: "{{ pki_dir }}/{{ item.dest }}"
+  with_items:
+    - src: "intermediate_ca/certs/im_cert_chain.pem"
+      dest: "im_cert_chain.pem"
+
+- name: Copy certs needed by OpenStack
+  become: yes
+  when: use_openstack
+  copy:
+    src: "{{ pki_dir }}/{{ item.src }}"
+    dest: "{{ pki_dir }}/{{ item.dest }}"
+  with_items:
+    - src: "intermediate_ca/private/keystone.{{ site_suffix }}_key.pem"
+      dest: "keystone.{{ site_suffix }}_key.pem"
+    - src: "intermediate_ca/certs/keystone.{{ site_suffix }}_cert.pem"
+      dest: "keystone.{{ site_suffix }}_cert.pem"

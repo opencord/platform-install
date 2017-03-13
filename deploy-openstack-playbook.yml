@@ -17,19 +17,6 @@
     - { role: head-prep, become: yes }
     - create-lxd
 
-- name: Create SSL root/intermediate CAs and server certificates
-  connection: local
-  hosts: localhost
-  roles:
-    - pki-root-ca
-    - pki-intermediate-ca
-    - pki-cert
-
-- name: Install CA certificates
-  hosts: head
-  roles:
-    - pki-install
-
 - name: Start OpenStack install
   hosts: head
   roles:
@@ -42,4 +29,3 @@
   hosts: head
   roles:
     - juju-finish
-

@@ -21,9 +21,10 @@
   tags:
     - skip_ansible_lint # idempotent git metadata retrieval, git module can't do this
 
+# Should mount certs in the image rather than baking them in
 - name: Copy over SSL CA certificates
   copy:
-    src: "{{ playbook_dir }}/pki/intermediate_ca/certs/im_cert_chain.pem"
+    src: "{{ pki_dir }}/im_cert_chain.pem"
     dest: "{{ cord_dir }}/orchestration/xos/containers/xos/local_certs.crt"
     mode: 0644
 
@@ -44,9 +45,9 @@
     pull: False # use the locally built copy of xosproject/xos
 
 - name: Clean up chameleon temp directory
-  shell: rm -rf {{ cord_dir }}/orchestration/xos/containers/chameleon/tmp.chameleon
-  tags:
-    - skip_ansible_lint # docker can't access files outside of build context, so we must copy
+  file:
+    path: "{{ cord_dir }}/orchestration/xos/containers/chameleon/tmp.chameleon"
+    state: absent
 
 - name: Populate chameleon temp directory
   shell: cp -a "{{ cord_dir }}/component/chameleon" "{{ cord_dir }}/orchestration/xos/containers/chameleon/tmp.chameleon"
@@ -87,4 +88,3 @@
     name: "{{ deploy_docker_registry }}/xosproject/xos"
     tag: "{{ deploy_docker_tag }}"
     push: True
-
