@@ -56,4 +56,3 @@
   command: chdir="{{ onos_cord_dest }}" docker-compose up -d
   tags:
     - skip_ansible_lint
-

@@ -1,0 +1,4 @@
+# pki-install/defaults/main.yml
+
+pki_dir: "/opt/pki"
+use_openstack: True
