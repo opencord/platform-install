@@ -22,6 +22,30 @@
       "revId": "686b1f3f2d75f14e9af5326db54a7f53adf9cb5f",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da141535_18899cca",
+        "filename": "roles/pki-intermediate-ca/tasks/main.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-03-14T20:06:51Z",
+      "side": 1,
+      "message": "You\u0027re right, I don\u0027t think this is necessary.  Will revert it.",
+      "parentUuid": "da141535_f8fee837",
+      "range": {
+        "startLine": 40,
+        "startChar": 2,
+        "endLine": 40,
+        "endChar": 14
+      },
+      "revId": "686b1f3f2d75f14e9af5326db54a7f53adf9cb5f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
