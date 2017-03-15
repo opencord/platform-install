@@ -12,7 +12,7 @@ topology_template:
     gui-extensions-store:
       type: tosca.nodes.Component
       properties:
-        image: node:argon
+        image: {{ deploy_docker_registry }}node:argon
         command: /bin/true
 
     /var/www/dist/extensions:
