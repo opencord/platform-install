@@ -1,6 +1,9 @@
 ---
 # deploy-xos-playbook.yml
 
+# This playbook is used for development.  It walks through CORD's
+# fetch -> build -> deploy container pipeline for XOS.
+
 - name: Include vars
   hosts: all
   tasks:
@@ -13,43 +16,17 @@
 # for docker, docker-compose
 - include: devel-tools-playbook.yml
 
-# setup PKI when needed for development
-- name: Create Root CA, Intermediate CA, Server certs
-  hosts: localhost
-  connection: local
-  roles:
-    - { role: pki-root-ca,         when: needs_pki_install is defined and needs_pki_install }
-    - { role: pki-intermediate-ca, when: needs_pki_install is defined and needs_pki_install }
-    - { role: pki-cert,            when: needs_pki_install is defined and needs_pki_install }
+# pull / build base XOS images
+- include: ../../orchestration/xos/pull-xos-playbook.yml
+- include: ../../orchestration/xos/build-xos-playbook.yml
 
-# install PKI when needed for development
-- name: Install CA certificates
+- include: pki-install-playbook.yml
+
+- include: cord-profile-playbook.yml
+
+- name: Pull other docker images if not present
   hosts: head
   roles:
-    - { role: pki-install,         when: needs_pki_install is defined and needs_pki_install }
+    - pull-xos-docker-images
 
-- name: Create CORD profile, create docker images, bootstrap XOS in docker
-  hosts: head
-  roles:
-    - cord-profile
-    - xos-docker-images
-    - xos-bootstrap
-
-- include: add-bootstrap-containers-playbook.yml
-
-- name: Onboard XOS services
-  hosts: xos_bootstrap_ui
-  connection: docker
-  roles:
-    - xos-onboarding
-
-- include: add-onboard-containers-playbook.yml
-
-- name: Check to see if XOS UI is ready, apply profile config
-  hosts: xos_ui
-  connection: docker
-  roles:
-    - xos-ready
-    - xos-config
-
-- include: deploy-xos-gui-extensions-playbook.yml
+- include: launch-xos-playbook.yml
