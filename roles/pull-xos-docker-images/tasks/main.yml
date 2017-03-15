@@ -1,0 +1,12 @@
+---
+# pull-xos-docker-images/tasks/main.yml
+
+- name: Pull latest versions of images if not present
+  docker_image:
+    name: "{{ item }}:latest"
+    repository: "{{ item }}:candidate"
+  with_items:
+    - xosproject/xos-postgres
+    - xosproject/vsg
+    - redis
+

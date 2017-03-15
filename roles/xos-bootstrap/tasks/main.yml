@@ -6,6 +6,16 @@
     name: "{{ item }}"
   with_items: "{{ xos_docker_networks }}"
 
+# Customized version of xosproject/xos with local cert baked in
+# Used by the onboarding synchronizer, soon this will go away
+- name: Build xosproject/xos bootstrap image (temporary, for onboarding)
+  docker_image:
+    name: "xosproject/xos"
+    path: "{{ cord_profile_dir }}"
+    dockerfile: "Dockerfile.xos"
+    pull: False
+    force: True
+
 - name: Start XOS bootstrap containers
   docker_service:
     project_name: "{{ cord_profile | regex_replace('\\W','') }}bs"

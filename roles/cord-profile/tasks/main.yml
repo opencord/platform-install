@@ -2,6 +2,11 @@
 # cord-profile/tasks/main.yml
 # Constructs a CORD service profile directory and configuration files
 
+- name: Create and copy XOS admin password
+  copy:
+    content: "{{ xos_admin_pass }}"
+    dest: "{{ cord_dir }}/build/platform-install/credentials/{{ xos_admin_user }}"
+
 - name: Create cord_profile directory
   become: yes
   file:
@@ -29,41 +34,45 @@
 
 - name: Copy ssh keys to key_import directory
   copy:
-    remote_src: True # file is local to the remote machine
     src: "{{ item.source_path | expanduser }}"
     dest: "{{ cord_profile_dir }}/key_import/{{ item.name }}"
     mode: 0600
   with_items: "{{ xos_service_sshkeys }}"
 
-- name: Copy over core api key and cert
+- name: Copy cert chain and core api key and cert
   copy:
     src: "{{ pki_dir }}/{{ item }}"
     dest: "{{ cord_profile_dir }}/{{ item }}"
     mode: 0600
+    remote_src: True
   with_items:
     - core_api_key.pem
     - core_api_cert.pem
+    - im_cert_chain.pem
 
-- name: Make Image directory ( outside of profile directory to avoid repeat downloads on sequential runs)
+- name: Make local images directory
+  delegate_to: localhost
   become: yes
   file:
-    path: "{{ cord_dir }}/images"
+    path: "{{ image_dir }}"
     state: directory
     mode: 0755
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_gid }}"
 
 - name: Download Glance VM images
+  when: use_openstack
+  delegate_to: localhost
   get_url:
     url: "{{ item.url }}"
     checksum: "{{ item.checksum }}"
-    dest: "{{ cord_dir }}/images/{{ item.name }}.qcow2"
+    dest: "{{ image_dir }}/{{ item.name }}.qcow2"
   with_items: "{{ xos_images }}"
 
 - name: Copy Glance VM images to profile directory
+  when: use_openstack
   copy:
-    remote_src: True
-    src: "{{ cord_dir }}/images/{{ item.name }}.qcow2"
+    src: "{{ image_dir }}/{{ item.name }}.qcow2"
     dest: "{{ cord_profile_dir }}/images/{{ item.name }}.qcow2"
   with_items: "{{ xos_images }}"
 
@@ -93,6 +102,9 @@
     - gateway-config.yml
     - style.config.js
     - app.config.js
+    - Dockerfile.xos
+    - xos-gui-extensions-onboard.yml
+    - xos-gui-extensions.yml
 
 - name: Create profile specific templated TOSCA config files
   template:
@@ -106,17 +118,26 @@
     dest: "{{ cord_profile_dir }}/{{ item }}"
   with_items: "{{ xos_other_templates }}"
 
-- name: Copy admin_openrc.sh
-  when: use_openstack
+- name: Copy node key
+  when: not on_maas and use_openstack
   copy:
-    remote_src: True
-    src: "{{ ansible_user_dir }}/admin-openrc.sh"
-    dest: "{{ cord_profile_dir }}/admin-openrc.sh"
-
-- name: Copy node_key to cord_profile directory
-  when: use_openstack
-  copy:
-    remote_src: True # file is local to the remote machine
-    src: "{{ ansible_user_dir }}/node_key"
-    dest: "{{ cord_profile_dir }}/node_key"
+    src: "{{ ansible_user_dir }}/.ssh/id_rsa"
+    dest: "{{ item }}/node_key"
+    owner: "{{ ansible_user }}"
     mode: 0600
+  with_items:
+    - "{{ ansible_user_dir }}"
+    - "{{ cord_profile_dir }}"
+
+- name: Copy node key (MaaS)
+  when: on_maas and use_openstack
+  become: yes
+  copy:
+    src: "{{ maas_node_key }}"
+    dest: "{{ item }}/node_key"
+    owner: "{{ ansible_user }}"
+    mode: 0600
+    remote_src: True
+  with_items:
+    - "{{ ansible_user_dir }}"
+    - "{{ cord_profile_dir }}"

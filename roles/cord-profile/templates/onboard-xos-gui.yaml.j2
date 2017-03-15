@@ -12,7 +12,7 @@ topology_template:
     xos-spa-gui:
       type: tosca.nodes.Component
       properties:
-        image: xosproject/xos-gui
+        image: {{ deploy_docker_registry }}xosproject/xos-gui:{{ deploy_docker_tag }}
         ports: 4000:4000
 
     # UI App Config
@@ -57,7 +57,7 @@ topology_template:
           - xos:
              node: xos-spa-gui
              relationship: tosca.relationships.LinkOfComponent
-    
+
     gui-to-gw:
       type: tosca.nodes.ComponentLink
       properties:

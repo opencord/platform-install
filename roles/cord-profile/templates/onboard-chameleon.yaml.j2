@@ -11,7 +11,7 @@ topology_template:
       type: tosca.nodes.Component
       properties:
         command: python chameleon/chameleon/main.py -R 9101 -G xos-core:50055
-        image: xosproject/chameleon
+        image: {{ deploy_docker_registry }}xosproject/chameleon:{{ deploy_docker_tag }}
         ports: 9101:9101
 
     chameleon-to-core:

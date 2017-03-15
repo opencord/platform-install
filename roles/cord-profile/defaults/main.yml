@@ -5,11 +5,20 @@ cord_dir: "{{ ansible_user_dir + '/cord' }}"
 cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
 pki_dir: "/opt/pki"
 
+deploy_docker_registry: ""
+deploy_docker_tag: "candidate"
+
+# For storing OpenStack images
+image_dir: /opt/images
+
 # used in xos.yaml.j2, if True, other synchronizer container will not be started
 frontend_only: False
 
 # Set to True if you want to copy the admin-openrc.sh openstack config file
 use_openstack: True
+
+# Will be overridden if doing a full pod build
+on_maas: False
 
 # set to True to create the xos_redis container in the bootstrap context
 use_redis: True

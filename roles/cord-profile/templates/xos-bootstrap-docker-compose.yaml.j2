@@ -11,7 +11,7 @@ networks:
 
 services:
   xos_db:
-    image: xosproject/xos-postgres
+    image: {{ deploy_docker_registry }}xosproject/xos-postgres:{{ deploy_docker_tag }}
     networks:
 {% for network in xos_docker_networks %}
       - {{ network }}
@@ -21,7 +21,7 @@ services:
 
 {% if use_redis %}
   xos_redis:
-    image: redis
+    image: {{ deploy_docker_registry }}redis:{{ deploy_docker_tag }}
     networks:
 {% for network in xos_docker_networks %}
      - {{ network }}
@@ -34,7 +34,7 @@ services:
 {% endif %}
 
   xos_bootstrap_ui:
-    image: xosproject/xos
+    image: {{ deploy_docker_registry }}xosproject/xos:{{ deploy_docker_tag }}
     command: python /opt/xos/manage.py runserver 0.0.0.0:{{ xos_bootstrap_ui_port }} --insecure --makemigrations
     networks:
 {% for network in xos_docker_networks %}
@@ -69,7 +69,7 @@ services:
         max-file: "5"
 
   xos_synchronizer_onboarding:
-    image: xosproject/xos
+    image: {{ deploy_docker_registry }}xosproject/xos:{{ deploy_docker_tag }}
     command: bash -c "cd /opt/xos/synchronizers/onboarding; ./run.sh"
     networks:
 {% for network in xos_docker_networks %}
@@ -95,4 +95,3 @@ services:
       options:
         max-size: "1000k"
         max-file: "5"
-

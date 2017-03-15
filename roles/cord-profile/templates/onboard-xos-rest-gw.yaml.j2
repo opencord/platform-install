@@ -12,7 +12,7 @@ topology_template:
     xos-rest-gateway:
       type: tosca.nodes.Component
       properties:
-        image: xosproject/xos-rest-gw
+        image: {{ deploy_docker_registry }}xosproject/xos-rest-gw:{{ deploy_docker_tag }}
         command: npm start -- --config gateway-config.yml
         ports: 3000:3000
 
