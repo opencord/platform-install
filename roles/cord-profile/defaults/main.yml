@@ -5,6 +5,12 @@ cord_dir: "{{ ansible_user_dir + '/cord' }}"
 cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
 pki_dir: "/opt/pki"
 
+deploy_docker_registry: ""
+deploy_docker_tag: "candidate"
+
+# For storing OpenStack images
+image_dir: /opt/images
+
 # used in xos.yaml.j2, if True, other synchronizer container will not be started
 frontend_only: False
 
