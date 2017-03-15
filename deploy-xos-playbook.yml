@@ -13,26 +13,18 @@
 # for docker, docker-compose
 - include: devel-tools-playbook.yml
 
-# setup PKI when needed for development
-- name: Create Root CA, Intermediate CA, Server certs
-  hosts: localhost
-  connection: local
-  roles:
-    - { role: pki-root-ca,         when: needs_pki_install is defined and needs_pki_install }
-    - { role: pki-intermediate-ca, when: needs_pki_install is defined and needs_pki_install }
-    - { role: pki-cert,            when: needs_pki_install is defined and needs_pki_install }
+# build base XOS images
+- include: ../../orchestration/xos/pull-xos-playbook.yml
+- include: ../../orchestration/xos/build-xos-playbook.yml
 
-# install PKI when needed for development
-- name: Install CA certificates
+- include: pki-install-playbook.yml
+
+- include: cord-profile-playbook.yml
+
+- name: Bootstrap XOS in docker
   hosts: head
   roles:
-    - { role: pki-install,         when: needs_pki_install is defined and needs_pki_install }
-
-- name: Create CORD profile, create docker images, bootstrap XOS in docker
-  hosts: head
-  roles:
-    - cord-profile
-    - xos-docker-images
+    - pull-xos-docker-images
     - xos-bootstrap
 
 - include: add-bootstrap-containers-playbook.yml
@@ -42,6 +34,7 @@
   connection: docker
   roles:
     - xos-onboarding
+    - xos-gui-extension-onboard
 
 - include: add-onboard-containers-playbook.yml
 
@@ -52,4 +45,3 @@
     - xos-ready
     - xos-config
 
-- include: deploy-xos-gui-extensions-playbook.yml
