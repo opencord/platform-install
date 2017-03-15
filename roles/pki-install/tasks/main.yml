@@ -28,6 +28,10 @@
   with_items:
     - src: "intermediate_ca/certs/im_cert_chain.pem"
       dest: "im_cert_chain.pem"
+    - src: "intermediate_ca/private/xos-core.{{ site_suffix }}_key.pem"
+      dest: "core_api_key.pem"
+    - src: "intermediate_ca/certs/xos-core.{{ site_suffix }}_cert_chain.pem"
+      dest: "core_api_cert.pem"
 
 - name: Copy certs needed by OpenStack
   become: yes

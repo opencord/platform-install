@@ -3,6 +3,7 @@
 
 cord_dir: "{{ ansible_user_dir + '/cord' }}"
 cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
+pki_dir: "/opt/pki"
 
 # used in xos.yaml.j2, if True, other synchronizer container will not be started
 frontend_only: False

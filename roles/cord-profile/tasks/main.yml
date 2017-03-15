@@ -35,6 +35,15 @@
     mode: 0600
   with_items: "{{ xos_service_sshkeys }}"
 
+- name: Copy over core api key and cert
+  copy:
+    src: "{{ pki_dir }}/{{ item }}"
+    dest: "{{ cord_profile_dir }}/{{ item }}"
+    mode: 0600
+  with_items:
+    - core_api_key.pem
+    - core_api_cert.pem
+
 - name: Make Image directory ( outside of profile directory to avoid repeat downloads on sequential runs)
   become: yes
   file:
