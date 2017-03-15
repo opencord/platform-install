@@ -26,6 +26,9 @@ xos_tosca_config_templates:
 gui_project_name: "E-CORD"
 gui_background: "cord-bg.jpg" # TODO find ecord image
 gui_payoff: "Your Enterprise VNF orchestrator"
+enabled_gui_extensions:
+  - name: ecord-local 
+    path: orchestration/profiles/ecord/xos/gui/ecord-local
 
 # GUI branding
 gui_branding_name: "ECORD"
