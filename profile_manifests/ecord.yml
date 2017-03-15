@@ -37,6 +37,9 @@ gui_branding_name: "ECORD"
 gui_branding_icon: "/static/cord-logo.png"
 gui_branding_favicon: "/static/cord-favicon.png"
 gui_branding_bg: "/static/cord-bg.jpg"
+enabled_gui_extensions:
+  - name: ecord-local 
+    path: orchestration/profiles/ecord/xos/gui/ecord-local
 
 # paths defined in manifest/default.xml
 xos_services:
