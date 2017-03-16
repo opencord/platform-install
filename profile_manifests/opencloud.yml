@@ -46,9 +46,9 @@ xos_services:
 
 xos_service_sshkeys:
   - name: onos_rsa
-    source_path: "~/.ssh/id_rsa"
+    source_path: "{{ ssh_pki_dir }}/client_certs/headnode_sshkey"
   - name: onos_rsa.pub
-    source_path: "~/.ssh/id_rsa.pub"
+    source_path: "{{ ssh_pki_dir }}/client_certs/headnode_sshkey.pub"
 
 # SSL server certificate generation
 server_certs:
@@ -213,9 +213,17 @@ head_lxd_list:
       - "rabbitmq-server"
     ipv4_last_octet: 57
 
+  - name: "mongodb-1"
+    service: "mongodb"
+    aliases:
+      - "mongodb"
+    ipv4_last_octet: 58
+
+
 lxd_service_list:
   - ceilometer
   - glance
+  - mongodb
   - keystone
   - neutron-api
   - nova-cloud-controller

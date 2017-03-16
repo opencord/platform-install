@@ -46,7 +46,7 @@
     - src: "intermediate_ca/certs/xos-core.{{ site_suffix }}_cert_chain.pem"
       dest: "core_api_cert.pem"
 
-- name: Make Image directory ( outside of profile directory to avoid repeat downloads on sequential runs)
+- name: Make images directory ( outside of profile directory to avoid repeat downloads on sequential runs)
   become: yes
   file:
     path: "{{ cord_dir }}/images"
@@ -115,10 +115,3 @@
     src: "{{ ansible_user_dir }}/admin-openrc.sh"
     dest: "{{ cord_profile_dir }}/admin-openrc.sh"
 
-- name: Copy node_key to cord_profile directory
-  when: use_openstack
-  copy:
-    remote_src: True # file is local to the remote machine
-    src: "{{ ansible_user_dir }}/node_key"
-    dest: "{{ cord_profile_dir }}/node_key"
-    mode: 0600
