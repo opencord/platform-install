@@ -53,12 +53,16 @@ xos_services:
     path: orchestration/xos_services/onos-service
   - name: vrouter
     path: orchestration/xos_services/vrouter
+    operation: onboardnew
   - name: vsg
     path: orchestration/xos_services/vsg
+    operation: onboardnew
   - name: vtr
     path: orchestration/xos_services/vtr
+    operation: onboardnew
   - name: fabric
     path: orchestration/xos_services/fabric
+    operation: onboardnew
 # needed onboarding synchronizer doesn't require service code to be present when started
   - name: exampleservice
     path: orchestration/xos_services/exampleservice
