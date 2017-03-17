@@ -1,0 +1,36 @@
+- name: Disable onboarding
+  command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/disable-onboarding.yaml"
+  tags:
+    - skip_ansible_lint # TOSCA loading should be idempotent
+
+- name: Onboard VTR Tosca
+  command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/xos_services/{{ item.path | basename }}/xos/{{ item.name }}-onboard.yaml"
+  with_items: "{{ vtr_services }}"
+  tags:
+    - skip_ansible_lint # TOSCA loading should be idempotent
+
+- name: Enable onboarding
+  command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/enable-onboarding.yaml"
+  tags:
+    - skip_ansible_lint # TOSCA loading should be idempotent
+
+- name: Wait for services to be onboarded
+  uri:
+    url: "http://localhost:{{ xos_bootstrap_ui_port }}/api/utility/onboarding/services/{{ item.name }}/ready/"
+    method: GET
+    return_content: yes
+  register: xos_onboard_status
+  until: '"true" in xos_onboard_status.content'
+  retries: 60
+  delay: 10
+  with_items: "{{ vtr_services }}"
+
+- name: Wait for XOS to be onboarded after service onboarding
+  uri:
+    url: "http://localhost:{{ xos_bootstrap_ui_port }}/api/utility/onboarding/xos/ready/"
+    method: GET
+    return_content: yes
+  register: xos_onboard_status
+  until: '"true" in xos_onboard_status.content'
+  retries: 60
+  delay: 10

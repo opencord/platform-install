@@ -1,0 +1,7 @@
+cord_dir: "{{ ansible_user_dir + '/cord' }}"
+
+xos_bootstrap_ui_port: 9001
+
+vtr_services:
+  - name: vtr
+    path: orchestration/xos_services/vtr
