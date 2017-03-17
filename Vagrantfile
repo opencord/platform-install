@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
     d.vm.network "forwarded_port", guest: 6379, host: 6379
     d.vm.network "private_network", ip: "192.168.46.100"
     d.vm.provider "virtualbox" do |vb|
-      vb.memory = "2048"
+      vb.memory = "4096"
       vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
