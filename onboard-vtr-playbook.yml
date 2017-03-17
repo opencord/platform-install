@@ -1,0 +1,45 @@
+---
+# onboard-vtr-playbook.yml
+# 
+# Intended for ONS 2017 Demo (require mock-rcord/rcord profile to be there)
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Load VTR TOSCA in XOS
+  hosts: all
+  tasks:
+    - name: Include VTR TOSCA in available recipes
+      copy: 
+        src: roles/xos-vtr-onboard/files/vtr-tosca.yaml
+        dest: "{{ cord_profile_dir }}"
+    - name: Include VTR GUI in available recipes
+      copy: 
+        src: roles/xos-vtr-onboard/files/vtr-gui.yaml
+        dest: "{{ cord_profile_dir }}"
+
+- include: add-onboard-containers-playbook.yml
+
+- name: Execute VTR TOSCA in XOS
+  hosts: xos_ui
+  connection: docker
+  tasks:
+    - name: Create the VTR Service model
+      command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/vtr-tosca.yaml"
+      tags:
+        - skip_ansible_lint # TOSCA loading should be idempotent
+
+- name: Execute VTR GUI TOSCA in XOS
+  hosts: xos_ui
+  connection: docker
+  tasks:
+    - name: Create the VTR GUI
+      command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/vtr-gui.yaml"
+      tags:
+        - skip_ansible_lint # TOSCA loading should be idempotent
