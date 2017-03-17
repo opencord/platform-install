@@ -57,6 +57,7 @@ xos_services:
     path: orchestration/xos_services/vsg
   - name: vtr
     path: orchestration/xos_services/vtr
+    operation: onboardnew
   - name: fabric
     path: orchestration/xos_services/fabric
 # needed onboarding synchronizer doesn't require service code to be present when started
