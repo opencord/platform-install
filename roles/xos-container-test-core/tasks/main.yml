@@ -1,0 +1,24 @@
+#xos-spa-gui tests
+
+- name: Check XOS Core Process
+  shell: ps -f | grep "bash -c cd coreapi; bash ./start_coreapi.sh"
+  register: result
+  until: result | success
+  retries: 10
+  delay: 5
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Get Volume Mounts on XOS Core Container
+  shell: mount -l | grep xos_services
+  register: volumes
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Validate Volume Mounts on XOS CoreContainer
+  assert:
+    that: "'/opt/xos_services/{{ item.name }}' in volumes.stdout|lower"
+  with_items: "{{ xos_services }}"
+  when:
+    - "'{{ item.name }}' != 'vnodlocal'"
+    - "'{{ item.name }}' != 'volt'"

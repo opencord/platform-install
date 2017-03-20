@@ -1,0 +1,10 @@
+#xos-spa-gui tests
+
+- name: Check GUI Process
+  shell: ps -f | grep "nginx -g daemon off"
+  register: result
+  until: result | success
+  retries: 10
+  delay: 5
+  tags:
+    - skip_ansible_lint # running a sub job
