@@ -1,0 +1,10 @@
+#xos-spa-gui tests
+
+- name: Check Chameleon Process
+  shell: ps -f | grep "'python chameleon/chameleon/main.py -R 9101 -G xos-core:50055'"
+  register: result
+  until: result | success
+  retries: 10
+  delay: 5
+  tags:
+    - skip_ansible_lint # running a sub job

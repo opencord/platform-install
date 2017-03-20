@@ -1,0 +1,24 @@
+#xos-vnod-sync tests
+
+- name: Check XOS VNOD Synchronizer Process
+  shell: ps -f | grep "python vnod-synchronizer.py -C /opt/xos/synchronizers/vnod/vnod_synchronizer_config"
+  register: result
+  until: result | success
+  retries: 10
+  delay: 5
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Get Volume Mounts on XOS VNOD Synchronizer Container
+  shell: mount -l | grep xos_services
+  register: volumes
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Validate Volume Mounts on XOS VNOD Synchronizer Container
+  assert:
+    that: "'/opt/xos_services/{{ item.name }}' in volumes.stdout|lower"
+  with_items: "{{ xos_services }}"
+  when:
+    - "'{{ item.name }}' != 'vnodlocal'"
+    - "'{{ item.name }}' != 'volt'"

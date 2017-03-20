@@ -1,0 +1,5 @@
+---
+
+cord_dir: "{{ ansible_user_dir + '/cord' }}"
+
+cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
