@@ -1,0 +1,112 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba092121_c11c586d",
+        "filename": "roles/xos-container-test/default/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-03-20T21:05:44Z",
+      "side": 1,
+      "message": "What\u0027s the use case where these variables would need to be set/overridden?\n\nIf not, incorporating them into the playbook would be simpler.",
+      "revId": "66235d0bcb277b211af5d7181512091d4c2120d1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba092121_a119647b",
+        "filename": "roles/xos-container-test/tasks/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-03-20T21:05:44Z",
+      "side": 1,
+      "message": "Variable includes generally should be in the playbook, not an individual role, as you get into precedence errors or other issues when doing this.",
+      "revId": "66235d0bcb277b211af5d7181512091d4c2120d1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba092121_61046c15",
+        "filename": "roles/xos-container-test/tasks/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-03-20T21:05:44Z",
+      "side": 1,
+      "message": "The start of this path might change - you might use {{ playbook_dir }} to replace `home/vagrant/cord/build/platform-install` in these paths, or put them in the playbook and then paths shouldn\u0027t be an issue.",
+      "revId": "66235d0bcb277b211af5d7181512091d4c2120d1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba092121_e10f5c2d",
+        "filename": "roles/xos-container-test/tasks/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-03-20T21:05:44Z",
+      "side": 1,
+      "message": "Using tags as enable/disable switches isn\u0027t recommended.  Make entirely different roles, one per set of tests, and include them.",
+      "revId": "66235d0bcb277b211af5d7181512091d4c2120d1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba092121_210e7435",
+        "filename": "roles/xos-container-test/tasks/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-03-20T21:05:44Z",
+      "side": 1,
+      "message": "shelling out to call docker isn\u0027t recommended - if you know where the docker-compose file for this is, you can do something like this to get information about running containers into a variable: https://github.com/opencord/platform-install/blob/master/roles/xos-onboard-hosts/tasks/main.yml#L4-L9\n\nShell also requires a ansible-lint override if not used with a \"when\" clause or a few other cases, so avoiding it\u0027s use is the best practice.",
+      "range": {
+        "startLine": 16,
+        "startChar": 2,
+        "endLine": 16,
+        "endChar": 61
+      },
+      "revId": "66235d0bcb277b211af5d7181512091d4c2120d1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba092121_0113705d",
+        "filename": "roles/xos-container-test/tasks/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-03-20T21:05:44Z",
+      "side": 1,
+      "message": "`docker exec` can be replaced with using the docker connection method - see the link above regarding adding containers to inventory.\n\nYou might just do a `- include: add-onboard-containers-playbook.yml` in your playbook, which should add all the containers to the ansible inventory.\n\nThis playbook might be a good starting point: https://github.com/opencord/platform-install/blob/master/onboard-exampleservice-playbook.yml",
+      "revId": "66235d0bcb277b211af5d7181512091d4c2120d1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
