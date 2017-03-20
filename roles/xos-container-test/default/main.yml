@@ -1,0 +1,35 @@
+---
+## container test variables
+
+#core components
+onboarding_sync: xos_synchronizer_onboarding_1
+onboarding_sync_process: python onboarding-synchronizer.py -C /opt/xos/synchronizers/onboarding/onboarding_synchronizer_config
+gui: xos-spa-gui_1
+gui_process: nginx -g daemon off;
+xos_core: xos_core_1
+xos_core_process: bash -c cd coreapi; bash ./start_coreapi.sh
+chameleon: xos_chameleon_1
+chameleon_process: python chameleon/chameleon/main.py -R 9101 -G xos-core:50055
+restgw: xos-rest-gw
+restgw_process: node src/server.js --config gateway-config.yml
+postgres: xos_db_1
+
+#synchronizer components
+vsg_sync: xos_synchronizer_vsg_1
+vsg_sync_process: python vcpe-synchronizer.py -C /opt/xos/synchronizers/vsg/vsg_synchronizer_config
+vtr_sync: xos_synchronizer_vtr_1
+vtr_sync_process: python vtr-synchronizer.py -C /opt/xos/synchronizers/vtr/vtr_synchronizer_config
+vrouter_sync: xos_synchronizer_vrouter_1
+vrouter_sync_process: python vrouter-synchronizer.py -C /opt/xos/synchronizers/vrouter/vrouter_config
+vnod_sync: xos_synchronizer_vnod_1
+vnod_sync_process: python vnod-synchronizer.py -C /opt/xos/synchronizers/vnod/vnod_config
+vtn_sync: xos_synchronizer_vtn_1
+vtn_sync_process: python vtn-synchronizer.py -C /opt/xos/synchronizers/vtn/vtn_config
+vee_sync: xos_synchronizer_vee_1
+vee_sync_process: python vee-synchronizer.py -C /opt/xos/synchronizers/vee/vee_config
+onos_sync: xos_synchronizer_onos_1
+onos_sync_process: python onos-synchronizer.py -C /opt/xos/synchronizers/onos/onos_synchronizer_config
+openstack_sync: xos_synchronizer_openstack_1
+openstack_sync_process: python openstack-synchronizer.py -C /opt/xos/synchronizers/openstack/openstack_synchronizer_config
+fabric_sync: xos_synchronizer_fabric_1
+fabric_sync_process: python fabric-synchronizer.py -C /opt/xos/synchronizers/fabric/fabric_synchronizer_config

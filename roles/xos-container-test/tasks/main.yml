@@ -1,0 +1,598 @@
+---
+
+# sanity check of xos-containers
+
+- name: Include vars
+  include_vars: "{{ item }}"
+  with_items:
+    - "/home/vagrant/cord/build/platform-install/profile_manifests/{{ cord_profile }}.yml"
+    - /home/vagrant/cord/build/platform-install/profile_manifests/local_vars.yml
+  tags:
+    - core
+    - ecord
+    - rcord
+
+- name: Get XOS Core Container ID
+  shell: docker ps | grep "{{ xos_core }}" | awk '{print $1}'
+  register: xos_core_id
+  tags:
+    - core
+
+- name: Check XOS Core Process
+  shell: docker exec {{ xos_core_id.stdout }} ps -f | grep bash
+  register: result
+  until: result | success
+  retries: 20
+  delay: 5
+  tags:
+    - core
+
+- name: Validate XOS Core Process
+  assert:
+    that: "'{{ xos_core_process }}' in result.stdout"
+  tags:
+    - core
+
+- name: Get Volume Mounts on XOS Core
+  shell: docker exec {{ xos_core_id.stdout }} mount | grep xos
+  register: volumes
+  tags:
+    - core
+
+- name: Validate Volume Mounts on XOS Core
+  assert:
+    that: "'/opt/xos_services/{{ item.name }}' in volumes.stdout|lower"
+  with_items: "{{ xos_services }}"
+  when: 
+    - "'{{ item.name }}' != 'vnodlocal'"
+    - "'{{ item.name }}' != 'volt'"
+  tags:
+    - core
+
+- name: Get Chameleon Container ID
+  shell: docker ps | grep "{{ chameleon }}" | awk '{print $1}'
+  register: chameleon_id
+  tags:
+    - core
+
+- name: Check Chameleon Process
+  shell: docker exec {{ chameleon_id.stdout }} ps -f | grep python
+  register: result
+  until: result | success
+  retries: 20
+  delay: 5
+  tags:
+    - core
+
+- name: Validate Chameleon Process
+  assert:
+    that: "'{{ chameleon_process }}' in result.stdout"
+  tags:
+    - core
+
+- name: Get GUI Container ID
+  shell: docker ps | grep "{{ gui }}" | awk '{print $1}'
+  register: gui_id
+  tags:
+    - core
+
+- name: Check GUI Process
+  shell: docker exec {{ gui_id.stdout }} ps -f | grep nginx
+  register: result
+  until: result | success
+  retries: 20
+  delay: 5
+  tags:
+    - core
+
+- name: Validate GUI Process
+  assert:
+    that: "'{{ gui_process }}' in result.stdout"
+  tags:
+    - core
+
+- name: Get REST GW Container ID
+  shell: docker ps | grep "{{ restgw }}" | awk '{print $1}'
+  register: restgw_id
+  tags:
+    - core
+
+- name: Check REST GW Process
+  shell: docker exec {{ restgw_id.stdout }} ps -f
+  register: result
+  until: result | success
+  retries: 20
+  delay: 5
+  tags:
+    - core
+
+- name: Validate Rest GW Process
+  assert:
+    that: "'{{ restgw_process }}' in result.stdout"
+  tags:
+    - core
+
+- name: Get Onboarding Synchronizer Container ID
+  shell: docker ps | grep "{{ onboarding_sync }}" | awk '{print $1}'
+  register: onboarding_id
+  tags:
+    - core
+
+- name: Check Onboarding Synchronizer Process
+  shell: docker exec {{ onboarding_id.stdout }} ps -f | grep python
+  register: result
+  until: result | success
+  retries: 20
+  delay: 5
+  tags:
+    - core
+
+- name: Validate Onboarding Synchronizer Process
+  assert:
+    that: "'{{ onboarding_sync_process }}' in result.stdout"
+  tags:
+    - core
+
+- name: Get Volume Mounts on Onboarding Synchronizer
+  shell: docker exec {{ onboarding_id.stdout }} mount | grep xos
+  register: volumes
+  tags:
+    - core
+
+- name: Validate Volume Mounts on Onboarding Synchronizer
+  assert:
+    that: "'/opt/xos_services/{{ item.name }}' in volumes.stdout|lower"
+  with_items: "{{ xos_services }}"
+  when:
+    - "'{{ item.name }}' != 'vnodlocal'"
+    - "'{{ item.name }}' != 'volt'"
+  tags:
+    - core
+
+- name: Get VSG Synchronizer Container ID
+  shell: docker ps | grep "{{ vsg_sync }}" | awk '{print $1}'
+  register: vsg_id
+  tags:
+    - rcord
+
+- name: Check VSG Synchronizer Process
+  shell: docker exec {{ vsg_id.stdout }} ps -f | grep python
+  register: result
+  until: result | success
+  retries: 20
+  delay: 5
+  tags:
+    - rcord
+
+- name: Validate VSG Synchronizer Process
+  assert:
+    that: "'{{ vsg_sync_process }}' in result.stdout"
+  tags:
+    - rcord
+
+- name: Get Volume Mounts on VSG Synchronizer
+  shell: docker exec {{ vsg_id.stdout }} mount | grep xos
+  register: volumes
+  tags:
+    - rcord
+
+- name: Validate Volume Mounts on VSG Synchronizer
+  assert: 
+    that: "'/opt/xos_services/{{ item.name }}' in volumes.stdout|lower"
+  with_items: "{{ xos_services }}"  
+  when:
+    - "'{{ item.name }}' != 'vnodlocal'"
+    - "'{{ item.name }}' != 'volt'"
+  tags:
+    - rcord
+
+- name: Get VTR Synchronizer Container ID
+  shell: docker ps | grep "{{ vtr_sync }}" | awk '{print $1}'
+  register: vtr_id
+  tags:
+    - rcord
+
+- name: Check VTR Synchronizer Process
+  shell: docker exec {{ vtr_id.stdout }} ps -f | grep python
+  register: result
+  until: result | success
+  retries: 20
+  delay: 5
+  tags:
+    - rcord
+
+- name: Validate VTR Synchronizer Process
+  assert:
+    that: "'{{ vtr_sync_process }}' in result.stdout"
+  tags:
+    - rcord
+
+- name: Get Volume Mounts on VTR Synchronizer
+  shell: docker exec {{ vtr_id.stdout }} mount | grep xos
+  register: volumes
+  tags:
+    - rcord
+
+- name: Validate Volume Mounts on VTR Synchronizer
+  assert:
+    that: "'/opt/xos_services/{{ item.name }}' in volumes.stdout|lower"
+  with_items: "{{ xos_services }}"
+  when:
+    - "'{{ item.name }}' != 'vnodlocal'"
+    - "'{{ item.name }}' != 'volt'"  
+  tags:  
+    - rcord
+
+- name: Get VROUTER Synchronizer Container ID
+  shell: docker ps | grep "{{ vrouter_sync }}" | awk '{print $1}'
+  register: vrouter_id
+  tags:
+    - rcord
+    - ecord
+
+- name: Check VROUTER Synchronizer Process
+  shell: docker exec {{ vrouter_id.stdout }} ps -f | grep python
+  register: result
+  until: result | success
+  retries: 20
+  delay: 5
+  tags:
+    - rcord
+    - ecord
+
+- name: Validate VROUTER Synchronizer Process
+  assert:
+    that: "'{{ vrouter_sync_process }}' in result.stdout"
+  tags:
+    - rcord
+    - ecord
+
+- name: Get Volume Mounts on VROUTER Synchronizer
+  shell: docker exec {{ vrouter_id.stdout }} mount | grep xos
+  register: volumes
+  tags:
+    - rcord
+    - ecord
+
+- name: Validate Volume Mounts on VROUTER Synchronizer
+  assert:
+    that: "'/opt/xos_services/{{ item.name }}' in volumes.stdout|lower"
+  with_items: "{{ xos_services }}"
+  when:
+    - "'{{ item.name }}' != 'vnodlocal'"
+    - "'{{ item.name }}' != 'volt'"
+  tags:
+    - rcord
+    - ecord
+
+- name: Get VNOD Synchronizer Container ID
+  shell: docker ps | grep "{{ vnod_sync }}" | awk '{print $1}'
+  register: vnod_id
+  tags:
+    - ecord
+
+- name: Check VNOD Synchronizer Process
+  shell: docker exec {{ vnod_id.stdout }} ps -f | grep python
+  register: result
+  until: result | success
+  retries: 20
+  delay: 5
+  tags:
+    - ecord
+
+- name: Validate VNOD Synchronizer Process
+  assert:
+    that: "'{{ vnod_sync_process }}' in result.stdout"
+  tags:
+    - ecord
+
+- name: Get Volume Mounts on VNOD Synchronizer
+  shell: docker exec {{ vnod_id.stdout }} mount | grep xos
+  register: volumes
+  tags:
+    - ecord
+
+- name: Validate Volume Mounts on VNOD Synchronizer
+  assert:
+    that: "'/opt/xos_services/{{ item.name }}' in volumes.stdout|lower"
+  with_items: "{{ xos_services }}"
+  when:
+    - "'{{ item.name }}' != 'vnodlocal'"
+    - "'{{ item.name }}' != 'volt'"
+  tags:
+    - ecord
+
+- name: Get VTN Synchronizer Container ID
+  shell: docker ps | grep "{{ vtn_sync }}" | awk '{print $1}'
+  register: vtn_id
+  tags:
+    - ecord
+
+- name: Check VTN Synchronizer Process
+  shell: docker exec {{ vtn_id.stdout }} ps -f | grep python
+  register: result
+  until: result | success
+  retries: 20
+  delay: 5
+  tags:
+    - ecord
+
+- name: Validate VTN Synchronizer Process
+  assert:
+    that: "'{{ vtn_sync_process }}' in result.stdout"
+  tags:
+    - ecord
+
+- name: Get Volume Mounts on VTN Synchronizer
+  shell: docker exec {{ vtn_id.stdout }} mount | grep xos
+  register: volumes
+  tags:
+    - ecord
+
+- name: Validate Volume Mounts on VTN Synchronizer
+  assert:
+    that: "'/opt/xos_services/{{ item.name }}' in volumes.stdout|lower"
+  with_items: "{{ xos_services }}"
+  when:
+    - "'{{ item.name }}' != 'vnodlocal'"
+    - "'{{ item.name }}' != 'volt'"
+  tags:
+    - ecord
+
+- name: Get VTN Synchronizer Container ID
+  shell: docker ps | grep "{{ vtn_sync }}" | awk '{print $1}'
+  register: vtn_id
+  tags:
+    - ecord
+
+- name: Check VTN Synchronizer Process
+  shell: docker exec {{ vtn_id.stdout }} ps -f | grep python
+  register: result
+  until: result | success
+  retries: 20
+  delay: 5
+  tags:
+    - ecord
+
+- name: Validate VTN Synchronizer Process
+  assert:
+    that: "'{{ vtn_sync_process }}' in result.stdout"
+  tags:
+    - ecord
+
+- name: Get Volume Mounts on VTN Synchronizer
+  shell: docker exec {{ vtn_id.stdout }} mount | grep xos
+  register: volumes
+  tags:
+    - ecord
+
+- name: Validate Volume Mounts on VTN Synchronizer
+  assert:
+    that: "'/opt/xos_services/{{ item.name }}' in volumes.stdout|lower"
+  with_items: "{{ xos_services }}"
+  when:
+    - "'{{ item.name }}' != 'vnodlocal'"
+    - "'{{ item.name }}' != 'volt'"
+  tags:
+    - ecord
+
+- name: Get VEE Synchronizer Container ID
+  shell: docker ps | grep "{{ vee_sync }}" | awk '{print $1}'
+  register: vee_id
+  tags:
+    - ecord
+
+- name: Check VEE Synchronizer Process
+  shell: docker exec {{ vee_id.stdout }} ps -f | grep python
+  register: result
+  until: result | success
+  retries: 20
+  delay: 5
+  tags:
+    - ecord
+
+- name: Validate VEE Synchronizer Process
+  assert:
+    that: "'{{ vee_sync_process }}' in result.stdout"
+  tags:
+    - ecord
+
+- name: Get Volume Mounts on VEE Synchronizer
+  shell: docker exec {{ vee_id.stdout }} mount | grep xos
+  register: volumes
+  tags:
+    - ecord
+
+- name: Validate Volume Mounts on VEE Synchronizer
+  assert:
+    that: "'/opt/xos_services/{{ item.name }}' in volumes.stdout|lower"
+  with_items: "{{ xos_services }}"
+  when:
+    - "'{{ item.name }}' != 'vnodlocal'"
+    - "'{{ item.name }}' != 'volt'"
+  tags:
+    - ecord
+
+- name: Get VEE Synchronizer Container ID
+  shell: docker ps | grep "{{ vee_sync }}" | awk '{print $1}'
+  register: vee_id
+  tags:
+    - ecord
+
+- name: Check VTN Synchronizer Process
+  shell: docker exec {{ vee_id.stdout }} ps -f | grep python
+  register: result
+  until: result | success
+  retries: 20
+  delay: 5
+  tags:
+    - ecord
+
+- name: Validate VEE Synchronizer Process
+  assert:
+    that: "'{{ vee_sync_process }}' in result.stdout"
+  tags:
+    - ecord
+
+- name: Get Volume Mounts on VEE Synchronizer
+  shell: docker exec {{ vee_id.stdout }} mount | grep xos
+  register: volumes
+  tags:
+    - ecord
+
+- name: Validate Volume Mounts on VEE Synchronizer
+  assert:
+    that: "'/opt/xos_services/{{ item.name }}' in volumes.stdout|lower"
+  with_items: "{{ xos_services }}"
+  when:
+    - "'{{ item.name }}' != 'vnodlocal'"
+    - "'{{ item.name }}' != 'volt'"
+  tags:
+    - ecord
+
+- name: Get ONOS Synchronizer Container ID
+  shell: docker ps | grep "{{ onos_sync }}" | awk '{print $1}'
+  register: onos_id
+  tags:
+    - rcord
+    - ecord
+
+- name: Check ONOS Synchronizer Process
+  shell: docker exec {{ onos_id.stdout }} ps -f | grep python
+  register: result
+  until: result | success
+  retries: 20
+  delay: 5
+  tags:
+    - rcord
+    - ecord
+
+- name: Validate ONOS Synchronizer Process
+  assert:
+    that: "'{{ onos_sync_process }}' in result.stdout"
+  tags:
+    - rcord
+    - ecord
+
+- name: Get Volume Mounts on ONOS Synchronizer
+  shell: docker exec {{ onos_id.stdout }} mount | grep xos
+  register: volumes
+  tags:
+    - rcord
+    - ecord
+
+- name: Validate Volume Mounts on ONOS Synchronizer
+  assert:
+    that: "'/opt/xos_services/{{ item.name }}' in volumes.stdout|lower"
+  with_items: "{{ xos_services }}"
+  when:
+    - "'{{ item.name }}' != 'vnodlocal'"
+    - "'{{ item.name }}' != 'volt'"
+  tags:
+    - rcord
+    - ecord
+
+- name: Get OPENSTACK Synchronizer Container ID
+  shell: docker ps | grep "{{ openstack_sync }}" | awk '{print $1}'
+  register: openstack_id
+  tags:
+    - rcord
+    - ecord
+
+- name: Check OPENSTACK Synchronizer Process
+  shell: docker exec {{ openstack_id.stdout }} ps -f | grep python
+  register: result
+  until: result | success
+  retries: 20
+  delay: 5
+  tags:
+    - ecord
+
+- name: Validate OPENSTACK Synchronizer Process
+  assert:
+    that: "'{{ openstack_sync_process }}' in result.stdout"
+  tags:
+    - ecord
+
+- name: Get Volume Mounts on OPENSTACK Synchronizer
+  shell: docker exec {{ openstack_id.stdout }} mount | grep xos
+  register: volumes
+  tags:
+    - ecord
+
+- name: Validate Volume Mounts on OPENSTACK Synchronizer
+  assert:
+    that: "'/opt/xos_services/{{ item.name }}' in volumes.stdout|lower"
+  with_items: "{{ xos_services }}"
+  when:
+    - "'{{ item.name }}' != 'vnodlocal'"
+    - "'{{ item.name }}' != 'volt'"  
+  tags:
+    - ecord
+
+- name: Get FABRIC Container ID
+  shell: docker ps | grep "{{ fabric_sync }}" | awk '{print $1}'
+  register: fabric_id
+  tags:
+    - rcord
+    - ecord
+
+- name: Check FABRIC Process
+  shell: docker exec {{ fabric_id.stdout }} ps -f | grep python
+  register: result
+  until: result | success
+  retries: 20
+  delay: 5
+  tags:
+    - rcord
+    - ecord
+
+- name: Validate FABRIC Synchronizer Process
+  assert:
+    that: "'{{ fabric_sync_process }}' in result.stdout"
+  tags:
+    - rcord
+    - ecord
+
+- name: Get Volume Mounts on FABRIC Synchronizer
+  shell: docker exec {{ fabric_id.stdout }} mount | grep xos
+  register: volumes
+  tags:
+    - rcord
+    - ecord
+
+- name: Validate Volume Mounts on FABRIC Synchronizer
+  assert:
+    that: "'/opt/xos_services/{{ item.name }}' in volumes.stdout|lower"
+  with_items: "{{ xos_services }}"
+  when:
+    - "'{{ item.name }}' != 'vnodlocal'"
+    - "'{{ item.name }}' != 'volt'"
+  tags:
+    - rcord
+    - ecord
+
+- name: Get Postgres Container ID
+  shell: docker ps | grep "{{ postgres }}" | awk '{print $1}'
+  register: psql_id
+  tags:
+    - core
+
+- name: Check Postgres Service
+  shell: docker exec {{ psql_id.stdout }} service postgresql status
+  register: result
+  until: result | success
+  retries: 20
+  delay: 5
+  tags:
+    - core
+
+- name: Validate Postgres Service
+  assert:
+    that:
+      - "'9.3/main' in result.stdout"
+      - "'port 5432' in result.stdout"
+      - "'online' in result.stdout"
+  tags:
+    - core
+
