@@ -1,0 +1,25 @@
+---
+# docker container sanity tests
+
+- include: "{{ playbook_dir }}/add-onboard-containers-playbook.yml"
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "{{ playbook_dir }}/profile_manifests/{{ cord_profile }}.yml"
+        - "{{ playbook_dir }}/profile_manifests/local_vars.yml"
+
+- name: Check GUI Container
+  hosts: xos-spa-gui
+  connection: docker
+  roles:
+    - xos-container-test-spa-gui
+
+- name: Check REST GW Container
+  hosts: xos-rest-gateway
+  connection: docker
+  roles:
+    - xos-container-test-restgw

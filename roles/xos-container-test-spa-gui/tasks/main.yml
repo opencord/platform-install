@@ -1,0 +1,21 @@
+#xos-spa-gui tests
+
+- name: Check UI Process
+  command: ps -f
+  register: result
+
+- name: Validate UI Process
+  assert:
+    that: "'nginx -g daemon off;' in result.stdout"
+
+- name: Get Volume Mounts on UI Container
+  command: mount -l
+  register: volumes
+
+- name: Validate Volume Mounts on UI Container
+  assert:
+    that: "'/opt/xos_services/{{ item.name }}' in volumes.stdout|lower"
+  with_items: "{{ xos_services }}"
+  when:
+    - "'{{ item.name }}' != 'vnodlocal'"
+    - "'{{ item.name }}' != 'volt'"
