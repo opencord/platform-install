@@ -1,0 +1,10 @@
+#xos-rest-gw tests
+
+- name: Check Rest GW Process
+  shell: ps -f | grep "node src/server.js --config gateway-config.yml"
+  register: result
+  until: result | success
+  retries: 10
+  delay: 5
+  tags:
+    - skip_ansible_lint # running a sub job
