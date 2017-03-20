@@ -70,6 +70,24 @@
     },
     {
       "key": {
+        "uuid": "ba092121_81e9c01c",
+        "filename": "roles/xos-container-test/tasks/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2017-03-20T22:48:15Z",
+      "side": 1,
+      "message": "So should I add another task (with tags of \"rcord\" | \"ecord\" ) in the playbook and have it call a specific role ?",
+      "parentUuid": "ba092121_e10f5c2d",
+      "revId": "66235d0bcb277b211af5d7181512091d4c2120d1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba092121_210e7435",
         "filename": "roles/xos-container-test/tasks/main.yml",
         "patchSetId": 3
