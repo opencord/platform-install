@@ -1,0 +1,7 @@
+---
+# docker container sanity tests
+
+- name: Run Sanity Check on XOS Containers
+  hosts: head
+  roles:
+    - xos-container-test
