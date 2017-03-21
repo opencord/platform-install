@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba092121_4c207f9b",
+        "filename": "roles/xos-container-test-restgw/tasks/main.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-03-21T23:07:53Z",
+      "side": 1,
+      "message": "IIRC, Ansible\u0027s `setup` module will give a list of mounted volumes.   You could possibly use jinja2 setwise filters and that list to determine if the mounts are correct: http://docs.ansible.com/ansible/playbooks_filters.html#set-theory-filters",
+      "revId": "d1fbf410faf42a6a5e77ea73137faf6acdb82804",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
