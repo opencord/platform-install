@@ -13,11 +13,53 @@ topology_template:
         type: tosca.nodes.EcordBandwidthProfile
         requirements:
         properties:
+          bwpcfgcbs: 1000
+          bwpcfgebs: 1200
+          bwpcfgcir: 1000000
+          bwpcfgeir: 1200000
+          name: ecordbandwidthprofile
+
+      bandwidthprofile#UniBandwidthprofile:
+        type: tosca.nodes.EcordBandwidthProfile
+        requirements:
+        properties:
           bwpcfgcbs: 100
           bwpcfgebs: 50
           bwpcfgcir: 600
           bwpcfgeir: 50
-          name: ecordbandwidthprofile
+          name: unibandwidthprofile
+
+      bandwidthprofile#EvcBandwidthprofile:
+        type: tosca.nodes.EcordBandwidthProfile
+        requirements:
+        properties:
+          bwpcfgcbs: 100
+          bwpcfgebs: 50
+          bwpcfgcir: 600
+          bwpcfgeir: 50
+          name: evcbandwidthprofile
+
+      bandwidthprofile#FlowBandwidthprofile:
+        type: tosca.nodes.EcordBandwidthProfile
+        requirements:
+        properties:
+          bwpcfgcbs: 100
+          bwpcfgebs: 50
+          bwpcfgcir: 600
+          bwpcfgeir: 50
+          name: flowbandwidthprofile
+
+      usernetworkinterface#UserNetworkInterface1:
+        type: tosca.nodes.EcordUserNetworkInterface
+        requirements:
+        properties:
+            enabled: true
+            capacity: 10000000
+            bw_used: 50000
+            vlanIds: [100,200,300]
+            name: uni1
+            location: San Rafael
+            latlng: [-122.531087, 37.973535]
 
       service#vnodglobal:
         type: tosca.nodes.VNodGlobalService
