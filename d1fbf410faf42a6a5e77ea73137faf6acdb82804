@@ -16,6 +16,24 @@
       "revId": "d1fbf410faf42a6a5e77ea73137faf6acdb82804",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba092121_cc6b6f84",
+        "filename": "roles/xos-container-test-restgw/tasks/main.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2017-03-22T17:17:01Z",
+      "side": 1,
+      "message": "Unfortunately the setup module for docker-service does not return the list of mounted volumes. \neg. {u\u0027xos-spa-gui\u0027: {u\u0027frontend_xos-spa-gui_1\u0027: {u\u0027labels\u0027: {u\u0027com.docker.compose.service\u0027: u\u0027xos-spa-gui\u0027, u\u0027com.docker.compose.project\u0027: u\u0027frontend\u0027, u\u0027com.docker.compose.config-hash\u0027: u\u0027f5b413a3eb209f3538aceaf0f83c882ad538ed94fe37b06e96467f8f3774ab25\u0027, u\u0027com.docker.compose.version\u0027: u\u00271.9.0\u0027, u\u0027com.docker.compose.oneoff\u0027: u\u0027False\u0027, u\u0027com.docker.compose.container-number\u0027: u\u00271\u0027}, u\u0027state\u0027: {u\u0027status\u0027: u\u0027running\u0027, u\u0027running\u0027: True}, u\u0027cmd\u0027: [u\u0027nginx\u0027, u\u0027-g\u0027, u\u0027daemon off;\u0027], u\u0027networks\u0027: {u\u0027xos\u0027: {u\u0027macAddress\u0027: u\u002702:42:ac:12:00:0a\u0027, u\u0027globalIPv6PrefixLen\u0027: 0, u\u0027links\u0027: [u\u0027frontend_xos-rest-gateway_1:frontend_xos-rest-gateway_1\u0027, u\u0027frontend_xos-rest-gateway_1:xos-rest-gateway_1\u0027, u\u0027frontend_xos-rest-gateway_1:xos-rest-gw\u0027, u\u0027frontend_xos_chameleon_1:frontend_xos_chameleon_1\u0027, u\u0027frontend_xos_chameleon_1:xos-chameleon\u0027, u\u0027frontend_xos_chameleon_1:xos_chameleon_1\u0027], u\u0027IPPrefixLen\u0027: 16, u\u0027globalIPv6\u0027: u\u0027\u0027, u\u0027IPAddress\u0027: u\u0027172.18.0.10\u0027, u\u0027aliases\u0027: [u\u0027xos-spa-gui\u0027, u\u002791375df0ac1a\u0027]}}, u\u0027image\u0027: u\u0027xosproject/xos-gui\u0027}}",
+      "parentUuid": "ba092121_4c207f9b",
+      "revId": "d1fbf410faf42a6a5e77ea73137faf6acdb82804",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
