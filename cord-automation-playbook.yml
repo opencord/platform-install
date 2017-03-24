@@ -16,7 +16,3 @@
   roles:
     - { role: automation-integration, when: on_maas }
 
-- name: Prologue
-  hosts: head
-  roles:
-    - head-prologue

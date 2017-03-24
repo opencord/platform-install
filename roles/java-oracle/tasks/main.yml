@@ -1,0 +1,41 @@
+---
+# java-oracle/tasks/main
+
+- name: Install add-apt-repository
+  become: yes
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - apt-transport-https
+    - software-properties-common
+    - ca-certificates
+
+- name: Add Oracle Java repository
+  become: yes
+  apt_repository:
+    repo: 'ppa:webupd8team/java'
+  register: result
+  until: result | success
+  retries: 3
+  delay: 10
+
+- name: Accept Java 8 license
+  become: yes
+  debconf:
+    name: 'oracle-java8-installer'
+    question: 'shared/accepted-oracle-license-v1-1'
+    value: 'true'
+    vtype: 'select'
+
+- name: Install Oracle Java 8
+  become: yes
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - oracle-java8-installer
+    - oracle-java8-set-default
+

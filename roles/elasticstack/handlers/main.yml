@@ -1,0 +1,18 @@
+---
+# elasticstack/handlers/main.yml
+
+- name: restart logstash
+  service:
+    name: logstash
+    state: restarted
+
+- name: restart elasticsearch
+  service:
+    name: elasticsearch
+    state: restarted
+
+- name: restart kibana
+  service:
+    name: kibana
+    state: restarted
+

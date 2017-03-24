@@ -87,6 +87,10 @@
     checksum: "{{ item.checksum }}"
     dest: "{{ image_dir }}/{{ item.name }}.qcow2"
   with_items: "{{ xos_images }}"
+  register: glance_vm_result
+  until: glance_vm_result|success
+  retries: 5
+  delay: 10
 
 - name: Copy Glance VM images to profile directory
   when: use_openstack
