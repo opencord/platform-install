@@ -38,6 +38,14 @@ gui_branding_icon: "/static/cord-logo.png"
 gui_branding_favicon: "/static/cord-favicon.png"
 gui_branding_bg: "/static/cord-bg.jpg"
 
+# GUI Config [new GUI]
+gui_project_name: "E-CORD"
+gui_background: "cord-bg.jpg" # TODO find ecord image
+gui_payoff: "Your Enterprise VNF orchestrator"
+enabled_gui_extensions:
+  - name: ecord-local 
+    path: orchestration/profiles/ecord/xos/gui/ecord-local
+
 # paths defined in manifest/default.xml
 xos_services:
   - name: openstack
