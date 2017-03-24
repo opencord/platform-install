@@ -1,0 +1,12 @@
+---
+# deploy-elasticstack-playbook.yml
+# installs elasticstack on the CORD head node
+
+- name: Install elasticstack and apache proxy
+  become: yes
+  hosts: head
+  roles:
+    - java-oracle
+    - elasticstack
+    - apache-proxy
+
