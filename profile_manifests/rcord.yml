@@ -171,13 +171,6 @@ deployment_flavors:
   - m1.large
   - m1.xlarge
 
-apt_cacher_name: apt-cache
-
-apt_ssl_sites:
-  - apt.dockerproject.org
-  - butler.opencloud.cs.arizona.edu
-  - deb.nodesource.com
-
 charm_versions:
   ceilometer: "cs:trusty/ceilometer-17"
   ceilometer-agent: "cs:trusty/ceilometer-agent-13"

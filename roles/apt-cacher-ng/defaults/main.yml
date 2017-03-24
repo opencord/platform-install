@@ -1,6 +1,12 @@
 ---
 # apt-cacher-ng/defaults/main.yml
 
-apt_cacher_name: 127.0.0.1
+apt_cacher_name: apt-cache
 apt_cacher_port: 3142
+
+apt_ssl_sites:
+  - apt.dockerproject.org
+  - butler.opencloud.cs.arizona.edu
+  - deb.nodesource.com
+  - artifacts.elastic.co
 
