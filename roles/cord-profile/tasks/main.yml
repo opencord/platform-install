@@ -32,11 +32,24 @@
     - onboarding-docker-compose
     - images
 
+# *** This should be revisited. ***
+# Currently the key pair is generated on the head node by the
+# "prep" role in the "maas" repo, invoked during the "deployBase" Gradle task.
+# The keys should probably be generated earlier, in the corddev VM, and copied over.
+# The /opt/credentials directory might be a good place to keep the generated keys.
+#
+# Ensure a keypair exists in case we're not running on MaaS.
+- name: Ensure keypair
+  user:
+    name: "{{ ansible_user_id }}"
+    generate_ssh_key: yes
+
 - name: Copy ssh keys to key_import directory
   copy:
     src: "{{ item.source_path | expanduser }}"
     dest: "{{ cord_profile_dir }}/key_import/{{ item.name }}"
     mode: 0600
+    remote_src: True
   with_items: "{{ xos_service_sshkeys }}"
 
 - name: Copy cert chain and core api key and cert
@@ -125,6 +138,7 @@
     dest: "{{ item }}/node_key"
     owner: "{{ ansible_user }}"
     mode: 0600
+    remote_src: True
   with_items:
     - "{{ ansible_user_dir }}"
     - "{{ cord_profile_dir }}"
