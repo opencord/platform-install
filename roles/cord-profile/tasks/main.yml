@@ -47,7 +47,7 @@
 - name: Copy ssh keys to key_import directory
   copy:
     # 'expanduser' won't work below, it expands on control machine
-    src: "{{ item.source_path | replace('~', ansible_env.HOME, 1) }}"
+    src: "{{ item.source_path | replace('~', ansible_user_dir, 1) }}"
     dest: "{{ cord_profile_dir }}/key_import/{{ item.name }}"
     mode: 0600
     remote_src: True
@@ -64,6 +64,11 @@
     - core_api_cert.pem
     - im_cert_chain.pem
 
+- name: Get localhost facts (to get local uid and gid)
+  setup:
+  delegate_to: localhost
+  delegate_facts: True
+
 - name: Make local images directory
   delegate_to: localhost
   become: yes
@@ -71,8 +76,8 @@
     path: "{{ image_dir }}"
     state: directory
     mode: 0755
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_gid }}"
+    owner: "{{ hostvars['localhost']['ansible_user_id'] }}"
+    group: "{{ hostvars['localhost']['ansible_user_gid'] }}"
 
 - name: Download Glance VM images
   when: use_openstack
