@@ -9,3 +9,5 @@
 # Set this to search domain suffixes
 # dns_search: {}
 
+unbound_listen_on_default: False
+
