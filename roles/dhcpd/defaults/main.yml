@@ -1,0 +1,27 @@
+---
+# dhcpd/defaults/main.yml
+
+dns_search: []
+dns_servers: []
+
+# http://serverfault.com/questions/40712/what-range-of-mac-addresses-can-i-safely-use-for-my-virtual-machines
+hwaddr_prefix: "c2a4"
+
+dhcpd_subnets: []
+
+# example dhcpd_subnets:
+#
+# dhcpd_subnets:
+#   - interface: eth1
+#     cidr: 192.168.200.1/24
+#     dhcp_first: 129
+#     dhcp_last: 254
+#     tftp_server: 192.168.200.1
+#     static_nodes:
+#       - name: node1
+#         ipv4_last_octet: 30
+#         filename: boot.tftp
+#     other_static:
+#       - head_lxd_list
+
+

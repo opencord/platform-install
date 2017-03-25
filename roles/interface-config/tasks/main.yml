@@ -1,0 +1,18 @@
+---
+# interface-config/tasks/main.yml
+
+- name: Create network interface for management network
+  template:
+    src: eth.cfg.j2
+    dest: "/etc/network/interfaces.d/{{ mgmt_interface }}.cfg"
+    owner: root
+    group: root
+    mode: 0644
+  register: mgmtint_config
+
+- name: Bring up management network if reconfigured
+  when: mgmtint_config.changed
+  command: "ifup {{ mgmt_interface }}"
+  tags:
+    - skip_ansible_lint # needs to be run before next steps
+

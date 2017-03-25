@@ -1,0 +1,76 @@
+---
+# ssh-pki/tasks/main.yml
+
+- name: Create SSH CA Directory
+  file:
+    dest: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    mode: 0700
+  with_items:
+    - "{{ ssh_pki_dir }}"
+    - "{{ ssh_pki_dir }}/ca"
+    - "{{ ssh_pki_dir }}/client_certs"
+    - "{{ ssh_pki_dir }}/host_certs"
+
+- name: Generate SSH CA Cert
+  command: >
+    ssh-keygen
+      -q -N "{{ ssh_ca_phrase }}"
+      -t {{ ssh_keytype }}
+      -b {{ ssh_keysize }}
+      -C "CORD SSH CA"
+      -f {{ ssh_pki_dir }}/ca/cord_ssh_ca_cert
+  args:
+    creates: "{{ ssh_pki_dir }}/ca/cord_ssh_ca_cert.pub"
+
+- name: Generate SSH Client Certs
+  command: >
+    ssh-keygen
+      -q -N ""
+      -t {{ item.keytype | default(ssh_keytype) }}
+      -b {{ item.keysize | default(ssh_keysize) }}
+      -C "CORD SSH client key for {{ item.name }}"
+      -f {{ ssh_pki_dir }}/client_certs/{{ item.name }}_sshkey
+  args:
+    creates: "{{ ssh_pki_dir }}/client_certs/{{ item.name }}_sshkey.pub"
+  with_items: "{{ ssh_client_genkeys }}"
+  register: client_ssh_key_generated
+
+- name: Sign SSH Client Certs with SSH CA
+  command: >
+    ssh-keygen
+      -q -P "{{ ssh_ca_phrase }}"
+      -I "{{ item.name }}"
+      -n "{{ item.name }}"
+      -s {{ ssh_pki_dir }}/ca/cord_ssh_ca_cert
+      {{ ssh_pki_dir }}/client_certs/{{ item.name }}_sshkey.pub
+  args:
+    creates: "{{ ssh_pki_dir }}/client_certs/{{ item.name }}_sshkey-cert.pub"
+  with_items: "{{ ssh_client_genkeys }}"
+
+- name: Generate SSH Host Certs
+  command: >
+    ssh-keygen
+      -q -N ""
+      -t {{ item.keytype | default(ssh_keytype) }}
+      -b {{ item.keysize | default(ssh_keysize) }}
+      -C "CORD SSH host key for {{ item.name }}"
+      -f {{ ssh_pki_dir }}/host_certs/{{ item.name }}_sshkey
+  args:
+    creates: "{{ ssh_pki_dir }}/host_certs/{{ item.name }}_sshkey.pub"
+  with_items: "{{ ssh_host_genkeys }}"
+  register: host_ssh_keys_generated
+
+- name: Generate SSH Host Certs
+  command: >
+    ssh-keygen
+      -q -P "{{ ssh_ca_phrase }}" -h
+      -I "{{ item.name }}"
+      -n "{{ item.name }},{{ item.name }}.{{ site_suffix }}"
+      -s {{ ssh_pki_dir }}/ca/cord_ssh_ca_cert
+      {{ ssh_pki_dir }}/host_certs/{{ item.name }}_sshkey.pub
+  args:
+    creates: "{{ ssh_pki_dir }}/host_certs/{{ item.name }}_sshkey-cert.pub"
+  with_items: "{{ ssh_host_genkeys }}"
+

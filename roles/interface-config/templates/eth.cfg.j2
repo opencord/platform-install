@@ -1,0 +1,12 @@
+{% for node in physical_node_list if node.name == ansible_hostname %}
+auto {{ node.interface | default(mgmt_interface) }}
+
+iface {{ node.interface | default(mgmt_interface) }} inet static
+    address {{ mgmt_ipv4_first_octets }}.{{ node.ipv4_last_octet }}
+    network {{ mgmt_ipv4_first_octets }}.0
+    netmask 255.255.255.0
+    broadcast {{ mgmt_ipv4_first_octets }}.255
+{% if node.gateway_enabled is defined and node.gateway_enabled %}
+    gateway {{ mgmt_ipv4_first_octets }}.1
+{% endif %}
+{% endfor %}

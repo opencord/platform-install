@@ -43,12 +43,12 @@
   with_items: "{{ server_certs }}"
   tags:
      - skip_ansible_lint # diagnostic command
-  register: chain_verify
+  register: server_chain_verify
 
 - name: Assert that verify of cert succeeded
   assert:
     that: "'OK' in '{{ item.stdout }}'"
-  with_items: "{{ chain_verify.results }}"
+  with_items: "{{ server_chain_verify.results }}"
 
 - name: Get the intermediate cert into im_cert var
   command: >
@@ -57,7 +57,7 @@
   tags:
      - skip_ansible_lint # concat of files
 
-- name: Get the cert into server_cert var
+- name: Get the certs into server_certs var
   command: >
     openssl x509 -in {{ pki_dir }}/intermediate_ca/certs/{{ item.cn }}_cert.pem
   with_items: "{{ server_certs }}"
@@ -65,9 +65,72 @@
      - skip_ansible_lint # concat of files
   register: server_certs_raw
 
-- name: Create chained server cert
+- name: Create chained server certs
   copy:
     dest: "{{ pki_dir }}/intermediate_ca/certs/{{ item.item.cn }}_cert_chain.pem"
     content: "{{ item.stdout }}\n{{ im_cert.stdout }}"
   with_items: "{{ server_certs_raw.results }}"
+
+- name: Generate client private key (no pw)
+  command: >
+    openssl genrsa
+      -out {{ pki_dir }}/intermediate_ca/private/{{ item.cn }}_key.pem
+  args:
+    creates: "{{ pki_dir }}/intermediate_ca/private/{{ item.cn }}_key.pem"
+  with_items: "{{ client_certs }}"
+
+- name: Generate client CSR
+  command: >
+    openssl req -config {{ pki_dir }}/intermediate_ca/openssl.cnf
+      -key {{ pki_dir }}/intermediate_ca/private/{{ item.cn }}_key.pem
+      -new -sha256 -subj "{{ item.subj }}"
+      -out {{ pki_dir }}/intermediate_ca/csr/{{ item.cn }}_csr.pem
+  args:
+    creates: "{{ pki_dir }}/intermediate_ca/csr/{{ item.cn }}_csr.pem"
+  environment:
+    KEY_ALTNAMES: "{{ item.altnames | join(', ') }}"
+  with_items: "{{ client_certs }}"
+
+- name: Sign client cert
+  command: >
+    openssl ca -config {{ pki_dir }}/intermediate_ca/openssl.cnf -batch
+      -passin file:{{ pki_dir }}/intermediate_ca/private/ca_im_phrase
+      -extensions user_cert
+      -days {{ cert_days }} -md {{ cert_digest }}
+      -in {{ pki_dir }}/intermediate_ca/csr/{{ item.cn }}_csr.pem
+      -out {{ pki_dir }}/intermediate_ca/certs/{{ item.cn }}_cert.pem
+  args:
+    creates: "{{ pki_dir }}/intermediate_ca/certs/{{ item.cn }}_cert.pem"
+  environment:
+    KEY_ALTNAMES: "{{ item.altnames | join(', ') }}"
+  with_items: "{{ client_certs }}"
+
+- name: Verify cert against root + im chain
+  command: >
+    openssl verify -purpose sslclient
+      -CAfile {{ pki_dir }}/intermediate_ca/certs/im_cert_chain.pem
+      {{ pki_dir }}/intermediate_ca/certs/{{ item.cn }}_cert.pem
+  with_items: "{{ client_certs }}"
+  tags:
+     - skip_ansible_lint # diagnostic command
+  register: client_chain_verify
+
+- name: Assert that verify of cert succeeded
+  assert:
+    that: "'OK' in '{{ item.stdout }}'"
+  with_items: "{{ client_chain_verify.results }}"
+
+- name: Get the certs into client_certs var
+  command: >
+    openssl x509 -in {{ pki_dir }}/intermediate_ca/certs/{{ item.cn }}_cert.pem
+  with_items: "{{ client_certs }}"
+  tags:
+     - skip_ansible_lint # concat of files
+  register: client_certs_raw
+
+- name: Create chained client cert
+  copy:
+    dest: "{{ pki_dir }}/intermediate_ca/certs/{{ item.item.cn }}_cert_chain.pem"
+    content: "{{ item.stdout }}\n{{ im_cert.stdout }}"
+  with_items: "{{ client_certs_raw.results }}"
 

@@ -1,0 +1,3 @@
+{% if dns_search is defined %}
+search{% for searchdom in dns_search %} {{ searchdom }}{% endfor %}
+{% endif %}

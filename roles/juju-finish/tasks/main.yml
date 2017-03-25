@@ -29,10 +29,3 @@
   tags:
    - skip_ansible_lint # checking/waiting on a system to be up
 
-- name: Create admin-openrc.sh credentials file
-  template:
-   src=admin-openrc.sh.j2
-   dest="{{ item }}/admin-openrc.sh"
-  with_items:
-    - "{{ ansible_user_dir }}"
-    - "{{ cord_profile_dir }}"

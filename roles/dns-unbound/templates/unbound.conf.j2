@@ -18,6 +18,11 @@ server:
   # allow from localhost
   access-control: 127.0.0.0/24 allow
 
+{% if unbound_listen_all %}
+  # allow from everywhere
+  access-control: 0.0.0.0/0 allow
+{% endif %}
+
 {% if unbound_listen_on_default %}
   # allow from default interfaces
   access-control: {{ ansible_default_ipv4.address }}/{{ (ansible_default_ipv4.address ~ "/" ~ ansible_default_ipv4.netmask) | ipaddr('prefix') }} allow
@@ -26,7 +31,7 @@ server:
 {% if unbound_interfaces is defined %}
   # allow from local networks
 {% for cidr_ipv4 in unbound_interfaces %}
-  access-control: {{ cidr_ipv4 }} allow
+  access-control: {{ cidr_ipv4 | ipaddr('0') }} allow
 {% endfor %}
 {% endif %}
 

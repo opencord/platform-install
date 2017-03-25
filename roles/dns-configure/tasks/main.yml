@@ -1,15 +1,34 @@
 ---
 # roles/dns-configure/tasks.yml
 
-- name: Configure resolv.conf to use nameservers
+- name: Make sure resolvconf is doing DNS resolver mangling
+  apt:
+    name: resolvconf
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Create resolvconf configuration files
   template:
-    src="resolv.conf.j2"
-    dest="/etc/resolv.conf"
-    mode=0644 owner=root group=root
+    src: "{{ item }}.j2"
+    dest: "/etc/resolvconf/resolv.conf.d/{{ item }}"
+    mode: 0644
+    owner: root
+    group: root
+  with_items:
+    - base
+    - head
+  register: resolvconf_configured
+
+- name: Tell resolvconf to refresh /etc/resolv.conf file if changed
+  become: yes
+  command: resolvconf -u
+  when: resolvconf_configured.changed
+  tags:
+   - skip_ansible_lint # needs to run before the DNS check which happens next, so can't be a handler
 
 - name: Check that VM's can be found in DNS
   shell: "dig +short {{ item.name }}.{{ site_suffix }} | grep {{ item.ipv4_last_octet }}"
-  with_items: "{{ head_vm_list }}"
+  with_items: "{{ head_lxd_list }}"
   tags:
    - skip_ansible_lint # purely a way to pass/fail config done so far. Ansible needs a "dns_query" module
 

@@ -41,7 +41,7 @@
 
 - name: Check that Juju is actually ready
   juju_facts:
-  until: juju_machines["juju.cord.lab"] is defined and juju_machines["juju.cord.lab"]["agent_state"] == "started"
+  until: 'juju_machines["juju.{{ site_suffix }}"] is defined and juju_machines["juju.{{ site_suffix }}"]["agent_state"] == "started"'
   retries: 40
   delay: 15
 
@@ -66,12 +66,12 @@
   retries: 3
   delay: 15
 
-- name: Deploy services that are hosted in their own VM
+- name: Deploy services that are hosted in their own LXD container
   when: "{{ lxd_service_list | difference( juju_services.keys() ) | length }}"
   command: "juju deploy {{ charm_versions[item] | default(item) }} --to {{ juju_machines[item~'.'~site_suffix]['machine_id'] }} --config={{ juju_config_path }}"
   with_items: "{{ lxd_service_list | difference( juju_services.keys() ) }}"
 
-- name: Deploy services that don't have their own VM
+- name: Deploy services that don't have their own container
   when: "{{ standalone_service_list | difference( juju_services.keys() ) | length }}"
   command: "juju deploy {{ charm_versions[item] | default(item) }} --config={{ juju_config_path }}"
   with_items: "{{ standalone_service_list | difference( juju_services.keys() ) }}"
@@ -85,3 +85,12 @@
     - relations
   tags:
    - skip_ansible_lint # benign to do this more than once, hard to check for
+
+- name: Create admin-openrc.sh OpenStack credentials file
+  template:
+    src: admin-openrc.sh.j2
+    dest: "{{ item }}/admin-openrc.sh"
+  with_items:
+    - "{{ ansible_user_dir }}"
+    - "{{ cord_profile_dir }}"
+
