@@ -46,7 +46,8 @@
 
 - name: Copy ssh keys to key_import directory
   copy:
-    src: "{{ item.source_path | expanduser }}"
+    # 'expanduser' won't work below, it expands on control machine
+    src: "{{ item.source_path | replace('~', ansible_env.HOME, 1) }}"
     dest: "{{ cord_profile_dir }}/key_import/{{ item.name }}"
     mode: 0600
     remote_src: True
