@@ -67,6 +67,11 @@ services:
       options:
         max-size: "1000k"
         max-file: "5"
+    depends_on:
+      - xos_db
+{% if use_redis %}
+      - xos_redis
+{% endif %}
 
   xos_synchronizer_onboarding:
     image: {{ deploy_docker_registry }}xosproject/xos:{{ deploy_docker_tag }}
@@ -95,3 +100,5 @@ services:
       options:
         max-size: "1000k"
         max-file: "5"
+    depends_on:
+      - xos_db
