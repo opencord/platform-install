@@ -8,3 +8,4 @@ cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
 xos_docker_networks:
   - "xos"
 
+delete_cord_profile_dir: False
