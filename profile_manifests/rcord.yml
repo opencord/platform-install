@@ -44,6 +44,8 @@ gui_branding_bg: "/static/cord-bg.jpg"
 enabled_gui_extensions:
   - name: vtr
     path: orchestration/xos_services/vtr/xos/gui
+  - name: rcord
+    path: orchestration/profiles/rcord/xos/gui
 
 # paths defined in manifest/default.xml
 xos_services:

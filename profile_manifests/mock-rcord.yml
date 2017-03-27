@@ -46,6 +46,8 @@ gui_routes:
 enabled_gui_extensions:
   - name: vtr
     path: orchestration/xos_services/vtr/xos/gui
+  - name: rcord
+    path: orchestration/profiles/rcord/xos/gui
 
 # GUI branding [OLD GUI to be removed]
 gui_branding_name: "CORD"
