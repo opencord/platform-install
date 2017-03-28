@@ -1,0 +1,30 @@
+---
+# Intended for ONS 2017 Demo (require mock-ecord-global/ecord-global profile to be there)
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Load ECORD data removal TOSCA in XOS
+  hosts: all
+  tasks:
+    - name: Include ECORD data removal TOSCA in available recipes
+      copy:
+        src: ../../orchestration/xos_services/metro-net/data-removal.yaml
+        dest: ../../../cord_profile
+
+- include: add-onboard-containers-playbook.yml
+
+- name: Execute ECORD data removal in XOS
+  hosts: xos_ui
+  connection: docker
+  tasks:
+    - name: Remove the specified data from the XOS DB
+      command: "python /opt/xos/tosca/destroy.py {{ xos_admin_user }} /opt/cord_profile/data-removal.yaml"
+      tags:
+        - skip_ansible_lint # TOSCA loading should be idempotent
