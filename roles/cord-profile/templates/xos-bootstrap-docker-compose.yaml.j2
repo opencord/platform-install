@@ -18,6 +18,7 @@ services:
 {% endfor %}
     expose:
       - "5432"
+    restart: unless-stopped
 
 {% if use_redis %}
   xos_redis:
@@ -31,6 +32,7 @@ services:
       options:
         max-size: "1000k"
         max-file: "5"
+    restart: unless-stopped
 {% endif %}
 
   xos_bootstrap_ui:
@@ -72,6 +74,7 @@ services:
 {% if use_redis %}
       - xos_redis
 {% endif %}
+    restart: unless-stopped
 
   xos_synchronizer_onboarding:
     image: {{ deploy_docker_registry }}xosproject/xos:{{ deploy_docker_tag }}
@@ -102,3 +105,4 @@ services:
         max-file: "5"
     depends_on:
       - xos_db
+    restart: unless-stopped
