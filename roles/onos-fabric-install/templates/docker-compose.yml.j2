@@ -11,4 +11,5 @@ services:
        - "8181:8181" # ONOS UI/API
        - "9876:9876" # ONOS Clustering
        - "2620:2620" # vRouter
+      restart: unless-stopped
 
