@@ -21,6 +21,9 @@ xos_tosca_config_templates:
   - mock-onos.yaml
   - vnodglobal-service.yaml
 
+cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
+cord_dir: "{{ ansible_user_dir + '/cord' }}"
+
 # GUI Config [new GUI]
 gui_project_name: "E-CORD"
 gui_background: "cord-bg.jpg" # TODO find ecord image
