@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba092121_6d7e9de6",
+        "filename": "roles/cord-profile/templates/vnodglobal-service.yaml.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2017-03-29T00:52:50Z",
+      "side": 1,
+      "message": "reverse lat and lng (not it is in the format lng, lat)",
+      "range": {
+        "startLine": 62,
+        "startChar": 12,
+        "endLine": 62,
+        "endChar": 44
+      },
+      "revId": "8e32347f2d4ecf2bbc6a2197ff36cb0d12bcc572",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
