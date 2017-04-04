@@ -19,10 +19,7 @@ use_vtn: True
 xos_tosca_config_templates:
   - openstack.yaml
   - vtn-service.yaml
-  - fabric-service.yaml
-
-xos_other_templates:
-  - fabric-network-cfg.json
+  - vnodglobal-service.yaml
 
 cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
 
@@ -44,8 +41,6 @@ xos_services:
     path: orchestration/xos_services/openstack
   - name: onos
     path: orchestration/xos_services/onos-service
-  - name: fabric
-    path: orchestration/xos_services/fabric
   - name: metronetwork
     path: orchestration/xos_services/metro-net
 
