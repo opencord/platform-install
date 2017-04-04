@@ -20,8 +20,10 @@ xos_tosca_config_templates:
   - openstack.yaml
   - vtn-service.yaml
   - fabric-service.yaml
-  - vee-service.yaml
+  - management-net.yaml
   - ecord-services.yaml
+  - public-net.yaml
+  - vee-service.yaml
 
 xos_other_templates:
   - fabric-network-cfg.json
@@ -32,11 +34,18 @@ xos_docker_volumes:
   - host: "{{ cord_profile_dir }}/images"
     container: /opt/xos/images
 
+# GUI Config [new GUI]
+gui_project_name: "E-CORD"
+gui_background: "cord-bg.jpg" # TODO find ecord image
+gui_payoff: "Your Enterprise VNF orchestrator"
+
 # GUI branding
 gui_branding_name: "ECORD"
 gui_branding_icon: "/static/cord-logo.png"
 gui_branding_favicon: "/static/cord-favicon.png"
 gui_branding_bg: "/static/cord-bg.jpg"
+
+enabled_gui_extensions: []
 
 # paths defined in manifest/default.xml
 xos_services:
