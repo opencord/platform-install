@@ -1,0 +1,10 @@
+---
+# corebuilder/tasks/main.yml
+
+- name: Generate list of recipes
+  set_fact:
+    recipes: "{{ recipes }} {{ item.path }}/{{ item.name }}- {{ item.operation | default('onboard') }}.yaml"
+  with_items: "{{ xos_services }}"
+
+- debug:
+    msg: "{{ recipes }}"
