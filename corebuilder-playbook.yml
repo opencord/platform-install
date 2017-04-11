@@ -1,0 +1,22 @@
+---
+# corebuilder-playbook.yml
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Build the core image
+  hosts: head
+  roles:
+    - xos-core-build
+
+- name: Publish the core image
+  hosts: head
+  roles:
+    - xos-core-publish
+
