@@ -29,4 +29,6 @@
   roles:
     - pull-xos-docker-images
 
+- include: corebuilder-playbook.yml
+
 - include: launch-xos-playbook.yml
