@@ -15,6 +15,7 @@ topology_template:
         bootstrap_ui_port: {{ xos_bootstrap_ui_port }}
         docker_project_name: {{ cord_profile | regex_replace('\W','') }}
         db_container_name: {{ cord_profile | regex_replace('\W','') }}bs_xos_db_1
+        source_ui_image: {{ xos_docker_image }}
 {% if use_redis %}
         redis_container_name: {{ cord_profile | regex_replace('\W','') }}bs_xos_redis_1
 {% endif %}
