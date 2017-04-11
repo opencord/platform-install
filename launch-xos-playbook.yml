@@ -13,6 +13,8 @@
 # for docker, docker-compose
 - include: devel-tools-playbook.yml
 
+- include: corebuilder-playbook.yml
+
 - name: Bootstrap XOS in docker
   hosts: head
   roles:
