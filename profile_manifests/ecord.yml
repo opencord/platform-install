@@ -142,6 +142,9 @@ juju_config_path: /usr/local/src/juju_config.yml
 # Pull ONOS from local Docker registry rather than Docker Hub
 onos_docker_image: "docker-registry:5000/opencord/onos:candidate"
 
+# Pull XOS from local Docker registry
+xos_docker_image: "docker-registry:5000/xosproject/xos:candidate"
+
 keystone_admin_password: "{{ lookup('password', 'credentials/cord_keystone_admin chars=ascii_letters,digits') }}"
 
 deployment_flavors:
