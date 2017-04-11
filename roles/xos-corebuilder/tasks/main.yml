@@ -1,0 +1,29 @@
+---
+# corebuilder/tasks/main.yml
+
+- name: Intialize recipe list
+  set_fact:
+    recipes: []
+
+- name: Generate list of recipes
+  set_fact:
+    recipes: "{{ recipes }} + [ '{{ cord_dir }}/{{ item.path }}/xos/{{ item.name }}-{{ item.operation | default('onboard') }}.yaml']"
+  with_items: "{{ xos_services }}"
+
+- name: Join the list of recipes
+  set_fact:
+    recipes_string: "{{ recipes | join(' ') }}"
+
+- debug:
+    msg: "{{ recipes }}"
+
+- name: Run the corebuilder tool
+  shell: >
+    docker run
+    --rm
+    -v {{ cord_dir }}:/opt/cord
+    -v {{ cord_dir }}/orchestration/xos/containers/xos/BUILD:/opt/xos_corebuilder/BUILD
+    xosproject/xos-corebuilder:candidate
+    {{ recipes_string }}
+
+
