@@ -1,0 +1,10 @@
+---
+# xos-core-deploy/tasks/main.yml
+
+- name: Tag and push the UI image
+  docker_image:
+    name: "xosproject/xos-ui:{{ build_docker_tag }}"
+    repository: "{{ deploy_docker_registry }}/xosproject/xos-ui:{{ deploy_docker_tag }}"
+    push: True
+
+

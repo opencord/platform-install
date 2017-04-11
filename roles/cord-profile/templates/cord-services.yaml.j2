@@ -70,7 +70,7 @@ topology_template:
         public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
         private_key_fn: /opt/xos/services/volt/keys/volt_rsa
       artifacts:
-        pubkey: /opt/xos/services/volt/keys/volt_rsa.pub
+        pubkey: /opt/cord_profile/key_import/volt_rsa.pub
 
     addresses_vsg:
       type: tosca.nodes.AddressPool
@@ -103,7 +103,7 @@ topology_template:
 #       node_label: label_vsg
         replaces: service_vsg
       artifacts:
-        pubkey: /opt/xos/services/vsg/keys/vsg_rsa.pub
+        pubkey: /opt/cord_profile/key_import/vsg_rsa.pub
 
     service#vrouter:
       type: tosca.nodes.VRouterService
