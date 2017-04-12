@@ -8,6 +8,9 @@ pki_dir: "/opt/pki"
 deploy_docker_registry: ""
 deploy_docker_tag: "candidate"
 
+# name of docker image to use in onboarding synchronizer
+xos_docker_image: "xosproject/xos:candidate"
+
 # For storing OpenStack images
 image_dir: /opt/images
 
