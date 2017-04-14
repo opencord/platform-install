@@ -12,9 +12,11 @@ function bootstrap() {
   if [ ! -x "/usr/bin/ansible" ]
   then
     echo "Installing Ansible..."
-    sudo apt-get update
-    sudo apt-get install -y software-properties-common
-    sudo apt-add-repository -y ppa:ansible/ansible
+#     sudo apt-get update
+#     sudo apt-get install -y software-properties-common
+#     sudo apt-add-repository -y ppa:ansible/ansible
+    sudo apt-get -y install python-dev libffi-dev python-pip libssl-dev sshpass
+    pip install ansible==2.2.2.0
     sudo apt-get update
     sudo apt-get install -y ansible python-netaddr
   fi
