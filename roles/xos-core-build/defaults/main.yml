@@ -8,3 +8,5 @@ deploy_docker_tag: "candidate"
 
 xos_libraries:
   - "ng-xos-lib"
+
+xos_services: []
