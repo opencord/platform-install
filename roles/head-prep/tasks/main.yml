@@ -15,7 +15,7 @@
     repo={{ item }}
   with_items:
      - "{{ juju_apt_repo | default('ppa:juju/stable') }}"
-     - "{{ ansible_apt_repo | default('ppa:ansible/ansible') }}"
+     # - "{{ ansible_apt_repo | default('ppa:ansible/ansible') }}"
 
 - name: Install packages
   apt:
@@ -35,15 +35,20 @@
     - python-glanceclient
     - python-lxml
     - virt-top
+    - libssl-dev
+    - python-dev
+    - sshpass
 
-- name: Make sure Ansible is newest version
-  apt:
-    name: "ansible"
-    state: latest
-    update_cache: yes
-    cache_valid_time: 3600
-  tags:
-    - skip_ansible_lint # ansible-lint complains about latest, need this or old built in 1.5.x version may be used if already installed.
+- name: Install Ansible via pip
+  pip: name=ansible version=2.2.2.0
+# - name: Make sure Ansible is newest version
+#   apt:
+#     name: "ansible"
+#     state: latest
+#     update_cache: yes
+#     cache_valid_time: 3600
+#   tags:
+#     - skip_ansible_lint # ansible-lint complains about latest, need this or old built in 1.5.x version may be used if already installed.
 
 - name: Install Python packages
   pip:
