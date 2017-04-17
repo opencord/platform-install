@@ -39,7 +39,7 @@ apt_ssl_sites:
   - deb.nodesource.com
 
 charm_versions:
-  neutron-api: "cs:~cordteam/trusty/neutron-api-3"
+  neutron-api: "cs:~cordteam/trusty/neutron-api-5"
   nova-compute: "cs:~cordteam/trusty/nova-compute-2"
 
 head_vm_list:
