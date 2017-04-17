@@ -1,0 +1,8 @@
+---
+# xos-up/tasks/main.yml
+
+- name: Bring up XOS services
+  docker_service:
+    project_name: "{{ cord_profile | regex_replace('\\W','') }}"
+    project_src: "{{ cord_profile_dir }}"
+    pull: yes
