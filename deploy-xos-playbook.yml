@@ -20,6 +20,9 @@
 - include: ../../orchestration/xos/pull-xos-playbook.yml
 - include: ../../orchestration/xos/build-xos-playbook.yml
 
+# build XOS core
+- include: build-platform-install-playbook.yml
+
 - include: pki-install-playbook.yml
 
 - include: cord-profile-playbook.yml
