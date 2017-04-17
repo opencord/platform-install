@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba092121_b3264fb9",
+        "filename": "build-platform-install-playbook.yml",
+        "patchSetId": 20
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-04-17T21:15:56Z",
+      "side": 1,
+      "message": "build-platform-install",
+      "range": {
+        "startLine": 2,
+        "startChar": 2,
+        "endLine": 2,
+        "endChar": 13
+      },
+      "revId": "9cddfb564b151d3088884246c7fc4b28349ee73e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba092121_932b4b82",
+        "filename": "publish-platform-install-playbook.yml",
+        "patchSetId": 20
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-04-17T21:15:56Z",
+      "side": 1,
+      "message": "publish-platform-install",
+      "range": {
+        "startLine": 2,
+        "startChar": 2,
+        "endLine": 2,
+        "endChar": 12
+      },
+      "revId": "9cddfb564b151d3088884246c7fc4b28349ee73e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba092121_7320b79b",
+        "filename": "roles/cord-profile/templates/xos.yaml.j2",
+        "patchSetId": 20
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-04-17T21:15:56Z",
+      "side": 1,
+      "message": "Should these be uncommented?",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 23
+      },
+      "revId": "9cddfb564b151d3088884246c7fc4b28349ee73e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba092121_333a3fce",
+        "filename": "roles/xos-core-publish/defaults/main.yml",
+        "patchSetId": 20
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-04-17T21:15:56Z",
+      "side": 1,
+      "message": "not needed for publish",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 41
+      },
+      "revId": "9cddfb564b151d3088884246c7fc4b28349ee73e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba092121_13373be5",
+        "filename": "roles/xos-core-publish/defaults/main.yml",
+        "patchSetId": 20
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-04-17T21:15:56Z",
+      "side": 1,
+      "message": "not needed for publish",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 16
+      },
+      "revId": "9cddfb564b151d3088884246c7fc4b28349ee73e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
