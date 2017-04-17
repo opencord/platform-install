@@ -11,25 +11,7 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
-- name: Create exampleservice config
+- name: Create exampleservice configuration
   hosts: head
   roles:
     - exampleservice-config
-
-- include: add-bootstrap-containers-playbook.yml
-
-- name: Onboard exampleservice services
-  hosts: xos_bootstrap_ui
-  connection: docker
-  roles:
-    - exampleservice-onboard
-
-- include: add-onboard-containers-playbook.yml
-
-- name: Check to see if XOS UI is ready
-  hosts: xos_ui
-  connection: docker
-  roles:
-    - xos-ready
-
-

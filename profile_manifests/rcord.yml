@@ -51,25 +51,42 @@ enabled_gui_extensions:
 xos_services:
   - name: volt
     path: onos-apps/apps/olt
+    keypair: volt_rsa
+    synchronizer: false
   - name: vtn
     path: onos-apps/apps/vtn
+    keypair: vsg_rsa
+    synchronizer: true
   - name: openstack
     path: orchestration/xos_services/openstack
+    synchronizer: true
   - name: onos
     path: orchestration/xos_services/onos-service
+    keypair: onos_rsa
+    synchronizer: true
   - name: vrouter
     path: orchestration/xos_services/vrouter
+    synchronizer: true
   - name: vsg
     path: orchestration/xos_services/vsg
+    keypair: vsg_rsa
+    synchronizer: true
   - name: vtr
     path: orchestration/xos_services/vtr
+    keypair: vsg_rsa
+    synchronizer: true
   - name: fabric
     path: orchestration/xos_services/fabric
+    synchronizer: true
 # needed onboarding synchronizer doesn't require service code to be present when started
   - name: exampleservice
     path: orchestration/xos_services/exampleservice
+    keypair: exampleservice_rsa
+    synchronizer: true
   - name: monitoring
     path: orchestration/xos_services/monitoring
+    keypair: monitoringservice_rsa
+    synchronizer: false
 
 xos_service_sshkeys:
   - name: onos_rsa

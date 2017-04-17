@@ -44,6 +44,7 @@ xos_services:
     path: orchestration/xos_services/openstack
   - name: onos
     path: orchestration/xos_services/onos-service
+    keypair: onos_rsa
   - name: vtn
     path: onos-apps/apps/vtn
   - name: fabric
@@ -52,14 +53,11 @@ xos_services:
     path: orchestration/xos_services/vrouter
   - name: veg
     path: orchestration/xos_services/vEG
+    keypair: veg_rsa
   - name: vnodlocal
     path: orchestration/xos_services/metronet-local
   - name: vee
     path: orchestration/xos_services/vEE
-  - name: veg_rsa
-    source_path: "/dev/null"
-  - name: veg_rsa.pub
-    source_path: "/dev/null"
 
 xos_service_sshkeys:
   - name: onos_rsa

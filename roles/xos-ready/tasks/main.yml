@@ -5,5 +5,5 @@
   wait_for:
     host: localhost
     port: "{{ xos_ui_port }}"
-    timeout: 120
+    timeout: 180
 

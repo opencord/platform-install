@@ -6,16 +6,7 @@
 - name: Stop and remove XOS containers
   docker_service:
     project_name: "{{ cord_profile | regex_replace('\\W','') }}"
-    project_src: "{{ cord_profile_dir }}/onboarding-docker-compose/"
-    state: absent
-    remove_images: local
-  ignore_errors: yes
-
-- name: Stop and remove XOS bootstrap containers
-  docker_service:
-    project_name: "{{ cord_profile | regex_replace('\\W','') }}bs"
     project_src: "{{ cord_profile_dir }}"
-    files: "xos-bootstrap-docker-compose.yaml"
     state: absent
     remove_images: local
   ignore_errors: yes
