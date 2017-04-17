@@ -13,19 +13,10 @@
 # for docker, docker-compose
 - include: devel-tools-playbook.yml
 
-- name: Bootstrap XOS in docker
+- name: Bring up XOS containers
   hosts: head
   roles:
-    - xos-bootstrap
-
-- include: add-bootstrap-containers-playbook.yml
-
-- name: Onboard XOS services
-  hosts: xos_bootstrap_ui
-  connection: docker
-  roles:
-    - xos-onboarding
-    - xos-gui-extension-onboard
+    - xos-up
 
 - include: add-onboard-containers-playbook.yml
 

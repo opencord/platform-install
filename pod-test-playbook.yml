@@ -42,7 +42,7 @@
   roles:
     - test-vsg
 
-- include: onboard-exampleservice-playbook.yml
+#- include: onboard-exampleservice-playbook.yml
 
 - name: Test ExampleService
   hosts: head
