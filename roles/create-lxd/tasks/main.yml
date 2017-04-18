@@ -96,6 +96,10 @@
     search_regex: "OpenSSH"
   with_items: "{{ head_lxd_list }}"
 
+- name: Ensure /etc/ansible directory exists
+  become: yes
+  file: path=/etc/ansible state=directory
+
 - name: Create /etc/ansible/hosts file
   become: yes
   template:
