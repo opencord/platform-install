@@ -61,10 +61,10 @@
     dockerfile: "Dockerfile.chameleon"
     pull: False # use the locally built copy of xosproject/xos
 
-- name: Build xosproject/xos-rest-gw container image
+- name: Build xosproject/xos-ws container image
   docker_image:
-    name: "xosproject/xos-rest-gw"
-    path: "{{ cord_dir }}/orchestration/xos-rest-gw"
+    name: "xosproject/xos-ws"
+    path: "{{ cord_dir }}/orchestration/xos-rest-gw" # TODO rename repo
     dockerfile: "Dockerfile"
     pull: False # use the locally built copy of xosproject/xos
 

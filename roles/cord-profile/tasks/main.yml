@@ -121,7 +121,7 @@
     - onboard-chameleon.yaml
     - onboard-gui-extensions-store.yaml
     - onboard-xos-gui.yaml
-    - onboard-xos-rest-gw.yaml
+    - onboard-xos-ws.yaml
     - gateway-config.yml
     - style.config.js
     - app.config.js

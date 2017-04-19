@@ -1,4 +1,4 @@
-#xos-rest-gw tests
+#xos-ws tests
 
 - name: Check Rest GW Process
   shell: ps -f | grep "node src/server.js --config gateway-config.yml"

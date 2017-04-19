@@ -35,7 +35,7 @@ services:
     restart: unless-stopped
 {% endif %}
 
-  xos-spa-gui:
+  xos_gui:
     image: {{ deploy_docker_registry }}xosproject/xos-gui:{{ deploy_docker_tag }}
     networks:
 {% for network in xos_docker_networks %}
@@ -44,16 +44,16 @@ services:
     ports:
       - "4000:4000"
     links:
-      - xos-rest-gateway:xos-rest-gw
+      - xos_ws:xos-ws
       - xos_chameleon:xos-chameleon
     depends_on:
-      - xos-rest-gateway
+      - xos_ws
       - xos_chameleon
     volumes:
       - {{ cord_profile_dir }}/style.config.js:/var/www/dist/style.config.js
       - {{ cord_profile_dir }}/app.config.js:/var/www/dist/app.config.js
     volumes_from:
-      - gui-extensions-store
+      - gui_extensions_store
     logging:
       driver: "json-file"
       options:
@@ -81,7 +81,7 @@ services:
         max-file: "5"
     restart: unless-stopped
 
-  gui-extensions-store:
+  gui_extensions_store:
     image: {{ deploy_docker_registry }}node:argon
     networks:
 {% for network in xos_docker_networks %}
@@ -96,8 +96,8 @@ services:
         max-size: "1000k"
         max-file: "5"
 
-  xos-rest-gateway:
-    image: {{ deploy_docker_registry }}xosproject/xos-rest-gw:{{ deploy_docker_tag }}
+  xos_ws:
+    image: {{ deploy_docker_registry }}xosproject/xos-ws:{{ deploy_docker_tag }}
     networks:
 {% for network in xos_docker_networks %}
      - {{ network }}
@@ -197,7 +197,7 @@ services:
 {% endfor %}
     command: npm run build
     volumes_from:
-      - gui-extensions-store
+      - gui_extensions_store
     logging:
       driver: "json-file"
       options:

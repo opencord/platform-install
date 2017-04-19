@@ -35,15 +35,15 @@ Vagrant.configure("2") do |config|
     sudo a2enmod proxy_wstunnel
 
     # Copy apache conf
-    sudo cp /home/vagrant/cord/build/platform-install/roles/head-prologue/files/cord-http.conf /etc/apache2/conf-enabled/cord-http.conf
+    sudo cp /home/vagrant/cord/build/platform-install/roles/apache-proxy/files/cord-http.conf /etc/apache2/conf-enabled/cord-http.conf
 
     # Reload Apache
     sudo service apache2 reload
 
     # Add hosts
     echo "127.0.0.1 xos" | sudo tee --append /etc/hosts > /dev/null
-    echo "127.0.0.1 xos-spa-gui" | sudo tee --append /etc/hosts > /dev/null
-    echo "127.0.0.1 xos-rest-gw" | sudo tee --append /etc/hosts > /dev/null
+    echo "127.0.0.1 xos-gui" | sudo tee --append /etc/hosts > /dev/null
+    echo "127.0.0.1 xos-ws" | sudo tee --append /etc/hosts > /dev/null
     echo "127.0.0.1 xos-chameleon" | sudo tee --append /etc/hosts > /dev/null
     echo "127.0.0.1 xos-core" | sudo tee --append /etc/hosts > /dev/null
   SHELL

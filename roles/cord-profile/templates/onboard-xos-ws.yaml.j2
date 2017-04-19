@@ -9,10 +9,10 @@ topology_template:
   node_templates:
 
     # API Gateway
-    xos-rest-gateway:
+    xos-ws:
       type: tosca.nodes.Component
       properties:
-        image: {{ deploy_docker_registry }}xosproject/xos-rest-gw:{{ deploy_docker_tag }}
+        image: {{ deploy_docker_registry }}xosproject/xos-ws:{{ deploy_docker_tag }}
         command: npm start -- --config gateway-config.yml
         ports: 3000:3000
 
@@ -35,7 +35,7 @@ topology_template:
           kind: internal
       requirements:
           - xos:
-             node: xos-rest-gateway
+             node: xos-ws
              relationship: tosca.relationships.LinkOfComponent
 
     gw-to-redis:
@@ -46,5 +46,5 @@ topology_template:
           kind: external
       requirements:
           - xos:
-             node: xos-rest-gateway
+             node: xos-ws
              relationship: tosca.relationships.LinkOfComponent

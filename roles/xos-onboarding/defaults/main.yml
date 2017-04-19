@@ -13,8 +13,8 @@ xos_components:
     recipe_filename: onboard-gui-extensions-store.yaml
   - name: Chameleon
     recipe_filename: onboard-chameleon.yaml
-  - name: xos-rest-gw
-    recipe_filename: onboard-xos-rest-gw.yaml
+  - name: xos-ws
+    recipe_filename: onboard-xos-ws.yaml
   - name: xos-gui
     recipe_filename: onboard-xos-gui.yaml
 
