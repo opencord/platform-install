@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba092121_2ef8987b",
+        "filename": "profile_manifests/mock-rcord.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2017-04-20T20:06:17Z",
+      "side": 1,
+      "message": "I\u0027m not sure we want to start synchronizers by default, we should ask for Scott and Andy opinion",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 20
+      },
+      "revId": "67b56ded066bc5e65ced0de1d179c77fbed86b5d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
