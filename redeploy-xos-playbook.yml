@@ -1,0 +1,27 @@
+---
+# redeploy-xos-playbook.yml
+
+# This playbook is used for development.  It walks through CORD's
+# fetch -> build -> deploy container pipeline to rebuild and redeploy
+# containers annotated with "rebuild: true".
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+# pull / build base XOS images
+- include: ../../orchestration/xos/pull-xos-playbook.yml
+- include: ../../orchestration/xos/build-xos-playbook.yml
+
+# build XOS core
+- include: build-platform-install-playbook.yml
+
+- name: Bring up XOS containers
+  hosts: head
+  roles:
+    - xos-up
