@@ -15,6 +15,12 @@
     recipes: "{{ recipes }} + [ '/opt/cord/orchestration/xos_libraries/{{ item }}/{{ item }}-onboard.yaml']"
   with_items: "{{ xos_libraries }}"
 
+- name: Add in the profile library
+  set_fact:
+    recipes: "{{ recipes }} + [ '/opt/cord/orchestration/profiles/{{ profile_library }}/xos/{{ profile_library }}-onboard.yaml']"
+  when:
+    profile_library != ""
+
 - name: Join the list of recipes
   set_fact:
     recipes_string: "{{ recipes | join(' ') }}"
