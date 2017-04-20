@@ -111,6 +111,8 @@ xos_service_sshkeys:
   - name: monitoringservice_rsa.pub
     source_path: "~/.ssh/id_rsa.pub"
 
+profile_library: "rcord"
+
 # VM networks/bridges on head
 virt_nets:
   - name: mgmtbr
