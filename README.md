@@ -95,12 +95,27 @@ up.  When you're ready to tear down your environment, run:
 ansible-playbook -i inventory/frontend teardown-playbook.yml
 ```
 
-This will destroy all the docker containers created, and delete the
-`~/cord_profile` directory.  Note that you must run the
+This will destroy all the docker containers created.  Note that you must run the
 `teardown-playbook.yml` using the same inventory file it was created with,
 otherwise rogue docker containers may still be running after the teardown.
 
-You can then make chnages to code and re-run the same or a different profile.
+You can then make changes to code and re-run the same or a different profile.
+
+#### Re-building Containers
+
+By default, container images are not rebuilt if they already exist in the development
+environment.  (NOTE: The `xos_core` container is an exception; it is always rebuilt.)
+To force the development loop to rebuild and redeploy specific containers, add
+`rebuild: true` in the appropriate place as described below.
+
+For service synchronizers, add `rebuild: true` to the service's entry in the `xos_services`
+list in the profile manifest.
+
+For GUI extensions, add `rebuild: true` to the extension's entry in the `enabled_gui_extensions`
+list in the profile manifest.
+
+For all other containers, add `rebuild: true` to the container's entry in the `docker_images`
+list in the XOS repo's `group_vars/all` file.
 
 ### Creating a new CORD profile
 
@@ -177,8 +192,13 @@ You may find the following shell aliases to be helpful during development:
 
 ```
 alias xos-teardown="pushd /opt/cord/build/platform-install; ansible-playbook -i inventory/head-localhost --extra-vars @/opt/cord/build/genconfig/config.yml teardown-playbook.yml"
-alias xos-deploy="pushd /opt/cord/build/platform-install; ansible-playbook -i inventory/head-localhost --extra-vars @/opt/cord/build/genconfig/config.yml deploy-xos-playbook.yml"
+alias xos-launch="pushd /opt/cord/build/platform-install; ansible-playbook -i inventory/head-localhost --extra-vars @/opt/cord/build/genconfig/config.yml launch-xos-playbook.yml"
 alias compute-node-refresh="pushd /opt/cord/build/platform-install; ansible-playbook -i /etc/maas/ansible/pod-inventory --extra-vars=@/opt/cord/build/genconfig/config.yml compute-node-refresh-playbook.yml"
-alias xos-cleanup-images="docker rmi xosproject/xos-ui xosproject/xos"
+```
+
+With these aliases, tearing down XOS and rebuilding it from a fresh database becomes:
+
+```
+xos-teardown; xos-launch; compute-node-refresh
 ```
 
