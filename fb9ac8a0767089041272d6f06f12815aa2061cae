@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba092121_2e209848",
+        "filename": "roles/cord-profile/templates/onboard-xos-gui.yaml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-04-20T14:03:20Z",
+      "side": 1,
+      "message": "I\u0027m confused now.  Should this be xos_ws or xos-ws?",
+      "range": {
+        "startLine": 64,
+        "startChar": 10,
+        "endLine": 64,
+        "endChar": 27
+      },
+      "revId": "fb9ac8a0767089041272d6f06f12815aa2061cae",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba092121_0e1dd40f",
+        "filename": "roles/xos-onboarding/defaults/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-04-20T14:03:20Z",
+      "side": 1,
+      "message": "I believe this entire role is not used any more.",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 27
+      },
+      "revId": "fb9ac8a0767089041272d6f06f12815aa2061cae",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
