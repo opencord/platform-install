@@ -1,9 +1,8 @@
 ---
 # ssh-pki/tasks/main.yml
 
-pki_dir: "/opt/pki"
-ssh_pki_dir: "/opt/ssh_pki"
-credentials_dir: "/opt/credentials"
+ssh_pki_dir: "{{ playbook_dir }}/ssh_pki"
+credentials_dir: "{{ playbook_dir }}/credentials"
 
 # password on SSH CA
 ssh_ca_phrase: "{{ lookup('password', credentials_dir ~ '/ssh_ca_phrase length=64') }}"
