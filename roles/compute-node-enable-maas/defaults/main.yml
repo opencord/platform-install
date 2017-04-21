@@ -1,9 +1,10 @@
 ---
 # compute-node-enable-maas/defaults/main.yml
 
-cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
+credentials_dir: "{{ playbook_dir }}/credentials"
+cord_profile_dir: "{{ ansible_user_dir ~ '/cord_profile' }}"
 
 xos_admin_user: "xosadmin@opencord.org"
-xos_admin_pass: "{{ lookup('password', 'credentials/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
 
 xos_ui_port: 9000
