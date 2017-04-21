@@ -24,9 +24,10 @@
     default_release: trusty-backports
 
 # For lxd_profile, has to be run as normal user
-- name: Get user's SSH public key into lxd_ssh_pubkey to create LXD profile
-  set_fact:
-    lxd_ssh_pubkey: "{{ lookup('file', '{{ ansible_user_dir }}/.ssh/id_rsa.pub') }}"
+- name: slurp user's SSH public key on remote machine to create LXD profile
+  slurp:
+    src: "{{ ansible_user_dir }}/.ssh/id_rsa.pub"
+  register: slurped_pubkey
 
 - name: Create openstack LXD profile
   become: yes
@@ -37,7 +38,7 @@
       user.user-data: |
         #cloud-config
         ssh_authorized_keys:
-          - "{{ lxd_ssh_pubkey }}"
+          - "{{ slurped_pubkey['content'] | b64decode }}"
     description: 'OpenStack services on CORD'
     devices:
       eth0:

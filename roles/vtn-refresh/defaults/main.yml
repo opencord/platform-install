@@ -1,8 +1,10 @@
 ---
 # vtn-refresh/defaults/main.yml
 
-xos_admin_user: xosadmin@opencord.org
-xos_admin_pass: "{{ lookup('password', 'credentials/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+credentials_dir: "{{ playbook_dir }}/credentials"
 
-keystone_admin_password: "{{ lookup('password', 'credentials/cord_keystone_admin chars=ascii_letters,digits') }}"
+xos_admin_user: xosadmin@opencord.org
+xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+
+keystone_admin_password: "{{ lookup('password', credentials_dir ~ '/cord_keystone_admin chars=ascii_letters,digits') }}"
 
