@@ -3,20 +3,27 @@
 
 # VMs will go away shortly in favor of containers
 [vms]
+{% if head_vm_list is defined -%}
 {% for vm in head_vm_list -%}
 {{ vm.name }}
 {% endfor -%}
+{% endif -%}
 
 [containers]
+{% if head_lxd_list is defined -%}
 {% for lxd in head_lxd_list -%}
 {{ lxd.name }}
 {% endfor -%}
+{% endif -%}
 
 [services:children]
 vms
 containers
 
 [docker]
+{% if head_vm_list is defined -%}
 {% for vm in head_vm_list | selectattr('docker_path', 'defined') -%}
 {{ vm.name }}
 {% endfor -%}
+{% endif -%}
+

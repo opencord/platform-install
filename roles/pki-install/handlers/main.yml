@@ -1,6 +1,5 @@
 ---
 # pki-install/handlers/main.yml
 
-- name: Run update-ca-certificates on head node
-  become: yes
+- name: update-ca-certificates
   command: update-ca-certificates

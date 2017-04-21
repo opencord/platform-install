@@ -28,7 +28,7 @@
 - name: Copy over juju-config.yml for configuring Juju services
   become: yes
   template:
-    src={{ juju_config_name }}_juju_config.yml.j2
+    src=juju_config.yml.j2
     dest={{ juju_config_path }}
 
 # check that containers are ready to be accessed, juju add-machine may error

@@ -10,10 +10,12 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
-# for generating SSL certs
+# Generate SSL certs
 - include: pki-setup-playbook.yml
 
 - name: Install CA certificates
+  become: yes
   hosts: head
   roles:
     - pki-install
+

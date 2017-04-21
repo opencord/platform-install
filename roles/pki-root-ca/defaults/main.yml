@@ -1,10 +1,10 @@
 ---
 # pki-root-ca/defaults/main.yml
 
-pki_dir: "/opt/pki"
-credentials_dir: "/opt/credentials"
+pki_dir: "{{ playbook_dir }}/pki"
+credentials_dir: "{{ playbook_dir }}/credentials"
 
-# ca parameters
+# ca cert parameters
 ca_digest: "sha256"
 ca_size: 4096
 ca_root_days: 3650

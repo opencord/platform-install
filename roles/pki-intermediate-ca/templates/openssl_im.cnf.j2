@@ -4,7 +4,7 @@
 default_ca  = CA_default
 
 [ CA_default ]
-dir               = {{ pki_dir }}/intermediate_ca
+dir               = {{ pki_dir }}/{{ site_name }}_im_ca
 certs             = $dir/certs
 crl_dir           = $dir/crl
 new_certs_dir     = $dir/newcerts
@@ -66,7 +66,7 @@ countryName_default             = US
 stateOrProvinceName_default     = California
 localityName_default            = Menlo Park
 0.organizationName_default      = ON.Lab
-organizationalUnitName_default  = Test Deployment
+organizationalUnitName_default  = {{ site_humanname }}
 emailAddress_default            = privateca@opencord.org
 
 [ v3_intermediate_ca ]

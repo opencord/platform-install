@@ -1,4 +1,4 @@
 # pki-install/defaults/main.yml
 
-pki_dir: "/opt/pki"
+pki_dir: "{{ playbook_dir }}/pki"
 use_openstack: True
