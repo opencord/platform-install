@@ -1,9 +1,12 @@
 ---
 # pki-cert/defaults/main.yml
 
+pki_dir: "{{ playbook_dir }}/pki"
+
+# client/server cert parameters
 cert_size: 2048
 cert_digest: "sha256"
-cert_days: 180
+cert_days: 365
 
 # lists of certificates to create
 server_certs: []

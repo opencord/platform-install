@@ -3,7 +3,8 @@
 
 cord_dir: "{{ ansible_user_dir + '/cord' }}"
 cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
-pki_dir: "/opt/pki"
+pki_dir: "{{ playbook_dir }}/pki"
+credentials_dir: "{{ playbook_dir }}/credentials"
 
 deploy_docker_registry: ""
 deploy_docker_tag: "candidate"
@@ -77,7 +78,7 @@ gui_service_view_class: False
 
 # used in deployment.yaml.j2
 xos_admin_user: "xosadmin@opencord.org"
-xos_admin_pass: "{{ lookup('password', 'credentials/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
 xos_admin_first: XOS
 xos_admin_last: Admin
 
