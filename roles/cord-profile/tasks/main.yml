@@ -16,7 +16,7 @@
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_gid }}"
 
-- name: Create cord_profile/profile_name with the name of the profile
+- name: Create cord_profile/profile_name, containing profile name
   copy:
     dest: "{{ cord_profile_dir }}/profile_name"
     content: "{{ cord_profile }}"
@@ -55,14 +55,16 @@
 
 - name: Copy cert chain and core api key and cert
   copy:
-    src: "{{ pki_dir }}/{{ item }}"
-    dest: "{{ cord_profile_dir }}/{{ item }}"
+    src: "{{ pki_dir }}/{{ item.src }}"
+    dest: "{{ cord_profile_dir }}/{{ item.dest }}"
     mode: 0600
-    remote_src: True
   with_items:
-    - core_api_key.pem
-    - core_api_cert.pem
-    - im_cert_chain.pem
+    - src: "{{ site_name }}_im_ca/private/xos-core.{{ site_suffix }}_key.pem"
+      dest: "core_api_key.pem"
+    - src: "{{ site_name }}_im_ca/certs/xos-core.{{ site_suffix }}_cert_chain.pem"
+      dest: "core_api_cert.pem"
+    - src: "{{ site_name }}_im_ca/certs/im_cert_chain.pem"
+      dest: "im_cert_chain.pem"
 
 - name: Get localhost facts (to get local uid and gid)
   setup:
