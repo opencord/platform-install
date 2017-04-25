@@ -1,0 +1,45 @@
+---
+# frontend xos container sanity tests
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Add xos onboarded containers to inventory to test
+  hosts: head
+  roles:
+    - xos-onboard-hosts
+
+- name: Check UI Container
+  hosts: xos-ui
+  connection: docker
+  roles:
+    - xos-container-test-ui
+
+- name: Check GUI Container
+  hosts: xos-gui
+  connection: docker
+  roles:
+    - xos-container-test-gui
+
+- name: Check REST GW Container
+  hosts: xos_ws
+  connection: docker
+  roles:
+    - xos-container-test-ws
+
+- name: Check Chameleon Container
+  hosts: xos_chameleon
+  connection: docker
+  roles:
+    - xos-container-test-chameleon
+
+- name: Check Postgres Container
+  hosts: xos_db	
+  connection: docker
+  roles:
+    - xos-container-test-postgres
