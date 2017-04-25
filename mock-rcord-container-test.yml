@@ -27,13 +27,13 @@
   hosts: xos-spa-gui
   connection: docker
   roles:
-    - xos-container-test-spa-gui
+    - xos-container-test-gui
 
 - name: Check REST GW Container
   hosts: xos-rest-gateway
   connection: docker
   roles:
-    - xos-container-test-restgw
+    - xos-container-test-ws
 
 - name: Check Chameleon Container
   hosts: xos_chameleon

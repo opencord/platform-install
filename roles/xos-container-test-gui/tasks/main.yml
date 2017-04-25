@@ -1,4 +1,4 @@
-#xos-spa-gui tests
+#xos-gui tests
 
 - name: Check GUI Process
   shell: ps -f | grep "nginx -g daemon off"
