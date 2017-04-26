@@ -3,7 +3,7 @@
 
 - name: Intialize recipe list
   set_fact:
-    recipes: []
+    recipes: ['/opt/cord/orchestration/xos/xos/core/core-onboard.yaml']
 
 - name: Generate list of recipes
   set_fact:
