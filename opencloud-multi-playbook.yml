@@ -50,7 +50,6 @@
     - juju-setup
     - juju-finish
     - cord-profile
-    - xos-docker-images
     - xos-bootstrap
     - docker-compose
     - xos-head-start
