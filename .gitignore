@@ -39,6 +39,7 @@ build
 
 # Ansible
 ansible/*.retry
+*.retry
 
 # Backup files
 *.bak
