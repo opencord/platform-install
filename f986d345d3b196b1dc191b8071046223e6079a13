@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba092121_8a20ad9c",
+        "filename": "opencloud-multi-playbook.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-04-27T19:05:40Z",
+      "side": 1,
+      "message": "You can get rid of this entire file - it\u0027s no longer being used.",
+      "revId": "f986d345d3b196b1dc191b8071046223e6079a13",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
