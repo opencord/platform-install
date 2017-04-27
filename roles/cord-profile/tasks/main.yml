@@ -117,16 +117,10 @@
     - xos_common_config
     - deployment.yaml
     - xos.yaml
-    - xos-bootstrap-docker-compose.yaml
-    - onboard-chameleon.yaml
-    - onboard-gui-extensions-store.yaml
-    - onboard-xos-gui.yaml
-    - onboard-xos-ws.yaml
     - gateway-config.yml
     - style.config.js
     - app.config.js
     - Dockerfile.xos
-    - xos-gui-extensions-onboard.yml
     - xos-gui-extensions.yml
     - docker-compose.yml
 
