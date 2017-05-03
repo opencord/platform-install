@@ -49,6 +49,5 @@
     tag: "{{ build_docker_tag }}"
     dockerfile: "containers/xos/Dockerfile.UI"
     pull: False
-    force: yes
-
-
+    force: True
+    rm: False
