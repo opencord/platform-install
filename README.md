@@ -101,22 +101,6 @@ otherwise rogue docker containers may still be running after the teardown.
 
 You can then make changes to code and re-run the same or a different profile.
 
-#### Re-building Containers
-
-By default, container images are not rebuilt if they already exist in the development
-environment.  (NOTE: The `xos_core` container is an exception; it is always rebuilt.)
-To force the development loop to rebuild and redeploy specific containers, add
-`rebuild: true` in the appropriate place as described below.
-
-For service synchronizers, add `rebuild: true` to the service's entry in the `xos_services`
-list in the profile manifest.
-
-For GUI extensions, add `rebuild: true` to the extension's entry in the `enabled_gui_extensions`
-list in the profile manifest.
-
-For all other containers, add `rebuild: true` to the container's entry in the `docker_images`
-list in the XOS repo's `group_vars/all` file.
-
 ### Creating a new CORD profile
 
 To create a new CORD profile, you should:
