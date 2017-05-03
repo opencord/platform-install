@@ -6,7 +6,6 @@
     name: "{{ item }}:latest"
     repository: "{{ item }}:candidate"
   with_items:
-    - xosproject/xos-postgres
     - xosproject/vsg
     - redis
 
