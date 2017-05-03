@@ -1,6 +1,6 @@
 ---
 # profile_manifests/ecord.yaml
-# Configures an E-CORD pod
+# Configures an E-CORD global pod
 
 # site configuration
 site_name: mysite
@@ -14,15 +14,11 @@ xos_admin_last: Admin
 
 xos_users: []
 
-use_vtn: True
+use_vtn: False
 
 xos_tosca_config_templates:
   - openstack.yaml
-  - vtn-service.yaml
-  - fabric-service.yaml
-
-xos_other_templates:
-  - fabric-network-cfg.json
+  - vnodglobal-service.yaml
 
 cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
 
@@ -30,11 +26,18 @@ xos_docker_volumes:
   - host: "{{ cord_profile_dir }}/images"
     container: /opt/xos/images
 
+# GUI Config [new GUI]
+gui_project_name: "E-CORD"
+gui_background: "cord-bg.jpg" # TODO find ecord image
+gui_payoff: "Your Enterprise VNF orchestrator"
+
 # GUI branding
 gui_branding_name: "ECORD"
 gui_branding_icon: "/static/cord-logo.png"
 gui_branding_favicon: "/static/cord-favicon.png"
 gui_branding_bg: "/static/cord-bg.jpg"
+
+enabled_gui_extensions: []
 
 # paths defined in manifest/default.xml
 xos_services:
@@ -44,8 +47,6 @@ xos_services:
     path: orchestration/xos_services/openstack
   - name: onos
     path: orchestration/xos_services/onos-service
-  - name: fabric
-    path: orchestration/xos_services/fabric
   - name: metronetwork
     path: orchestration/xos_services/metro-net
 
@@ -53,10 +54,6 @@ xos_service_sshkeys:
   - name: onos_rsa
     source_path: "~/.ssh/id_rsa"
   - name: onos_rsa.pub
-    source_path: "~/.ssh/id_rsa.pub"
-  - name: veg_rsa
-    source_path: "~/.ssh/id_rsa"
-  - name: veg_rsa.pub
     source_path: "~/.ssh/id_rsa.pub"
 
 # VM networks/bridges on head
@@ -100,10 +97,6 @@ nsd_zones:
 
 name_on_public_interface: head
 
-# VTN network configuration
-management_network_cidr: 172.27.0.0/24
-management_network_ip: 172.27.0.1/24
-data_plane_ip: 10.168.0.253/24
 
 # CORD ONOS app version
 cord_app_version: 1.2-SNAPSHOT
@@ -313,10 +306,6 @@ xos_images:
   - name: "trusty-server-multi-nic"
     url: "http://www.vicci.org/opencloud/trusty-server-cloudimg-amd64-disk1.img.20170201"
     checksum: "sha256:ebf007ba3ec1043b7cd011fc6668e2a1d1d4c69c41071e8513ab355df7a057cb"
-
-  - name: "vsg-1.1"
-    url: "http://www.vicci.org/cord/vsg-1.1.img"
-    checksum: "sha256:16b0beb6778aed0f5feecb05f8d5750e6c262f98e6011e99ddadf7d46a177b6f"
 
   - name: "ceilometer-trusty-server-multi-nic"
     url: "http://www.vicci.org/cord/ceilometer-trusty-server-multi-nic.compressed.qcow2"
