@@ -3,7 +3,7 @@
 
 # This playbook is used for development.  It walks through CORD's
 # fetch -> build -> deploy container pipeline to rebuild and redeploy
-# containers annotated with "rebuild: true".
+# containers.  It assumes that the environment has already been set up.
 
 - name: Include vars
   hosts: all
@@ -14,8 +14,7 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
-# pull / build base XOS images
-- include: ../../orchestration/xos/pull-xos-playbook.yml
+# rebuild XOS images
 - include: ../../orchestration/xos/build-xos-playbook.yml
 
 # build XOS core
