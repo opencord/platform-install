@@ -88,8 +88,24 @@ For example, to run the `frontend` config, you would run:
 ansible-playbook -i inventory/frontend deploy-xos-playbook.yml
 ```
 
-Assuming it runs without error, you can then explore the environment you've set
-up.  When you're ready to tear down your environment, run:
+Setting up the initial environment, and launching XOS for the first time,
+will take about 30 minutes.  You can then explore the environment you've set up.
+
+Suppose you've made a change to your code and want the changes reflected
+in the running XOS containers.  To get there, run:
+
+```
+ansible-playbook -i inventory/frontend redeploy-xos-playbook.yml
+```
+
+Rebuilding and redeploying containers using this method will usually take much
+less time than the initial setup phase.  All changes to the local environment's
+source tree should be reflected in the redeployed containers.  Note that
+running the above playbook will preserve the existing database.
+
+When you're ready to tear down your environment, for example to switch
+to another profile, or to launch the current profile again from a fresh
+database, run:
 
 ```
 ansible-playbook -i inventory/frontend teardown-playbook.yml
