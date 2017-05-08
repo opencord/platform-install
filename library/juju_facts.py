@@ -7,8 +7,15 @@ def dict_keys_dash_to_underscore(dashed):
     underscored = dict((k.replace('-','_'),v) for k,v in dashed.items())
     return underscored
 
-juju_status_json = subprocess.check_output("juju status --format=json", shell=True)
-juju_status = json.loads(juju_status_json)
+try:
+    juju_status_json = subprocess.check_output("juju status --format=json", shell=True)
+    juju_status = json.loads(juju_status_json)
+except:
+    print json.dumps({
+            "failed" : True,
+            "msg"    : "'juju status' command failed"
+            })
+    sys.exit(1)
 
 juju_machines = {}
 for index, data in juju_status['machines'].iteritems():
