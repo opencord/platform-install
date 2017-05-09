@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba092121_b931890d",
+        "filename": "roles/cord-profile/templates/docker-compose.yml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-05-09T23:23:04Z",
+      "side": 1,
+      "message": "Should this version be a default in the role?",
+      "revId": "bbaf9e318c7f02d6863f7222fe05a0516e44cfcb",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
