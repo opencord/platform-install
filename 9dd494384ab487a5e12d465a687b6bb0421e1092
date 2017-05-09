@@ -22,6 +22,30 @@
       "revId": "9dd494384ab487a5e12d465a687b6bb0421e1092",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba092121_59edcd8a",
+        "filename": "profile_manifests/mock-rcord.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2017-05-09T21:57:10Z",
+      "side": 1,
+      "message": "good catch... I was setting up synchronizers, but it should be disabled by default",
+      "parentUuid": "ba092121_39545953",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 20
+      },
+      "revId": "9dd494384ab487a5e12d465a687b6bb0421e1092",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
