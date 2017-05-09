@@ -84,8 +84,10 @@ xos_service_sshkeys:
   - name: vsg_rsa.pub
     source_path: "/dev/null"
 
+profile_library: "rcord"
+
 # site domain suffix
-site_suffix: opencloud.us
+site_suffix: opencord.org
 
 # SSL server certificate generation
 server_certs:
