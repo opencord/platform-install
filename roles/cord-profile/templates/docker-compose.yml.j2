@@ -82,7 +82,7 @@ services:
     restart: unless-stopped
 
   gui_extensions_store:
-    image: {{ deploy_docker_registry }}node:argon
+    image: {{ deploy_docker_registry }}node:7.9.0
     networks:
 {% for network in xos_docker_networks %}
      - {{ network }}
