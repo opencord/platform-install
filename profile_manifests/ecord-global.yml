@@ -121,7 +121,7 @@ juju_config_name: cord
 juju_config_path: /usr/local/src/juju_config.yml
 
 # Pull ONOS from local Docker registry rather than Docker Hub
-onos_docker_image: "docker-registry:5000/opencord/onos:candidate"
+onos_docker_image: "docker-registry:5000/onosproject/onos:candidate"
 
 # Pull XOS from local Docker registry
 xos_docker_image: "docker-registry:5000/xosproject/xos:candidate"
