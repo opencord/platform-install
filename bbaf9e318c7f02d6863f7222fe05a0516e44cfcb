@@ -16,6 +16,24 @@
       "revId": "bbaf9e318c7f02d6863f7222fe05a0516e44cfcb",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba092121_249310a5",
+        "filename": "roles/cord-profile/templates/docker-compose.yml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-05-10T15:49:09Z",
+      "side": 1,
+      "message": "Possibly something to clean up later.  An issue is that the version number is spread across platform-install and xos repos.",
+      "parentUuid": "ba092121_b931890d",
+      "revId": "bbaf9e318c7f02d6863f7222fe05a0516e44cfcb",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
