@@ -56,4 +56,3 @@
     dockerfile: "containers/xos/Dockerfile.UI"
     pull: False
     force: True
-    rm: False
