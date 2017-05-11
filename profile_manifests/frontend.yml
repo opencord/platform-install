@@ -11,10 +11,11 @@ needs_pki_install: True
 
 build_xos_base_image: True
 
-xos_admin_user: xosadmin@opencord.org
-xos_admin_pass: "{{ lookup('password', 'credentials/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+credentials_dir: "{{ playbook_dir }}/credentials"
+xos_admin_user: "xosadmin@opencord.org"
+xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
 xos_admin_first: XOS
-xos_admin_last: admin
+xos_admin_last: Admin
 
 xos_tosca_config_templates:
   - sample.yaml
