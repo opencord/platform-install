@@ -17,7 +17,7 @@ source_ui_image: "xosproject/xos-test"
 xos_admin_user: padmin@vicci.org
 xos_admin_pass: letmein
 xos_admin_first: XOS
-xos_admin_last: admin
+xos_admin_last: Admin
 
 xos_tosca_config_templates:
   - management-net.yaml
