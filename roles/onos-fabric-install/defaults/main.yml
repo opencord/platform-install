@@ -1,11 +1,10 @@
 ---
-# onos-vm-install/defaults/main.yml
+# onos-fabric-install/defaults/main.yml
 
-trust_store_pw: 222222
+# paths
+head_onos_fabric_dir: "/opt/onos_fabric"
 
-# ONOS 1.7 not tagged yet, but latest is 1.7
-onos_docker_image: "onosproject/onos:latest"
+# Should probably be set to a specific version
+onos_docker_image: "opencord/onos:latest"
 
-onos_fabric_dest: "{{ ansible_user_dir }}/onos-fabric/"
 
-node_private_key: "{{ ansible_user_dir }}/node_key"

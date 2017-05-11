@@ -7,8 +7,9 @@ site_name: mysite
 site_humanname: MySite
 deployment_type: MyDeployment
 
-xos_admin_user: xosadmin@opencord.org
-xos_admin_pass: "{{ lookup('password', 'credentials/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+credentials_dir: "{{ playbook_dir }}/credentials"
+xos_admin_user: "xosadmin@opencord.org"
+xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
 xos_admin_first: XOS
 xos_admin_last: Admin
 
