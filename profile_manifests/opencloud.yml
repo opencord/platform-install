@@ -1,103 +1,198 @@
 ---
-# vars/opencloud.yaml
+# profile_manifests/opencloud.yml
 # Generic OpenCloud Site
+
+# redefined here for running XOS start/config on localhost
+cord_profile: opencloud
+
+# These are source paths, used only on the config host, and should be redefined
+# on a per-pod basis when installing multiple pods
+config_cord_dir: "{{ ansible_user_dir + '/cord' }}"
+config_cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
+
+# Locations on head node (same on all pods)
+head_cord_dir: "/opt/cord"
+head_cord_profile_dir: "/opt/cord_profile"
+head_onos_cord_dir: "/opt/onos-cord"
+
+# Credentials and PKI
+credentials_dir: "{{ playbook_dir }}/credentials"
+pki_dir: "{{ playbook_dir }}/pki"
+ssh_pki_dir: "{{ playbook_dir }}/ssh_pki"
 
 # site configuration
 site_name: generic_opencloud
 site_humanname: "Generic OpenCloud"
 deployment_type: campus
 
-xos_admin_user: xosadmin@opencord.org
-xos_admin_pass: "{{ lookup('password', 'credentials/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+xos_admin_user: "xosadmin@opencord.org"
+xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
 xos_admin_first: XOS
 xos_admin_last: Admin
 
 xos_users: []
 
 use_vtn: True
+use_openstack: True
+use_fabric: False
+
+headnode_name: head1
 
 xos_tosca_config_templates:
-  - openstack.yaml
-  - nodes.yaml
   - vtn-service.yaml
   - management-net.yaml
 
-cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
+build_xos_base_image: True
 
 xos_docker_volumes:
-  - host: "{{ cord_profile_dir }}/images"
+  - host: "/opt/cord_profile/images"
     container: /opt/xos/images
 
 # GUI Branding
 # Not neeeded, default is OpenCloud
 
+# GUI Config [new GUI], used in app.config.js.j2 and style.config.js.j2
+gui_project_name: "OpenCloud"
+gui_favicon: "opencloud-favicon.png"
+gui_background: "opencloud-bg.jpg"
+gui_payoff: "A Value-Added Cloud for the Internet2 Community"
+gui_logo: "opencloud-logo.png"
+
 # paths defined in manifest/default.xml
 xos_services:
   - name: vtn
     path: onos-apps/apps/vtn
+    keypair: vsg_rsa
+  - name: openstack
+    path: orchestration/xos_services/openstack
   - name: onos
     path: orchestration/xos_services/onos-service
+    keypair: onos_rsa
   - name: vrouter
     path: orchestration/xos_services/vrouter
 
-xos_service_sshkeys:
-  - name: onos_rsa
-    source_path: "~/.ssh/id_rsa"
-  - name: onos_rsa.pub
-    source_path: "~/.ssh/id_rsa.pub"
+profile_library: "rcord"
 
+# SSL certificate generation
+ssl_cert_subj_prefix: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU={{ site_humanname }} Deployment"
 
-# IP prefix for VMs
-virt_nets:
-  - name: mgmtbr
-    ipv4_prefix: 192.168.250
-    head_vms: true
+server_certs:
+  - cn: "keystone.{{ site_suffix }}"
+    subj: "{{ ssl_cert_subj_prefix }}/CN=keystone.{{ site_suffix }}"
+    altnames:
+      - "DNS:keystone.{{ site_suffix }}"
+      - "DNS:keystone"
+  - cn: "xos-core.{{ site_suffix }}"
+    subj: "{{ ssl_cert_subj_prefix }}/CN=xos-core.{{ site_suffix }}"
+    altnames:
+      - "DNS:xos-core.{{ site_suffix }}"
+  - cn: "docker.{{ site_suffix }}"
+    subj: "{{ ssl_cert_subj_prefix }}/CN=docker.{{ site_suffix }}"
+    altnames:
+      - "DNS:docker.{{ site_suffix }}"
+      - "DNS:head.{{ site_suffix }}"
+      - "IP:127.0.0.1"
+      - "IP:{{ mgmt_ipv4_first_octets }}.1"
+      - "IP:{{ hostvars[headnode_name].ansible_default_ipv4.address }}"
+  - cn: "registry.{{ site_suffix }}"
+    subj: "{{ ssl_cert_subj_prefix }}/CN=registry.{{ site_suffix }}"
+    altnames:
+      - "DNS:registry.{{ site_suffix }}"
+      - "DNS:head.{{ site_suffix }}"
+      - "IP:127.0.0.1"
+      - "IP:{{ mgmt_ipv4_first_octets }}.1"
+      - "IP:{{ hostvars[headnode_name].ansible_default_ipv4.address }}"
 
-# DNS/domain settings
+client_certs:
+  - cn: "dockerclient"
+    subj: "{{ ssl_cert_subj_prefix }}/CN=dockerclient"
+    altnames:
+      - "email:dockerclient@{{ site_suffix }}"
+  - cn: "dockerbuildhost"
+    subj: "{{ ssl_cert_subj_prefix }}/CN=dockerbuildhost"
+    altnames:
+      - "email:dockerbuildhost@{{ site_suffix }}"
+
+# docker registry users
+docker_registry_users:
+  - name: "{{ xos_admin_user }}"
+    password: "{{ xos_admin_pass }}"
+
+# Network/DNS settings
 site_suffix: generic.infra.opencloud.us
 
 dns_search:
   - "{{ site_suffix }}"
 
-# SSL server certificate generation
-server_certs:
-  - cn: "keystone.{{ site_suffix }}"
-    subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=keystone.{{ site_suffix }}"
-    altnames:
-      - "DNS:keystone.{{ site_suffix }}"
-      - "DNS:keystone"
-  - cn: "xos-core.{{ site_suffix }}"
-    subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=xos-core.{{ site_suffix }}"
-    altnames:
-      - "DNS:xos-core.{{ site_suffix }}"
+mgmt_ipv4_first_octets: "192.168.200"
 
-# NSD/Unbound settings
+dns_servers:
+  - "{{ mgmt_ipv4_first_octets }}.1"
+
+headnode_user: vagrant
+
+# DNS settings for NSD/Unbound
 nsd_zones:
   - name: "{{ site_suffix }}"
-    ipv4_first_octets: 192.168.250
+    ipv4_first_octets: "{{ mgmt_ipv4_first_octets }}"
     name_reverse_unbound: "168.192.in-addr.arpa"
     soa: ns1
     ns:
       - { name: ns1 }
-    nodelist: head_vm_list
+    nodelists:
+      - head_lxd_list
+      - physical_node_list
     aliases:
-      - { name: "ns1" , dest: "head" }
-      - { name: "ns" , dest: "head" }
-      - { name: "apt-cache" , dest: "head" }
+      - { name: "apt-cache", dest: "head1" }
+      - { name: "cordloghost", dest: "head1" }
+      - { name: "docker", dest: "head1" }
+      - { name: "ns", dest: "head1" }
+      - { name: "ns1", dest: "head1" }
+      - { name: "onos-cord", dest: "head1" }
+      - { name: "xos", dest: "head1" }
+      - { name: "xos-chameleon", dest: "head1" }
+      - { name: "xos-rest-gw", dest: "head1" }
+      - { name: "xos-spa-gui", dest: "head1" }
 
-name_on_public_interface: head
+unbound_listen_all: True
 
-# If true, unbound listens on the head node's `ansible_default_ipv4` interface
-unbound_listen_on_default: True
+unbound_interfaces:
+  - "{{ mgmt_ipv4_first_octets }}.1/24"
+
+dhcpd_subnets:
+  - interface: mgmtbr
+    cidr: "{{ mgmt_ipv4_first_octets }}.1/24"
+    dhcp_first: 129
+    dhcp_last: 254
+    other_static:
+      - physical_node_list
+      - head_lxd_list
+
+# network interface setup
+mgmt_interface: eth1
+
+physical_node_list:
+  - name: head1
+    ipv4_last_octet: 1
+    aliases:
+      - head
+  - name: compute1
+    ipv4_last_octet: 20
+  - name: compute2
+    ipv4_last_octet: 21
 
 # VTN network configuration
 management_network_cidr: 172.27.0.0/24
 management_network_ip: 172.27.0.1/24
 data_plane_ip: 10.168.0.253/24
 
-on_maas: False
+# ONOS version
+onos_docker_image: "opencord/onos:1.8.2"
 
-run_dist_upgrade: True
+on_maas: False
+on_cloudlab: False
+
+run_dist_upgrade: False
 
 openstack_version: kilo
 
@@ -113,23 +208,30 @@ deployment_flavors:
   - m1.xlarge
 
 charm_versions:
-  neutron-api: "cs:~cordteam/trusty/neutron-api-3"
+  ceilometer-agent: "cs:trusty/ceilometer-agent-13"
+  ceilometer: "cs:trusty/ceilometer-17"
+  glance: "cs:trusty/glance-28"
+  keystone: "cs:trusty/keystone-33"
+  mongodb: "cs:trusty/mongodb-33"
+  neutron-api: "cs:~cordteam/trusty/neutron-api-5"
   nova-compute: "cs:~cordteam/trusty/nova-compute-2"
-
-head_vm_list: []
+  ntp: "cs:trusty/ntp-14"
+  openstack-dashboard: "cs:trusty/openstack-dashboard-19"
+  percona-cluster: "cs:trusty/percona-cluster-31"
+  rabbitmq-server: "cs:trusty/rabbitmq-server-42"
 
 head_lxd_list:
   - name: "juju-1"
     service: "juju"
     aliases:
        - "juju"
-    ipv4_last_octet: 10
+    ipv4_last_octet: 50
 
   - name: "ceilometer-1"
     service: "ceilometer"
     aliases:
       - "ceilometer"
-    ipv4_last_octet: 20
+    ipv4_last_octet: 51
     forwarded_ports:
       - { ext: 8777, int: 8777 }
 
@@ -137,7 +239,7 @@ head_lxd_list:
     service: "glance"
     aliases:
       - "glance"
-    ipv4_last_octet: 30
+    ipv4_last_octet: 52
     forwarded_ports:
       - { ext: 9292, int: 9292 }
 
@@ -145,7 +247,7 @@ head_lxd_list:
     service: "keystone"
     aliases:
       - "keystone"
-    ipv4_last_octet: 40
+    ipv4_last_octet: 53
     forwarded_ports:
       - { ext: 35357, int: 35357 }
       - { ext: 4990, int: 4990 }
@@ -155,13 +257,13 @@ head_lxd_list:
     service: "percona-cluster"
     aliases:
       - "percona-cluster"
-    ipv4_last_octet: 50
+    ipv4_last_octet: 54
 
   - name: "neutron-api-1"
     service: "neutron-api"
     aliases:
       - "neutron-api"
-    ipv4_last_octet: 70
+    ipv4_last_octet: 55
     forwarded_ports:
       - { ext: 9696, int: 9696 }
 
@@ -169,7 +271,7 @@ head_lxd_list:
     service: "nova-cloud-controller"
     aliases:
       - "nova-cloud-controller"
-    ipv4_last_octet: 90
+    ipv4_last_octet: 56
     forwarded_ports:
       - { ext: 8774, int: 8774 }
 
@@ -177,7 +279,7 @@ head_lxd_list:
     service: "openstack-dashboard"
     aliases:
       - "openstack-dashboard"
-    ipv4_last_octet: 100
+    ipv4_last_octet: 57
     forwarded_ports:
       - { ext: 8080, int: 80 }
 
@@ -185,24 +287,19 @@ head_lxd_list:
     service: "rabbitmq-server"
     aliases:
       - "rabbitmq-server"
-    ipv4_last_octet: 110
+    ipv4_last_octet: 58
 
-  - name: "onos-cord-1"
+  - name: "mongodb-1"
+    service: "mongodb"
     aliases:
-      - "onos-cord"
-    ipv4_last_octet: 110
-    docker_path: "cord"
-
-  - name: "xos-1"
-    aliases:
-      - "xos"
-    ipv4_last_octet: 130
-    docker_path: 'service-profile/opencloud'
+      - "mongodb"
+    ipv4_last_octet: 59
 
 lxd_service_list:
   - ceilometer
   - glance
   - keystone
+  - mongodb
   - neutron-api
   - nova-cloud-controller
   - openstack-dashboard

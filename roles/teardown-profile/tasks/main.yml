@@ -6,7 +6,7 @@
 - name: Stop and remove XOS containers
   docker_service:
     project_name: "{{ cord_profile | regex_replace('\\W','') }}"
-    project_src: "{{ cord_profile_dir }}"
+    project_src: "{{ head_cord_profile_dir }}"
     state: absent
     remove_images: local
   ignore_errors: yes
@@ -22,7 +22,7 @@
 
 - name: Remove the cord_profile directory
   file:
-    path: "{{ cord_profile_dir }}"
+    path: "{{ head_cord_profile_dir }}"
     state: absent
   ignore_errors: yes
   when: delete_cord_profile_dir
