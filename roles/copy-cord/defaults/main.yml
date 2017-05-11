@@ -1,0 +1,5 @@
+---
+# copy-cord/defaults/main.yml
+
+config_cord_dir: "{{ playbook_dir }}/../.."
+head_cord_dir: /opt/cord
