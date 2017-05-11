@@ -1,0 +1,4 @@
+---
+# copy-credentials/defaults/main.yml
+
+credentials_dir: "{{ playbook_dir }}/credentials"
