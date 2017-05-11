@@ -2,61 +2,57 @@
 # cord-profile/tasks/main.yml
 # Constructs a CORD service profile directory and configuration files
 
-- name: Create and copy XOS admin password
-  copy:
-    content: "{{ xos_admin_pass }}"
-    dest: "{{ cord_dir }}/build/platform-install/credentials/{{ xos_admin_user }}"
-
 - name: Create cord_profile directory
   become: yes
   file:
-    path: "{{ cord_profile_dir }}"
+    path: "{{ config_cord_profile_dir }}"
     state: directory
     mode: 0755
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_gid }}"
 
-- name: Create cord_profile/profile_name, containing profile name
+- name: Create cord_profile/profile_name file containing profile name
   copy:
-    dest: "{{ cord_profile_dir }}/profile_name"
+    dest: "{{ config_cord_profile_dir }}/profile_name"
     content: "{{ cord_profile }}"
     mode: 0644
 
 - name: Create subdirectories inside cord_profile directory
   file:
-    path: "{{ cord_profile_dir }}/{{ item }}"
+    path: "{{ config_cord_profile_dir }}/{{ item }}"
     state: directory
     mode: 0755
   with_items:
     - key_import
-    - onboarding-docker-compose
     - images
 
-# *** This should be revisited. ***
-# Currently the key pair is generated on the head node by the
-# "prep" role in the "maas" repo, invoked during the "deployBase" Gradle task.
-# The keys should probably be generated earlier, in the corddev VM, and copied over.
-# The /opt/credentials directory might be a good place to keep the generated keys.
-#
-# Ensure a keypair exists in case we're not running on MaaS.
-- name: Ensure keypair
-  user:
-    name: "{{ ansible_user_id }}"
-    generate_ssh_key: yes
-
-- name: Copy ssh keys to key_import directory
+- name: Copy ssh private key to node_key file
   copy:
-    # 'expanduser' won't work below, it expands on control machine
-    src: "{{ item.source_path | replace('~', ansible_user_dir, 1) }}"
-    dest: "{{ cord_profile_dir }}/key_import/{{ item.name }}"
+    src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey"
+    dest: "{{ config_cord_profile_dir }}/node_key"
     mode: 0600
     remote_src: True
-  with_items: "{{ xos_service_sshkeys }}"
+
+- name: Copy ssh private key to key_import directory for services that require it
+  copy:
+    src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey"
+    dest: "{{ config_cord_profile_dir }}/key_import/{{ item.keypair }}"
+    mode: 0600
+    remote_src: True
+  with_items: "{{ xos_services | selectattr('keypair', 'defined') | list }}"
+
+- name: Copy ssh public key to key_import directory for services that require it
+  copy:
+    src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey.pub"
+    dest: "{{ config_cord_profile_dir }}/key_import/{{ item.keypair }}.pub"
+    mode: 0644
+    remote_src: True
+  with_items: "{{ xos_services | selectattr('keypair', 'defined') | list }}"
 
 - name: Copy cert chain and core api key and cert
   copy:
     src: "{{ pki_dir }}/{{ item.src }}"
-    dest: "{{ cord_profile_dir }}/{{ item.dest }}"
+    dest: "{{ config_cord_profile_dir }}/{{ item.dest }}"
     mode: 0600
   with_items:
     - src: "{{ site_name }}_im_ca/private/xos-core.{{ site_suffix }}_key.pem"
@@ -66,45 +62,10 @@
     - src: "{{ site_name }}_im_ca/certs/im_cert_chain.pem"
       dest: "im_cert_chain.pem"
 
-- name: Get localhost facts (to get local uid and gid)
-  setup:
-  delegate_to: localhost
-  delegate_facts: True
-
-- name: Make local images directory
-  delegate_to: localhost
-  become: yes
-  file:
-    path: "{{ image_dir }}"
-    state: directory
-    mode: 0755
-    owner: "{{ hostvars['localhost']['ansible_user_id'] }}"
-    group: "{{ hostvars['localhost']['ansible_user_gid'] }}"
-
-- name: Download Glance VM images
-  when: use_openstack
-  delegate_to: localhost
-  get_url:
-    url: "{{ item.url }}"
-    checksum: "{{ item.checksum }}"
-    dest: "{{ image_dir }}/{{ item.name }}.qcow2"
-  with_items: "{{ xos_images }}"
-  register: glance_vm_result
-  until: glance_vm_result|success
-  retries: 5
-  delay: 10
-
-- name: Copy Glance VM images to profile directory
-  when: use_openstack
-  copy:
-    src: "{{ image_dir }}/{{ item.name }}.qcow2"
-    dest: "{{ cord_profile_dir }}/images/{{ item.name }}.qcow2"
-  with_items: "{{ xos_images }}"
-
 - name: Copy over commonly used and utility TOSCA files
   copy:
     src: "{{ item }}"
-    dest: "{{ cord_profile_dir }}/{{ item }}"
+    dest: "{{ config_cord_profile_dir }}/{{ item }}"
   with_items:
     - fixtures.yaml
     - enable-onboarding.yaml
@@ -113,7 +74,7 @@
 - name: Create templated XOS configuration files
   template:
     src: "{{ item }}.j2"
-    dest: "{{ cord_profile_dir }}/{{ item }}"
+    dest: "{{ config_cord_profile_dir }}/{{ item }}"
     mode: 0644
   with_items:
     - xos_common_config
@@ -130,36 +91,21 @@
 - name: Create profile specific templated TOSCA config files
   template:
     src: "{{ item }}.j2"
-    dest: "{{ cord_profile_dir }}/{{ item }}"
+    dest: "{{ config_cord_profile_dir }}/{{ item }}"
   with_items: "{{ xos_tosca_config_templates }}"
 
 - name: Create profile specific templated non-TOSCA files
   template:
     src: "{{ item }}.j2"
-    dest: "{{ cord_profile_dir }}/{{ item }}"
+    dest: "{{ config_cord_profile_dir }}/{{ item }}"
   with_items: "{{ xos_other_templates }}"
 
-- name: Copy node key
-  when: not on_maas and use_openstack
-  copy:
-    src: "{{ ansible_user_dir }}/.ssh/id_rsa"
-    dest: "{{ item }}/node_key"
-    owner: "{{ ansible_user }}"
-    mode: 0600
-    remote_src: True
+- name: Create OpenStack config and TOSCA onboarding
+  when: use_openstack
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ config_cord_profile_dir }}/{{ item }}"
   with_items:
-    - "{{ ansible_user_dir }}"
-    - "{{ cord_profile_dir }}"
+    - openstack.yaml
+    - admin-openrc.sh
 
-- name: Copy node key (MaaS)
-  when: on_maas and use_openstack
-  become: yes
-  copy:
-    src: "{{ maas_node_key }}"
-    dest: "{{ item }}/node_key"
-    owner: "{{ ansible_user }}"
-    mode: 0600
-    remote_src: True
-  with_items:
-    - "{{ ansible_user_dir }}"
-    - "{{ cord_profile_dir }}"

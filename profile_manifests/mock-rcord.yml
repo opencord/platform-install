@@ -5,10 +5,15 @@
 site_name: mock-rcord
 deployment_type: "Mock R-CORD Pod"
 
-xos_admin_user: xosadmin@opencord.org
-xos_admin_pass: "{{ lookup('password', 'credentials/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+credentials_dir: "{{ playbook_dir }}/credentials"
+xos_admin_user: "xosadmin@opencord.org"
+xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
 xos_admin_first: XOS
-xos_admin_last: admin
+xos_admin_last: Admin
+
+# head == config for mocks
+head_cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
+head_cord_dir: "{{ ansible_user_dir + '/cord' }}"
 
 frontend_only: True
 use_openstack: False
@@ -69,20 +74,6 @@ xos_services:
     path: orchestration/xos_services/vtr
   - name: fabric
     path: orchestration/xos_services/fabric
-
-xos_service_sshkeys:
-  - name: onos_rsa
-    source_path: "/dev/null"
-  - name: onos_rsa.pub
-    source_path: "/dev/null"
-  - name: volt_rsa
-    source_path: "/dev/null"
-  - name: volt_rsa.pub
-    source_path: "/dev/null"
-  - name: vsg_rsa
-    source_path: "/dev/null"
-  - name: vsg_rsa.pub
-    source_path: "/dev/null"
 
 profile_library: "rcord"
 
