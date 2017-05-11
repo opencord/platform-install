@@ -1,0 +1,5 @@
+---
+# copy-cord/defaults/main.yml
+
+config_cord_dir: "{{ ansible_user_dir + '/cord' }}"
+head_cord_dir: "/opt/cord"
