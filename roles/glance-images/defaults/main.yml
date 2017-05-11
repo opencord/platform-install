@@ -1,0 +1,7 @@
+---
+# glance-images/defaults/main.yml
+
+image_dir: /opt/images
+
+xos_images: []
+

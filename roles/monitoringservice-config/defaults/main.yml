@@ -1,6 +1,9 @@
 ---
 # monitoringservice-config/defaults/main.yml
 
-cord_dir: "{{ ansible_user_dir + '/cord' }}"
-cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
+#paths
+config_cord_dir: "{{ ansible_user_dir + '/cord' }}"
+head_cord_dir: "/opt/cord"
+
+head_cord_profile_dir: "/opt/cord_profile"
 

@@ -1,9 +1,9 @@
 ---
 # compute-node-enable-maas/tasks/main.yml
 
-- name: Fetch generated nodes.yaml file
+- name: Fetch generated compute node onboarding TOSCA files
   fetch:
-    src: "{{ cord_profile_dir + '/' + item }}"
+    src: "{{ head_cord_profile_dir + '/' + item }}"
     dest: "/tmp/{{ item }}"
     flat: yes
     fail_on_missing: yes
