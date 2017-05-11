@@ -30,7 +30,7 @@
 
 - name: Create the BUILD directory
   file:
-    path: "{{ cord_dir | realpath }}/orchestration/xos/containers/xos/BUILD"
+    path: "{{ config_cord_dir | realpath }}/orchestration/xos/containers/xos/BUILD"
     state: directory
     mode: 0755
 
@@ -41,8 +41,8 @@
   shell: >
     docker run
     --rm
-    -v {{ cord_dir | realpath }}:/opt/cord
-    -v {{ cord_dir | realpath }}/orchestration/xos/containers/xos/BUILD:/opt/xos_corebuilder/BUILD
+    -v {{ config_cord_dir | realpath }}:/opt/cord
+    -v {{ config_cord_dir ~ "/orchestration/xos/containers/xos/BUILD" | realpath }}:/opt/xos_corebuilder/BUILD
     xosproject/xos-corebuilder:candidate
     {{ recipes_string }}
   tags:
@@ -51,7 +51,7 @@
 - name: Build UI image
   docker_image:
     name: "xosproject/xos-ui"
-    path: "{{ cord_dir | realpath }}/orchestration/xos"
+    path: "{{ config_cord_dir | realpath }}/orchestration/xos"
     tag: "{{ build_docker_tag }}"
     dockerfile: "containers/xos/Dockerfile.UI"
     pull: False
