@@ -18,10 +18,10 @@ echo "BEGIN INVENTORY FILE" >> $LOG
 cat $INV >> $LOG
 echo "END INVENTORY_FILE" >> $LOG
 
-echo "cd /opt/cord/build/platform-install; ansible-playbook --private-key=/etc/maas/ansible/id_rsa -u $COMPUTE_USER --extra-vars '@{{ cord_dir }}/build/genconfig/config.yml' -i $INV cord-compute-playbook.yml" >> $LOG
+echo "cd /opt/cord/build/platform-install; ansible-playbook --private-key=/etc/maas/ansible/id_rsa -u $COMPUTE_USER --extra-vars '@{{ head_cord_dir }}/build/genconfig/config.yml' -i $INV cord-compute-maas-playbook.yml" >> $LOG
 
 cd /opt/cord/build/platform-install
-ansible-playbook --private-key=/etc/maas/ansible/id_rsa -u $COMPUTE_USER --extra-vars '@{{ cord_dir }}/build/genconfig/config.yml' -i $INV cord-compute-maas-playbook.yml >> $LOG
+ansible-playbook --private-key=/etc/maas/ansible/id_rsa -u $COMPUTE_USER --extra-vars '@{{ head_cord_dir }}/build/genconfig/config.yml' -i $INV cord-compute-maas-playbook.yml >> $LOG
 
 RESULT=$?
 rm $INV

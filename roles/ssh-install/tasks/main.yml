@@ -1,0 +1,61 @@
+---
+# ssh-install/tasks/main.yml
+
+- name: Create ~/.ssh directory
+  file:
+    dest: "{{ ansible_user_dir }}/.ssh/"
+    mode: 0700
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    state: directory
+
+- name: Install ssh private key
+  copy:
+    src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey"
+    dest: "{{ ansible_user_dir }}/.ssh/id_{{ ssh_keytype }}"
+    mode: 0600
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    backup: true
+
+- name: Install ssh public key
+  copy:
+    src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey.pub"
+    dest: "{{ ansible_user_dir }}/.ssh/id_{{ ssh_keytype }}.pub"
+    mode: 0600
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    backup: true
+
+# the following replicates the functionality of the maas repo `prep` role
+# users/perms may seem off, but is identical to that role
+
+- name: Create ssh key directory for MaaS
+  when: on_maas
+  file:
+    dest: "/etc/maas/.ssh/"
+    mode: 0755
+    owner: "root"
+    group: "root"
+    state: directory
+
+- name: Copy ssh private key for MaaS
+  when: on_maas
+  copy:
+    src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey"
+    dest: "/etc/maas/.ssh/cord_rsa"
+    mode: 0644
+    owner: "root"
+    group: "root"
+    backup: true
+
+- name: Copy ssh public key for MaaS
+  when: on_maas
+  copy:
+    src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey.pub"
+    dest: "/etc/maas/.ssh/cord_rsa.pub"
+    mode: 0644
+    owner: "root"
+    group: "root"
+    backup: true
+

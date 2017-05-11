@@ -11,9 +11,12 @@ ssh_ca_phrase: "{{ lookup('password', credentials_dir ~ '/ssh_ca_phrase length=6
 ssh_keytype: rsa
 ssh_keysize: 4096
 
+# name of master ssh key for this pod
+pod_sshkey_name: "headnode"
+
 # lists of keys to generate
 ssh_client_genkeys:
-  - name: headnode
+  - name: "{{ pod_sshkey_name }}"
 
 ssh_host_genkeys: []
 
