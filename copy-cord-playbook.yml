@@ -1,8 +1,9 @@
 ---
-# pki-install-playbook.yml
+# copy-cord-playbook.yml
+# Copy the cord directory from config node to head node
 
 - name: Include vars
-  hosts: all
+  hosts: config
   tasks:
     - name: Include variables
       include_vars: "{{ item }}"
@@ -10,12 +11,8 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
-# Generate SSL certs
-- include: pki-setup-playbook.yml
-
-- name: Install CA certificates
-  become: yes
+- name: Copy cord directory structure to head node
   hosts: head
   roles:
-    - pki-install
+    - copy-cord
 
