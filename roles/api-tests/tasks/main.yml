@@ -3,7 +3,7 @@
 
 - name: Copy apiary.apib to target location
   copy:
-    src: "{{ cord_dir }}/orchestration/xos/apiary.apib"
+    src: "{{ config_cord_dir }}/orchestration/xos/apiary.apib"
     dest: "/opt/xos/tests/api/apiary.apib"
 
 - name: Run API tests
