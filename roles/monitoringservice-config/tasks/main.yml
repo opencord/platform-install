@@ -3,18 +3,18 @@
 
 - name: Copy monitoringservice onboarding TOSCA files to cord_profile
   copy:
-    src: "{{ cord_dir }}/orchestration/xos_services/monitoring/xos/monitoring-onboard.yaml"
-    dest: "{{ cord_profile_dir }}/monitoring-onboard.yaml"
+    src: "{{ config_cord_dir }}/orchestration/xos_services/monitoring/xos/monitoring-onboard.yaml"
+    dest: "{{ head_cord_profile_dir }}/monitoring-onboard.yaml"
 
 - name: TOSCA to mount monitoringservice volume in XOS container
   template:
     src: "xos-monitoringservice.yaml.j2"
-    dest: "{{ cord_profile_dir }}/xos-monitoringservice.yaml"
+    dest: "{{ head_cord_profile_dir }}/xos-monitoringservice.yaml"
 
 - name: TOSCA files to instantiate monitoringservice
   template:
     src: "{{ item }}.j2"
-    dest: "{{ cord_profile_dir }}/{{ item }}"
+    dest: "{{ head_cord_profile_dir }}/{{ item }}"
   with_items:
     - "monitoringservice.yaml"
     - "monitoringtenant.yaml"
