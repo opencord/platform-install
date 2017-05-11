@@ -6,7 +6,7 @@
 - name: Create OpenStack compute node TOSCA
   template:
     src: "{{ item }}.j2"
-    dest: "{{ cord_profile_dir }}/{{ item }}"
+    dest: "{{ head_cord_profile_dir }}/{{ item }}"
     owner: "{{ ansible_user_id }}"
     mode: 0644
   with_items:

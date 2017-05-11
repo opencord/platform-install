@@ -1,28 +1,29 @@
 ---
-# Common ONOS setup
+# onos-fabric-install/tasks/main.yml
 
-- name: Pull docker image for ONOS
+- name: Pull base docker image for ONOS
+  docker_image:
+    name: "{{ onos_docker_image }}"
+
+- name: Create onos-fabric dest directory
   become: yes
-  command: "docker pull {{ onos_docker_image }}"
-  tags:
-    - skip_ansible_lint # Should replace with http://docs.ansible.com/ansible/docker_module.html, when replacements are stable
-
-- name: Create dest directory
   file:
-    path: "{{ onos_fabric_dest }}"
+    path: "{{ head_onos_fabric_dir }}"
     state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: 0755
 
 - name: Create templated ONOS files
   template:
     src: "{{ item }}.j2"
-    dest: "{{ onos_fabric_dest }}/{{ item }}"
+    dest: "{{ head_onos_fabric_dir }}/{{ item }}"
   with_items:
     - docker-compose.yml
 
 # Note: we do not rebuild onos container for the fabric
 
-- name: Start ONOS
-  command: chdir="{{ onos_fabric_dest }}" docker-compose up -d
-  tags:
-    - skip_ansible_lint
+- name: Start ONOS for fabric
+  docker_service:
+    project_src: "{{ head_onos_fabric_dir }}"
 
