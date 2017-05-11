@@ -1,7 +1,8 @@
 ---
+# xos-core-build/defaults/main.yml
 
-cord_dir: "{{ playbook_dir + '/../..' }}"
-build_docker_tag: candidate
+build_cord_dir: "{{ playbook_dir ~ '/../..' }}"
+build_docker_tag: "candidate"
 
 deploy_docker_registry: "localhost:5000"
 deploy_docker_tag: "candidate"
@@ -12,3 +13,4 @@ xos_libraries:
 profile_library: ""
 
 xos_services: []
+
