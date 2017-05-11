@@ -1,6 +1,11 @@
 ---
 # xos-core-deploy/tasks/main.yml
 
+- name: Remove old local UI image
+  docker_image:
+    name: "{{ deploy_docker_registry }}/xosproject/xos-ui:{{ deploy_docker_tag }}"
+    state: absent
+
 - name: Tag and push the UI image
   docker_image:
     name: "xosproject/xos-ui:{{ build_docker_tag }}"
