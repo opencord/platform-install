@@ -4,7 +4,7 @@
 - name: Get the Docker container names for bootstrap containers
   docker_service:
     project_name: "{{ cord_profile | regex_replace('\\W','') }}bs"
-    project_src: "{{ cord_profile_dir }}"
+    project_src: "{{ head_cord_profile_dir }}"
     files: "xos-bootstrap-docker-compose.yaml"
     recreate: never
   register: xos_bootstrap_out

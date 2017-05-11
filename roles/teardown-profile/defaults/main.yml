@@ -1,9 +1,7 @@
 ---
 # teardown-profile/defaults/main.yml
 
-cord_dir: "{{ ansible_user_dir + '/cord' }}"
-
-cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
+head_cord_profile_dir: "/opt/cord_profile"
 
 xos_docker_networks:
   - "xos"

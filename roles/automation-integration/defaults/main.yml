@@ -1,4 +1,7 @@
 ---
 # automation-integration/defaults/main.yml
 
+# paths
+head_cord_dir: "/opt/cord"
+
 cord_in_a_box: False

@@ -18,7 +18,7 @@
 ################################################################################
 
 # Root logger
-log4j.rootLogger=INFO, out, logstash, osgi:*
+log4j.rootLogger={{ onos_log_level }}, out, logstash, osgi:*
 log4j.throwableRenderer=org.apache.log4j.OsgiThrowableRenderer
 
 # CONSOLE appender not used by default
@@ -28,7 +28,6 @@ log4j.appender.stdout.layout.ConversionPattern=%d{ISO8601} | %-5.5p | %-16.16t |
 
 # logstash log4j appender
 log4j.appender.logstash=org.apache.log4j.net.SocketAppender
-log4j.appender.logstash.threshold=DEBUG
 log4j.appender.logstash.Port={{ log4j_port }}
 log4j.appender.logstash.RemoteHost={{ logging_host }}
 log4j.appender.logstash.ReconnectionDelay=5000

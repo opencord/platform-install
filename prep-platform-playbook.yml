@@ -20,15 +20,16 @@
     - apt-cacher-ng
 
 - name: Configure all hosts to use DNS server
-  hosts: all
+  hosts: head, compute
   become: yes
   roles:
     - { role: dns-configure, when: not on_maas }
 
 - name: Prep systems
-  hosts: all
+  hosts: head, compute
   become: yes
   roles:
     - common-prep
+    - pki-install
     - { role: cloudlab-prep, when: on_cloudlab }
 

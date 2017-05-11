@@ -1,0 +1,29 @@
+---
+# ssh-install/tasks/main.yml
+
+- name: Create ~/.ssh directory
+  file:
+    dest: "{{ ansible_user_dir }}/.ssh/"
+    mode: 0700
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    state: directory
+
+- name: Install ssh private key
+  copy:
+    src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey"
+    dest: "{{ ansible_user_dir }}/.ssh/id_{{ ssh_keytype }}"
+    mode: 0600
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    backup: true
+
+- name: Install ssh public key
+  copy:
+    src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey.pub"
+    dest: "{{ ansible_user_dir }}/.ssh/id_{{ ssh_keytype }}.pub"
+    mode: 0600
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    backup: true
+

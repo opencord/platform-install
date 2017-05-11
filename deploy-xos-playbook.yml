@@ -23,9 +23,7 @@
 # build XOS core
 - include: build-platform-install-playbook.yml
 
-- include: pki-install-playbook.yml
-
-- include: cord-profile-playbook.yml
+- include: cord-config-playbook.yml
 
 - name: Pull other docker images if not present
   hosts: head

@@ -4,7 +4,7 @@
 - name: Get the Docker container names for onboarded containers
   docker_service:
     project_name: "{{ cord_profile | regex_replace('\\W','') }}"
-    project_src: "{{ cord_profile_dir }}/onboarding-docker-compose/"
+    project_src: "{{ head_cord_profile_dir }}/onboarding-docker-compose/"
     recreate: never
   register: xos_onboard_out
 

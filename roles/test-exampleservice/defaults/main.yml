@@ -1,6 +1,6 @@
 ---
 # test-exampleservice/defaults/main.yml
 
-cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
+head_cord_profile_dir: "/opt/cord_profile"
 xos_ui_port: 9000
 

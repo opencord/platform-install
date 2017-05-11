@@ -4,13 +4,13 @@
 # Run tests to check that the CORD-in-a-Box deployment has worked.
 
 - name: Get name of compute node
-  shell: bash -c "source ~/admin-openrc.sh; nova service-list|grep nova-compute|cut -d '|' -f 3"
+  shell: bash -c "source /opt/cord_profile/admin-openrc.sh; nova service-list|grep nova-compute|cut -d '|' -f 3"
   register: node_name
   tags:
     - skip_ansible_lint # running a sub job
 
 - name: Wait for vSG VM to come up
-  shell: bash -c "source ~/admin-openrc.sh; nova list --all-tenants|grep 'vsg.*ACTIVE' > /dev/null"
+  shell: bash -c "source /opt/cord_profile/admin-openrc.sh; nova list --all-tenants|grep 'vsg.*ACTIVE' > /dev/null"
   register: result
   until: result | success
   retries: 10
@@ -19,13 +19,13 @@
     - skip_ansible_lint # running a sub job
 
 - name: Get ID of VM
-  shell: bash -c "source ~/admin-openrc.sh; nova list --all-tenants|grep mysite_vsg|cut -d '|' -f 2"
+  shell: bash -c "source /opt/cord_profile/admin-openrc.sh; nova list --all-tenants|grep mysite_vsg|cut -d '|' -f 2"
   register: nova_id
   tags:
     - skip_ansible_lint # running a sub job
 
 - name: Get mgmt IP of VM
-  shell: bash -c "source ~/admin-openrc.sh; nova interface-list {{ nova_id.stdout }}|grep -o -m 1 '172\.27\.[[:digit:]]*\.[[:digit:]]*'"
+  shell: bash -c "source /opt/cord_profile/admin-openrc.sh; nova interface-list {{ nova_id.stdout }}|grep -o -m 1 '172\.27\.[[:digit:]]*\.[[:digit:]]*'"
   register: mgmt_ip
   tags:
     - skip_ansible_lint # running a sub job

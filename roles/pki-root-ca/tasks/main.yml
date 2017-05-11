@@ -1,21 +1,16 @@
 ---
 # pki-root-ca/tasks/main.yml
 
-- name: Create credentials directory
+- name: Create PKI and credentials directories
   become: yes
   file:
-    dest: "{{ credentials_dir }}"
+    dest: "{{ item }}"
     state: directory
     owner: "{{ ansible_user_id }}"
     mode: 0700
-
-- name: Create PKI directory
-  become: yes
-  file:
-    dest: "{{ pki_dir }}"
-    state: directory
-    owner: "{{ ansible_user_id }}"
-    mode: 0755
+  with_items:
+    - "{{ credentials_dir }}"
+    - "{{ pki_dir }}"
 
 - name: Create root CA directory
   become: yes

@@ -1,29 +1,31 @@
 ---
-# Common ONOS setup
+# onos-cord-install/tasks/main.yml
 
-# onos_cord_dest: {{ ansible_user_dir }}/onos-cord/
-
-- name: Pull docker image for ONOS
-  become: yes
-  command: "docker pull {{ onos_docker_image }}"
-  tags:
-    - skip_ansible_lint # Should replace with http://docs.ansible.com/ansible/docker_module.html, when replacements are stable
+- name: Pull base docker image for ONOS
+  docker_image:
+    name: "{{ onos_docker_image }}"
 
 - name: Create dest directory
-  file: path="{{ onos_cord_dest }}" state=directory
+  become: yes
+  file:
+    path: "{{ head_onos_cord_dir }}"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: 0755
 
 - name: Copy over SSH key
   copy:
-    remote_src: True
-    src: "{{ node_private_key }}"
-    dest: "{{ onos_cord_dest }}/node_key"
+    src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey"
+    dest: "{{ head_onos_cord_dir }}/node_key"
     owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
     mode: 0600
 
 - name: Create templated ONOS files
   template:
     src: "{{ item }}.j2"
-    dest: "{{ onos_cord_dest }}/{{ item }}"
+    dest: "{{ head_onos_cord_dir }}/{{ item }}"
   with_items:
     - Dockerfile
     - onos-service
@@ -32,27 +34,26 @@
 - name: Copy over ONOS playbook and other files
   copy:
     src: "onos-cord-docker-compose.yml"
-    dest: "{{ onos_cord_dest }}/docker-compose.yml"
+    dest: "{{ head_onos_cord_dir }}/docker-compose.yml"
 
-# TODO: Find the proper place for this on the dev machine rather than
-#       copying it within the head node machine.
-
-- name: Copy SSL Certs to ONOS so docker-compose can find it
+- name: Copy SSL Certs to ONOS so docker-compose can find them
   copy:
-    src: "/usr/local/share/ca-certificates/{{ item }}"
-    dest: "{{ onos_cord_dest }}/{{ item }}"
+    src: "{{ pki_dir }}/{{ item.src }}"
+    dest: "{{ head_onos_cord_dir }}/{{ item.dest }}"
     owner: "{{ ansible_user_id }}"
-    remote_src: True
   with_items:
-    - "cord_root_ca.crt"
-    - "cord_intermediate_ca.crt"
+    - src: "root_ca/certs/ca_cert.pem"
+      dest: "cord_root_ca.crt"
+    - src: "{{ site_name }}_im_ca/certs/im_cert.pem"
+      dest: "cord_{{ site_name }}_im_ca.crt"
 
-- name: Build onos image
-  command: docker-compose build chdir={{ onos_cord_dest }}
-  tags:
-    - skip_ansible_lint
+- name: Build xos/onos docker image
+  docker_image:
+    name: "xos/onos"
+    path: "{{ head_onos_cord_dir }}"
+    dockerfile: "Dockerfile"
 
-- name: Start ONOS
-  command: chdir="{{ onos_cord_dest }}" docker-compose up -d
-  tags:
-    - skip_ansible_lint
+- name: Start ONOS for CORD
+  docker_service:
+    project_src: "{{ head_onos_cord_dir }}"
+

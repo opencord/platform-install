@@ -41,7 +41,7 @@
    - "juju status --format=json"
 
 - name: OpenStack diag collection
-  shell: "source ~/admin-openrc.sh && {{ item }} > ~/{{ diag_dir }}/openstack/{{ item | regex_replace('[^\\w-]', '_')}}"
+  shell: "source /opt/cord_profile/admin-openrc.sh && {{ item }} > ~/{{ diag_dir }}/openstack/{{ item | regex_replace('[^\\w-]', '_')}}"
   ignore_errors: yes
   args:
     executable: "/bin/bash"

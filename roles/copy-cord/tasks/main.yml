@@ -1,0 +1,18 @@
+---
+# copy-cord/tasks/main.yml
+
+- name: Copy (sync) the cord directory to head node
+  become: yes
+  synchronize:
+    src: "{{ config_cord_dir }}/"
+    dest: "{{ head_cord_dir }}/"
+
+- name: Set ownership on CORD dir on head node
+  become: yes
+  file:
+    dest: "{{ head_cord_dir }}"
+    state: directory
+    recurse: yes
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+

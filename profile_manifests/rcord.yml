@@ -7,8 +7,9 @@ site_name: mysite
 site_humanname: MySite
 deployment_type: MyDeployment
 
-xos_admin_user: xosadmin@opencord.org
-xos_admin_pass: "{{ lookup('password', 'credentials/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+credentials_dir: "{{ playbook_dir }}/credentials"
+xos_admin_user: "xosadmin@opencord.org"
+xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
 xos_admin_first: XOS
 xos_admin_last: Admin
 
@@ -56,59 +57,28 @@ xos_services:
   - name: vtn
     path: onos-apps/apps/vtn
     keypair: vsg_rsa
-    synchronizer: true
   - name: openstack
     path: orchestration/xos_services/openstack
-    synchronizer: true
   - name: onos
     path: orchestration/xos_services/onos-service
     keypair: onos_rsa
-    synchronizer: true
   - name: vrouter
     path: orchestration/xos_services/vrouter
-    synchronizer: true
   - name: vsg
     path: orchestration/xos_services/vsg
     keypair: vsg_rsa
-    synchronizer: true
   - name: vtr
     path: orchestration/xos_services/vtr
     keypair: vsg_rsa
-    synchronizer: true
   - name: fabric
     path: orchestration/xos_services/fabric
-    synchronizer: true
   - name: exampleservice
     path: orchestration/xos_services/exampleservice
     keypair: exampleservice_rsa
-    synchronizer: true
 #  - name: monitoring
 #    path: orchestration/xos_services/monitoring
 #    keypair: monitoringservice_rsa
 #    synchronizer: false
-
-xos_service_sshkeys:
-  - name: onos_rsa
-    source_path: "~/.ssh/id_rsa"
-  - name: onos_rsa.pub
-    source_path: "~/.ssh/id_rsa.pub"
-  - name: volt_rsa
-    source_path: "~/.ssh/id_rsa"
-  - name: volt_rsa.pub
-    source_path: "~/.ssh/id_rsa.pub"
-  - name: vsg_rsa
-    source_path: "~/.ssh/id_rsa"
-  - name: vsg_rsa.pub
-    source_path: "~/.ssh/id_rsa.pub"
-# needed onboarding synchronizer doesn't require service code to be present when started
-  - name: exampleservice_rsa
-    source_path: "~/.ssh/id_rsa"
-  - name: exampleservice_rsa.pub
-    source_path: "~/.ssh/id_rsa.pub"
-  - name: monitoringservice_rsa
-    source_path: "~/.ssh/id_rsa"
-  - name: monitoringservice_rsa.pub
-    source_path: "~/.ssh/id_rsa.pub"
 
 profile_library: "rcord"
 

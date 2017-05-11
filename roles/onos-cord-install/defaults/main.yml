@@ -1,14 +1,22 @@
 ---
-# onos-vm-install/defaults/main.yml
+# onos-cord-install/defaults/main.yml
 
+# paths
+pki_dir: "{{ playbook_dir }}/pki"
+ssh_pki_dir: "{{ playbook_dir }}/ssh_pki"
+head_onos_cord_dir: "/opt/onos_cord"
+
+# Should probably be set to a specific version
+onos_docker_image: "opencord/onos:latest"
+
+# log level for ONOS
+onos_log_level: "INFO"
+
+# name of master ssh key for this pod
+pod_sshkey_name: "headnode"
+
+# used for Java KeyStore within ONOS image
 trust_store_pw: 222222
-
-# ONOS 1.7 not tagged yet, but latest is 1.7
-onos_docker_image: "onosproject/onos:latest"
-
-onos_cord_dest: "{{ ansible_user_dir }}/onos-cord/"
-
-node_private_key: "{{ ansible_user_dir }}/node_key"
 
 # logging_host should be set to DNS or IP addr of logstash host
 logging_host: "cordloghost"

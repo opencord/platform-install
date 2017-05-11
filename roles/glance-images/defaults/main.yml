@@ -1,0 +1,9 @@
+---
+# glance-images/defaults/main.yml
+
+use_openstack: True
+
+image_dir: /opt/images
+
+xos_images: []
+

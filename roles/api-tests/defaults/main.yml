@@ -1,4 +1,5 @@
 ---
 # api-tests/defaults/main.yml
 
-cord_dir: "{{ hostvars['localhost']['ansible_user_dir'] + '/cord' }}"
+config_cord_dir: "{{ ansible_user_dir + '/cord' }}"
+

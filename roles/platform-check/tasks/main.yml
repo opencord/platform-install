@@ -16,7 +16,7 @@
   when: result | failed
   shell: docker-compose stop; docker-compose rm -f; docker-compose up -d
   args:
-    chdir: "{{ onos_cord_dest }}"
+    chdir: "{{ head_onos_cord_dir }}"
   tags:
     - skip_ansible_lint
 
@@ -26,7 +26,7 @@
     url: "http://xos.{{ site_suffix }}:{{ xos_ui_port }}/api/utility/tosca/run/"
     user: "{{ xos_admin_user }}"
     password:  "{{ xos_admin_pass }}"
-    recipe: "{{ lookup('file', cord_profile_dir + '/' + item ) }}"
+    recipe: "{{ lookup('file', head_cord_profile_dir + '/' + item ) }}"
   with_items:
     - openstack.yaml
     - openstack-compute.yaml
@@ -42,7 +42,7 @@
     url: "http://xos.{{ site_suffix }}:{{ xos_ui_port }}/api/utility/tosca/run/"
     user: "{{ xos_admin_user }}"
     password:  "{{ xos_admin_pass }}"
-    recipe: "{{ lookup('file', cord_profile_dir + '/' + item ) }}"
+    recipe: "{{ lookup('file', head_cord_profile_dir + '/' + item ) }}"
   with_items:
     - openstack-compute-vtn.yaml
 

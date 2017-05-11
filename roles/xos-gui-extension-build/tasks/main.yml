@@ -5,7 +5,7 @@
 - name: Build xos-gui-extension-builder image
   docker_image:
     name: "xosproject/xos-gui-extension-builder"
-    path: "{{ cord_dir }}/orchestration/xos-gui/"
+    path: "{{ head_cord_dir }}/orchestration/xos-gui/"
     dockerfile: "Dockerfile.xos-gui-extension-builder"
   register: "xos-gui-extension-builder"
 
@@ -13,24 +13,17 @@
 - name: Build xos-gui-extensions docker images
   docker_image:
     name: "xosproject/gui-extension-{{ item.name }}"
-    path: "{{ cord_dir }}/{{ item.path }}"
+    path: "{{ head_cord_dir }}/{{ item.path }}"
     pull: false
   with_items: "{{ enabled_gui_extensions }}"
 
-# Compile the TOSCA to onboard extensions
+# Compile the TOSCA to onboard and persist extensions
 - name: Create templated TOSCA to onboard extensions
   template:
     src: "{{ item }}.j2"
-    dest: "{{ cord_profile_dir }}/{{ item }}"
+    dest: "{{ head_cord_profile_dir }}/{{ item }}"
     mode: 0644
   with_items:
     - xos-gui-extensions-onboard.yml
-
-# Compile the TOSCA to persist extensions
-- name: Create templated TOSCA to persist extensions
-  template:
-    src: "{{ item }}.j2"
-    dest: "{{ cord_profile_dir }}/{{ item }}"
-    mode: 0644
-  with_items:
     - xos-gui-extensions.yml
+

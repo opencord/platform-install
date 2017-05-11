@@ -1,6 +1,6 @@
 ---
 # exampleservice-config/defaults/main.yml
 
-cord_dir: "{{ ansible_user_dir + '/cord' }}"
-cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
-
+# As a test, this is assumed to entirely run on the head node
+head_cord_dir: "/opt/cord"
+head_cord_profile_dir: "/opt/cord_profile"

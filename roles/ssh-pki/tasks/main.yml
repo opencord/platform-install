@@ -2,6 +2,7 @@
 # ssh-pki/tasks/main.yml
 
 - name: Create SSH CA Directory
+  become: yes
   file:
     dest: "{{ item }}"
     state: directory
