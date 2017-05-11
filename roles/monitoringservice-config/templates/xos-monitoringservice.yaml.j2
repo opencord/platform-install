@@ -15,7 +15,7 @@ topology_template:
     /opt/xos_services/monitoring:
       type: tosca.nodes.XOSVolume
       properties:
-          host_path: "{{ cord_dir }}/orchestration/xos_services/monitoring"
+          host_path: "{{ head_cord_dir }}/orchestration/xos_services/monitoring"
           read_only: True
       requirements:
           - xos:
