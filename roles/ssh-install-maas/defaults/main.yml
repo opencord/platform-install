@@ -1,0 +1,11 @@
+---
+# ssh-install-maas/defaults/main.yml
+
+ssh_pki_dir: "{{ playbook_dir }}/ssh_pki"
+
+ssh_keytype: rsa
+
+# name of master ssh key for this pod
+pod_sshkey_name: "headnode"
+
+on_maas: False

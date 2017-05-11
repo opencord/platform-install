@@ -13,25 +13,25 @@
 
 - name: Create CORD directory
   file:
-    dest: "{{ cord_dir }}"
+    dest: "{{ config_cord_dir }}"
     state: directory
 
 - name: Init CORD repos (master branch) using repo
   command: "/usr/local/bin/repo init -u {{ repo_manifest_url }} -b master -g build,onos,orchestration"
   args:
-    chdir: "{{ cord_dir }}"
-    creates: "{{ cord_dir }}/.repo"
+    chdir: "{{ config_cord_dir }}"
+    creates: "{{ config_cord_dir }}/.repo"
 
 - name: Synchronize CORD repos using repo
   command: "repo sync"
   args:
-    chdir: "{{ cord_dir }}"
-    creates: "{{ cord_dir }}/build"
+    chdir: "{{ config_cord_dir }}"
+    creates: "{{ config_cord_dir }}/build"
 
 - name: Download specific gerrit changesets using repo
   command: "/usr/local/bin/repo download {{ item.path }} {{ item.revision }}"
   args:
-    chdir: "{{ cord_dir }}"
+    chdir: "{{ config_cord_dir }}"
   with_items: "{{ gerrit_changesets }}"
   tags:
     - skip_ansible_lint # usually won't be run, except during dev
