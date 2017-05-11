@@ -1,0 +1,18 @@
+---
+# copy-credentials/tasks/main.yml
+
+- name: Copy (sync) the credentials directory to head node, for MaaS provisioner
+  become: yes
+  synchronize:
+    src: "{{ credentials_dir }}/"
+    dest: "/opt/credentials/"
+
+- name: Set ownership on credentials dir on head node, for MaaS provisioner
+  become: yes
+  file:
+    dest: "/opt/credentials"
+    state: directory
+    recurse: yes
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+

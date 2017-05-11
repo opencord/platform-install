@@ -59,7 +59,7 @@
   with_items: "{{ groups['compute'] }}"
 
 - name: verify that the nodes appear in nova
-  action: shell bash -c "source ~/admin-openrc.sh; nova hypervisor-list | grep '{{ item }}'"
+  action: shell bash -c "source /opt/cord_profile/admin-openrc.sh; nova hypervisor-list | grep '{{ item }}'"
   register: result
   until: result | success
   retries: 20
