@@ -1,8 +1,9 @@
 ---
-# cord-profile-playbook.yml
+# copy-profile-book.yml
+# Copies the profile to the head node
 
 - name: Include vars
-  hosts: all
+  hosts: head, config
   tasks:
     - name: Include variables
       include_vars: "{{ item }}"
@@ -10,7 +11,8 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
-- name: Create CORD profile and copy Glance images
+- name: Copy cord_profile to head node from config node
   hosts: head
   roles:
-    - cord-profile
+    - { role: copy-profile, become: yes }
+
