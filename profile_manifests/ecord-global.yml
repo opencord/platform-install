@@ -14,11 +14,16 @@ xos_admin_last: Admin
 
 xos_users: []
 
-use_vtn: False
+use_vtn: True
 
 xos_tosca_config_templates:
   - openstack.yaml
+  - vtn-service.yaml
+  - fabric-service.yaml
   - vnodglobal-service.yaml
+
+xos_other_templates:
+ - fabric-network-cfg.json
 
 cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
 
@@ -45,6 +50,8 @@ xos_services:
     path: onos-apps/apps/vtn
   - name: openstack
     path: orchestration/xos_services/openstack
+  - name: fabric
+    path: orchestration/xos_services/fabric
   - name: onos
     path: orchestration/xos_services/onos-service
   - name: metronetwork
@@ -96,6 +103,11 @@ nsd_zones:
       - { name: "apt-cache" , dest: "head" }
 
 name_on_public_interface: head
+
+# VTN network configuration
+management_network_cidr: 172.27.0.0/24
+management_network_ip: 172.27.0.1/24
+data_plane_ip: 10.168.0.253/24
 
 
 # CORD ONOS app version
