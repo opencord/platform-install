@@ -78,11 +78,11 @@ topology_template:
         view_url: /admin/vEG/vegservice/$id$/
         backend_network_label: hpc_client
         public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
-        private_key_fn: /opt/xos/services/veg/keys/veg_rsa
+        private_key_fn: /opt/cord_profile/key_import/veg_rsa
 #       node_label: label_veg
         replaces: service_veg
       artifacts:
-        pubkey: /opt/xos/services/veg/keys/veg_rsa.pub
+        pubkey: /opt/cord_profile/key_import/veg_rsa.pub
 
     service#vrouter:
       type: tosca.nodes.VRouterService
