@@ -22,6 +22,30 @@
       "revId": "4ef48392ffd9350ca407f047b63015d50401d351",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba092121_4793a3a3",
+        "filename": "roles/pki-install/tasks/main.yml",
+        "patchSetId": 9
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-05-18T21:58:19Z",
+      "side": 0,
+      "message": "This is a simplification - the copy (and that of the openstack certs below) is replicating portions of of the `pki_dir` from the build to head node, where it\u0027s later on picked up in other places in the playbook that were run on the head node.\n\nThe changes that go along with this are the \"Copy cert chain and core api key and cert\" task in cord-profile/tasks/main.yml and where they\u0027re looked up in  juju-setup/templates/juju_config.yml.j2",
+      "parentUuid": "ba092121_a77cbf73",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 31
+      },
+      "revId": "4ef48392ffd9350ca407f047b63015d50401d351",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
