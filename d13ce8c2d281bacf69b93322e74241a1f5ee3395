@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba092121_27b9cf2e",
+        "filename": "roles/juju-setup/defaults/main.yml",
+        "patchSetId": 9
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-05-18T21:37:05Z",
+      "side": 1,
+      "message": "This is no longer needed?",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 27
+      },
+      "revId": "d13ce8c2d281bacf69b93322e74241a1f5ee3395",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
