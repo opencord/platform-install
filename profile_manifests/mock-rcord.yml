@@ -10,7 +10,7 @@ xos_admin_pass: "{{ lookup('password', 'credentials/xosadmin@opencord.org chars=
 xos_admin_first: XOS
 xos_admin_last: admin
 
-frontend_only: True
+frontend_only: False
 use_openstack: False
 use_vtn: True
 needs_pki_install: True
