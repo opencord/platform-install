@@ -10,14 +10,50 @@ networks:
 {% endfor %}
 
 services:
+  consul:
+    image: {{ deploy_docker_registry }}gliderlabs/consul-server:{{ deploy_docker_tag }}
+    command: "-advertise=${MYHOST} -server -bootstrap"
+    ports:
+      - "127.0.0.1:8500:8500"
+    networks:
+{% for network in xos_docker_networks %}
+      - {{ network }}
+{% endfor %}
+    environment:
+      SERVICE_8500_NAME: "consul-rest"
+    restart: unless-stopped
+  registrator:
+    image: {{ deploy_docker_registry }}gliderlabs/registrator:{{ deploy_docker_tag }}
+    command: [
+         "-ip=${DOCKER_HOST_IP}",
+         "-retry-attempts", "100",
+         "consul://consul:8500"
+    ]
+    networks:
+{% for network in xos_docker_networks %}
+      - {{ network }}
+{% endfor %}
+    links:
+      - consul
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    depends_on:
+      - consul
+    restart: unless-stopped
   xos_db:
     image: {{ deploy_docker_registry }}xosproject/xos-postgres:{{ deploy_docker_tag }}
     networks:
 {% for network in xos_docker_networks %}
       - {{ network }}
 {% endfor %}
+    ports:
+      - "5432:5432"
     expose:
       - "5432"
+    depends_on:
+      - registrator
+    environment:
+      SERVICE_5432_NAME: "xos-db"
     restart: unless-stopped
 
 {% if use_redis %}
@@ -32,6 +68,10 @@ services:
       options:
         max-size: "1000k"
         max-file: "5"
+    depends_on:
+      - registrator
+    environment:
+      SERVICE_NAME: "redis"
     restart: unless-stopped
 {% endif %}
 
@@ -59,6 +99,10 @@ services:
       options:
         max-size: "1000k"
         max-file: "5"
+    depends_on:
+      - registrator
+    environment:
+      SERVICE_4000_NAME: "xos-gui"
     restart: unless-stopped
 
   xos_chameleon:
@@ -79,6 +123,10 @@ services:
       options:
         max-size: "1000k"
         max-file: "5"
+    depends_on:
+      - registrator
+    environment:
+      SERVICE_9101_NAME: "xos-rest"
     restart: unless-stopped
 
   gui_extensions_store:
@@ -95,6 +143,8 @@ services:
       options:
         max-size: "1000k"
         max-file: "5"
+    depends_on:
+      - registrator
 
   xos_ws:
     image: {{ deploy_docker_registry }}xosproject/xos-ws:{{ deploy_docker_tag }}
@@ -122,6 +172,10 @@ services:
       options:
         max-size: "1000k"
         max-file: "5"
+    depends_on:
+      - registrator
+    environment:
+      SERVICE_3000_NAME: "xos-ws"
     restart: unless-stopped
 
   xos_ui:
@@ -135,6 +189,7 @@ services:
       - "9000:9000"
     links:
       - xos_db:xos_db
+      - consul:consul
 {% if use_redis %}
       - xos_redis:redis
 {% endif %}
@@ -153,6 +208,10 @@ services:
       options:
         max-size: "1000k"
         max-file: "5"
+    depends_on:
+      - registrator
+    environment:
+      SERVICE_9000_NAME: "xos-ui-deprecated"
     restart: unless-stopped
 
   xos_core:
@@ -167,11 +226,13 @@ services:
       - "50055:50055"
     links:
       - xos_db:xos_db
+      - consul:consul
 {% if use_redis %}
       - xos_redis:redis
 {% endif %}
     depends_on:
       - xos_db
+      - registrator
 {% if use_redis %}
       - xos_redis
 {% endif %}
@@ -186,6 +247,9 @@ services:
       options:
         max-size: "1000k"
         max-file: "5"
+    environment:
+      SERVICE_50051_NAME: "xos-grpc-secure"
+      SERVICE_50055_NAME: "xos-grpc-insecure"
     restart: unless-stopped
 
 {% for ext in enabled_gui_extensions %}
@@ -203,7 +267,8 @@ services:
       options:
         max-size: "1000k"
         max-file: "5"
-
+    depends_on:
+      - registrator
 {% endfor %}
 
 {% if not frontend_only %}
@@ -215,11 +280,15 @@ services:
 {% for network in xos_docker_networks %}
      - {{ network }}
 {% endfor %}
-{% if use_redis %}
-    links:
-      - xos_redis:redis
     depends_on:
+      - registrator
+{% if use_redis %}
       - xos_redis
+{% endif %}
+    links:
+      - consul:consul
+{% if use_redis %}
+      - xos_redis:redis
 {% endif %}
     volumes:
       - {{ cord_profile_dir }}/node_key:/opt/cord_profile/node_key:ro
@@ -236,6 +305,8 @@ services:
       options:
         max-size: "1000k"
         max-file: "5"
+    environment:
+      SERVICE_NAME: "xos-{{ svc.name }}-synchronizer"
     restart: unless-stopped
 
 {% endif %}

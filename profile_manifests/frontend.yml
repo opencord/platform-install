@@ -5,6 +5,7 @@ site_name: frontend
 deployment_type: "Frontend Mock"
 
 frontend_only: True
+use_redis: True
 use_openstack: False
 use_vtn: False
 needs_pki_install: True

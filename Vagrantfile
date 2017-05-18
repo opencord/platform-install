@@ -46,6 +46,7 @@ Vagrant.configure("2") do |config|
     echo "127.0.0.1 xos-ws" | sudo tee --append /etc/hosts > /dev/null
     echo "127.0.0.1 xos-chameleon" | sudo tee --append /etc/hosts > /dev/null
     echo "127.0.0.1 xos-core" | sudo tee --append /etc/hosts > /dev/null
+    echo "127.0.0.1 consul" | sudo tee --append /etc/hosts > /dev/null
   SHELL
 
  end
