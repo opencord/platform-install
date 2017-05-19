@@ -1,9 +1,0 @@
----
-# xos-head-start/tasks/main.yml
-
-- name: Run service-profile make targets
-  make:
-    chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
-    target: "{{ item }}"
-  with_items: "{{ xos_config_targets }}"
-

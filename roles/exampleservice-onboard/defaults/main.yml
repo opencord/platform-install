@@ -1,8 +1,0 @@
----
-# exampleservice-onboard/defaults/main.yml
-
-cord_dir: "{{ ansible_user_dir + '/cord' }}"
-cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
-
-xos_bootstrap_ui_port: 9001
-

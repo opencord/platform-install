@@ -1,3 +1,0 @@
----
-
-xos_repo_dir: "{{ playbook_dir }}/../../orchestration/xos/containers/xos"

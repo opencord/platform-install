@@ -1,8 +1,0 @@
----
-# default variables for xos-uninstall role
-
-xos_repo_dest: "{{ ansible_user_dir }}/xos"
-service_profile_repo_dest: "{{ ansible_user_dir }}/service-profile"
-
-xos_libraries_dest: "{{ ansible_user_dir }}/xos_libraries"
-xos_services_dest: "{{ ansible_user_dir }}/xos_services"
