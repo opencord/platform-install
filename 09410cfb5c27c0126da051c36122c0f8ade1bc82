@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba092121_c5a68bc1",
+        "filename": "roles/cord-profile/templates/docker-compose.yml.j2",
+        "patchSetId": 5
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-05-24T18:56:37Z",
+      "side": 1,
+      "message": "Should this be all caps for consistency?",
+      "range": {
+        "startLine": 298,
+        "startChar": 6,
+        "endLine": 298,
+        "endChar": 18
+      },
+      "revId": "09410cfb5c27c0126da051c36122c0f8ade1bc82",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
