@@ -1,0 +1,51 @@
+tosca_definitions_version: tosca_simple_yaml_1_0
+
+description: created by platform-install, need to add M-CORD services later
+
+imports:
+   - custom_types/xos.yaml
+
+topology_template:
+  node_templates:
+
+# site, image, fully created in deployment.yaml
+    {{ site_name }}:
+      type: tosca.nodes.Site
+
+    image#vsg-1.1:
+      type: tosca.nodes.Image
+
+# management networks, fully created in management-net.yaml
+    management:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+
+{% if use_management_hosts %}
+    management_hosts:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+{% endif %}
+
+# ONOS_CORD, fully created in vtn.yaml
+    service#ONOS_CORD:
+      type: tosca.nodes.ONOSService
+      properties:
+        no-delete: true
+        no-create: true
+        no-update: true
+
+# ONOS_Fabric, fully created in fabric.yaml
+    service#ONOS_Fabric:
+      type: tosca.nodes.ONOSService
+      properties:
+        no-delete: true
+        no-create: true
+        no-update: true
+
+# CORD Services, add later
