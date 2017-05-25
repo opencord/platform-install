@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a0e1d27_171174ac",
+        "filename": "roles/cord-profile/templates/docker-compose.yml.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-05-25T22:08:36Z",
+      "side": 1,
+      "message": "Should this be inside the `if use_redis` block?",
+      "range": {
+        "startLine": 289,
+        "startChar": 2,
+        "endLine": 289,
+        "endChar": 21
+      },
+      "revId": "fbdde796bcf41fda54536361fd566cc014b1b022",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
