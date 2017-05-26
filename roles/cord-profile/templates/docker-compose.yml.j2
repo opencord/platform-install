@@ -46,8 +46,6 @@ services:
 {% for network in xos_docker_networks %}
       - {{ network }}
 {% endfor %}
-    ports:
-      - "5432:5432"
     expose:
       - "5432"
     depends_on:
