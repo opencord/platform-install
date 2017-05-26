@@ -1,0 +1,11 @@
+name: xos-core
+database:
+  name: {{ xos_config.db.name }}
+  username: {{ xos_config.db.username }}
+  password: {{ xos_config.db.password }}
+logging:
+  level: {{ xos_config.logging.level }}
+  channels:
+{% for channel in xos_config.logging.channels %}
+    - {{ channel }}
+{% endfor %}
