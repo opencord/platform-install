@@ -205,6 +205,7 @@ services:
 {% endif %}
     volumes:
       - {{ cord_profile_dir }}/xos_common_config:/opt/xos/xos_configuration/xos_common_config:ro
+      - {{ cord_profile_dir }}/xos_config.yaml:/opt/xos/xos_config.yaml:ro
       - {{ cord_profile_dir }}:/opt/cord_profile:ro
       - {{ cord_dir }}/orchestration/xos_libraries/ng-xos-lib:/opt/xos_libraries/ng-xos-lib:ro
       - {{ cord_profile_dir }}/im_cert_chain.pem:/usr/local/share/ca-certificates/local_certs.crt:ro
@@ -243,6 +244,7 @@ services:
 {% endif %}
     volumes:
       - {{ cord_profile_dir }}/xos_common_config:/opt/xos/xos_configuration/xos_common_config:ro
+      - {{ cord_profile_dir }}/xos_config.yaml:/opt/xos/xos_config.yaml:ro
       - {{ cord_profile_dir }}:/opt/cord_profile:ro
       - {{ cord_dir }}/orchestration/xos_libraries/ng-xos-lib:/opt/xos_libraries/ng-xos-lib:ro
       - {{ cord_profile_dir }}/im_cert_chain.pem:/usr/local/share/ca-certificates/local_certs.crt:ro

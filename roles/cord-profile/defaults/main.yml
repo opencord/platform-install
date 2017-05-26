@@ -51,6 +51,15 @@ xos_tosca_config_templates: []
 
 xos_other_templates: []
 
+# XOS Config (xos_config.yaml)
+xos_db_name: xos
+xos_db_username: postgres
+xos_db_password: password
+xos_logging_level: debug
+xos_logging_channels:
+      - file
+      - console
+
 # GUI Config [new GUI], used in app.config.js.j2 and style.config.js.j2
 gw_port: 3000
 gui_api_endpoint: "/xosapi/v1"
