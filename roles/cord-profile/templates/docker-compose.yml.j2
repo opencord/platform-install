@@ -20,12 +20,18 @@ services:
       - {{ network }}
 {% endfor %}
     environment:
+      SERVICE_8300_IGNORE: "yes"
+      SERVICE_8301_IGNORE: "yes"
+      SERVICE_8302_IGNORE: "yes"
+      SERVICE_8400_IGNORE: "yes"
       SERVICE_8500_NAME: "consul-rest"
+      SERVICE_8600_IGNORE: "yes"
     restart: unless-stopped
   registrator:
     image: {{ deploy_docker_registry }}gliderlabs/registrator:{{ deploy_docker_tag }}
     command: [
          "-ip=${DOCKER_HOST_IP}",
+         "-internal",
          "-retry-attempts", "100",
          "consul://consul:8500"
     ]
@@ -46,8 +52,6 @@ services:
 {% for network in xos_docker_networks %}
       - {{ network }}
 {% endfor %}
-    ports:
-      - "5432:5432"
     expose:
       - "5432"
     depends_on:
@@ -103,6 +107,7 @@ services:
       - registrator
     environment:
       SERVICE_4000_NAME: "xos-gui"
+      SERVICE_80_IGNORE: "yes"
     restart: unless-stopped
 
   xos_chameleon:
