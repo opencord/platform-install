@@ -78,15 +78,14 @@ xos_services:
   - name: fabric
     path: orchestration/xos_services/fabric
     synchronizer: true
-# needed onboarding synchronizer doesn't require service code to be present when started
   - name: exampleservice
     path: orchestration/xos_services/exampleservice
     keypair: exampleservice_rsa
     synchronizer: true
-  - name: monitoring
-    path: orchestration/xos_services/monitoring
-    keypair: monitoringservice_rsa
-    synchronizer: false
+#  - name: monitoring
+#    path: orchestration/xos_services/monitoring
+#    keypair: monitoringservice_rsa
+#    synchronizer: false
 
 xos_service_sshkeys:
   - name: onos_rsa
