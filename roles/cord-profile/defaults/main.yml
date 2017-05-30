@@ -59,6 +59,8 @@ xos_logging_level: debug
 xos_logging_channels:
       - file
       - console
+xos_dir: /opt/xos
+dependency_graph: "{{ xos_dir }}/model-deps"
 
 # GUI Config [new GUI], used in app.config.js.j2 and style.config.js.j2
 gw_port: 3000
