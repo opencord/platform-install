@@ -1,0 +1,56 @@
+- name: Replace SERVER_IP in API Properties
+  replace:
+    dest: "{{ cord_dir }}/test/cord-tester/src/test/cord-api/Properties/RestApiProperties.py"
+    regexp: "SERVER_IP = '.+'$"
+    replace: "SERVER_IP = '{{ server_ip }}'"
+    backup: yes
+
+- name: Replace SERVER_PORT in API Properties
+  replace:
+    dest: "{{ cord_dir }}/test/cord-tester/src/test/cord-api/Properties/RestApiProperties.py"
+    regexp: "SERVER_PORT = '.+'$"
+    replace: "SERVER_PORT = '{{ server_port }}'"
+    backup: yes
+
+- name: Replace USER in API Properties
+  replace:
+    dest: "{{ cord_dir }}/test/cord-tester/src/test/cord-api/Properties/RestApiProperties.py"
+    regexp: "USER = '.+'$"
+    replace: "USER = '{{ xos_admin_user }}'"
+    backup: yes
+
+- name: Replace PASSWD in API Properties
+  replace:
+    dest: "{{ cord_dir }}/test/cord-tester/src/test/cord-api/Properties/RestApiProperties.py"
+    regexp: "PASSWD = '.+'$"
+    replace: "PASSWD = '{{ xos_admin_pass }}'"
+    backup: yes
+
+- name: Install python libraries
+  pip: name="{{ python_packages | join(' ') }}"
+
+- name: Run Core Tests
+  shell: pybot -d Log -T Tests/{{ item }};
+  args:
+    chdir: "{{ cord_test_dir }}"
+  with_items:
+    - Ch_DeploymentTest.txt
+    - Ch_NodeTest.txt
+    - Ch_SanityFlavors.txt
+    - Ch_ServiceTest.txt
+    - Ch_SiteTest.txt
+    - Ch_SliceTest.txt
+    - Ch_UsersTest.txt
+
+- name: Run R-CORD Tests
+  when: cord_profile == "rcord"
+  shell: pybot -d Log -T Tests/{{ item }};
+  args:
+    chdir: "{{ cord_test_dir }}"
+  with_items:
+    - Ch_defaultImagesCheck.txt
+    - Ch_DefaultServiceCheck.txt
+    - Ch_SanityInstance.txt
+    - Ch_SubscriberTest.txt
+    - Ch_SubscriberVolt_Delete.txt
+    - Ch_VoltTenant.txt
