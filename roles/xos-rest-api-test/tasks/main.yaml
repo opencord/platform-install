@@ -1,0 +1,53 @@
+- name: Replace SERVER_IP in API Properties
+  replace:
+    dest: "{{ cord_test_dir }}/Properties/RestApiProperties.py"
+    regexp: "SERVER_IP = '.+'$"
+    replace: "SERVER_IP = '{{ api_test_server_ip }}'"
+    backup: yes
+
+- name: Replace SERVER_PORT in API Properties
+  replace:
+    dest: "{{ cord_test_dir }}/Properties/RestApiProperties.py"
+    regexp: "SERVER_PORT = '.+'$"
+    replace: "SERVER_PORT = '{{ api_test_server_port }}'"
+
+- name: Replace USER in API Properties
+  replace:
+    dest: "{{ cord_test_dir }}/Properties/RestApiProperties.py"
+    regexp: "USER = '.+'$"
+    replace: "USER = '{{ xos_admin_user }}'"
+
+- name: Replace PASSWD in API Properties
+  replace:
+    dest: "{{ cord_test_dir }}/Properties/RestApiProperties.py"
+    regexp: "PASSWD = '.+'$"
+    replace: "PASSWD = '{{ xos_admin_pass }}'"
+
+- name: Install python libraries
+  pip: name="{{ api_test_python_packages | join(' ') }}"
+
+- name: Run Core Tests
+  shell: pybot -d Log -T {{ item }};
+  args:
+    chdir: "{{ cord_test_dir }}/Tests"
+  with_items:
+    - Ch_DeploymentTest.txt
+    - Ch_NodeTest.txt
+    - Ch_SanityFlavors.txt
+    - Ch_ServiceTest.txt
+    - Ch_SiteTest.txt
+    - Ch_SliceTest.txt
+    - Ch_UsersTest.txt
+
+- name: Run R-CORD Tests
+  when: cord_profile == "rcord" or cord_profile == "mock-rcord"
+  shell: pybot -d Log -T {{ item }};
+  args:
+    chdir: "{{ cord_test_dir }}/Tests"
+  with_items:
+    - Ch_defaultImagesCheck.txt
+    - Ch_DefaultServiceCheck.txt
+    - Ch_SanityInstance.txt
+    - Ch_SubscriberTest.txt
+    - Ch_SubscriberVolt_Delete.txt
+    - Ch_VoltTenant.txt
