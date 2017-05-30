@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a0e1d27_9d680389",
+        "filename": "roles/xos-rest-api-test/defaults/main.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-05-30T16:53:17Z",
+      "side": 1,
+      "message": "Might want to make these variable names specific to the api tests, maybe prefix them with api_test_ ala `api_test_python_packages`.\n\nShould probably also specify the version of the pip packages.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 19
+      },
+      "revId": "171a82126164449b40ea0ff598c0af50662dd994",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a0e1d27_7d052fc1",
+        "filename": "roles/xos-rest-api-test/tasks/main.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-05-30T16:53:17Z",
+      "side": 1,
+      "message": "You probably only need to backup the file on the first change, otherwise you\u0027ll end up with 4 copies of this.  \n\nI\u0027m assuming the tester doesn\u0027t have another way to be provided with these parameters?",
+      "revId": "171a82126164449b40ea0ff598c0af50662dd994",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a0e1d27_5d0a6bd3",
+        "filename": "roles/xos-rest-api-test/tasks/main.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-05-30T16:53:17Z",
+      "side": 1,
+      "message": "It\u0027s recommended to use `command` instead of `shell`, unless you\u0027re piping data or doing other things that need a full shell to be run.",
+      "revId": "171a82126164449b40ea0ff598c0af50662dd994",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
