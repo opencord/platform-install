@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "9a0e1d27_ddf55bcc",
+        "filename": "roles/xos-rest-api-test/defaults/main.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2017-05-30T17:00:24Z",
+      "side": 1,
+      "message": "Is this the correct directory? In my environment, it is \"~/cord/cord-tester/src/test/cord-api/\"",
+      "revId": "171a82126164449b40ea0ff598c0af50662dd994",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a0e1d27_9d680389",
         "filename": "roles/xos-rest-api-test/defaults/main.yaml",
         "patchSetId": 1
