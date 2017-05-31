@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a0e1d27_8082dc50",
+        "filename": "roles/xos-rest-api-test/tasks/main.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2017-05-31T20:30:54Z",
+      "side": 1,
+      "message": "remove this test",
+      "revId": "cd461853a1b5c9db2bc412a62d5bb698addd00ed",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a0e1d27_6087c862",
+        "filename": "roles/xos-rest-api-test/tasks/main.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2017-05-31T20:30:54Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "cd461853a1b5c9db2bc412a62d5bb698addd00ed",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a0e1d27_407cc472",
+        "filename": "roles/xos-rest-api-test/tasks/main.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2017-05-31T20:30:54Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "cd461853a1b5c9db2bc412a62d5bb698addd00ed",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a0e1d27_2081d04a",
+        "filename": "roles/xos-rest-api-test/tasks/main.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2017-05-31T20:30:54Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "cd461853a1b5c9db2bc412a62d5bb698addd00ed",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a0e1d27_0096cc94",
+        "filename": "roles/xos-rest-api-test/tasks/main.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2017-05-31T20:30:54Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "cd461853a1b5c9db2bc412a62d5bb698addd00ed",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
