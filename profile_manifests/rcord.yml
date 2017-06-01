@@ -86,7 +86,7 @@ xos_services:
   - name: monitoring
     path: orchestration/xos_services/monitoring
     keypair: monitoringservice_rsa
-    synchronizer: false
+    synchronizer: true
 
 xos_service_sshkeys:
   - name: onos_rsa
