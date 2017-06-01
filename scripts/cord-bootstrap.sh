@@ -42,7 +42,7 @@ function bootstrap() {
     fi
 
     mkdir $CORDDIR && cd $CORDDIR
-    repo init -u https://gerrit.opencord.org/manifest -b master -g build,onos,orchestration,voltha
+    repo init -u https://gerrit.opencord.org/manifest -b master
     repo sync
 
     # check out gerrit branches using repo
