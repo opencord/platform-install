@@ -1,0 +1,160 @@
+---
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "{{ playbook_dir }}/profile_manifests/{{ cord_profile }}.yml"
+        - "{{ playbook_dir }}/profile_manifests/local_vars.yml"
+  tags:
+    - frontend
+    - mock-rcord
+    - mock-ecord
+    - rcord
+    - ecord
+
+- name: Add xos onboarded containers to inventory to test
+  hosts: head
+  roles:
+    - xos-onboard-hosts
+  tags:
+    - frontend
+    - mock-rcord
+    - mock-ecord
+    - rcord
+    - ecord
+
+- name: Check UI Container
+  hosts: xos-ui
+  connection: docker
+  roles:
+    - xos-container-test-ui
+  tags:
+    - frontend
+    - mock-rcord
+    - mock-ecord
+    - rcord
+    - ecord
+
+- name: Check Chameleon Container
+  hosts: xos_chameleon
+  connection: docker
+  roles:
+    - xos-container-test-chameleon
+  tags:
+    - frontend
+    - mock-rcord
+    - mock-ecord
+    - rcord
+    - ecord
+
+- name: Check XOS Core Container
+  hosts: xos_core
+  connection: docker
+  roles:
+    - xos-container-test-core
+  tags:
+    - frontend
+    - mock-rcord
+    - mock-ecord
+    - rcord
+    - ecord
+
+#- name: Check XOS GUI Container
+#  hosts: xos_gui
+#  connection: docker
+#  roles:
+#    - xos-container-test-gui
+
+- name: Check XOS WS Container
+  hosts: xos_ws
+  connection: docker
+  roles:
+    - xos-container-test-ws
+  tags:
+    - frontend
+    - mock-rcord
+    - mock-ecord
+    - rcord
+    - ecord
+
+- name: Check XOS DB Container
+  hosts: xos_db
+  connection: docker
+  roles:
+    - xos-container-test-postgres
+  tags:
+    - frontend
+    - mock-rcord
+    - mock-ecord
+    - rcord
+    - ecord
+
+- name: Check XOS ONOS Synchronizer Container
+  hosts: onos-synchronizer
+  connection: docker
+  roles:
+    - xos-container-test-onos
+  tags:
+    - rcord
+    - ecord
+
+- name: Check XOS Fabric Synchronizer Container
+  hosts: fabric-synchronizer
+  connection: docker
+  roles:
+    - xos-container-test-fabric
+  tags:
+    - rcord
+    - ecord
+
+- name: Check XOS VROUTER Synchronizer Container
+  hosts: vrouter-synchronizer
+  connection: docker
+  roles:
+    - xos-container-test-vrouter
+  tags:
+    - rcord
+    - ecord
+
+- name: Check XOS VSG Synchronizer Container
+  hosts: vsg-synchronizer
+  connection: docker
+  roles:
+    - xos-container-test-vsg
+  tags:
+    - rcord
+
+- name: Check XOS VTR Synchronizer Container
+  hosts: vtr-synchronizer
+  connection: docker
+  roles:
+    - xos-container-test-vtr
+  tags:
+    - rcord
+
+- name: Check XOS VEG Synchronizer Container
+  hosts: veg-synchronizer
+  connection: docker
+  roles:
+    - xos-container-test-veg
+  tags:
+    - ecord
+
+- name: Check XOS VNOD Synchronizer Container
+  hosts: vnod-synchronizer
+  connection: docker
+  roles:
+    - xos-container-test-vnod
+  tags:
+    - ecord
+
+- name: Check XOS VEE Synchronizer Container
+  hosts: vee-synchronizer
+  connection: docker
+  roles:
+    - xos-container-test-vee
+  tags:
+    - ecord
