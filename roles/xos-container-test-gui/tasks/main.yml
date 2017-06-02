@@ -1,0 +1,8 @@
+#xos-gui tests
+
+- name: Check GUI Process
+  service:
+    name: nginx
+    state: started
+  tags:
+    - skip_ansible_lint # running a sub job

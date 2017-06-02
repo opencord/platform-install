@@ -144,15 +144,18 @@ check that Jenkins performs when in review in gerrit.
 
 ## Specific profiles notes
 
-### api-test
+### api-test and xos-container-tests
 
-This profile runs API tests for both the REST and TOSCA APIs. This can be done
-in an automated fashion:
+These are post deployment tests for both the REST APIs and XOS Container Sanity checks.
+They are both run under the xos-api-tests-playbook.yml. You can run just the container
+tests under the xos-container-test.yml. Change the tag value depending on the cord profile
+you are using. (frontend, mock-rcord, mock-ecord, rcord, ecord). 
 
-`ansible-playbook -i inventory/api-test api-test-playbook.yml`
+ansible-playbook -i inventory/frontend --tags frontend xos-api-tests-playbook.yml
+ansible-playbook -i inventory/frontend --tags frontend xos-container-test.yml
 
-The XOS credentials in this config are `padmin@vicci.org` and `letmein` (until
-the tests are modified to support generated credentials).
+The XOS credentials in the configuration file under "credentials/xosadmin@opencord.org".
+You can modify these credentials by editing that file.
 
 ### frontend
 
