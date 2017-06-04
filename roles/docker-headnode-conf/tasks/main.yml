@@ -1,0 +1,73 @@
+---
+# docker-headnode-conf/tasks/main.yml
+
+- name: Copy over dockerd SSL keys
+  become: yes
+  copy:
+    src: "{{ item.src }}"
+    dest:  "/etc/docker/{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner: root
+    group: root
+  with_items:
+    - src: "{{ pki_dir }}/root_ca/certs/ca_cert.pem"
+      dest: "ca_cert.pem"
+      mode: "0444"
+    - src: "{{ pki_dir }}/{{ site_name }}_im_ca/certs/docker.{{ site_suffix }}_cert_chain.pem"
+      dest: "docker_server.pem"
+      mode: "0444"
+    - src: "{{ pki_dir }}/{{ site_name }}_im_ca/private/docker.{{ site_suffix }}_key.pem"
+      dest: "docker_server_key.pem"
+      mode: "0400"
+
+- name: Create dockerd config that requires SSL auth
+  become: yes
+  template:
+    src: "docker.j2"
+    dest: "/etc/default/docker"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - docker-restart
+
+- name: Create the ~/.docker directory
+  file:
+    dest:  "{{ ansible_user_dir }}/.docker"
+    state: directory
+    owner:  "{{ ansible_user_id }}"
+
+- name: Copy over docker client SSL keys
+  copy:
+    src: "{{ item.src }}"
+    dest:  "{{ ansible_user_dir }}/.docker/{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner:  "{{ ansible_user_id }}"
+    group:  "{{ ansible_user_gid }}"
+  with_items:
+    - src: "{{ pki_dir }}/root_ca/certs/ca_cert.pem"
+      dest: "ca.pem"
+      mode: "0444"
+    - src: "{{ pki_dir }}/{{ site_name }}_im_ca/certs/dockerclient_cert_chain.pem"
+      dest: "cert.pem"
+      mode: "0444"
+    - src: "{{ pki_dir }}/{{ site_name }}_im_ca/private/dockerclient_key.pem"
+      dest: "key.pem"
+      mode: "0400"
+
+- name: Create ~/.docker/config.json file
+  template:
+    src: config.json.j2
+    dest: "{{ ansible_user_dir }}/.docker/config.json"
+    owner:  "{{ ansible_user_id }}"
+    group:  "{{ ansible_user_gid }}"
+    mode: 0444
+
+- name: Configure docker CLI tool to verify TLS and use docker host
+  lineinfile:
+    dest: "{{ ansible_user_dir }}/.profile"
+    regexp: "^export DOCKER_TLS_VERIFY"
+    line: "export DOCKER_TLS_VERIFY=1 DOCKER_HOST=tcp://docker.{{ site_suffix }}:2376"
+    create: yes
+    insertafter: EOF
+
