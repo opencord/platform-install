@@ -1,0 +1,15 @@
+---
+# docker-registry/defaults/main.yml
+
+docker_registry_image: "registry:2"
+docker_registry_ext_port: "5000"
+
+docker_registry_htpaswd_realm: "CORD Registry"
+
+# docker registry users
+docker_registry_users:
+  - name: "{{ xos_admin_user }}"
+    password: "{{ xos_admin_pass }}"
+
+pki_dir: "{{ playbook_dir }}/pki"
+
