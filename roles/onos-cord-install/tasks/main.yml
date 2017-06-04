@@ -65,8 +65,14 @@
     pull: False
     force: True
 
+# environment set here is a hack because the version of docker-compose
+# installed (1.9 at this juncture) and/or openssl fails to handle TLS auth
+# properly
 - name: Start ONOS for CORD
   docker_service:
     project_name: "onoscord"
     project_src: "{{ head_onos_cord_dir }}"
+  environment:
+    DOCKER_HOST: ""
+    DOCKER_TLS_VERIFY: ""
 
