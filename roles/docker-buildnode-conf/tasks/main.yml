@@ -1,0 +1,55 @@
+---
+# docker-buildnode-conf/tasks/main.yml
+
+- name: Install packages
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - python-pip
+
+- name: Install Python packages
+  pip:
+    name: "{{ item }}"
+  with_items:
+    - gitpython
+
+- name: Create the ~/.docker directory
+  file:
+    dest:  "{{ ansible_user_dir }}/.docker"
+    state: directory
+    owner:  "{{ ansible_user_id }}"
+
+- name: Copy over docker buildhost client SSL keys
+  copy:
+    src: "{{ item.src }}"
+    dest:  "{{ ansible_user_dir }}/.docker/{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner:  "{{ ansible_user_id }}"
+  with_items:
+    - src: "{{ pki_dir }}/root_ca/certs/ca_cert.pem"
+      dest: "ca.pem"
+      mode: "0444"
+    - src: "{{ pki_dir }}/{{ site_name }}_im_ca/certs/dockerbuildhost_cert_chain.pem"
+      dest: "cert.pem"
+      mode: "0444"
+    - src: "{{ pki_dir }}/{{ site_name }}_im_ca/private/dockerbuildhost_key.pem"
+      dest: "key.pem"
+      mode: "0400"
+
+- name: Create ~/.docker/config.json file
+  template:
+    src: config.json.j2
+    dest: "{{ ansible_user_dir }}/.docker/config.json"
+    owner:  "{{ ansible_user_id }}"
+    mode: 0444
+
+- name: Configure docker CLI tool to verify TLS and use docker host
+  lineinfile:
+    dest: "{{ ansible_user_dir }}/.profile"
+    regexp: "^export DOCKER_TLS_VERIFY"
+    line: "export DOCKER_TLS_VERIFY=1 DOCKER_HOST=tcp://{{ hostvars[headnode_name].ansible_default_ipv4.address }}:2376"
+    create: yes
+    insertafter: EOF
+
