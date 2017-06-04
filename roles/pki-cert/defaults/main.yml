@@ -29,6 +29,8 @@ site_name: placeholder-sitename
 site_humanname: "Placeholder Site HumanName"
 site_suffix: "{{ site_name }}.test"
 
+mgmt_ipv4_first_octets: "192.168.200"
+
 # Default subject prefix
 ssl_cert_subj_prefix: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU={{ site_humanname }} Deployment"
 
@@ -44,6 +46,30 @@ server_certs:
     altnames:
       - "DNS:xos-core.{{ site_suffix }}"
       - "DNS:xos-core"
+  - cn: "docker.{{ site_suffix }}"
+    subj: "{{ ssl_cert_subj_prefix }}/CN=docker.{{ site_suffix }}"
+    altnames:
+      - "DNS:docker.{{ site_suffix }}"
+      - "DNS:head.{{ site_suffix }}"
+      - "IP:{{ mgmt_ipv4_first_octets }}.1"
+      - "IP:{{ hostvars[groups['head'][0]['ansible_hostname']].ansible_default_ipv4.address }}"
+  - cn: "registry.{{ site_suffix }}"
+    subj: "{{ ssl_cert_subj_prefix }}/CN=registry.{{ site_suffix }}"
+    altnames:
+      - "DNS:registry.{{ site_suffix }}"
+      - "DNS:head.{{ site_suffix }}"
+      - "IP:127.0.0.1"
+      - "IP:{{ mgmt_ipv4_first_octets }}.1"
+      - "IP:{{ hostvars[groups['head'][0]['ansible_hostname']].ansible_default_ipv4.address }}"
 
-client_certs: []
+client_certs:
+  - cn: "dockerclient"
+    subj: "{{ ssl_cert_subj_prefix }}/CN=dockerclient"
+    altnames:
+      - "email:dockerclient@{{ site_suffix }}"
+  - cn: "dockerbuildhost"
+    subj: "{{ ssl_cert_subj_prefix }}/CN=dockerbuildhost"
+    altnames:
+      - "email:dockerbuildhost@{{ site_suffix }}"
+
 
