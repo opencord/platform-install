@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a0e1d27_064b842c",
+        "filename": "README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2017-06-05T18:02:39Z",
+      "side": 1,
+      "message": "What about adding how are they used, eg: \"You can change the tag value to `mock-rcord` if that\u0027s the configuration you\u0027re testing\"",
+      "range": {
+        "startLine": 151,
+        "startChar": 40,
+        "endLine": 152,
+        "endChar": 45
+      },
+      "revId": "3e3ca8debf3b2a580726d075faa59954204c599a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a0e1d27_e647701c",
+        "filename": "README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2017-06-05T18:02:39Z",
+      "side": 1,
+      "message": "This credentials are outdated, can you describe instructions on how to change them?",
+      "range": {
+        "startLine": 157,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 57
+      },
+      "revId": "3e3ca8debf3b2a580726d075faa59954204c599a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
