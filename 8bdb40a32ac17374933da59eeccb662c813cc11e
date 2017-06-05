@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a0e1d27_c676ac06",
+        "filename": "roles/xos-container-test-postgres/tasks/main.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2017-06-05T22:16:02Z",
+      "side": 1,
+      "message": "we should not commit commented code",
+      "range": {
+        "startLine": 7,
+        "startChar": 2,
+        "endLine": 15,
+        "endChar": 13
+      },
+      "revId": "8bdb40a32ac17374933da59eeccb662c813cc11e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
