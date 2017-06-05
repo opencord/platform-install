@@ -53,7 +53,7 @@ xos_services:
   - name: volt
     path: onos-apps/apps/olt
     keypair: volt_rsa
-    synchronizer: false
+    synchronizer: true
   - name: vtn
     path: onos-apps/apps/vtn
     keypair: vsg_rsa
