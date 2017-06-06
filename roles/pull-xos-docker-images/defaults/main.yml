@@ -1,1 +1,4 @@
-deploy_docker_tag: candidate
+---
+# pull-xos-docker-images/defaults/main.yml
+
+deploy_docker_tag: "candidate"

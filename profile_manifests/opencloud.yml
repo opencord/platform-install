@@ -2,24 +2,6 @@
 # profile_manifests/opencloud.yml
 # Generic OpenCloud Site
 
-# redefined here for running XOS start/config on localhost
-cord_profile: opencloud
-
-# These are source paths, used only on the config host, and should be redefined
-# on a per-pod basis when installing multiple pods
-config_cord_dir: "{{ ansible_user_dir + '/cord' }}"
-config_cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
-
-# Locations on head node (same on all pods)
-head_cord_dir: "/opt/cord"
-head_cord_profile_dir: "/opt/cord_profile"
-head_onos_cord_dir: "/opt/onos-cord"
-
-# Credentials and PKI
-credentials_dir: "{{ playbook_dir }}/credentials"
-pki_dir: "{{ playbook_dir }}/pki"
-ssh_pki_dir: "{{ playbook_dir }}/ssh_pki"
-
 # site configuration
 site_name: generic_opencloud
 site_humanname: "Generic OpenCloud"
@@ -43,10 +25,6 @@ xos_tosca_config_templates:
   - management-net.yaml
 
 build_xos_base_image: True
-
-xos_docker_volumes:
-  - host: "/opt/cord_profile/images"
-    container: /opt/xos/images
 
 # GUI Branding
 # Not neeeded, default is OpenCloud
@@ -86,32 +64,6 @@ server_certs:
     subj: "{{ ssl_cert_subj_prefix }}/CN=xos-core.{{ site_suffix }}"
     altnames:
       - "DNS:xos-core.{{ site_suffix }}"
-  - cn: "docker.{{ site_suffix }}"
-    subj: "{{ ssl_cert_subj_prefix }}/CN=docker.{{ site_suffix }}"
-    altnames:
-      - "DNS:docker.{{ site_suffix }}"
-      - "DNS:head.{{ site_suffix }}"
-      - "IP:127.0.0.1"
-      - "IP:{{ mgmt_ipv4_first_octets }}.1"
-      - "IP:{{ hostvars[headnode_name].ansible_default_ipv4.address }}"
-  - cn: "registry.{{ site_suffix }}"
-    subj: "{{ ssl_cert_subj_prefix }}/CN=registry.{{ site_suffix }}"
-    altnames:
-      - "DNS:registry.{{ site_suffix }}"
-      - "DNS:head.{{ site_suffix }}"
-      - "IP:127.0.0.1"
-      - "IP:{{ mgmt_ipv4_first_octets }}.1"
-      - "IP:{{ hostvars[headnode_name].ansible_default_ipv4.address }}"
-
-client_certs:
-  - cn: "dockerclient"
-    subj: "{{ ssl_cert_subj_prefix }}/CN=dockerclient"
-    altnames:
-      - "email:dockerclient@{{ site_suffix }}"
-  - cn: "dockerbuildhost"
-    subj: "{{ ssl_cert_subj_prefix }}/CN=dockerbuildhost"
-    altnames:
-      - "email:dockerbuildhost@{{ site_suffix }}"
 
 # docker registry users
 docker_registry_users:
@@ -186,8 +138,11 @@ management_network_cidr: 172.27.0.0/24
 management_network_ip: 172.27.0.1/24
 data_plane_ip: 10.168.0.253/24
 
+# External interface name on compute nodes
+compute_external_interface: eth0
+
 # ONOS version
-onos_docker_image: "opencord/onos:1.8.2"
+onos_docker_image: "onosproject/onos:1.8.7"
 
 on_maas: False
 on_cloudlab: False

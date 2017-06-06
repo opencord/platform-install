@@ -1,5 +1,5 @@
 ---
-# xos-core-deploy/tasks/main.yml
+# xos-core-publish/tasks/main.yml
 
 - name: Remove old local UI image
   docker_image:

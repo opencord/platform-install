@@ -16,6 +16,7 @@ xos_admin_last: Admin
 xos_users: []
 
 use_vtn: True
+use_fabric: True
 
 xos_tosca_config_templates:
   - openstack.yaml
@@ -29,12 +30,6 @@ xos_tosca_config_templates:
 
 xos_other_templates:
   - fabric-network-cfg.json
-
-cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
-
-xos_docker_volumes:
-  - host: "{{ cord_profile_dir }}/images"
-    container: /opt/xos/images
 
 # GUI branding [OLD GUI to be removed]
 gui_branding_name: "CORD"
@@ -150,12 +145,6 @@ juju_config_name: cord
 
 juju_config_path: /usr/local/src/juju_config.yml
 
-# Pull ONOS from local Docker registry rather than Docker Hub
-onos_docker_image: "docker-registry:5000/onosproject/onos:candidate"
-
-# Pull XOS from local Docker registry
-xos_docker_image: "docker-registry:5000/xosproject/xos:candidate"
-
 keystone_admin_password: "{{ lookup('password', 'credentials/cord_keystone_admin chars=ascii_letters,digits') }}"
 
 deployment_flavors:
@@ -165,12 +154,11 @@ deployment_flavors:
   - m1.xlarge
 
 charm_versions:
-  ceilometer: "cs:trusty/ceilometer-17"
   ceilometer-agent: "cs:trusty/ceilometer-agent-13"
+  ceilometer: "cs:trusty/ceilometer-17"
   glance: "cs:trusty/glance-28"
   keystone: "cs:trusty/keystone-33"
   mongodb: "cs:trusty/mongodb-33"
-  percona-cluster: "cs:trusty/percona-cluster-31"
   nagios: "cs:trusty/nagios-10"
   neutron-api: "cs:~cordteam/trusty/neutron-api-5"
   nova-cloud-controller: "cs:trusty/nova-cloud-controller-64"
@@ -178,6 +166,7 @@ charm_versions:
   nrpe: "cs:trusty/nrpe-4"
   ntp: "cs:trusty/ntp-14"
   openstack-dashboard: "cs:trusty/openstack-dashboard-19"
+  percona-cluster: "cs:trusty/percona-cluster-31"
   rabbitmq-server: "cs:trusty/rabbitmq-server-42"
 
 head_vm_list: []

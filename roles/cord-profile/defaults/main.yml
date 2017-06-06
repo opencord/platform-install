@@ -12,12 +12,6 @@ credentials_dir: "{{ playbook_dir }}/credentials"
 head_cord_profile_dir: "/opt/cord_profile"
 head_cord_dir: "/opt/cord"
 
-deploy_docker_registry: "" # was: "localhost:5000/"
-deploy_docker_tag: "candidate"
-
-# name of docker image to use in onboarding synchronizer
-xos_docker_image: "{{ deploy_docker_registry }}xosproject/xos{{ deploy_docker_tag }}"
-
 # For storing OpenStack images
 image_dir: /opt/images
 
@@ -35,10 +29,12 @@ use_redis: True
 
 use_vtn: True
 
+# Docker related settings
+deploy_docker_registry: ""
+deploy_docker_tag: "candidate"
+
 xos_docker_networks:
   - "xos"
-
-xos_docker_volumes: []
 
 xos_bootstrap_ui_port: 9001
 xos_ui_port: 9000

@@ -26,12 +26,6 @@ xos_tosca_config_templates:
 xos_other_templates:
  - fabric-network-cfg.json
 
-cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
-
-xos_docker_volumes:
-  - host: "{{ cord_profile_dir }}/images"
-    container: /opt/xos/images
-
 # GUI Config [new GUI]
 gui_project_name: "E-CORD"
 gui_background: "cord-bg.jpg" # TODO find ecord image
@@ -132,12 +126,6 @@ openstack_version: kilo
 juju_config_name: cord
 
 juju_config_path: /usr/local/src/juju_config.yml
-
-# Pull ONOS from local Docker registry rather than Docker Hub
-onos_docker_image: "docker-registry:5000/onosproject/onos:candidate"
-
-# Pull XOS from local Docker registry
-xos_docker_image: "docker-registry:5000/xosproject/xos:candidate"
 
 keystone_admin_password: "{{ lookup('password', 'credentials/cord_keystone_admin chars=ascii_letters,digits') }}"
 

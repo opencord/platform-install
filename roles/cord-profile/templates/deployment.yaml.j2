@@ -21,9 +21,9 @@ topology_template:
       type: tosca.nodes.Deployment
       requirements:
 {% for flavor in deployment_flavors %}
-          - {{ flavor }}:
-              node: {{ flavor }}
-              relationship: tosca.relationships.SupportsFlavor
+        - {{ flavor }}:
+            node: {{ flavor }}
+            relationship: tosca.relationships.SupportsFlavor
 
 {% endfor %}
 
@@ -31,9 +31,9 @@ topology_template:
     {{ site_name }}:
       type: tosca.nodes.Site
       properties:
-          display_name: {{ site_humanname }}
-          site_url: http://{{ site_name }}.opencloud.us/
-          hosts_nodes: true
+        display_name: {{ site_humanname }}
+        site_url: http://{{ site_name }}.opencloud.us/
+        hosts_nodes: true
       requirements:
         - deployment:
             node: {{ deployment_type }}
@@ -43,12 +43,12 @@ topology_template:
     Tenant:
       type: tosca.nodes.DashboardView
       properties:
-          no-create: true
-          no-delete: true
+        no-create: true
+        no-delete: true
       requirements:
-          - deployment:
-              node: {{ deployment_type }}
-              relationship: tosca.relationships.SupportsDeployment
+        - deployment:
+            node: {{ deployment_type }}
+            relationship: tosca.relationships.SupportsDeployment
 
 # XOS Users
 # Default admin user account
@@ -64,8 +64,8 @@ topology_template:
             node: {{ site_name }}
             relationship: tosca.relationships.MemberOfSite
         - tenant_dashboard:
-              node: Tenant
-              relationship: tosca.relationships.UsesDashboard
+            node: Tenant
+            relationship: tosca.relationships.UsesDashboard
 
 # All other users
 {% for user in xos_users %}
@@ -81,8 +81,8 @@ topology_template:
             node: {{ site_name }}
             relationship: tosca.relationships.MemberOfSite
         - tenant_dashboard:
-              node: Tenant
-              relationship: tosca.relationships.UsesDashboard
+            node: Tenant
+            relationship: tosca.relationships.UsesDashboard
 
 {% endfor %}
 

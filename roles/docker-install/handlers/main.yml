@@ -1,9 +1,0 @@
----
-# docker-install/handlers/main.yml
-
-- name: docker-restart
-  become: yes
-  service:
-    name: docker
-    state: restarted
-
