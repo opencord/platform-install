@@ -4,7 +4,7 @@
 - name: Pull latest versions of images if not present
   docker_image:
     name: "{{ item }}:latest"
-    repository: "{{ item }}:candidate"
+    repository: "{{ item }}:{{ deploy_docker_tag }}"
   with_items:
     - xosproject/vsg
     - redis
