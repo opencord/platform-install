@@ -39,5 +39,3 @@ enabled_gui_extensions:
   - name: sample
     path: orchestration/xos-sample-gui-extension
 
-# Frontend's XOS does not use docker registry
-xos_docker_image: "xosproject/xos:candidate"

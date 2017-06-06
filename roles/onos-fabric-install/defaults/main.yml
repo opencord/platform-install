@@ -4,7 +4,8 @@
 # paths
 head_onos_fabric_dir: "/opt/onos_fabric"
 
-# Should probably be set to a specific version
-onos_docker_image: "opencord/onos:latest"
-
+# ONOS docker image to use
+deploy_docker_registry: ""
+deploy_docker_tag: "candidate"
+onos_docker_image: "{{ deploy_docker_registry }}onosproject/onos:{{ deploy_docker_tag }}"
 
