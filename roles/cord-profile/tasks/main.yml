@@ -84,7 +84,6 @@
     dest: "{{ config_cord_profile_dir }}/{{ item }}"
     mode: 0644
   with_items:
-    - xos_common_config
     - xos_config.yaml
     - deployment.yaml
     - xos.yaml
