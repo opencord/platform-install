@@ -204,7 +204,6 @@ services:
       - xos_redis
 {% endif %}
     volumes:
-      - {{ head_cord_profile_dir }}/xos_common_config:/opt/xos/xos_configuration/xos_common_config:ro
       - {{ head_cord_profile_dir }}/xos_config.yaml:/opt/xos/xos_config.yaml:ro
       - {{ head_cord_profile_dir }}:/opt/cord_profile:ro
       - {{ head_cord_dir }}/orchestration/xos_libraries/ng-xos-lib:/opt/xos_libraries/ng-xos-lib:ro
@@ -243,7 +242,6 @@ services:
       - xos_redis
 {% endif %}
     volumes:
-      - {{ head_cord_profile_dir }}/xos_common_config:/opt/xos/xos_configuration/xos_common_config:ro
       - {{ head_cord_profile_dir }}/xos_config.yaml:/opt/xos/xos_config.yaml:ro
       - {{ head_cord_profile_dir }}:/opt/cord_profile:ro
       - {{ head_cord_dir }}/orchestration/xos_libraries/ng-xos-lib:/opt/xos_libraries/ng-xos-lib:ro
