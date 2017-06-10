@@ -33,3 +33,4 @@
     - pki-install
     - { role: cloudlab-prep, when: on_cloudlab }
 
+- include: deploy-elasticstack-playbook.yml
