@@ -32,3 +32,4 @@
     - common-prep
     - { role: cloudlab-prep, when: on_cloudlab }
 
+- include: deploy-elasticstack-playbook.yml
