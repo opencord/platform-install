@@ -66,10 +66,10 @@ xos_services:
 #    path: orchestration/xos_services/vBBU
 #    keypair: mcord_rsa
 #    synchronizer: true
-#  - name: vMME
-#    path: orchestration/xos_services/vMME
-#    keypair: mcord_rsa
-#    synchronizer: true
+  - name: vmme
+    path: orchestration/xos_services/vmme
+    keypair: mcord_rsa
+    synchronizer: true
 #  - name: vSGW
 #    path: orchestration/xos_services/vSGW
 #    keypair: mcord_rsa
