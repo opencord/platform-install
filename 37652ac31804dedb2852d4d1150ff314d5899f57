@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a0e1d27_630fcde2",
+        "filename": "prep-platform-playbook.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-06-12T20:25:38Z",
+      "side": 1,
+      "message": "Compared to a CiaB, on a physical head node elasticstack won\u0027t get deployed until much later in the build.  Will this cause issues?",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 43
+      },
+      "revId": "37652ac31804dedb2852d4d1150ff314d5899f57",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
