@@ -29,6 +29,10 @@ xos_tosca_config_templates:
 xos_other_templates:
   - fabric-network-cfg.json
 
+# GUI Config [new GUI]
+gui_project_name: "M-CORD"
+gui_background: "cord-bg.jpg" # TODO find mcord image
+
 # GUI branding [OLD GUI to be removed]
 gui_branding_name: "MCORD"
 gui_branding_icon: "/static/mcord-logo.png"
