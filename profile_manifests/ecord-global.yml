@@ -47,7 +47,7 @@ xos_services:
     path: orchestration/xos_services/openstack
   - name: onos
     path: orchestration/xos_services/onos-service
-  - name: metronetwork
+  - name: metro-net
     path: orchestration/xos_services/metro-net
 
 xos_service_sshkeys:
