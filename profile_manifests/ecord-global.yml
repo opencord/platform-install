@@ -44,17 +44,25 @@ enabled_gui_extensions: []
 xos_services:
   - name: vtn
     path: onos-apps/apps/vtn
+    synchronizer: true
   - name: openstack
     path: orchestration/xos_services/openstack
+    synchronizer: true
   - name: onos
     path: orchestration/xos_services/onos-service
-  - name: metronetwork
+    synchronizer: true
+  - name: metro-net
     path: orchestration/xos_services/metro-net
+    synchronizer: true
 
 xos_service_sshkeys:
   - name: onos_rsa
     source_path: "~/.ssh/id_rsa"
   - name: onos_rsa.pub
+    source_path: "~/.ssh/id_rsa.pub"
+  - name: metro-net_rsa
+    source_path: "~/.ssh/id_rsa"
+  - name: metro-net_rsa.pub
     source_path: "~/.ssh/id_rsa.pub"
 
 # VM networks/bridges on head
@@ -98,6 +106,10 @@ nsd_zones:
 
 name_on_public_interface: head
 
+# VTN network configuration
+management_network_cidr: 172.27.0.0/24
+management_network_ip: 172.27.0.1/24
+data_plane_ip: 10.168.0.253/24
 
 # CORD ONOS app version
 cord_app_version: 1.2-SNAPSHOT

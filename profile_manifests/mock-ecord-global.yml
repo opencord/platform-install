@@ -37,8 +37,10 @@ gui_branding_bg: "/static/cord-bg.jpg"
 xos_services:
   - name: onos
     path: orchestration/xos_services/onos-service
-  - name: metronetwork
+    synchronizer: true
+  - name: metro-net
     path: orchestration/xos_services/metro-net
+    synchronizer: true
 
 xos_service_sshkeys:
   - name: onos_rsa
