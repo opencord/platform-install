@@ -22,6 +22,30 @@
       "revId": "37652ac31804dedb2852d4d1150ff314d5899f57",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a0e1d27_96057dc4",
+        "filename": "prep-platform-playbook.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-06-14T14:00:08Z",
+      "side": 1,
+      "message": "It\u0027s unlikely to - in CiaB, the only logging into ElasticStack before the containers come up is for the pod build process, which doesn\u0027t really apply in the physical deploy.",
+      "parentUuid": "9a0e1d27_630fcde2",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 43
+      },
+      "revId": "37652ac31804dedb2852d4d1150ff314d5899f57",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
