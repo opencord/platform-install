@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a0e1d27_d6f1b596",
+        "filename": "profile_manifests/mcord.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2017-06-14T20:36:42Z",
+      "side": 1,
+      "message": "try to find M-CORD",
+      "range": {
+        "startLine": 34,
+        "startChar": 30,
+        "endLine": 34,
+        "endChar": 53
+      },
+      "revId": "c7a43f964c43cf2fc8a87ed998ffebf917bf8a45",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
