@@ -7,6 +7,7 @@ site_name: mysite
 site_humanname: MySite
 deployment_type: MyDeployment
 
+credentials_dir: "{{ playbook_dir }}/credentials"
 xos_admin_user: xosadmin@opencord.org
 xos_admin_pass: "{{ lookup('password', 'credentials/xosadmin@opencord.org chars=ascii_letters,digits') }}"
 xos_admin_first: XOS
@@ -32,6 +33,19 @@ xos_other_templates:
 # GUI Config [new GUI]
 gui_project_name: "M-CORD"
 gui_background: "cord-bg.jpg" # TODO find mcord image
+gui_payoff: "Your way toward 5G"
+gui_routes:
+  - label: "Slices"
+    state: "xos.core.slice"
+  - label: "Nodes"
+    state: "xos.core.node"
+  - label: "Instances"
+    state: "xos.core.instance"
+  - label: "MCORD"
+    state: "xos.mcord"
+  - label: "Topology"
+    state: "xos.mcord.topology"
+    parent: "xos.mcord"
 
 # GUI branding [OLD GUI to be removed]
 gui_branding_name: "MCORD"
