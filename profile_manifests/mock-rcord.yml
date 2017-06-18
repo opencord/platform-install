@@ -65,14 +65,18 @@ gui_branding_bg: "/static/cord-bg.jpg"
 xos_services:
   - name: volt
     path: onos-apps/apps/olt
+    keypair: volt_rsa
   - name: onos
     path: orchestration/xos_services/onos-service
+    keypair: onos_rsa
   - name: vrouter
     path: orchestration/xos_services/vrouter
   - name: vsg
     path: orchestration/xos_services/vsg
+    keypair: vsg_rsa
   - name: vtr
     path: orchestration/xos_services/vtr
+    keypair: vsg_rsa
   - name: fabric
     path: orchestration/xos_services/fabric
 
