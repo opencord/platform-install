@@ -2,7 +2,7 @@
 # onos-fabric-install/defaults/main.yml
 
 # paths
-head_onos_fabric_dir: "/opt/onos_fabric"
+head_onos_fabric_dir: "/opt/onos_fabric/"
 
 # ONOS docker image to use
 deploy_docker_registry: ""

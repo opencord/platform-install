@@ -1,7 +1,7 @@
 ---
 # repo/defaults/main.yml
 
-config_cord_dir: "{{ ansible_user_dir + '/cord' }}"
+config_cord_dir: "{{ ansible_user_dir ~ '/cord' }}"
 repo_dl_url: "https://storage.googleapis.com/git-repo-downloads/repo"
 
 # This is for repo v1.23, and will change, as repo_dl_url unfortunately lacks a version...
