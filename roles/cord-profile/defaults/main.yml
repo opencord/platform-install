@@ -2,7 +2,7 @@
 # cord-profile/defaults/main.yml
 
 # where the cord_profile directory is on the config node
-config_cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
+config_cord_profile_dir: "{{ ansible_user_dir ~ '/cord_profile' }}"
 
 pki_dir: "{{ playbook_dir }}/pki"
 ssh_pki_dir: "{{ playbook_dir }}/ssh_pki"
