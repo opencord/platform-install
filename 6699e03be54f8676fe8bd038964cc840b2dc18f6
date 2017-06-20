@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a0e1d27_af04a47e",
+        "filename": "roles/head-prep/tasks/main.yml",
+        "patchSetId": 153
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-06-20T13:56:37Z",
+      "side": 1,
+      "message": "We don\u0027t need ppa:juju/stable any more?",
+      "range": {
+        "startLine": 13,
+        "startChar": 8,
+        "endLine": 13,
+        "endChar": 23
+      },
+      "revId": "6699e03be54f8676fe8bd038964cc840b2dc18f6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a0e1d27_efda9c16",
+        "filename": "roles/head-prep/tasks/main.yml",
+        "patchSetId": 153
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-06-20T13:56:37Z",
+      "side": 1,
+      "message": "I guess this doesn\u0027t just affect OpenCloud.  \n\nElsewhere we are installing Ansible via pip, because that lets us lock to a specific version and we have had problems in the past when Ansible changed versions. Can we continue to do that here? \n\nAlso MaaS already installs Ansible 2.2.2.0 on the head node (from the head-node.yml playbook).  So maybe we should stick with that version for now.",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 42
+      },
+      "revId": "6699e03be54f8676fe8bd038964cc840b2dc18f6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a0e1d27_cfd7d8ec",
+        "filename": "roles/head-prep/tasks/main.yml",
+        "patchSetId": 153
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-06-20T13:56:37Z",
+      "side": 1,
+      "message": "We probably don\u0027t need this any more.",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 15
+      },
+      "revId": "6699e03be54f8676fe8bd038964cc840b2dc18f6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
