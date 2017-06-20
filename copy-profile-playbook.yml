@@ -1,5 +1,5 @@
 ---
-# copy-profile-book.yml
+# copy-profile-playbook.yml
 # Copies the profile to the head node
 
 - name: Include vars
@@ -10,6 +10,11 @@
       with_items:
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
+
+- name: Set hostvars with defaults for each node
+  hosts: head, config
+  roles:
+    - hostvars-defaults
 
 - name: Copy cord_profile to head node from config node
   hosts: head

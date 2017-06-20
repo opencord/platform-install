@@ -1,5 +1,5 @@
 ---
 # api-tests/defaults/main.yml
 
-config_cord_dir: "{{ ansible_user_dir + '/cord' }}"
+config_cord_dir: "{{ ansible_user_dir ~ '/cord' }}"
 
