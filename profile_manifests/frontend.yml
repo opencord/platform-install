@@ -4,10 +4,6 @@
 site_name: frontend
 deployment_type: "Frontend Mock"
 
-# head == config for frontend mocks
-head_cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
-head_cord_dir: "{{ ansible_user_dir + '/cord' }}"
-
 frontend_only: True
 use_redis: True
 use_openstack: False
