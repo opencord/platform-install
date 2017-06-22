@@ -1,5 +1,5 @@
 ---
 # copy-profile/defaults/main.yml
 
-config_cord_profile_dir: "{{ ansible_user_dir ~ '/cord_profile' }}"
+config_cord_profile_dir: "/opt/cord_profile"
 head_cord_profile_dir: "/opt/cord_profile"
