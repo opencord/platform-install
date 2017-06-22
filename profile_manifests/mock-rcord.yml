@@ -12,10 +12,6 @@ xos_admin_last: Admin
 
 credentials_dir: "{{ playbook_dir }}/credentials"
 
-# head == config for mocks
-head_cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
-head_cord_dir: "{{ ansible_user_dir + '/cord' }}"
-
 frontend_only: True
 use_openstack: False
 use_vtn: True

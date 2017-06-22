@@ -1,0 +1,4 @@
+- name: Bootstrap dev env
+  hosts: all
+  roles:
+    - dev-env

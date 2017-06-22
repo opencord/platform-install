@@ -3,7 +3,7 @@
 
 - name: Copy (sync) the cord_profile directory structure to head node
   synchronize:
-    src: "{{ hostvars[groups['config'][0]]['config_cord_profile_dir'] }}/"
+    src: "{{ config_cord_profile_dir }}/"
     dest: "{{ head_cord_profile_dir }}/"
     delete: yes
 

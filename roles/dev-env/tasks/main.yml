@@ -1,0 +1,59 @@
+---
+# dev-env/tasks/main.yml
+
+- name: Create SSH keypair
+  user:
+    name: "{{ ansible_env.USER }}"
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+
+- name: Create node_key
+  copy:
+    src: "{{ ansible_env.HOME }}/.ssh/id_rsa.pub"
+    dest: "{{ ansible_env.HOME }}/node_key"
+
+- name: Install Apache
+  become: yes
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+  with_items:
+  - "apache2"
+  - "libapache2-mod-fastcgi"
+  - "apache2-mpm-worker"
+
+- name: Configure Apache
+  become: yes
+  apache2_module:
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - "proxy_http"
+  - "headers"
+  - "rewrite"
+  - "proxy_wstunnel"
+
+- name: Copy Apache conf
+  become: yes
+  copy:
+    src: "roles/apache-proxy/files/cord-http.conf"
+    dest: "/etc/apache2/conf-enabled/cord-http.conf"
+
+- name: Reload Apache
+  become: yes
+  service:
+    name: apache2
+    state: reloaded
+
+- name: Add hosts
+  become: yes
+  lineinfile:
+    dest: /etc/hosts
+    line: "{{ item }}"
+  with_items:
+  - "127.0.0.1 xos"
+  - "127.0.0.1 xos-gui"
+  - "127.0.0.1 xos-ws"
+  - "127.0.0.1 xos-chameleon"
+  - "127.0.0.1 xos-core"
+  - "127.0.0.1 consul"

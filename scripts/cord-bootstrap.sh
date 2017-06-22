@@ -5,7 +5,7 @@
 set -e
 set -x
 
-CORDDIR=~/cord
+CORDDIR=/opt/cord
 
 function bootstrap() {
 
