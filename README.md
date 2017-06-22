@@ -29,7 +29,7 @@ Running the script will install the [repo](https://code.google.com/p/git-repo/)
 tool, [Ansible](https://docs.ansible.com/ansible/index.html), and
 [Docker](https://www.docker.com/), as well as make a checkout of the CORD
 [manifest](https://gerrit.opencord.org/gitweb?p=manifest.git;a=blob;f=default.xml)
-into `~/cord`.
+into `/opt/cord`.
 
 You can specify which gerrit changesets you would like repo to checkout using
 the `-b` option on the script [as documented
@@ -44,8 +44,7 @@ runs for you will fail. You can check your group membership by running
 Once you log back in, you may want to run `tmux` to maintain a server-side
 session you can reconnect to, in case of network trouble.
 
-All of the commands below assume you're in the `cord/build/platform-install`
-directory.
+All of the commands below assume you're in the `/opt/cord/build/platform-install` directory.
 
 ### Creating a development environment on you machine
 
@@ -61,7 +60,7 @@ from your local machine, so that you can make your changes locally and quickly
 test the outcome.
 
 Once the `vm` is created you can connect to it with `vagrant ssh head-node` and
-then from the `~/cord/build/platform-install` execute the profile you are
+then from the `/opt/cord/build/platform-install` execute the profile you are
 interested in.  For instance you can spin up the `frontend` configuration with:
 `ansible-playbook -i inventory/frontend deploy-xos-playbook.yml`.
 
