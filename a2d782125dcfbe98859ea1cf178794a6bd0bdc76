@@ -16,6 +16,24 @@
       "revId": "a2d782125dcfbe98859ea1cf178794a6bd0bdc76",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a0e1d27_e93057ea",
+        "filename": "roles/cord-profile/templates/carrierethernet-app.yaml.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2017-06-23T16:43:17Z",
+      "side": 1,
+      "message": "there is ash shown here https://github.com/opencord/platform-install/blob/master/roles/cord-profile/templates/vtn-service.yaml.j2#L39-L51\ni need to figure out how it\u0027s done. Will do.",
+      "parentUuid": "9a0e1d27_29376fe5",
+      "revId": "a2d782125dcfbe98859ea1cf178794a6bd0bdc76",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
