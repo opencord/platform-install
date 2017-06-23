@@ -19,6 +19,7 @@ use_vtn: False
 xos_tosca_config_templates:
   - openstack.yaml
   - vnodglobal-service.yaml
+  - carrierethernet-app.yaml
 
 cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
 
