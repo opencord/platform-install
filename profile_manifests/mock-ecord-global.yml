@@ -19,7 +19,8 @@ build_xos_base_image: True
 
 xos_tosca_config_templates:
   - mock-onos.yaml
-  - vnodglobal-service.yaml
+#  - vnodglobal-service.yaml
+  - ce-app-service.yaml
 
 # GUI Config [new GUI]
 gui_project_name: "E-CORD"
@@ -37,9 +38,9 @@ xos_services:
   - name: onos
     path: orchestration/xos_services/onos-service
     synchronizer: true
-  - name: metronetwork
-    path: orchestration/xos_services/metro-net
-    synchronizer: true
+#  - name: metronetwork
+#    path: orchestration/xos_services/metro-net
+#    synchronizer: true
 
 xos_service_sshkeys:
   - name: onos_rsa
