@@ -91,6 +91,9 @@ gui_branding_favicon: "/static/favicon.png"
 gui_branding_bg: "/static/bg.jpg"
 gui_service_view_class: False
 
+# used in admin-openrc.sh.j2
+keystone_admin_password: "{{ lookup('password', credentials_dir ~ '/cord_keystone_admin chars=ascii_letters,digits') }}"
+
 # used in deployment.yaml.j2
 xos_admin_user: "xosadmin@opencord.org"
 xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
