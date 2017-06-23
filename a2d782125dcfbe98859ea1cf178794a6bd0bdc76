@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a0e1d27_29376fe5",
+        "filename": "roles/cord-profile/templates/carrierethernet-app.yaml.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000029
+      },
+      "writtenOn": "2017-06-23T16:39:17Z",
+      "side": 1,
+      "message": "not for this patch, but is there a better way to handle the versioning?",
+      "revId": "a2d782125dcfbe98859ea1cf178794a6bd0bdc76",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
