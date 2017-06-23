@@ -1,33 +1,19 @@
 ---
 # profile_manifests/opencloud.yml
-# Generic OpenCloud Site
+# OpenCloud Profile Manifest
 
-# site configuration
-site_name: generic_opencloud
+# Site configuration
+site_name: generic-opencloud
 site_humanname: "Generic OpenCloud"
+site_suffix: "{{ site_name }}.opencloud.us"
 deployment_type: campus
 
-xos_admin_user: "xosadmin@opencord.org"
-xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
-xos_admin_first: XOS
-xos_admin_last: Admin
+# Feature toggles
 
-xos_users: []
-
-use_vtn: True
-use_openstack: True
-use_fabric: False
-
-headnode_name: head1
-
+# XOS config
 xos_tosca_config_templates:
   - vtn-service.yaml
   - management-net.yaml
-
-build_xos_base_image: True
-
-# GUI Branding
-# Not neeeded, default is OpenCloud
 
 # GUI Config [new GUI], used in app.config.js.j2 and style.config.js.j2
 gui_project_name: "OpenCloud"
@@ -49,8 +35,6 @@ xos_services:
   - name: vrouter
     path: orchestration/xos_services/vrouter
 
-profile_library: "rcord"
-
 # SSL certificate generation
 ssl_cert_subj_prefix: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU={{ site_humanname }} Deployment"
 
@@ -66,8 +50,6 @@ server_certs:
       - "DNS:xos-core.{{ site_suffix }}"
 
 # Network/DNS settings
-site_suffix: generic.infra.opencloud.us
-
 dns_search:
   - "{{ site_suffix }}"
 
@@ -75,8 +57,6 @@ mgmt_ipv4_first_octets: "192.168.200"
 
 dns_servers:
   - "{{ mgmt_ipv4_first_octets }}.1"
-
-headnode_user: vagrant
 
 # DNS settings for NSD/Unbound
 nsd_zones:
@@ -115,9 +95,6 @@ dhcpd_subnets:
       - physical_node_list
       - head_lxd_list
 
-# network interface setup
-mgmt_interface: eth1
-
 physical_node_list:
   - name: head1
     ipv4_last_octet: 1
@@ -128,36 +105,15 @@ physical_node_list:
   - name: compute2
     ipv4_last_octet: 21
 
+# External interface name on compute nodes
+compute_external_interface: eth0
+
 # VTN network configuration
 management_network_cidr: 172.27.0.0/24
 management_network_ip: 172.27.0.1/24
 data_plane_ip: 10.168.0.253/24
 
-# External interface names on compute nodes
-compute_external_interfaces:
-  - eth0
-
-# ONOS version
-onos_docker_image: "onosproject/onos:1.8.7"
-
-on_maas: False
-on_cloudlab: False
-
-run_dist_upgrade: False
-
-openstack_version: kilo
-
-juju_config_name: opencloud
-juju_config_path: /usr/local/src/juju_config.yml
-
-keystone_admin_password: "{{ lookup('password', 'credentials/generic_opencloud_keystone_admin chars=ascii_letters,digits') }}"
-
-deployment_flavors:
-  - m1.small
-  - m1.medium
-  - m1.large
-  - m1.xlarge
-
+# Juju setup
 charm_versions:
   ceilometer-agent: "cs:trusty/ceilometer-agent-13"
   ceilometer: "cs:trusty/ceilometer-17"
