@@ -33,6 +33,8 @@ xos_tosca_config_templates:
   - fabric-service.yaml
   - vnodglobal-service.yaml
   - xos-gui-extensions.yml
+  - carrierethernet-global-app.yaml
+
 
 xos_other_templates:
  - fabric-network-cfg.json

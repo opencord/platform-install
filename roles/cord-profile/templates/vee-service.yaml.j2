@@ -77,11 +77,23 @@ topology_template:
       type: tosca.nodes.ONOSApp
       requirements:
         - onos_tenant:
+            node: service#ONOS_CORD
+            relationship: tosca.relationships.TenantOfService
+        - vee_service:
+            node: service#vee
+            relationship: tosca.relationships.UsedByService
+      properties:
+        dependencies: org.onosproject.drivers, org.onosproject.ecord.carrierethernet, org.opencord.ce.local.vee
+
+    CarrierEthernet_Fabric_ONOS_app:
+      type: tosca.nodes.ONOSApp
+      requirements:
+        - onos_tenant:
             node: service#ONOS_Fabric
             relationship: tosca.relationships.TenantOfService
         - vee_service:
             node: service#vee
             relationship: tosca.relationships.UsedByService
       properties:
-        dependencies: org.onosproject.drivers, org.onosproject.openflow-base, org.onosproject.ecord.carrierethernet
+        dependencies: org.onosproject.drivers, org.onosproject.ecord.carrierethernet, org.opencord.ce.local.co
 
