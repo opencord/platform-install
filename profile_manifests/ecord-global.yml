@@ -20,6 +20,8 @@ xos_tosca_config_templates:
   - openstack.yaml
   - vnodglobal-service.yaml
   - xos-gui-extensions.yml
+  - carrierethernet-global-app.yaml
+
 
 cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
 

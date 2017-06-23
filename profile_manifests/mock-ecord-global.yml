@@ -21,6 +21,7 @@ xos_tosca_config_templates:
   - mock-onos.yaml
   - vnodglobal-service.yaml
   - xos-gui-extensions.yml
+  - carrierethernet-global-app.yaml
 
 # GUI Config [new GUI]
 gui_project_name: "E-CORD"
@@ -44,9 +45,15 @@ xos_services:
   - name: onos
     path: orchestration/xos_services/onos-service
     synchronizer: true
+<<<<<<< HEAD
   - name: metro-net
     path: orchestration/xos_services/metro-net
     synchronizer: true
+=======
+#  - name: metronetwork
+#    path: orchestration/xos_services/metro-net
+#    synchronizer: true
+>>>>>>> a2d7821... Adding CarrierEthernetApplication to ecord-global and mock-ecord-global
 
 xos_service_sshkeys:
   - name: onos_rsa
