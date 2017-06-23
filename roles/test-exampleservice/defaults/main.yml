@@ -2,5 +2,9 @@
 # test-exampleservice/defaults/main.yml
 
 head_cord_profile_dir: "/opt/cord_profile"
+
 xos_ui_port: 9000
+
+xos_admin_user: "xosadmin@opencord.org"
+xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
 

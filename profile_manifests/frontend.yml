@@ -1,28 +1,21 @@
 ---
-# vars/frontend.yaml
+# profile_manifests/frontend.yaml
+# A minimal frontend config for GUI dev
 
 site_name: frontend
 deployment_type: "Frontend Mock"
+site_suffix: "{{ site_name }}.opencloud.us"
 
+# Feature toggles
 frontend_only: True
-use_redis: True
 use_openstack: False
 use_vtn: False
-needs_pki_install: True
 
 build_xos_base_image: True
 
-credentials_dir: "{{ playbook_dir }}/credentials"
-xos_admin_user: "xosadmin@opencord.org"
-xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
-xos_admin_first: XOS
-xos_admin_last: Admin
-
+# XOS Config
 xos_tosca_config_templates:
   - sample.yaml
-
-# site domain suffix
-site_suffix: opencloud.us
 
 # SSL server certificate generation
 server_certs:

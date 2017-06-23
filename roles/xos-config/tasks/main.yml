@@ -9,6 +9,14 @@
   tags:
     - skip_ansible_lint # TOSCA loading should be idempotent
 
+- name: Configure XOS with OpenStack config
+  when: use_openstack
+  command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/{{ item }}"
+  with_items:
+    - openstack.yaml
+  tags:
+    - skip_ansible_lint # TOSCA loading should be idempotent
+
 - name: Configure XOS with profile specific TOSCA
   command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/{{ item }}"
   with_items: "{{ xos_tosca_config_templates }}"
