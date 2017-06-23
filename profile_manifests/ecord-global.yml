@@ -1,24 +1,18 @@
 ---
-# profile_manifests/ecord.yaml
-# Configures an E-CORD global pod
+# profile_manifests/ecord-global.yml
+# E-CORD Profile Manifest
 
-# site configuration
+# Site configuration
 site_name: mysite
 site_humanname: MySite
+site_suffix: "{{ site_name }}.cord.lab"
 deployment_type: MyDeployment
 
-credentials_dir: "{{ playbook_dir }}/credentials"
-xos_admin_user: "xosadmin@opencord.org"
-xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
-xos_admin_first: XOS
-xos_admin_last: Admin
+# Feature toggles
+on_maas: True
 
-xos_users: []
-
-use_vtn: True
-
+# XOS config
 xos_tosca_config_templates:
-  - openstack.yaml
   - vtn-service.yaml
   - fabric-service.yaml
   - vnodglobal-service.yaml
@@ -52,25 +46,6 @@ xos_services:
   - name: metronetwork
     path: orchestration/xos_services/metro-net
 
-xos_service_sshkeys:
-  - name: onos_rsa
-    source_path: "~/.ssh/id_rsa"
-  - name: onos_rsa.pub
-    source_path: "~/.ssh/id_rsa.pub"
-
-# VM networks/bridges on head
-virt_nets:
-  - name: mgmtbr
-    ipv4_prefix: 192.168.122
-    head_vms: true
-
-# site domain suffix
-site_suffix: cord.lab
-
-# resolv.conf settings
-dns_search:
-  - "{{ site_suffix }}"
-
 # SSL server certificate generation
 server_certs:
   - cn: "keystone.{{ site_suffix }}"
@@ -83,58 +58,48 @@ server_certs:
     altnames:
       - "DNS:xos-core.{{ site_suffix }}"
 
-# NSD/Unbound settings
+# Network/DNS settings
+dns_search:
+  - "{{ site_suffix }}"
+
+mgmt_ipv4_first_octets: "192.168.200"
+
+dns_servers:
+  - "{{ mgmt_ipv4_first_octets }}.1"
+
+# DNS settings for NSD/Unbound
 nsd_zones:
   - name: "{{ site_suffix }}"
-    ipv4_first_octets: 192.168.122
+    ipv4_first_octets: "{{ mgmt_ipv4_first_octets }}"
     name_reverse_unbound: "168.192.in-addr.arpa"
     soa: ns1
     ns:
       - { name: ns1 }
-    nodelist: head_vm_list
+    nodelists:
+      - head_lxd_list
     aliases:
-      - { name: "ns1" , dest: "head" }
-      - { name: "ns" , dest: "head" }
-      - { name: "apt-cache" , dest: "head" }
+      - { name: "apt-cache", dest: "head1" }
+      - { name: "cordloghost", dest: "head1" }
+      - { name: "docker", dest: "head1" }
+      - { name: "ns", dest: "head1" }
+      - { name: "ns1", dest: "head1" }
+      - { name: "onos-cord", dest: "head1" }
+      - { name: "xos", dest: "head1" }
+      - { name: "xos-chameleon", dest: "head1" }
+      - { name: "xos-rest-gw", dest: "head1" }
+      - { name: "xos-spa-gui", dest: "head1" }
 
-name_on_public_interface: head
+unbound_listen_all: True
+
+unbound_interfaces:
+  - "{{ mgmt_ipv4_first_octets }}.1/24"
 
 # VTN network configuration
 management_network_cidr: 172.27.0.0/24
 management_network_ip: 172.27.0.1/24
 data_plane_ip: 10.168.0.253/24
 
-
-# CORD ONOS app version
-cord_app_version: 1.2-SNAPSHOT
-
-# If true, unbound listens on the head node's `ansible_default_ipv4` interface
-unbound_listen_on_default: True
-
-# turn this on, or override it when running the playbook with --extra-vars="on_cloudlab=True"
-on_cloudlab: False
-
-# turn this off, or override when running playbook with --extra-vars="on_maas=False"
-on_maas: True
-
-run_dist_upgrade: False
-
-maas_node_key: /etc/maas/ansible/id_rsa
-
-openstack_version: kilo
-
-juju_config_name: cord
-
-juju_config_path: /usr/local/src/juju_config.yml
-
-keystone_admin_password: "{{ lookup('password', 'credentials/cord_keystone_admin chars=ascii_letters,digits') }}"
-
-deployment_flavors:
-  - m1.small
-  - m1.medium
-  - m1.large
-  - m1.xlarge
-
+# Juju config
 charm_versions:
   ceilometer: "cs:trusty/ceilometer-17"
   ceilometer-agent: "cs:trusty/ceilometer-agent-13"
@@ -151,7 +116,6 @@ charm_versions:
   openstack-dashboard: "cs:trusty/openstack-dashboard-19"
   rabbitmq-server: "cs:trusty/rabbitmq-server-42"
 
-head_vm_list: []
 
 head_lxd_list:
   - name: "juju-1"
@@ -247,6 +211,7 @@ lxd_service_list:
   - openstack-dashboard
   - percona-cluster
   - rabbitmq-server
+
 
 standalone_service_list:
   - ntp
