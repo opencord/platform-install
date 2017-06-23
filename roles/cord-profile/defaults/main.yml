@@ -91,17 +91,20 @@ gui_branding_favicon: "/static/favicon.png"
 gui_branding_bg: "/static/bg.jpg"
 gui_service_view_class: False
 
+# used in admin-openrc.sh.j2
+keystone_admin_password: "{{ lookup('password', credentials_dir ~ '/cord_keystone_admin chars=ascii_letters,digits') }}"
+
 # used in deployment.yaml.j2
 xos_admin_user: "xosadmin@opencord.org"
 xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
 xos_admin_first: XOS
 xos_admin_last: Admin
 
-site_name: sitename
-site_humanname: "Site HumanName"
-site_suffix: sitename.test
+site_name: placeholder-sitename
+site_humanname: "Placeholder Site HumanName"
+site_suffix: "{{ site_name }}.test"
 
-deployment_type: deploymenttype
+deployment_type: placeholder-deploymenttype
 
 deployment_flavors:
   - m1.small
