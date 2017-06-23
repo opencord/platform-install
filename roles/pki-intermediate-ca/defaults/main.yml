@@ -5,9 +5,9 @@ pki_dir: "{{ playbook_dir }}/pki"
 credentials_dir: "{{ playbook_dir }}/credentials"
 
 # used to name the intermediate CA
-site_name: sitename
-site_humanname: "Site HumanName"
-site_suffix: sitename.test
+site_name: placeholder-sitename
+site_humanname: "Placeholder Site HumanName"
+site_suffix: "{{ site_name }}.test"
 
 # crypto parameters
 ca_digest: "sha256"

@@ -1,0 +1,5 @@
+---
+# test-subscriber-enable/defaults/main.yml
+
+xos_admin_user: "xosadmin@opencord.org"
+
