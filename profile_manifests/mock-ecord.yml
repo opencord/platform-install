@@ -25,6 +25,7 @@ xos_tosca_config_templates:
   - ecord-services.yaml
   - vee-service.yaml
   - xos-gui-extensions.yml
+  - carrierethernet-local-app.yaml
 
 # GUI Config [new GUI]
 gui_project_name: "E-CORD"
