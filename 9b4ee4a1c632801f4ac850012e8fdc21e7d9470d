@@ -22,6 +22,30 @@
       "revId": "9b4ee4a1c632801f4ac850012e8fdc21e7d9470d",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a23299d_1625fcaa",
+        "filename": "Vagrantfile",
+        "patchSetId": 6
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-06-24T14:16:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a0e1d27_a9793f95",
+      "range": {
+        "startLine": 22,
+        "startChar": 4,
+        "endLine": 44,
+        "endChar": 72
+      },
+      "revId": "9b4ee4a1c632801f4ac850012e8fdc21e7d9470d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
