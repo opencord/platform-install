@@ -28,10 +28,12 @@ topology_template:
 
 # VTN networking for OpenStack Compute Nodes
 {% for node in groups['compute'] %}
-{% if 'ipv4' in hostvars[node]['ansible_' ~ compute_external_interface] %}
-{% set node_interface = hostvars[node]['ansible_' ~ compute_external_interface] %}
+{% for ext_if in compute_external_interfaces %}
+{% set ansible_ext_if = 'ansible_' ~ ext_if | regex_replace('\W', '_') %}
+{% if hostvars[node][ansible_ext_if] is defined and 'ipv4' in hostvars[node][ansible_ext_if] %}
+{% set node_interface = hostvars[node][ansible_ext_if] %}
 
-# Compute node, fully defined in compute-nodes.yaml
+# Compute node: {{ node }}, with interface {{ ansible_ext_if }}
     {{ hostvars[node]['ansible_hostname'] }}:
       type: tosca.nodes.Node
       properties:
@@ -112,6 +114,8 @@ topology_template:
             node: service#ONOS_Fabric
             relationship: tosca.relationships.MemberOfService
 {% endif %}
+
 {% endif %}
+{% endfor %}
 {% endfor %}
 

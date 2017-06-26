@@ -25,7 +25,12 @@ topology_template:
 
 # OpenStack compute nodes
 {% for node in groups['compute'] %}
-{% if 'ipv4' in hostvars[node]['ansible_' ~ compute_external_interface] %}
+{% for ext_if in compute_external_interfaces %}
+{% set ansible_ext_if = 'ansible_' ~ ext_if | regex_replace('\W', '_') %}
+{% if hostvars[node][ansible_ext_if] is defined and 'ipv4' in hostvars[node][ansible_ext_if] %}
+{% set node_interface = hostvars[node][ansible_ext_if] %}
+
+# Compute node: {{ node }}, with interface {{ ansible_ext_if }}
     {{ hostvars[node]['ansible_hostname'] }}:
       type: tosca.nodes.Node
       requirements:
@@ -37,5 +42,6 @@ topology_template:
             relationship: tosca.relationships.MemberOfDeployment
 
 {% endif %}
+{% endfor %}
 {% endfor %}
 

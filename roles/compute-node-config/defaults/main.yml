@@ -9,8 +9,10 @@ deployment_type: deploymenttype
 head_cord_profile_dir: /opt/cord_profile
 
 # name of the external interface on compute nodes
-# `fabric` is default in R-CORD
-compute_external_interface: fabric
+# `fabric` is default in R-CORD, VTN adds it to `br-int`
+compute_external_interfaces:
+  - fabric
+  - br-int
 
 # service configs referenced here are likely located in cord-profile/templates
 # used in openstack-compute-vtn.yaml.j2, referencing network in management-net.yaml.j2
