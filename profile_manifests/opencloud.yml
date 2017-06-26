@@ -133,8 +133,9 @@ management_network_cidr: 172.27.0.0/24
 management_network_ip: 172.27.0.1/24
 data_plane_ip: 10.168.0.253/24
 
-# External interface name on compute nodes
-compute_external_interface: eth0
+# External interface names on compute nodes
+compute_external_interfaces:
+  - eth0
 
 # ONOS version
 onos_docker_image: "onosproject/onos:1.8.7"
