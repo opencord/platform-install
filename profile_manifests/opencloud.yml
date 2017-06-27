@@ -21,6 +21,7 @@ use_fabric: False
 headnode_name: head1
 
 xos_tosca_config_templates:
+  - xos-gui-extensions.yml
   - vtn-service.yaml
   - management-net.yaml
 
