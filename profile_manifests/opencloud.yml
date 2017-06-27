@@ -19,6 +19,7 @@ use_vtn: True
 xos_tosca_config_templates:
   - openstack.yaml
   - nodes.yaml
+  - xos-gui-extensions.yml
   - vtn-service.yaml
   - management-net.yaml
   - xos-gui-extensions.yml
