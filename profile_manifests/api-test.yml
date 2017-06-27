@@ -24,6 +24,7 @@ xos_tosca_config_templates:
   - sample.yaml
   - services.yaml
   - volt-devices.yaml
+  - xos-gui-extensions.yml
 
 # paths relative to repo checkout, defined in manifest/default.xml
 xos_services:
