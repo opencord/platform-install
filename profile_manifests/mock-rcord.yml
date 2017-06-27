@@ -27,6 +27,7 @@ xos_tosca_config_templates:
   - public-net.yaml
     #  - test-subscriber.yaml # broken? Missing lan_network config on vOLT ?
   - volt-devices.yaml
+  - xos-gui-extensions.yml
 
 # GUI Config [new GUI]
 gw_port: 3000

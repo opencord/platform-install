@@ -20,6 +20,7 @@ xos_tosca_config_templates:
   - ecord-services.yaml
   - public-net.yaml
   - vee-service.yaml
+  - xos-gui-extensions.yml
 
 xos_other_templates:
   - fabric-network-cfg.json
