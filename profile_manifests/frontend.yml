@@ -16,6 +16,7 @@ build_xos_base_image: True
 # XOS Config
 xos_tosca_config_templates:
   - sample.yaml
+  - xos-gui-extensions.yml
 
 # SSL server certificate generation
 server_certs:
