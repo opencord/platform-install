@@ -26,18 +26,23 @@
 - name: Install docker
   become: yes
   apt:
-    name: docker-engine
+    name: "docker-ce=17.06.*"
     update_cache: yes
     cache_valid_time: 3600
 
-# docker fails without docker-py, docker-compose >1.9 fails with docker-py installed
-- name: Install docker-compose and docker-py
+- name: Remove obsolete docker-py pip module
+  become: yes
+  pip:
+    name: docker-py
+    state: absent
+
+- name: Install pip modules for docker and docker-compose
   become: yes
   pip:
     name: "{{ item }}"
   with_items:
-    - docker-py
-    - docker-compose==1.9
+    - docker>=2.4.2
+    - docker-compose>=1.14.0
 
 - name: Make current user part of the Docker group
   become: yes
