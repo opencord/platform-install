@@ -8,55 +8,10 @@ imports:
 
 topology_template:
   node_templates:
-    service_ceilometer:
-      type: tosca.nodes.CeilometerService
-      requirements:
-      properties:
-          view_url: /admin/monitoring/ceilometerservice/$id$/
-          kind: ceilometer
-          ceilometer_enable_pub_sub: true
-          public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
-          private_key_fn: /opt/xos/services/monitoring/keys/monitoringservice_rsa
-      artifacts:
-          pubkey: /opt/xos/services/monitoring/keys/monitoringservice_rsa.pub
-
-#    service_sflow:
-#      type: tosca.nodes.SFlowService
-#      requirements:
-#      properties:
-#          view_url: /admin/monitoring/sflowservice/$id$/
-#          kind: sflow
-#          sflow_port: 6343
-#          sflow_api_port: 33333
-
-    Private:
-      type: tosca.nodes.NetworkTemplate
-
-    management:
-      type: tosca.nodes.network.Network.XOS
-      properties:
-          no-create: true
-          no-delete: true
-          no-update: true
-
-#    ceilometer_network:
-#      type: tosca.nodes.network.Network.XOS
-#      properties:
-#          ip_version: 4
-#          labels: ceilometer_client_access
-#      requirements:
-#          - network_template:
-#              node: Private
-#              relationship: tosca.relationships.UsesNetworkTemplate
-#          - owner:
-#              node: {{ site_name }}_ceilometer
-#              relationship: tosca.relationships.MemberOfSlice
-#          - connection:
-#              node: {{ site_name }}_ceilometer
-#              relationship: tosca.relationships.ConnectsToSlice
-
-    {{ site_name }}:
-      type: tosca.nodes.Site
+    
+# image/flavor are hardcoded - FIXME if/when they change
+    m1.small:
+      type: tosca.nodes.Flavor    
 
     trusty-server-multi-nic:
       type: tosca.nodes.Image
@@ -67,30 +22,7 @@ topology_template:
     ceilometer-service-trusty-server-multi-nic:
       type: tosca.nodes.Image
 
-    m1.small:
-      type: tosca.nodes.Flavor
-
-    {{ site_name }}_ceilometer:
-      description: Ceilometer Proxy Slice
-      type: tosca.nodes.Slice
-      requirements:
-          - ceilometer_service:
-              node: service_ceilometer
-              relationship: tosca.relationships.MemberOfService
-          - site:
-              node: {{ site_name }}
-              relationship: tosca.relationships.MemberOfSite
-          - default_image:
-                node: ceilometer-trusty-server-multi-nic
-                relationship: tosca.relationships.DefaultImage
-          - management:
-              node: management
-              relationship: tosca.relationships.ConnectsToNetwork
-          - m1.small:
-              node: m1.small
-              relationship: tosca.relationships.DefaultFlavor
-
-    # Virtual machines
+# Virtual machines
     ceilometer_service_instance:
       type: tosca.nodes.Compute
       capabilities:
@@ -107,6 +39,81 @@ topology_template:
           - image:
                 node: ceilometer-service-trusty-server-multi-nic
                 relationship: tosca.relationships.UsesImage
+
+# private network template, created in fixtures.yml
+    Private:
+      type: tosca.nodes.NetworkTemplate
+
+# site, fully created in deployment.yaml
+    {{ site_name }}:
+      type: tosca.nodes.Site
+
+# management network, fully created in management-net.yaml
+    management:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+          no-create: true
+          no-delete: true
+          no-update: true
+
+    {{ site_name }}_ceilometer:
+      description: Ceilometer Proxy Slice
+      type: tosca.nodes.Slice
+      requirements:
+          - site:
+              node: {{ site_name }}
+              relationship: tosca.relationships.MemberOfSite
+          - management:
+              node: management
+              relationship: tosca.relationships.ConnectsToNetwork
+          - ceilometer_service:
+              node: service_ceilometer
+              relationship: tosca.relationships.MemberOfService
+          - default_image:
+                node: ceilometer-trusty-server-multi-nic
+                relationship: tosca.relationships.DefaultImage
+          - m1.small:
+              node: m1.small
+              relationship: tosca.relationships.DefaultFlavor
+    
+    service_ceilometer:
+      type: tosca.nodes.CeilometerService
+      requirements:
+      properties:
+          view_url: /admin/monitoring/ceilometerservice/$id$/
+          kind: ceilometer
+          ceilometer_enable_pub_sub: true
+          public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
+          private_key_fn: /opt/xos/services/monitoring/keys/monitoringservice_rsa
+      artifacts:
+          pubkey: /opt/cord_profile/key_import/monitoringservice_rsa.pub
+
+#    service_sflow:
+#      type: tosca.nodes.SFlowService
+#      requirements:
+#      properties:
+#          view_url: /admin/monitoring/sflowservice/$id$/
+#          kind: sflow
+#          sflow_port: 6343
+#          sflow_api_port: 33333
+
+
+#     ceilometer_network:
+#       type: tosca.nodes.network.Network.XOS
+#       properties:
+#           ip_version: 4
+#           labels: ceilometer_client_access
+#       requirements:
+#           - network_template:
+#               node: Private
+#               relationship: tosca.relationships.UsesNetworkTemplate
+#           - owner:
+#               node: {{ site_name }}_ceilometer
+#               relationship: tosca.relationships.MemberOfSlice
+#           - connection:
+#               node: {{ site_name }}_ceilometer
+#               relationship: tosca.relationships.ConnectsToSlice
+
 
 #    {{ site_name }}_sflow:
 #      description: Slice for sFlow service
@@ -130,7 +137,7 @@ topology_template:
 #          - dependency:
 #              node: ceilometer_service_instance
 #              relationship: tosca.relationships.DependsOn
-       
+
     # Virtual machines
 #    sflow_service_instance:
 #      type: tosca.nodes.Compute
