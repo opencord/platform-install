@@ -1,5 +1,5 @@
 ---
-# file: roles/head-prep/tasks/main.yml
+# file: head-prep/tasks/main.yml
 
 - name:  Install prerequisites for using PPA repos
   apt:
@@ -42,17 +42,14 @@
     - sshpass
     - virt-top
 
-- name: Install Ansible via pip
-  pip: name=ansible version=2.2.3.0
-
-# - name: Make sure Ansible is newest version
-#   apt:
-#     name: "ansible"
-#     state: latest
-#     update_cache: yes
-#     cache_valid_time: 3600
-#   tags:
-#     - skip_ansible_lint # ansible-lint complains about latest, need this as distro provided 1.5.x version may be used if already installed.
+- name: Make sure Ansible is newest version
+  apt:
+    name: "ansible"
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+  tags:
+    - skip_ansible_lint # ansible-lint complains about latest, need this as distro provided 1.5.x version may be used if already installed.
 
 - name: Install Python packages
   pip:
