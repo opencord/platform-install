@@ -16,6 +16,11 @@
   tags:
     - skip_ansible_lint # needs to be run here or the next steps will fail
 
+- name: Default to accept forwarded traffic
+  iptables:
+    chain: FORWARD
+    policy: ACCEPT
+
 - name: Configure NAT for mgmtbr
   iptables:
     table: nat
