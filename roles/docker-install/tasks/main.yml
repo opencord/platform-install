@@ -36,8 +36,8 @@
   pip:
     name: "{{ item }}"
   with_items:
-    - docker-py
-    - docker-compose==1.9
+    - docker~=2.4.2
+    - docker-compose~=1.14.0
 
 - name: Make current user part of the Docker group
   become: yes
