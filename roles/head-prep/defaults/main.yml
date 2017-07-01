@@ -1,7 +1,7 @@
 ---
 # head-prep/defaults/main.yml
 
-on_maas: false
+use_maas: false
 
 ssh_pki_dir: "{{ playbook_dir }}/ssh_pki"
 ssh_keytype: rsa

@@ -32,35 +32,33 @@
   hosts: head
   become: yes
   roles:
-    - { role: interface-config, when: not on_maas }
+    - { role: interface-config, when: not use_maas }
 
 - name: Networking and DNS server on head node
   hosts: head
   become: yes
   roles:
-    - { role: head-mgmtbr, when: not on_maas }
-    - { role: dns-unbound, when: not on_maas }
-    - { role: dns-nsd, when: not on_maas }
+    - { role: head-mgmtbr, when: not use_maas }
+    - { role: dns-unbound, when: not use_maas }
+    - { role: dns-nsd, when: not use_maas }
 
 # needs to be in another set of plays so that nsd/unbound restart handlers run
 - name: Configure DNS resolution, DHCP on head node
   hosts: head
   become: yes
   roles:
-    - { role: dns-configure, when: not on_maas }
-    - { role: dhcpd, when: not on_maas }
+    - { role: dns-configure, when: not use_maas }
+    - { role: dhcpd, when: not use_maas }
 
 - name: Install apt-cacher-ng
   hosts: head
   become: yes
   roles:
-    - apt-cacher-ng
+    - { role: apt-cacher-ng, when: use_apt_cache }
 
-- name: Install elasticstack, and apache proxy
+- name: Install apache proxy
   hosts: head
   become: yes
   roles:
-    - java-oracle
-    - elasticstack
     - apache-proxy
 

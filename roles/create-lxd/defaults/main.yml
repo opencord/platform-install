@@ -10,3 +10,4 @@ head_lxd_list: []
 hwaddr_prefix: "c2a4"
 mgmt_ipv4_first_octets: "192.168.200"
 
+use_maas: False

@@ -11,7 +11,8 @@ deployment_type: MyDeployment
 
 # Feature toggles
 use_fabric: True
-on_maas: True
+use_maas: True
+use_apt_cache: True
 
 # XOS config
 xos_tosca_config_templates:

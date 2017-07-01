@@ -1,6 +1,8 @@
 ---
 # lxd-finish/defaults/main.yml
 
+use_apt_cache: True
+
 apt_cacher_name: apt-cache
 
 run_dist_upgrade: False

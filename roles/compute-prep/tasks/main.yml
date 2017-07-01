@@ -16,7 +16,7 @@
     groups: adm
 
 - name: Add pod public key to user accounts
-  when: not on_maas
+  when: not use_maas
   authorized_key:
     user: "{{ item }}"
     key: "{{ lookup('file', '{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey.pub') }}"
@@ -25,7 +25,7 @@
     - ubuntu
 
 - name: Add pod public key to user accounts (MaaS)
-  when: on_maas
+  when: use_maas
   authorized_key:
     user: "{{ item }}"
     key: "{{ lookup('file', '/opt/cord_profile/node_key.pub') }}"
@@ -34,7 +34,7 @@
     - ubuntu
 
 - name: Copy over CA certs from head node (MaaS)
-  when: on_maas
+  when: use_maas
   synchronize:
     src: "/usr/local/share/ca-certificates/"
     dest: "/usr/local/share/ca-certificates/"

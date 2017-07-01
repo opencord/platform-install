@@ -14,5 +14,5 @@
 - name: Set up Automated Compute Node Provisioning
   hosts: head
   roles:
-    - { role: automation-integration, when: on_maas }
+    - { role: automation-integration, when: use_maas }
 

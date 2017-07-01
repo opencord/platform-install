@@ -55,19 +55,19 @@
   with_items: "{{ head_lxd_list }}"
 
 - name: fetch IP of DHCP harvester
-  when: on_maas
+  when: use_maas
   command: docker-ip harvester
   register: harvester_ip
   changed_when: False
 
 - name: force a harvest to get container name resolution
-  when: on_maas
+  when: use_maas
   uri:
     url: http://{{ harvester_ip.stdout }}:8954/harvest
     method: POST
 
 - name: wait for container name resolution
-  when: on_maas
+  when: use_maas
   host_dns_check:
     hosts: "{{ head_lxd_list | map(attribute='name') | list | to_json }}"
     command_on_fail: "curl -sS --connect-timeout 3 -XPOST http://{{ harvester_ip.stdout }}:8954/harvest"

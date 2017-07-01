@@ -5,7 +5,7 @@
 # users/perms may seem off, but is identical to that role
 
 - name: Create ssh key directory for MaaS
-  when: on_maas
+  when: use_maas
   file:
     dest: "/etc/maas/.ssh/"
     mode: 0755
@@ -14,7 +14,7 @@
     state: directory
 
 - name: Copy ssh private key for MaaS
-  when: on_maas
+  when: use_maas
   copy:
     src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey"
     dest: "/etc/maas/.ssh/cord_rsa"
@@ -24,7 +24,7 @@
     backup: true
 
 - name: Copy ssh public key for MaaS
-  when: on_maas
+  when: use_maas
   copy:
     src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey.pub"
     dest: "/etc/maas/.ssh/cord_rsa.pub"

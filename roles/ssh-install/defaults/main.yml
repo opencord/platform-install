@@ -8,4 +8,4 @@ ssh_keytype: rsa
 # name of master ssh key for this pod
 pod_sshkey_name: "headnode"
 
-on_maas: False
+use_maas: False

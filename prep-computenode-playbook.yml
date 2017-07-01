@@ -16,19 +16,19 @@
   become: yes
   roles:
     - common-prep
-    - { role: pki-install, when: not on_maas }
+    - { role: pki-install, when: not use_maas }
 
 - name: Configure management network
   hosts: compute
   become: yes
   roles:
-    - { role: interface-config, when: not on_maas }
+    - { role: interface-config, when: not use_maas }
 
 - name: Use headnode DNS server
   hosts: compute
   become: yes
   roles:
-    - { role: dns-configure, when: not on_maas }
+    - { role: dns-configure, when: not use_maas }
 
 - name: Prep compute node
   hosts: compute

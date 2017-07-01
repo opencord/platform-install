@@ -25,6 +25,7 @@
     - skip_ansible_lint # running a sub job
 
 - name: Have containers use the apt-cache
+  when: use_apt_cache
   command: >
     ansible containers -b -u ubuntu
      -m lineinfile

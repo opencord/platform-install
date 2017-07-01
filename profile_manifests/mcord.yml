@@ -9,7 +9,8 @@ site_suffix: "{{ site_name }}.opencord.org"
 deployment_type: MyDeployment
 
 # Feature toggles
-on_maas: True
+use_maas: True
+use_apt_cache: True
 
 # XOS config
 xos_tosca_config_templates:
