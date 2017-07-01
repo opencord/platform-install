@@ -9,6 +9,8 @@ site_suffix: "{{ site_name }}.opencloud.us"
 deployment_type: campus
 
 # Feature toggles
+use_maas: False
+use_apt_cache: True
 
 # XOS config
 xos_tosca_config_templates:
