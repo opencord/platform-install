@@ -48,7 +48,7 @@
   become: yes
   roles:
     - { role: dns-configure, when: not use_maas }
-    - { role: dhcpd, when: not use_maas }
+    - { role: dhcpd, when: not (use_maas or frontend_only) }
 
 - name: Install apt-cacher-ng
   hosts: head
