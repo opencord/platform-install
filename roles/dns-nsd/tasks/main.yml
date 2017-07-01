@@ -10,33 +10,41 @@
 
 - name: Ensure that zones directory exists
   file:
-    name={{ nsd_zonesdir }}
-    state=directory
-    mode=0755 owner=root group={{ nsd_group }}
+    name: "{{ nsd_zonesdir }}"
+    state: directory
+    mode: 0755
+    owner: root
+    group: "{{ nsd_group }}"
 
 - name: Create nsd.conf from template
   template:
-    src=nsd.conf.j2
-    dest={{ nsd_conf }}
-    mode=0644 owner=root group={{ nsd_group }}
+    src: nsd.conf.j2
+    dest: "{{ nsd_conf }}"
+    mode: 0644
+    owner: root
+    group: "{{ nsd_group }}"
   notify:
     - restart-nsd
 
 - name: create forward zonefiles from template
   template:
-    src=zone.forward.j2
-    dest={{ nsd_zonesdir }}/{{ item.name }}.forward
-    mode=0644 owner=root group={{ nsd_group }}
-  with_items: '{{ nsd_zones }}'
+    src: zone.forward.j2
+    dest: "{{ nsd_zonesdir }}/{{ item.name }}.forward"
+    mode: 0644
+    owner: root
+    group: "{{ nsd_group }}"
+  with_items: "{{ nsd_zones }}"
   notify:
     - reload-nsd
 
 - name: create reverse zonefiles from template
   template:
-    src=zone.reverse.j2
-    dest={{ nsd_zonesdir }}/{{ item.name }}.reverse
-    mode=0644 owner=root group={{ nsd_group }}
-  with_items: '{{ nsd_zones }}'
+    src: zone.reverse.j2
+    dest: "{{ nsd_zonesdir }}/{{ item.name }}.reverse"
+    mode: 0644
+    owner: root
+    group: "{{ nsd_group }}"
+  with_items: "{{ nsd_zones }}"
   notify:
     - reload-nsd
 

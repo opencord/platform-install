@@ -86,6 +86,8 @@ server_certs:
       - "DNS:xos-core.{{ site_suffix }}"
 
 # Network/DNS settings
+headnode: prod
+
 dns_search:
   - "{{ site_suffix }}"
 
@@ -104,22 +106,30 @@ nsd_zones:
       - { name: ns1 }
     nodelists:
       - head_lxd_list
+      - physical_node_list
     aliases:
-      - { name: "apt-cache", dest: "head1" }
-      - { name: "cordloghost", dest: "head1" }
-      - { name: "docker", dest: "head1" }
-      - { name: "ns", dest: "head1" }
-      - { name: "ns1", dest: "head1" }
-      - { name: "onos-cord", dest: "head1" }
-      - { name: "xos", dest: "head1" }
-      - { name: "xos-chameleon", dest: "head1" }
-      - { name: "xos-rest-gw", dest: "head1" }
-      - { name: "xos-spa-gui", dest: "head1" }
+      - { name: "apt-cache", dest: "{{ headnode }}" }
+      - { name: "cordloghost", dest: "{{ headnode }}" }
+      - { name: "docker", dest: "{{ headnode }}" }
+      - { name: "ns", dest: "{{ headnode }}" }
+      - { name: "ns1", dest: "{{ headnode }}" }
+      - { name: "onos-cord", dest: "{{ headnode }}" }
+      - { name: "xos", dest: "{{ headnode }}" }
+      - { name: "xos-chameleon", dest: "{{ headnode }}" }
+      - { name: "xos-rest-gw", dest: "{{ headnode }}" }
+      - { name: "xos-gui", dest: "{{ headnode }}" }
 
 unbound_listen_all: True
 
 unbound_interfaces:
   - "{{ mgmt_ipv4_first_octets }}.1/24"
+
+physical_node_list:
+  - name: prod
+    ipv4_last_octet: 1
+    aliases:
+      - head1
+      - head
 
 # VTN network configuration
 management_network_cidr: 172.27.0.0/24

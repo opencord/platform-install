@@ -30,19 +30,15 @@
     update_cache: yes
     cache_valid_time: 3600
 
-- name: Remove obsolete docker-py pip module
-  become: yes
-  pip:
-    name: docker-py
-    state: absent
-
-- name: Install pip modules for docker and docker-compose
+- name: Install docker-compose, docker python module, imagebuilder deps via pip
   become: yes
   pip:
     name: "{{ item }}"
   with_items:
     - docker>=2.4.2
     - docker-compose>=1.14.0
+    - gitpython
+    - graphviz
 
 - name: Make current user part of the Docker group
   become: yes
@@ -50,4 +46,9 @@
     name: "{{ ansible_user_id }}"
     groups: "docker"
     append: yes
+
+# Doesn't work right now, but reported: https://github.com/ansible/ansible/issues/24794
+# see also http://docs.ansible.com/ansible/intro_configuration.html#openssh-specific-settings
+- name: Reset ssh connection so user gains docker group membership
+  meta: reset_connection
 

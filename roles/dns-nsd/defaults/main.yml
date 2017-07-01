@@ -5,6 +5,8 @@ nsd_conf: "/var/nsd/etc/nsd.conf"
 nsd_zonesdir: "/var/nsd/zones"
 nsd_group: "nsd"
 
+nsd_zones: []
+
 # default DNS TTL
 dns_ttl: 3600
 
