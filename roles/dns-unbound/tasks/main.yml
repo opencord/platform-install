@@ -10,9 +10,11 @@
 
 - name: create unbound.conf from template
   template:
-    src=unbound.conf.j2
-    dest={{ unbound_conf }}
-    mode=0644 owner=root group={{ unbound_group }}
+    src: unbound.conf.j2
+    dest: "{{ unbound_conf }}"
+    mode: 0644
+    owner: root
+    group: "{{ unbound_group }}"
     # validate='unbound-checkconf %s' - can't use, checks path, not just config.
   notify:
    - restart-unbound
