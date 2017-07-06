@@ -22,6 +22,30 @@
       "revId": "fe284a196c96a7f87b8467cd203bd7637dcda0ef",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a202591_44f3b80a",
+        "filename": "roles/docker-install/tasks/main.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-07-06T16:48:23Z",
+      "side": 0,
+      "message": "I introduced it as an attempt to deal with an issue on the QA system. It shouldn\u0027t be needed anymore.",
+      "parentUuid": "5a202591_447cd872",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 44
+      },
+      "revId": "fe284a196c96a7f87b8467cd203bd7637dcda0ef",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
