@@ -2,8 +2,8 @@
 # compute-node-config/defaults/main.yml
 
 # default site/deployment placeholder names
-site_name: sitename
-deployment_type: deploymenttype
+site_name: placeholder-sitename
+deployment_type: placeholder-deploymenttype
 
 # location of cord_profile on head node
 head_cord_profile_dir: /opt/cord_profile
