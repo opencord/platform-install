@@ -15,6 +15,7 @@
   hosts: head
   roles:
     - onos-cord-install
-    - { role: onos-fabric-install, when: use_fabric }
+    - { role: onos-fabric-install, when: use_fabric | default(False) }
+
 
 
