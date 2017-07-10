@@ -1,6 +1,8 @@
 ---
 # monitoringservice-onboard/defaults/main.yml
 
+xos_admin_user: "xosadmin@opencord.org"
+
 # paths
 head_cord_profile_dir: "/opt/cord_profile"
 

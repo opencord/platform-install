@@ -1,0 +1,12 @@
+---
+# create-configdirs-privileged/defaults/main.yml
+
+# where the cord_profile directory is on the config node
+config_cord_profile_dir: "/opt/cord_profile"
+
+pki_dir: "{{ playbook_dir }}/pki"
+ssh_pki_dir: "{{ playbook_dir }}/ssh_pki"
+credentials_dir: "{{ playbook_dir }}/credentials"
+
+site_name: placeholder-sitename
+

@@ -3,3 +3,5 @@
 
 head_cord_profile_dir: "/opt/cord_profile"
 
+xos_admin_user: "xosadmin@opencord.org"
+

@@ -1,0 +1,5 @@
+---
+# xos-test-restore-db/defaults/main.yml
+
+xos_admin_user: "xosadmin@opencord.org"
+

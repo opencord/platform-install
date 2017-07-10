@@ -54,7 +54,7 @@
   hosts: head
   become: yes
   roles:
-    - { role: apt-cacher-ng, when: use_apt_cache }
+    - { role: apt-cacher-ng, when: use_apt_cache | default(True) }
 
 - name: Install apache proxy
   hosts: head

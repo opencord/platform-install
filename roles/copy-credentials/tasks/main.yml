@@ -5,12 +5,12 @@
   become: yes
   synchronize:
     src: "{{ credentials_dir }}/"
-    dest: "/opt/credentials/"
+    dest: "{{ head_credentials_dir }}/"
 
 - name: Set ownership on credentials dir on head node, for MaaS provisioner
   become: yes
   file:
-    dest: "/opt/credentials"
+    dest: "{{ head_credentials_dir }}"
     state: directory
     recurse: yes
     owner: "{{ ansible_user_id }}"

@@ -9,16 +9,3 @@ kvm_check: true
 dns_check_domain: wiki.opencord.org
 dns_check_ipv4: 52.9.82.207
 
-# obtained from: https://www.iana.org/domains/root/servers
-dns_roots:
-  - 192.5.5.241
-  - 193.0.14.129
-  - 198.41.0.4
-  - 199.7.91.13
-
-http_dl_url: "http://cord.staging.wpengine.com/wp-content/uploads/2016/07/cord-tm-logo.png"
-http_dl_cksum: "sha256:099c777e4c8ad76a066299159622b4fa6bd2515cefafc2851df67f7f4cce6ee8"
-
-https_dl_url: "https://jenkins.opencord.org/static/8d0f081d/images/headshot.png"
-https_dl_cksum: "sha256:690e82fb98ffb2b4b232d9b9cf9cc52eb7972e56a84902f6d1150b75456058c6"
-

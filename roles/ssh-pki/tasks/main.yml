@@ -1,8 +1,9 @@
 ---
 # ssh-pki/tasks/main.yml
 
+# if this step fails, may need to include `create-configdir-become` role to
+# create directories using become.
 - name: Create SSH CA Directory
-  become: yes
   file:
     dest: "{{ item }}"
     state: directory

@@ -2,3 +2,5 @@
 # copy-credentials/defaults/main.yml
 
 credentials_dir: "{{ playbook_dir }}/credentials"
+
+head_credentials_dir: "/opt/credentials"

@@ -1,8 +1,9 @@
 ---
 # pki-root-ca/tasks/main.yml
 
+# if the next two steps fail, may need to include `create-configdirs-become`
+# role to create these directories using become.
 - name: Create PKI and credentials directories
-  become: yes
   file:
     dest: "{{ item }}"
     state: directory
@@ -13,7 +14,6 @@
     - "{{ pki_dir }}"
 
 - name: Create root CA directory
-  become: yes
   file:
     dest: "{{ pki_dir }}/root_ca"
     state: directory

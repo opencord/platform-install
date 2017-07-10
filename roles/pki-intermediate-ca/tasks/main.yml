@@ -1,8 +1,9 @@
 ---
 # pki-intermediate-ca/tasks/main.yml
 
+# if the next two steps fail, may need to include `create-configdirs-become`
+# role to create these directories using become.
 - name: Create PKI directory
-  become: yes
   file:
     dest: "{{ pki_dir }}"
     state: directory
@@ -10,7 +11,6 @@
     mode: 0755
 
 - name: Create intermediate CA directory
-  become: yes
   file:
     dest: "{{ pki_dir }}/{{ site_name }}_im_ca"
     state: directory

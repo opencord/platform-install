@@ -2,8 +2,9 @@
 # cord-profile/tasks/main.yml
 # Constructs a CORD service profile directory and configuration files
 
+# if this step fails, may need to include `create-configdirs-become` role to
+# create directory using become.
 - name: Create cord_profile directory
-  become: yes
   file:
     path: "{{ config_cord_profile_dir }}"
     state: directory

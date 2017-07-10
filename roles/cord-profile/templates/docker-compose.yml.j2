@@ -297,7 +297,7 @@ services:
 {% endif %}
     volumes:
       - {{ head_cord_profile_dir }}/node_key:/opt/cord_profile/node_key:ro
-      - /opt/credentials:/opt/xos/services/{{ svc.name }}/credentials:ro
+      - {{ head_credentials_dir }}:/opt/xos/services/{{ svc.name }}/credentials:ro
       - {{ head_cord_profile_dir }}/im_cert_chain.pem:/usr/local/share/ca-certificates/local_certs.crt:ro
 {% if svc.keypair is defined %}
       - {{ head_cord_profile_dir }}/key_import/{{ svc.keypair }}:/opt/xos/services/{{ svc.name }}/keys/{{ svc.keypair }}:ro

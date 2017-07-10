@@ -125,6 +125,7 @@ charm_versions:
   keystone: "cs:trusty/keystone-33"
   mongodb: "cs:trusty/mongodb-33"
   neutron-api: "cs:~cordteam/trusty/neutron-api-5"
+  nova-cloud-controller: "cs:trusty/nova-cloud-controller-64"
   nova-compute: "cs:~cordteam/trusty/nova-compute-2"
   ntp: "cs:trusty/ntp-14"
   openstack-dashboard: "cs:trusty/openstack-dashboard-19"
