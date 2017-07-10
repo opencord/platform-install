@@ -6,6 +6,7 @@ apt_cacher_port: 3142
 
 apt_ssl_sites:
   - apt.dockerproject.org
+  - download.docker.com
   - butler.opencloud.cs.arizona.edu
   - deb.nodesource.com
   - artifacts.elastic.co

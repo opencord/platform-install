@@ -30,7 +30,10 @@
 
 - name: DNS Global Root Connectivity Check
   shell: "dig @{{ item }} +trace +short {{ dns_check_domain }} | grep {{ dns_check_ipv4 }}"
-  with_items: "{{ dns_roots }}"
+  with_items:
+    - 192.5.5.241
+    - 198.41.0.4
+    - 199.7.91.13
   register: dns_global_check_result
   until: dns_global_check_result.rc == 0
   retries: 3
@@ -40,16 +43,16 @@
 
 - name: HTTP Download Check
   get_url:
-    url: "{{ http_dl_url }}"
-    checksum: "{{ http_dl_cksum }}"
+    url: "http://cord.staging.wpengine.com/wp-content/uploads/2016/07/cord-tm-logo.png"
+    checksum: "sha256:099c777e4c8ad76a066299159622b4fa6bd2515cefafc2851df67f7f4cce6ee8"
     dest: /tmp/http_dl_check
   retries: 3
   delay: 1
 
 - name: HTTPS Download Check
   get_url:
-    url: "{{ https_dl_url }}"
-    checksum: "{{ https_dl_cksum }}"
+    url: "https://jenkins.opencord.org/static/8d0f081d/images/headshot.png"
+    checksum: "sha256:690e82fb98ffb2b4b232d9b9cf9cc52eb7972e56a84902f6d1150b75456058c6"
     dest: /tmp/https_dl_check
   retries: 3
   delay: 1
