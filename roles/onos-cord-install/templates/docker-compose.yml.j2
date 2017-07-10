@@ -4,10 +4,7 @@ version: '2'
 services:
 
    xos-onos:
-      build:
-       context: .
-       dockerfile: Dockerfile
-      image: xos/onos
+      image: xos/onos:{{ deploy_docker_tag }}
       ports:
        - "6654:6653"
        - "8102:8101"
@@ -16,3 +13,4 @@ services:
       volumes:
       - ./node_key:/root/node_key:ro
       restart: unless-stopped
+

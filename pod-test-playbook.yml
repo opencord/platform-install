@@ -11,12 +11,6 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
-# - name: Run platform checks
-#   hosts: head
-#   become: no
-#   roles:
-#    - platform-check
-
 - name: Create test client
   hosts: head
   become: yes

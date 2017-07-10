@@ -5,7 +5,7 @@
   docker_image:
     name: "{{ onos_docker_image }}"
 
-- name: Create dest directory
+- name: Create onos_cord directory
   become: yes
   file:
     path: "{{ head_onos_cord_dir }}"
@@ -14,7 +14,7 @@
     group: "{{ ansible_user_gid }}"
     mode: 0755
 
-- name: Copy over SSH key
+- name: Create node_key file with SSH private key for compute nodes
   copy:
     src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey"
     dest: "{{ head_onos_cord_dir }}/node_key"
@@ -30,11 +30,7 @@
     - Dockerfile
     - onos-service
     - org.ops4j.pax.logging.cfg
-
-- name: Copy over ONOS playbook and other files
-  copy:
-    src: "onos-cord-docker-compose.yml"
-    dest: "{{ head_onos_cord_dir }}/docker-compose.yml"
+    - docker-compose.yml
 
 - name: Copy SSL Certs to ONOS so docker-compose can find them
   copy:
@@ -49,11 +45,13 @@
 
 - name: Build xos/onos docker image
   docker_image:
-    name: "xos/onos"
+    name: "xos/onos:{{ deploy_docker_tag }}"
     path: "{{ head_onos_cord_dir }}"
-    dockerfile: "Dockerfile"
+    pull: False
+    force: True
 
 - name: Start ONOS for CORD
   docker_service:
+    project_name: "onoscord"
     project_src: "{{ head_onos_cord_dir }}"
 
