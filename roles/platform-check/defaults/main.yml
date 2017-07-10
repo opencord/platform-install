@@ -2,7 +2,7 @@
 # platform-check/defaults/main.yml
 
 config_cord_profile_dir: "/opt/cord_profile"
-head_onos_cord_dir: "/opt/onos-cord/"
+head_onos_cord_dir: "/opt/onos_cord"
 
 xos_ui_port: 9000
 
