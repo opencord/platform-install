@@ -8,6 +8,7 @@ juju_config_path: /usr/local/src/juju_config.yml
 charm_versions: {}
 
 pki_dir: "{{ playbook_dir }}/pki"
+credentials_dir: "{{ playbook_dir }}/credentials"
 
 site_name: placeholder-sitename
 site_suffix: "{{ site_name }}.test"

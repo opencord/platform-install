@@ -5,7 +5,7 @@
   docker_image:
     name: "{{ onos_docker_image }}"
 
-- name: Create dest directory
+- name: Create onos_cord directory
   become: yes
   file:
     path: "{{ head_onos_cord_dir }}"
@@ -14,7 +14,7 @@
     group: "{{ ansible_user_gid }}"
     mode: 0755
 
-- name: Copy over SSH key
+- name: Create node_key file with SSH private key for compute nodes
   copy:
     src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey"
     dest: "{{ head_onos_cord_dir }}/node_key"
@@ -51,7 +51,8 @@
   docker_image:
     name: "xos/onos"
     path: "{{ head_onos_cord_dir }}"
-    dockerfile: "Dockerfile"
+    pull: False
+    force: True
 
 - name: Start ONOS for CORD
   docker_service:

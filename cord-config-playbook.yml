@@ -14,6 +14,7 @@
 - name: Create SSL Root CA, Intermediate CA, Server certs, SSH CA and keypairs
   hosts: config
   roles:
+    - { role: create-configdirs-become, when: create_configdirs_become | default(True) }
     - pki-root-ca
     - pki-intermediate-ca
     - pki-cert

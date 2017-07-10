@@ -1,6 +1,9 @@
 ---
 # monitoringservice-config/defaults/main.yml
 
+xos_admin_user: "xosadmin@opencord.org"
+xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+
 #paths
 config_cord_dir: "/opt/cord"
 head_cord_dir: "/opt/cord"
