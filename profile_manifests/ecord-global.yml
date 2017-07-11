@@ -44,7 +44,7 @@ xos_services:
     path: orchestration/xos_services/fabric
   - name: onos
     path: orchestration/xos_services/onos-service
-  - name: metronetwork
+  - name: metro-net
     path: orchestration/xos_services/metro-net
 
 # SSL server certificate generation
