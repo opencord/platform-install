@@ -37,7 +37,7 @@ gui_branding_bg: "/static/cord-bg.jpg"
 xos_services:
   - name: onos
     path: orchestration/xos_services/onos-service
-  - name: metronetwork
+  - name: metro-net
     path: orchestration/xos_services/metro-net
 
 xos_service_sshkeys:
@@ -47,7 +47,7 @@ xos_service_sshkeys:
     source_path: "/dev/null"
 
 # site domain suffix
-site_suffix: opencloud.us
+site_suffix: opencord.org
 
 # SSL server certificate generation
 server_certs:
