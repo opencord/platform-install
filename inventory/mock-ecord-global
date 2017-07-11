@@ -3,6 +3,11 @@
 [all:vars]
 cord_profile=mock-ecord-global
 
+[config]
+localhost ansible_connection=local
+
 [head]
 localhost ansible_connection=local
 
+[build]
+localhost ansible_connection=local
