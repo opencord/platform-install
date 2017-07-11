@@ -370,6 +370,16 @@ xos_images:
     url: "http://www.vicci.org/opencloud/trusty-server-cloudimg-amd64-disk1.img.20170201"
     checksum: "sha256:ebf007ba3ec1043b7cd011fc6668e2a1d1d4c69c41071e8513ab355df7a057cb"
 
+  # How to add local image and dynamically load it into existing XOS
+  # add your private image such as mcord-local-image-name.img to /opt/iamges/ on 'corddev' VM inside cord in a box
+  # uncomment the code blow，and run those two commands:
+  # on corddev VM: vagrant@corddev:/cord/build$ ./gradlew -PdeployConfig=config/mcord_in_a_box.yml PIcreateProfile
+  # on prod VM: compute-node-refresh
+
+  #- name: "mcord-local-image-name"
+  #  url: "file://localhost/opt/images/mcord-local-image-name.img"
+  #  checksum: "sha256:ebf007ba3ec1043b7cd011fc6668e2a1d1d4c69c41071e8513ab355df7a057cb"
+
   - name: "vsg-1.1"
     url: "http://www.vicci.org/cord/vsg-1.1.img"
     checksum: "sha256:16b0beb6778aed0f5feecb05f8d5750e6c262f98e6011e99ddadf7d46a177b6f"
