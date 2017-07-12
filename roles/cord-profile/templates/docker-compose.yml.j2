@@ -110,6 +110,28 @@ services:
       SERVICE_80_IGNORE: "yes"
     restart: unless-stopped
 
+  xos_tosca:
+    image: {{ deploy_docker_registry }}xosproject/xos-tosca:{{ deploy_docker_tag }}
+    networks:
+{% for network in xos_docker_networks %}
+     - {{ network }}
+{% endfor %}
+    ports:
+      - "9200:9200"
+    links:
+      - xos_core:xos-core
+    depends_on:
+      - xos_core
+      - registrator
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1000k"
+        max-file: "5"
+    environment:
+      SERVICE_9200_NAME: "xos-tosca"
+    restart: unless-stopped
+
   xos_chameleon:
     image: {{ deploy_docker_registry }}xosproject/chameleon:{{ deploy_docker_tag }}
     networks:
