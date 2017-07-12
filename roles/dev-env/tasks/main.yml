@@ -56,4 +56,5 @@
   - "127.0.0.1 xos-ws"
   - "127.0.0.1 xos-chameleon"
   - "127.0.0.1 xos-core"
+  - "127.0.0.1 xos-tosca"
   - "127.0.0.1 consul"

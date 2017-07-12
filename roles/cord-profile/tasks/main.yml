@@ -94,6 +94,7 @@
     - Dockerfile.xos
     - xos-gui-extensions.yml
     - docker-compose.yml
+    - xos-tosca.config.yaml
 
 - name: Create profile specific templated TOSCA config files
   template:
