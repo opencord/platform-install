@@ -4,7 +4,7 @@ description: created by platform-install, need to add M-CORD services later
 
 imports:
    - custom_types/xos.yaml
-
+   - custom_types/vmme.yaml
 topology_template:
   node_templates:
 
@@ -49,3 +49,9 @@ topology_template:
         no-update: true
 
 # CORD Services, add later
+    service#vmme:
+      type: tosca.nodes.VMMEService
+      properties:
+          view_url: /admin/vmme/vmmeservice/$id$/
+          kind: vEPC
+          replaces: service_vmme

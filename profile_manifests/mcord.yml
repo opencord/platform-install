@@ -21,7 +21,7 @@ xos_tosca_config_templates:
   - vtn-service.yaml
   - fabric-service.yaml
   - management-net.yaml
-#  - mcord-services.yaml  # should unify this with services.yaml.j2 eventually
+  - mcord-services.yaml  # should unify this with services.yaml.j2 eventually
 # - public-net.yaml
 # - volt-devices.yaml
 # - vrouter.yaml
