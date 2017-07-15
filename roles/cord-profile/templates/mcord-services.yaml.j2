@@ -5,6 +5,7 @@ description: created by platform-install, need to add M-CORD services later
 imports:
    - custom_types/xos.yaml
    - custom_types/vmme.yaml
+   - custom_types/vbbu.yaml
 topology_template:
   node_templates:
 
@@ -55,3 +56,9 @@ topology_template:
           view_url: /admin/vmme/vmmeservice/$id$/
           kind: vEPC
           replaces: service_vmme
+
+    service#vbbu:
+      type: tosca.nodes.VBBUService
+      properties:
+          view_url: /admin/vbbu/vbbuservice/$id$/
+          replaces: service_vbbu
