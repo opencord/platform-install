@@ -21,10 +21,10 @@ xos_tosca_config_templates:
   - vtn-service.yaml
   - fabric-service.yaml
   - management-net.yaml
+  - mcord-services.yaml  # should unify this with services.yaml.j2 eventually
   - shared-net.yaml
   - wan-net.yaml
   - vsg-net.yaml
-  - mcord-services.yaml  # should unify this with services.yaml.j2 eventually
 # - public-net.yaml
 # - volt-devices.yaml
 # - vrouter.yaml
@@ -75,18 +75,18 @@ xos_services:
 #    path: orchestration/xos_services/vbbu
 #    keypair: mcord_rsa
 #    synchronizer: true
-#  - name: vmme
-#    path: orchestration/xos_services/vmme
-#    keypair: mcord_rsa
-#    synchronizer: true
+  - name: vmme
+    path: orchestration/xos_services/vmme
+    keypair: mcord_rsa
+    synchronizer: true
 #  - name: vsgw
 #    path: orchestration/xos_services/vsgw
 #    keypair: mcord_rsa
 #    synchronizer: true
-#  - name: vpgwc
-#    path: orchestration/xos_services/vpgwc
-#    keypair: mcord_rsa
-#    synchronizer: true
+  - name: vpgwc
+    path: orchestration/xos_services/vpgwc
+    keypair: mcord_rsa
+    synchronizer: true
 # needed onboarding synchronizer doesn't require service code to be present when started
   - name: exampleservice
     path: orchestration/xos_services/exampleservice
