@@ -1,0 +1,25 @@
+---
+# mavenrepo-install/tasks/main.yml
+
+- name: Create mavenrepo directory
+  become: yes
+  file:
+    path: "{{ head_mavenrepo_dir }}"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: 0755
+
+- name: Create docker-compose file for mavenrepo
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ head_mavenrepo_dir }}/docker-compose.yml"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: 0644
+
+- name: Start mavenrepo for onos-apps
+  docker_service:
+    project_name: "mavenrepo"
+    project_src: "{{ head_mavenrepo_dir }}"
+
