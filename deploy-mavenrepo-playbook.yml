@@ -1,0 +1,20 @@
+---
+# deploy-mavenrepo-playbook.yml
+# Deploys mavenrepo in Docker container on the CORD head node
+
+- name: Include vars
+  hosts: head
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Deploy and start mavenrepo
+  hosts: head
+  roles:
+    - mavenrepo-install
+
+
+

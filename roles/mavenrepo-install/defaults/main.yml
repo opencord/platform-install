@@ -1,0 +1,9 @@
+---
+# mavenrepo-install/tasks/main.yml
+
+head_mavenrepo_dir: /opt/mavenrepo
+
+# Docker related settings
+deploy_docker_registry: ""
+deploy_docker_tag: "candidate"
+
