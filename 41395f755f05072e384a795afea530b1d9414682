@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3a1d315d_3758f2f9",
+        "filename": "roles/cord-profile/templates/mcord-services.yaml.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2017-07-17T06:12:39Z",
+      "side": 1,
+      "message": "What do you mean, you commented out all the services",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 27
+      },
+      "revId": "41395f755f05072e384a795afea530b1d9414682",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
