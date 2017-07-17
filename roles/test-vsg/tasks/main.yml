@@ -3,12 +3,6 @@
 #
 # Run tests to check that the CORD-in-a-Box deployment has worked.
 
-- name: Get name of compute node
-  shell: bash -c "source ~/admin-openrc.sh; nova service-list|grep nova-compute|cut -d '|' -f 3"
-  register: node_name
-  tags:
-    - skip_ansible_lint # running a sub job
-
 - name: Wait for vSG VM to come up
   shell: bash -c "source ~/admin-openrc.sh; nova list --all-tenants|grep 'vsg.*ACTIVE' > /dev/null"
   register: result
@@ -27,6 +21,12 @@
 - name: Get mgmt IP of VM
   shell: bash -c "source ~/admin-openrc.sh; nova interface-list {{ nova_id.stdout }}|grep -o -m 1 '172\.27\.[[:digit:]]*\.[[:digit:]]*'"
   register: mgmt_ip
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Get name of compute node
+  shell: bash -c "source ~/admin-openrc.sh; nova show {{ nova_id.stdout }}|grep hypervisor_hostname|cut -d '|' -f 3"
+  register: node_name
   tags:
     - skip_ansible_lint # running a sub job
 

@@ -37,7 +37,7 @@
     - skip_ansible_lint # running a sub job
 
 - name: Get name of compute node
-  shell: bash -c "source ~/admin-openrc.sh; nova service-list|grep nova-compute|cut -d '|' -f 3"
+  shell: bash -c "source ~/admin-openrc.sh; nova show {{ nova_id.stdout }}|grep hypervisor_hostname|cut -d '|' -f 3"
   register: node_name
   tags:
     - skip_ansible_lint # running a sub job
