@@ -1,0 +1,26 @@
+# Created by platform-install: interface-config/templates/fabric.cfg.j2
+
+# fabric bridge interface for VTN
+auto fabric
+iface fabric inet static
+  pre-up ip link add fabric type bridge
+  address {{ public_network_cidr | ipaddr('1') | ipaddr('address') }}
+  network {{ public_network_cidr | ipaddr('network') }}
+  netmask {{ public_network_cidr | ipaddr('netmask') }}
+  broadcast {{ public_network_cidr | ipaddr('broadcast') }}
+  bond-miimon 100
+  bond-slaves none
+  bond-mode active-backup
+
+# veth0/veth1 interfaces to connect to local system
+auto veth0
+iface veth0 inet static
+  address 0.0.0.0
+  pre-up ip link add veth0 type veth peer name veth1
+  pre-up ip link set veth0 up
+  pre-up ip link set dev veth0 master fabric 
+  bond-master fabric
+  bond-primary veth0
+  pre-down ip link set dev veth0 nomaster
+  post-down ip link del veth0
+
