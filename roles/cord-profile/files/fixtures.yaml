@@ -46,12 +46,6 @@ topology_template:
     siterole#tech:
       type: tosca.nodes.SiteRole
 
-    tenantrole#admin:
-      type: tosca.nodes.TenantRole
-
-    tenantrole#access:
-      type: tosca.nodes.TenantRole
-
     deploymentrole#admin:
       type: tosca.nodes.DeploymentRole
 
