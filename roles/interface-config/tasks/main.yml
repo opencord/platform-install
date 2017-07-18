@@ -1,18 +1,72 @@
 ---
 # interface-config/tasks/main.yml
 
-- name: Create network interface for management network
+- name: Create management network interfaces
   template:
-    src: eth.cfg.j2
-    dest: "/etc/network/interfaces.d/{{ mgmt_interface }}.cfg"
+    src: management.cfg.j2
+    dest: "/etc/network/interfaces.d/management.cfg"
     owner: root
     group: root
     mode: 0644
-  register: mgmtint_config
+  register: management_net_config
 
-- name: Bring up management network if reconfigured
-  when: mgmtint_config.changed
-  command: "ifup {{ mgmt_interface }}"
+- name: Bring up management network interfaces, if reconfigured
+  when: management_net_config.changed
+  command: "ifup {{ item }}"
+  with_flattened: 
+   - mgmtbond
+   - "{{ management_net_interfaces }}"
+   - mgmtbridge
+  tags:
+    - skip_ansible_lint # needs to be run before next steps
+
+- name: Bring up MANAGEMENT_HOST vethmgmt0/1 on compute nodes, if required
+  when: management_net_config.changed and 'compute' in group_names and use_vtn_net_management_host
+  command: "ifup {{ item }}"
+  with_items:
+    - vethmgmt0
+  tags:
+    - skip_ansible_lint # needs to be run before next steps
+
+# NAT/forward management network traffic out the head node
+- name: Configure forwarding for management bridge
+  when: management_net_config.changed and 'head' in group_names
+  iptables:
+    chain: FORWARD
+    in_interface: mgmtbridge
+    jump: ACCEPT
+  handlers:
+    - iptables-save
+
+- name: Configure NAT for mgmtbr
+  when: management_net_config.changed and 'head' in group_names
+  iptables:
+    table: nat
+    chain: POSTROUTING
+    out_interface: "{{ headnode_nat_interface }}"
+    jump: MASQUERADE
+  handlers:
+    - iptables-save
+
+# Create fabric bridge and veth pair
+- name: Create fabric network interfaces on compute nodes
+  when: use_fabric and 'compute' in group_names
+  template:
+    src: fabric.cfg.j2
+    dest: "/etc/network/interfaces.d/fabric.cfg"
+    owner: root
+    group: root
+    mode: 0644
+  register: compute_fabric_config
+
+- name: Bring up fabric interfaces, if reconfigured
+  when: compute_fabric_config.changed
+  command: "ifup {{ item }}"
+  with_flattened:
+    - fabricbond
+    - "{{ fabric_net_interfaces }}"
+    - fabricbridge
+    - vethfabric0
   tags:
     - skip_ansible_lint # needs to be run before next steps
 
