@@ -12,7 +12,6 @@ deployment_type: MyDeployment
 # Feature toggles
 use_fabric: True
 use_maas: True
-use_apt_cache: True
 
 # XOS config
 xos_tosca_config_templates:
@@ -74,64 +73,6 @@ xos_services:
 
 profile_library: "rcord"
 
-# SSL server certificate generation
-server_certs:
-  - cn: "keystone.{{ site_suffix }}"
-    subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=keystone.{{ site_suffix }}"
-    altnames:
-      - "DNS:keystone.{{ site_suffix }}"
-      - "DNS:keystone"
-  - cn: "xos-core.{{ site_suffix }}"
-    subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=xos-core.{{ site_suffix }}"
-    altnames:
-      - "DNS:xos-core.{{ site_suffix }}"
-
-# Network/DNS settings
-headnode: prod
-
-dns_search:
-  - "{{ site_suffix }}"
-
-mgmt_ipv4_first_octets: "192.168.200"
-
-dns_servers:
-  - "{{ mgmt_ipv4_first_octets }}.1"
-
-# DNS settings for NSD/Unbound
-nsd_zones:
-  - name: "{{ site_suffix }}"
-    ipv4_first_octets: "{{ mgmt_ipv4_first_octets }}"
-    name_reverse_unbound: "168.192.in-addr.arpa"
-    soa: ns1
-    ns:
-      - { name: ns1 }
-    nodelists:
-      - head_lxd_list
-      - physical_node_list
-    aliases:
-      - { name: "apt-cache", dest: "{{ headnode }}" }
-      - { name: "cordloghost", dest: "{{ headnode }}" }
-      - { name: "docker", dest: "{{ headnode }}" }
-      - { name: "ns", dest: "{{ headnode }}" }
-      - { name: "ns1", dest: "{{ headnode }}" }
-      - { name: "onos-cord", dest: "{{ headnode }}" }
-      - { name: "xos", dest: "{{ headnode }}" }
-      - { name: "xos-chameleon", dest: "{{ headnode }}" }
-      - { name: "xos-rest-gw", dest: "{{ headnode }}" }
-      - { name: "xos-gui", dest: "{{ headnode }}" }
-
-unbound_listen_all: True
-
-unbound_interfaces:
-  - "{{ mgmt_ipv4_first_octets }}.1/24"
-
-physical_node_list:
-  - name: prod
-    ipv4_last_octet: 1
-    aliases:
-      - head1
-      - head
-
 # VTN network configuration
 management_network_cidr: 172.27.0.0/24
 management_network_ip: 172.27.0.1/24
@@ -153,7 +94,6 @@ charm_versions:
   openstack-dashboard: "cs:trusty/openstack-dashboard-19"
   percona-cluster: "cs:trusty/percona-cluster-31"
   rabbitmq-server: "cs:trusty/rabbitmq-server-42"
-
 
 head_lxd_list:
   - name: "juju-1"
