@@ -86,6 +86,7 @@
     mode: 0644
   with_items:
     - xos_config.yaml
+    - xos_config_synchronizer.yaml
     - deployment.yaml
     - xos.yaml
     - gateway-config.yml
