@@ -1,0 +1,10 @@
+---
+# interface-config/handlers/main.yml
+
+# the next handler may need to change in 16.04 as iptables-persistent was split
+# and may need 'netfilter-persistent' installed as well
+- name: iptables-save
+  shell: iptables-save | grep -vi docker > /etc/iptables/rules.v4
+  tags:
+    - skip_ansible_lint
+
