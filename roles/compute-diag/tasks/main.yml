@@ -20,4 +20,6 @@
    - "ifconfig -a"
    - "route -n"
    - "sudo ovs-vsctl show"
+   - "sudo ovs-vsctl get-controllers br-int"
+
 
