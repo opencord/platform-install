@@ -39,6 +39,8 @@
    - "arp -n"
    - "date"
    - "brctl show"
+   - "free"
+   - "ps aux"
    - "cat /etc/resolv.conf"
    - "cat /etc/lsb-release"
    - "sudo virsh list"
