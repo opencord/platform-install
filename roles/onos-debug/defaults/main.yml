@@ -1,0 +1,10 @@
+---
+# onos-debug/defaults/main.yml
+
+onos_cord_port: 8102
+
+onos_debug_level: "TRACE"
+
+onos_debug_appnames:
+  - org.opencord.vtn
+
