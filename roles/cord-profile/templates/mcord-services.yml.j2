@@ -1,4 +1,3 @@
-
 {#
 Copyright 2017-present Open Networking Foundation
 
@@ -14,7 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 #}
-
 
 tosca_definitions_version: tosca_simple_yaml_1_0
 
@@ -51,8 +49,8 @@ topology_template:
         no-delete: true
         no-update: true
 
-{% if use_management_hosts %}
-    management_hosts:
+{% if use_vtn_net_management_host %}
+    management_host:
       type: tosca.nodes.network.Network.XOS
       properties:
         no-create: true
@@ -146,3 +144,4 @@ topology_template:
           - connection_to_flat_network:
               node: flat_network
               relationship: tosca.relationships.ConnectsToNetwork
+

@@ -44,17 +44,16 @@
   roles:
     - docker-install
 
-- name: Configure management network
+- name: Configure network interfaces
   hosts: head
   become: yes
   roles:
-    - { role: interface-config, when: not use_maas }
+    - interface-config
 
 - name: Networking and DNS server on head node
   hosts: head
   become: yes
   roles:
-    - { role: head-mgmtbr, when: not use_maas }
     - { role: dns-unbound, when: not use_maas }
     - { role: dns-nsd, when: not use_maas }
 
