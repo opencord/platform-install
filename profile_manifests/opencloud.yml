@@ -77,14 +77,19 @@ nsd_zones:
     aliases:
       - { name: "apt-cache", dest: "{{ headnode }}" }
       - { name: "cordloghost", dest: "{{ headnode }}" }
+      - { name: "consul", dest: "{{ headnode }}" }
       - { name: "docker", dest: "{{ headnode }}" }
+      - { name: "mavenrepo", dest: "{{ headnode }}" }
       - { name: "ns", dest: "{{ headnode }}" }
       - { name: "ns1", dest: "{{ headnode }}" }
       - { name: "onos-cord", dest: "{{ headnode }}" }
       - { name: "xos", dest: "{{ headnode }}" }
       - { name: "xos-chameleon", dest: "{{ headnode }}" }
-      - { name: "xos-rest-gw", dest: "{{ headnode }}" }
+      - { name: "xos-consul", dest: "{{ headnode }}" }
+      - { name: "xos-core", dest: "{{ headnode }}" }
       - { name: "xos-gui", dest: "{{ headnode }}" }
+      - { name: "xos-tosca", dest: "{{ headnode }}" }
+      - { name: "xos-ws", dest: "{{ headnode }}" }
 
 unbound_listen_all: True
 
