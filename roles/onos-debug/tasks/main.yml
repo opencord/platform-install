@@ -1,0 +1,18 @@
+---
+# onos-debug/tasks/main.yml
+
+- name: Wait for apps to load via profle, and onos-cord container to be accessible via SSH
+  wait_for:
+    host: localhost
+    port: "{{ onos_cord_port }}"
+    search_regex: "SSHD-CORE"
+    delay: 30
+    timeout: 180
+
+- name: Enable ONOS debugging for specific apps
+  shell: "sshpass -p 'karaf' ssh -p {{ onos_cord_port }} karaf@localhost log:set {{ onos_debug_level }} {{ item }}"
+  ignore_errors: yes
+  with_items: "{{ onos_debug_appnames }}"
+  tags:
+    - skip_ansible_lint # collecting docker container names
+
