@@ -33,6 +33,9 @@ topology_template:
         no-update: true
 {% endif %}
 
+    service#rcord:
+      type: tosca.nodes.Service
+
 # ONOS_CORD, fully created in vtn.yaml
     service#ONOS_CORD:
       type: tosca.nodes.ONOSService
