@@ -1,0 +1,29 @@
+---
+tosca_definitions_version: tosca_simple_yaml_1_0
+
+description: TOSCA to setup OpenCloud services, created by platform-install
+
+imports:
+   - custom_types/xos.yaml
+
+topology_template:
+  node_templates:
+
+{% set public_gateway_ip = ( public_network_cidr | ipaddr('1') | ipaddr('address')) %}
+    addresses_public:
+      type: tosca.nodes.AddressPool
+      properties:
+        addresses: "{{ public_network_cidr }}"
+        gateway_ip: "{{ public_gateway_ip }}"
+        gateway_mac: "{{ ( public_hwaddr_prefix ~ ( public_gateway_ip | ip4_hex )) | hwaddr('unix') }}"
+
+    service#vrouter:
+      type: tosca.nodes.VRouterService
+      properties:
+        view_url: /admin/vrouter/vrouterservice/$id$/
+        replaces: service_vrouter
+      requirements:
+        - addresses_public:
+            node: addresses_public
+            relationship: tosca.relationships.ProvidesAddresses
+
