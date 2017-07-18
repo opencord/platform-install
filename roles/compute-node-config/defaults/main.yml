@@ -14,6 +14,9 @@ compute_external_interfaces:
   - fabric
   - br-int
 
+# name of the VTN dataPlaneIntf field
+vtn_data_plane_interface: "fabric"
+
 # service configs referenced here are likely located in cord-profile/templates
 # used in openstack-compute-vtn.yaml.j2, referencing network in management-net.yaml.j2
 use_management_hosts: False
