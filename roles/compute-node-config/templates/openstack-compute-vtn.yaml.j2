@@ -60,7 +60,7 @@ topology_template:
       type: tosca.nodes.Tag
       properties:
         name: dataPlaneIntf
-        value: fabric
+        value: {{ vtn_data_plane_interface }}
       requirements:
         - target:
             node: {{ hostvars[node]['ansible_hostname'] }}
@@ -83,13 +83,13 @@ topology_template:
             node: service#ONOS_CORD
             relationship: tosca.relationships.MemberOfService
 
-{% if use_management_hosts %}
+{% if use_vtn_net_management_host %}
     # VTN management interface field for node {{ hostvars[node]['ansible_hostname'] }}
     {{ hostvars[node]['ansible_hostname'] }}_hostManagementIface_tag:
       type: tosca.nodes.Tag
       properties:
         name: hostManagementIface
-        value: {{ vtn_management_host_net_interface }}
+        value: {{ vtn_net_management_host_interface }}
       requirements:
         - target:
             node: {{ hostvars[node]['ansible_hostname'] }}
