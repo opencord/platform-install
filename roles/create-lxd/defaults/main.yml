@@ -23,7 +23,9 @@ pod_sshkey_name: "headnode"
 head_lxd_list: []
 
 # For programatic generation of MAC addresses for LXD containers
-hwaddr_prefix: "c2a4"
-mgmt_ipv4_first_octets: "192.168.200"
+management_net_cidr: 10.1.0.0/24
+
+vtn_net_management_host_hwaddr_prefix: "06A6"
+vtn_net_management_host_cidr: "{{ management_net_cidr }}"
 
 use_maas: False
