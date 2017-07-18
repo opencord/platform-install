@@ -23,7 +23,7 @@ limitations under the License.
 $ORIGIN {{ item.name }}. ; default zone domain
 $TTL {{ item.ttl | default(dns_ttl) }} ; default time to live
 
-{{ (item.ipv4_first_octets ~ ".0") | ipaddr('revdns') | regex_replace('^0\.','') }} IN SOA {{ item.soa }}.{{ item.name }}. admin.{{ item.name }}. (
+{{ item.cidr | unbound_revdns }} IN SOA {{ item.soa }}.{{ item.name }}. admin.{{ item.name }}. (
          {{ item.serial | default(ansible_date_time.epoch) }}   ; Serial, must be incremented every time you change this file
          3600        ; Refresh [1hr]
          600         ; Retry [10m]
@@ -37,7 +37,7 @@ $TTL {{ item.ttl | default(dns_ttl) }} ; default time to live
 ; Created from nodelist: {{ nodelist }}
 {% set nodes = vars[nodelist] %}
 {% for node in nodes %}
-{{ (item.ipv4_first_octets ~ "." ~ node.ipv4_last_octet) | ipaddr('revdns') }} IN PTR {{ node.name }}
+{{ item.cidr | ipaddr(node.ipv4_last_octet) | ipaddr('revdns') }} IN PTR {{ node.name }}
 {% endfor %}
 {% endfor %}
 
