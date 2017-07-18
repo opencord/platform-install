@@ -16,3 +16,41 @@
   tags:
     - skip_ansible_lint # needs to be run before next steps
 
+- name: Create network interface for fake fabric and veth0 on compute nodes
+  when: "'compute' in group_names"
+  template:
+    src: fabric.cfg.j2
+    dest: "/etc/network/interfaces.d/fabric.cfg"
+    owner: root
+    group: root
+    mode: 0644
+  register: fabric_config
+
+- name: Bring up fabric and veth0 network if reconfigured
+  when: fabric_config.changed
+  command: "ifup {{ item }}"
+  with_items:
+    - fabric
+    - veth0
+  tags:
+    - skip_ansible_lint # needs to be run before next steps
+
+- name: NAT traffic out from fabric
+  when: fabric_config.changed
+  iptables:
+    table: nat
+    chain: POSTROUTING
+    out_interface: "{{ compute_nat_interface }}"
+    jump: MASQUERADE
+  tags:
+    - skip_ansible_lint # needs to be run before next steps
+
+- name: Forward data out from fabric
+  iptables:
+    chain: FORWARD
+    in_interface: fabric
+    jump: ACCEPT
+  tags:
+    - skip_ansible_lint # needs to be run before next steps
+
+
