@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "1a1a2d67_9347dc4b",
+        "filename": "roles/juju-setup/templates/juju_config.yml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000141
+      },
+      "writtenOn": "2017-07-18T22:40:14Z",
+      "side": 1,
+      "message": "sudo lxc exec nova-cloud-controller-1 -- cat /etc/nova/nova.conf\n\nshould show the current scheduler_default_filters",
+      "parentUuid": "1a1a2d67_3357e804",
+      "range": {
+        "startLine": 39,
+        "startChar": 17,
+        "endLine": 39,
+        "endChar": 61
+      },
+      "revId": "ec9af76f6e5e6357b6221a2413942b4facadee12",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a1a2d67_3320089b",
         "filename": "roles/juju-setup/templates/juju_config.yml.j2",
         "patchSetId": 1
