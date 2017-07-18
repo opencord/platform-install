@@ -1,4 +1,4 @@
-
+---
 {#
 Copyright 2017-present Open Networking Foundation
 
@@ -15,7 +15,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 #}
 
-
 tosca_definitions_version: tosca_simple_yaml_1_0
 
 imports:
@@ -31,19 +30,27 @@ topology_template:
     {{ site_name }}:
       type: tosca.nodes.Site
 
-
 # Address Manager service, fully created in cord-service.yaml
     service#addressmanager:
       type: tosca.nodes.AddressManagerService
 
 # public network
-
     public_template:
       type: tosca.nodes.NetworkTemplate
       properties:
           visibility: public
           translation: none
           vtn_kind: PUBLIC
+
+    {{ site_name }}_public:
+      description: This slice exists solely to own the public network
+      type: tosca.nodes.Slice
+      properties:
+        network: noauto
+      requirements:
+        - site:
+            node: {{ site_name }}
+            relationship: tosca.relationships.MemberOfSite
 
     public:
       type: tosca.nodes.network.Network
@@ -59,15 +66,4 @@ topology_template:
           - addressmanager_service_instance:
               node: service#addressmanager
               relationship: tosca.relationships.TenantOfService
-
-
-    {{ site_name }}_public:
-      description: This slice exists solely to own the public network
-      type: tosca.nodes.Slice
-      properties:
-          network: noauto
-      requirements:
-          - site:
-              node: {{ site_name }}
-              relationship: tosca.relationships.MemberOfSite
 

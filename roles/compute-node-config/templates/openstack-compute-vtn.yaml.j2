@@ -1,3 +1,5 @@
+---
+# generated from compute-node-config/templates/openstack-compute-vtn.yaml.j2
 
 {#
 Copyright 2017-present Open Networking Foundation
@@ -14,7 +16,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 #}
-
 
 tosca_definitions_version: tosca_simple_yaml_1_0
 
@@ -46,12 +47,12 @@ topology_template:
 
 # VTN networking for OpenStack Compute Nodes
 {% for node in groups['compute'] %}
-{% for ext_if in compute_external_interfaces %}
-{% set ansible_ext_if = 'ansible_' ~ ext_if | regex_replace('\W', '_') %}
-{% if hostvars[node][ansible_ext_if] is defined and 'ipv4' in hostvars[node][ansible_ext_if] %}
-{% set node_interface = hostvars[node][ansible_ext_if] %}
+{% for fab_if in computenode_fabric_interfaces %}
+{% set ansible_fab_if = 'ansible_' ~ fab_if | regex_replace('\W', '_') %}
+{% if hostvars[node][ansible_fab_if] is defined and 'ipv4' in hostvars[node][ansible_fab_if] %}
+{% set node_interface = hostvars[node][ansible_fab_if] %}
 
-# Compute node: {{ node }}, with interface {{ ansible_ext_if }}
+# Compute node: {{ node }}, with interface {{ ansible_fab_if }}
     {{ hostvars[node]['ansible_hostname'] }}:
       type: tosca.nodes.Node
       properties:
