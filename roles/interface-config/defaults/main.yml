@@ -1,9 +1,21 @@
 ---
 # interface-config/defaults/main.yml
 
-mgmt_interface: eth1
-
-mgmt_ipv4_first_octets: "192.168.200"
-
+# list of physical nodes in the scenario
 physical_node_list: []
+
+# host network interface on physical nodes
+physical_net_management_interface: eth1
+physical_net_management_cidr: 192.168.200.0/24
+
+# VTN PUBLIC network, used in fabric.yaml.j2
+vtn_net_public_cidr : 10.6.1.0/24
+vtn_net_public_gateway_ip : "{{ vtn_net_public_cidr | ipaddr('1') | ipaddr('address') }}"
+vtn_net_public_hwaddr_prefix: "0242"
+
+vtn_integration_bridge_interface: "fabric"
+
+# VTN MANAGEMENT_HOST network
+use_vtn_net_management_host: False
+vtn_net_management_host_cidr: "{{ host_net_management_cidr }}"
 

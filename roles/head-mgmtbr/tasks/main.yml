@@ -20,6 +20,8 @@
   iptables:
     chain: FORWARD
     policy: ACCEPT
+  handlers:
+    - iptables-save
 
 - name: Configure NAT for mgmtbr
   iptables:
@@ -27,10 +29,14 @@
     chain: POSTROUTING
     out_interface: "{{ mgmtbr_nat_interface }}"
     jump: MASQUERADE
+  handlers:
+    - iptables-save
 
 - name: Configure forwarding for mgmtbr
   iptables:
     chain: FORWARD
     in_interface: mgmtbr
     jump: ACCEPT
+  handlers:
+    - iptables-save
 

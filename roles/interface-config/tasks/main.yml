@@ -1,18 +1,104 @@
 ---
 # interface-config/tasks/main.yml
 
-- name: Create network interface for management network
+- name: Create external network interface for management network
   template:
     src: eth.cfg.j2
-    dest: "/etc/network/interfaces.d/{{ mgmt_interface }}.cfg"
+    dest: "/etc/network/interfaces.d/{{ host_net_management_interface }}.cfg"
     owner: root
     group: root
     mode: 0644
-  register: mgmtint_config
+  register: mgmt_ext_int_config
 
-- name: Bring up management network if reconfigured
-  when: mgmtint_config.changed
+- name: Bring up external network interface for management network if reconfigured
+  when: mgmtint_config.changed and ansible_{{ host_net_management_interface }} is not defined
   command: "ifup {{ mgmt_interface }}"
   tags:
     - skip_ansible_lint # needs to be run before next steps
+
+- name: Create headnode mgmtbr bridge configuration
+  template:
+    src: "mgmtbr.cfg.j2"
+    dest: /etc/network/interfaces.d/mgmtbr.cfg
+    owner: root
+    group: root
+    mode: 0644
+  register: mgmtbr_config
+
+- name: Create mgmtbr bridge configuration
+  template:
+    src: "mgmtbr.cfg.j2"
+    dest: /etc/network/interfaces.d/mgmtbr.cfg
+    owner: root
+    group: root
+    mode: 0644
+  register: mgmtbr_config
+
+- name: Bring up mgmtbr if reconfigured
+  when: mgmtbr_config.changed and ansible_mgmtbr is not defined
+  command: ifup mgmtbr
+  tags:
+    - skip_ansible_lint # needs to be run here or the next steps will fail
+
+- name: Default to accept forwarded traffic
+  iptables:
+    chain: FORWARD
+    policy: ACCEPT
+  handlers:
+    - iptables-save
+
+- name: Configure NAT for mgmtbr
+  iptables:
+    table: nat
+    chain: POSTROUTING
+    out_interface: "{{ mgmtbr_nat_interface }}"
+    jump: MASQUERADE
+  handlers:
+    - iptables-save
+
+- name: Configure forwarding for mgmtbr
+  iptables:
+    chain: FORWARD
+    in_interface: mgmtbr
+    jump: ACCEPT
+  handlers:
+    - iptables-save
+
+- name: Create network interface for fake fabric and veth0 on compute nodes
+  when: "'compute' in group_names"
+  template:
+    src: fabric.cfg.j2
+    dest: "/etc/network/interfaces.d/fabric.cfg"
+    owner: root
+    group: root
+    mode: 0644
+  register: fabric_config
+
+- name: Bring up fabric and veth0 network if reconfigured
+  when: fabric_config.changed
+  command: "ifup {{ item }}"
+  with_items:
+    - fabric
+    - vtnlink0
+  tags:
+    - skip_ansible_lint # needs to be run before next steps
+
+- name: NAT traffic out from fabric
+  when: fabric_config.changed
+  iptables:
+    table: nat
+    chain: POSTROUTING
+    out_interface: "{{ compute_nat_interface }}"
+    jump: MASQUERADE
+  tags:
+    - skip_ansible_lint # needs to be run before next steps
+
+- name: Forward data out from fabric
+  iptables:
+    chain: FORWARD
+    in_interface: fabric
+    jump: ACCEPT
+  tags:
+    - skip_ansible_lint # needs to be run before next steps
+
 

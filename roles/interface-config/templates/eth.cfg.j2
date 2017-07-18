@@ -1,12 +1,15 @@
-{% for node in physical_node_list if node.name == ansible_hostname %}
-auto {{ node.interface | default(mgmt_interface) }}
+# Created by platform-install: interface-config/templates/eth.cfg.j2
 
-iface {{ node.interface | default(mgmt_interface) }} inet static
-    address {{ mgmt_ipv4_first_octets }}.{{ node.ipv4_last_octet }}
-    network {{ mgmt_ipv4_first_octets }}.0
-    netmask 255.255.255.0
-    broadcast {{ mgmt_ipv4_first_octets }}.255
+{% for node in physical_node_list if node.name == ansible_hostname %}
+auto {{ node.interface | default(host_net_management_interface) }}
+{% set host_link_ip = ( host_net_management_cidr | ipaddr(node.ipv4_last_octet) | ipaddr('address')) %}
+iface {{ node.interface | default(host_net_management_interface) }} inet static
+    address {{ host_link_ip }}
+    network {{ host_net_management_cidr | ipaddr('network') }}
+    netmask {{ host_net_management_cidr | ipaddr('netmask') }}
+    broadcast {{ host_net_management_cidr | ipaddr('broadcast') }}
 {% if node.gateway_enabled is defined and node.gateway_enabled %}
-    gateway {{ mgmt_ipv4_first_octets }}.1
+    gateway {{ host_net_management_cidr | ipaddr('1') }}
 {% endif %}
+
 {% endfor %}
