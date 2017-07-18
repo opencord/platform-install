@@ -27,10 +27,16 @@ deployment_type: campus
 # Feature toggles
 use_maas: False
 
+# Network config
+vtn_integration_bridge_interface: "vethfabric1"
+vtn_net_management_host_interface: "vethmgmt1"
+
 # XOS config
 xos_tosca_config_templates:
   - xos-gui-extensions.yml
   - vtn-service.yaml
+  - opencloud-services.yaml
+  - public-net.yaml
   - management-net.yaml
 
 # GUI Config [new GUI], used in app.config.js.j2 and style.config.js.j2
@@ -52,14 +58,9 @@ xos_services:
     keypair: onos_rsa
   - name: vrouter
     path: orchestration/xos_services/vrouter
-
-# External interface name on compute nodes
-compute_external_interface: eth0
-
-# VTN network configuration
-management_network_cidr: 172.27.0.0/24
-management_network_ip: 172.27.0.1/24
-data_plane_ip: 10.168.0.253/24
+  - name: exampleservice
+    path: orchestration/xos_services/exampleservice
+    keypair: exampleservice_rsa
 
 # Juju setup
 charm_versions:
@@ -81,13 +82,13 @@ head_lxd_list:
     service: "juju"
     aliases:
        - "juju"
-    ipv4_last_octet: 50
+    ipv4_last_octet: 17
 
   - name: "ceilometer-1"
     service: "ceilometer"
     aliases:
       - "ceilometer"
-    ipv4_last_octet: 51
+    ipv4_last_octet: 18
     forwarded_ports:
       - { ext: 8777, int: 8777 }
 
@@ -95,7 +96,7 @@ head_lxd_list:
     service: "glance"
     aliases:
       - "glance"
-    ipv4_last_octet: 52
+    ipv4_last_octet: 19
     forwarded_ports:
       - { ext: 9292, int: 9292 }
 
@@ -103,7 +104,7 @@ head_lxd_list:
     service: "keystone"
     aliases:
       - "keystone"
-    ipv4_last_octet: 53
+    ipv4_last_octet: 20
     forwarded_ports:
       - { ext: 35357, int: 35357 }
       - { ext: 4990, int: 4990 }
@@ -113,13 +114,13 @@ head_lxd_list:
     service: "percona-cluster"
     aliases:
       - "percona-cluster"
-    ipv4_last_octet: 54
+    ipv4_last_octet: 21
 
   - name: "neutron-api-1"
     service: "neutron-api"
     aliases:
       - "neutron-api"
-    ipv4_last_octet: 55
+    ipv4_last_octet: 22
     forwarded_ports:
       - { ext: 9696, int: 9696 }
 
@@ -127,7 +128,7 @@ head_lxd_list:
     service: "nova-cloud-controller"
     aliases:
       - "nova-cloud-controller"
-    ipv4_last_octet: 56
+    ipv4_last_octet: 23
     forwarded_ports:
       - { ext: 8774, int: 8774 }
 
@@ -135,7 +136,7 @@ head_lxd_list:
     service: "openstack-dashboard"
     aliases:
       - "openstack-dashboard"
-    ipv4_last_octet: 57
+    ipv4_last_octet: 24
     forwarded_ports:
       - { ext: 8080, int: 80 }
 
@@ -143,13 +144,13 @@ head_lxd_list:
     service: "rabbitmq-server"
     aliases:
       - "rabbitmq-server"
-    ipv4_last_octet: 58
+    ipv4_last_octet: 25
 
   - name: "mongodb-1"
     service: "mongodb"
     aliases:
       - "mongodb"
-    ipv4_last_octet: 59
+    ipv4_last_octet: 26
 
 lxd_service_list:
   - ceilometer
