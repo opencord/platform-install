@@ -31,7 +31,7 @@
         parent: mgmtbr
         nictype: bridged
         # ipv4.address: "{{ mgmt_ipv4_first_octets }}.{{ item.ipv4_last_octet }}"
-        hwaddr: "{{ item.hwaddr | default(hwaddr_prefix ~ ((mgmt_ipv4_first_octets ~ '.' ~ item.ipv4_last_octet) | ip4_hex)) | hwaddr('unix') }}"
+        hwaddr: "{{ item.hwaddr | default( vtn_net_management_host_hwaddr_prefix ~ ( vtn_net_management_host_cidr | ipaddr(node.ipv4_last_octet) | ip4_hex ) | hwaddr('unix')) }}"
       certs:
         type: disk
         path: /usr/local/share/ca-certificates/cord/
