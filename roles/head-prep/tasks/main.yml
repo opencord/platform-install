@@ -45,6 +45,7 @@
     - bridge-utils
     - dnsutils
     - git
+    - iptables-persistent
     - juju-core
     - libssl-dev
     - libvirt-bin
