@@ -36,14 +36,14 @@ neutron-openvswitch: {}
 
 nova-cloud-controller:
   openstack-origin: "cloud:trusty-kilo"
-  config-flags: "force_config_drive=always"
+  config-flags: "scheduler_default_filters=RetryFilter,AvailabilityZoneFilter,CoreFilter,RamFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter,NUMATopologyFilter, force_config_drive=always"
   console-access-protocol: novnc
   network-manager: Neutron
 
 nova-compute:
   openstack-origin: "cloud:trusty-kilo"
   virt-type: kvm
-  config-flags: "firewall_driver=nova.virt.firewall.NoopFirewallDriver"
+  config-flags: "vcpu_pin_set={{ vcpu_pin_set }},firewall_driver=nova.virt.firewall.NoopFirewallDriver"
   disable-neutron-security-groups: "True"
 
 nrpe: {}
