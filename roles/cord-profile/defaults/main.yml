@@ -116,6 +116,10 @@ deployment_flavors:
   - m1.large
   - m1.xlarge
 
+# used in *-services.yaml.j2
+public_network_cidr: 10.6.1.128/25
+public_hwaddr_prefix: "0242"
+
 # used in management-net.yaml.j2
 management_network_cidr: 172.27.0.0/24
 
