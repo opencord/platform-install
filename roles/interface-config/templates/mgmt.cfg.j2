@@ -1,0 +1,36 @@
+# Created by platform-install: interface-config/templates/eth.cfg.j2
+
+{% for node in physical_node_list if node.name == ansible_hostname %}
+auto {{ node.interface | default(mgmt_interface) }}
+iface {{ node.interface | default(mgmt_interface) }} inet manual
+  bond-master mgmtbond
+  bond-primary {{ node.interface | default(mgmt_interface) }}
+
+# Veth interfaces for VTN app
+auto veth3
+iface veth3 inet static
+  address 0.0.0.0
+  pre-up ip link add name veth3 type veth peer name veth2
+  pre-up ip link set veth2 up
+  pre-up ip link set dev veth2 master mgmtbr
+  pre-down ip link set dev veth2 nomaster
+  post-down ip link del veth2
+
+auto mgmtbond
+iface mgmtbond inet manual
+  bond-miimon 100
+  bond-slaves none
+  bond-mode active-backup
+
+auto mgmtbr
+iface mgmtbr inet static
+  bridge_ports mgmtbond veth2
+  address {{ mgmt_ipv4_first_octets }}.{{ node.ipv4_last_octet }}
+  network {{ mgmt_ipv4_first_octets }}.0
+  netmask 255.255.255.0
+  broadcast {{ mgmt_ipv4_first_octets }}.255
+{% if node.gateway_enabled is defined and node.gateway_enabled %}
+  gateway {{ mgmt_ipv4_first_octets }}.1
+{% endif %}
+
+{% endfor %}
