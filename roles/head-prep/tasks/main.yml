@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # file: head-prep/tasks/main.yml
 
 - name:  Install prerequisites for using PPA repos
@@ -45,6 +43,7 @@
     - bridge-utils
     - dnsutils
     - git
+    - iptables-persistent
     - juju-core
     - libssl-dev
     - libvirt-bin
@@ -80,30 +79,6 @@
     - urllib3
     - gitpython
     - graphviz
-
-- name: Add pod ssh private key to head node user
-  copy:
-    src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey"
-    dest: "{{ ansible_user_dir }}/.ssh/id_{{ ssh_keytype }}"
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_gid }}"
-    mode: 0600
-
-- name: Add pod ssh public key to head user
-  copy:
-    src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey.pub"
-    dest: "{{ ansible_user_dir }}/.ssh/id_{{ ssh_keytype }}.pub"
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_gid }}"
-    mode: 0644
-
-- name: Add pod ssh signed public key to head node user
-  copy:
-    src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey-cert.pub"
-    dest: "{{ ansible_user_dir }}/.ssh/id_{{ ssh_keytype }}-cert.pub"
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_gid }}"
-    mode: 0644
 
 - name: Disable host key checking in ~/.ssh/config
   lineinfile:
