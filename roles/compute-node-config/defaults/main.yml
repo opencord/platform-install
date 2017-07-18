@@ -8,16 +8,19 @@ deployment_type: placeholder-deploymenttype
 # location of cord_profile on head node
 head_cord_profile_dir: /opt/cord_profile
 
-# name of the external interface on compute nodes
-# `fabric` is default in R-CORD, VTN adds it to `br-int`
-compute_external_interfaces:
-  - fabric
+# name of the fabric interface on compute nodes
+# `vethfabric1` is default in OpenCloud VTN adds it to `br-int`
+computenode_fabric_interfaces:
+  - vethfabric1
   - br-int
+
+# name of the VTN dataPlaneIntf field
+vtn_integration_bridge_interface: "vethfabric1"
 
 # service configs referenced here are likely located in cord-profile/templates
 # used in openstack-compute-vtn.yaml.j2, referencing network in management-net.yaml.j2
-use_management_hosts: False
-vtn_management_host_net_interface: veth3
+use_vtn_net_management_host: False
+vtn_net_management_host_interface: vethmgmt1
 
 # used in openstack-compute-vtn.yaml.j2, referencing service in fabric.yaml.j2
 use_fabric: False
