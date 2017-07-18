@@ -32,6 +32,8 @@
    - "date"
    - "arp -n"
    - "brctl show"
+   - "free"
+   - "ps aux"
    - "cat /etc/resolv.conf"
    - "cat /etc/lsb-release"
    - "ifconfig -a"
