@@ -1,13 +1,23 @@
 ---
 # roles/dns-configure/defaults
 
+site_name: placeholder-sitename
+site_suffix: "{{ site_name }}.test"
+
+# Set this to search domain suffixes
+dns_search:
+  - "{{ site_suffix }}"
+
+unbound_listen_on_default: False
+
+# Management IP range
+mgmt_ipv4_first_octets: "192.168.200"
+
+dns_servers:
+  - "{{ mgmt_ipv4_first_octets }}.1"
+
 # Define this to set dns servers manually
 #dns_servers:
 #  - 8.8.8.8
 #  - 8.8.4.4
-
-# Set this to search domain suffixes
-# dns_search: {}
-
-unbound_listen_on_default: False
 
