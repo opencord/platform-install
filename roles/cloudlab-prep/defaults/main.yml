@@ -7,6 +7,5 @@ cloudlab_extrafs:
 cloudlab_links:
   - { src: /mnt/extra/lxc, dest: /var/lib/lxc  }
   - { src: /mnt/extra/lxd, dest: /var/lib/lxd  }
-  - { src: /mnt/extra/uvtool, dest: /var/lib/uvtool }
   - { src: /mnt/extra/nova, dest: /var/lib/nova }
   - { src: /mnt/extra/juju, dest: /var/lib/juju }

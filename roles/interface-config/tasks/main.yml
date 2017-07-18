@@ -3,7 +3,7 @@
 
 - name: Create network interface for management network
   template:
-    src: eth.cfg.j2
+    src: mgmt.cfg.j2
     dest: "/etc/network/interfaces.d/{{ mgmt_interface }}.cfg"
     owner: root
     group: root
@@ -13,6 +13,31 @@
 - name: Bring up management network if reconfigured
   when: mgmtint_config.changed
   command: "ifup {{ mgmt_interface }}"
+  with_items:
+    - "{{ mgmt_interface }}"
+    - veth3
+    - mgmtbond
+    - mgmtbr
+  tags:
+    - skip_ansible_lint # needs to be run before next steps
+
+- name: Create network interface for fake fabric and veth0 on compute nodes
+  when: "'compute' in group_names"
+  template:
+    src: fabric.cfg.j2
+    dest: "/etc/network/interfaces.d/fabric.cfg"
+    owner: root
+    group: root
+    mode: 0644
+  register: fabric_config
+
+- name: Bring up fabric and veth0 network if reconfigured
+  when: fabric_config.changed
+  command: "ifup {{ item }}"
+  with_items:
+    - veth0
+    - veth1
+    - fabric
   tags:
     - skip_ansible_lint # needs to be run before next steps
 
