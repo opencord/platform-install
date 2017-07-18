@@ -43,8 +43,8 @@ topology_template:
         no-delete: true
         no-update: true
 
-{% if use_management_hosts %}
-    management_hosts:
+{% if use_vtn_net_management_host %}
+    management_host:
       type: tosca.nodes.network.Network.XOS
       properties:
         no-create: true
@@ -172,9 +172,9 @@ topology_template:
         - management:
             node: management
             relationship: tosca.relationships.ConnectsToNetwork
-{% if use_management_hosts %}
-        - management_hosts:
-            node: management_hosts
+{% if use_vtn_net_management_host %}
+        - management_host:
+            node: management_host
             relationship: tosca.relationships.ConnectsToNetwork
 {% endif %}
         - image:
