@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1a1a2d67_3357e804",
+        "filename": "roles/juju-setup/templates/juju_config.yml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000113
+      },
+      "writtenOn": "2017-07-18T22:00:59Z",
+      "side": 1,
+      "message": "When you say \".. all the currently enabled default filters..\"  what are those ?",
+      "parentUuid": "1a1a2d67_532b8482",
+      "range": {
+        "startLine": 39,
+        "startChar": 17,
+        "endLine": 39,
+        "endChar": 61
+      },
+      "revId": "ec9af76f6e5e6357b6221a2413942b4facadee12",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a1a2d67_3320089b",
         "filename": "roles/juju-setup/templates/juju_config.yml.j2",
         "patchSetId": 1
