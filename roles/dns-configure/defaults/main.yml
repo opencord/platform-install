@@ -17,13 +17,22 @@
 ---
 # roles/dns-configure/defaults
 
+site_name: placeholder-sitename
+site_suffix: "{{ site_name }}.test"
+
+management_net_cidr: "10.1.0.0/24"
+
+# Set this to search domain suffixes
+dns_search:
+  - "{{ site_suffix }}"
+
+dns_servers:
+  - "{{ management_net_cidr | ipaddr('1') | ipaddr('address') }}"
+
+unbound_listen_on_default: False
+
 # Define this to set dns servers manually
 #dns_servers:
 #  - 8.8.8.8
 #  - 8.8.4.4
-
-# Set this to search domain suffixes
-# dns_search: {}
-
-unbound_listen_on_default: False
 
