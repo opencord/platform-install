@@ -7,3 +7,9 @@ mgmt_ipv4_first_octets: "192.168.200"
 
 physical_node_list: []
 
+# used in fabric.yaml.j2 (fake in OpenCloud scenario)
+public_network_cidr: 10.6.1.0/24
+public_hwaddr_prefix: "0242"
+
+compute_nat_interface: eth0
+
