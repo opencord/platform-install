@@ -33,6 +33,9 @@ topology_template:
         no-update: true
 {% endif %}
 
+    service#rcord:
+      type: tosca.nodes.Service
+
 # ONOS_CORD, fully created in vtn.yaml
     service#ONOS_CORD:
       type: tosca.nodes.ONOSService
@@ -179,3 +182,62 @@ topology_template:
             node: image#vsg-1.1
             relationship: tosca.relationships.DefaultImage
 
+    in#lanside:
+      type: tosca.nodes.InterfaceType
+      properties:
+         direction: in
+
+    out#lanside:
+      type: tosca.nodes.InterfaceType
+      properties:
+         direction: out
+
+    in#wanside:
+      type: tosca.nodes.InterfaceType
+      properties:
+         direction: in
+
+    out#wanside:
+      type: tosca.nodes.InterfaceType
+      properties:
+         direction: out
+
+    volt_lanside:
+      type: tosca.nodes.ServiceInterface
+      requirements:
+        - service:
+            node: service#volt
+            relationship: tosca.relationships.MemberOfService
+        - interface:
+            node: out#lanside
+            relationship: tosca.relationships.IsType
+
+    vsg_lanside:
+      type: tosca.nodes.ServiceInterface
+      requirements:
+        - service:
+            node: service#vsg
+            relationship: tosca.relationships.MemberOfService
+        - interface:
+            node: in#lanside
+            relationship: tosca.relationships.IsType
+
+    vsg_wanside:
+      type: tosca.nodes.ServiceInterface
+      requirements:
+        - service:
+            node: service#vsg
+            relationship: tosca.relationships.MemberOfService
+        - interface:
+            node: out#wanside
+            relationship: tosca.relationships.IsType
+
+    vrouter_wanside:
+      type: tosca.nodes.ServiceInterface
+      requirements:
+        - service:
+            node: service#vrouter
+            relationship: tosca.relationships.MemberOfService
+        - interface:
+            node: in#wanside
+            relationship: tosca.relationships.IsType
