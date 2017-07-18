@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a1a2d67_532b8482",
+        "filename": "roles/juju-setup/templates/juju_config.yml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000141
+      },
+      "writtenOn": "2017-07-18T21:52:33Z",
+      "side": 1,
+      "message": "we need to append NUMATopologyFilter to all the currently enabled default filters. Dont know if this does that.",
+      "range": {
+        "startLine": 39,
+        "startChar": 17,
+        "endLine": 39,
+        "endChar": 61
+      },
+      "revId": "ec9af76f6e5e6357b6221a2413942b4facadee12",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a1a2d67_3320089b",
+        "filename": "roles/juju-setup/templates/juju_config.yml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000141
+      },
+      "writtenOn": "2017-07-18T21:52:33Z",
+      "side": 1,
+      "message": "I guess we went with not setting hugepages here. The CORD-1484 ticket doesnt mention hugepages",
+      "range": {
+        "startLine": 46,
+        "startChar": 2,
+        "endLine": 46,
+        "endChar": 16
+      },
+      "revId": "ec9af76f6e5e6357b6221a2413942b4facadee12",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a1a2d67_f33970d9",
+        "filename": "roles/juju-setup/templates/juju_config.yml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000141
+      },
+      "writtenOn": "2017-07-18T21:52:33Z",
+      "side": 1,
+      "message": "This has to be derived from top level config provided from the user. This is config/cord_in_a_box.yml. So here it should probably be vcpu_pin_set\u003d{{ vcpu_pin_set }}\nThe right side vcpu_pin_set is passed on from common section in cord_in_a_box.yml file. This is my understanding",
+      "range": {
+        "startLine": 47,
+        "startChar": 30,
+        "endLine": 47,
+        "endChar": 37
+      },
+      "revId": "ec9af76f6e5e6357b6221a2413942b4facadee12",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
