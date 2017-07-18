@@ -23,4 +23,5 @@ onos_debug_level: "TRACE"
 
 onos_debug_appnames:
   - org.opencord.vtn
+  - org.opencord.cordvtn
 

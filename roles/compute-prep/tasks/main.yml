@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # file: compute-prep/tasks/main.yml
 
 - name: Install packages
@@ -39,6 +37,7 @@
   with_items:
     - root
     - ubuntu
+    - "{{ ansible_user_id }}"
 
 - name: Add pod public key to user accounts (MaaS)
   when: use_maas
@@ -48,6 +47,7 @@
   with_items:
     - root
     - ubuntu
+    - "{{ ansible_user_id }}"
 
 - name: Copy over CA certs from head node (MaaS)
   when: use_maas

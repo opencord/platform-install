@@ -97,6 +97,7 @@
     - fabricbond
     - "{{ fabric_net_interfaces }}"
     - vethfabric0
+    - vethfabric1
   tags:
     - skip_ansible_lint # needs to be run before next steps
 
