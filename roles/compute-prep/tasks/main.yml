@@ -23,6 +23,7 @@
   with_items:
     - root
     - ubuntu
+    - "{{ ansible_user_id }}"
 
 - name: Add pod public key to user accounts (MaaS)
   when: use_maas
@@ -32,6 +33,7 @@
   with_items:
     - root
     - ubuntu
+    - "{{ ansible_user_id }}"
 
 - name: Copy over CA certs from head node (MaaS)
   when: use_maas
