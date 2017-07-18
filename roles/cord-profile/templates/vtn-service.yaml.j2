@@ -1,4 +1,4 @@
-
+---
 {#
 Copyright 2017-present Open Networking Foundation
 
@@ -14,7 +14,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 #}
-
 
 tosca_definitions_version: tosca_simple_yaml_1_0
 
@@ -42,7 +41,7 @@ topology_template:
       properties:
           view_url: /admin/vtn/vtnservice/$id$/
           privateGatewayMac: 00:00:00:00:00:01
-          localManagementIp: {{ management_network_ip }}
+          localManagementIp: {{ vtn_net_management_ip }}
           ovsdbPort: 6641
           sshUser: root
           sshKeyFile: /root/node_key
