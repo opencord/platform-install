@@ -44,6 +44,7 @@
   notify:
     - restart logstash
 
+
 - name: Start ElasticStack
   service:
     name: "{{ item }}"
