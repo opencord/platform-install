@@ -39,10 +39,11 @@
   with_items:
     - 10-udp-input.conf
     - 11-log4j-input.conf
-    - 12-syslog-input.conf
     - 30-elasticsearch-output.conf
   notify:
     - restart logstash
+
+#    - 12-syslog-input.conf # broken?
 
 - name: Start ElasticStack
   service:
