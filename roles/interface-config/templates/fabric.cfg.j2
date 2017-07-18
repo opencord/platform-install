@@ -1,0 +1,43 @@
+# Created by platform-install: interface-config/templates/fabric.cfg.j2
+
+{% for node in physical_node_list if node.name == ansible_hostname %}
+
+# fabric bridge interface for VTN
+{% set public_gateway_ip = ( public_network_cidr | ipaddr('1') | ipaddr('address')) %}
+auto fabric
+iface fabric inet static
+  pre-up ip link add fabric type bridge
+  address {{ public_gateway_ip }}
+  network {{ public_network_cidr | ipaddr('network') }}
+  netmask {{ public_network_cidr | ipaddr('netmask') }}
+  hwaddress ether {{ ( public_hwaddr_prefix ~ ( public_gateway_ip | ip4_hex )) | hwaddr('unix') }}
+  broadcast {{ public_network_cidr | ipaddr('broadcast') }}
+  bond-miimon 100
+  bond-slaves none
+  bond-mode active-backup
+  post-down ip link del fabric
+
+# vtnlink0/vtnlink1 interfaces to connect from VTN br-int to fabric
+auto vtnlink0
+iface vtnlink0 inet static
+  pre-up ip link add vtnlink0 type veth peer name vtnlink1
+  pre-up ip link set vtnlink0 up
+  pre-up ip link set vtnlink1 up
+  post-up ip link set dev vtnlink0 master fabric
+  address 0.0.0.0
+  bond-master fabric
+  bond-primary vtnlink0
+  pre-down ip link set dev vtnlink0 nomaster
+  post-down ip link del vtnlink1
+  post-down ip link del vtnlink0
+
+{% set vtn_link_ip = ( public_network_cidr | ipaddr(node.ipv4_last_octet) | ipaddr('address')) %}
+auto vtnlink1
+iface vtnlink1 inet static
+  address {{ vtn_link_ip }}
+  network {{ public_network_cidr | ipaddr('network') }}
+  netmask {{ public_network_cidr | ipaddr('netmask') }}
+  hwaddress ether {{ ( public_hwaddr_prefix ~ ( vtn_link_ip | ip4_hex )) | hwaddr('unix') }}
+  broadcast {{ public_network_cidr | ipaddr('broadcast') }}
+
+{% endfor %}

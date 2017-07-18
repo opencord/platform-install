@@ -60,7 +60,7 @@ topology_template:
       type: tosca.nodes.Tag
       properties:
         name: dataPlaneIntf
-        value: fabric
+        value: {{ vtn_data_plane_interface }}
       requirements:
         - target:
             node: {{ hostvars[node]['ansible_hostname'] }}
