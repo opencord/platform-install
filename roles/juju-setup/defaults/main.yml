@@ -14,3 +14,6 @@ site_name: placeholder-sitename
 site_suffix: "{{ site_name }}.test"
 
 keystone_admin_password: "{{ lookup('password', credentials_dir ~ '/cord_keystone_admin chars=ascii_letters,digits') }}"
+
+enable_dpdk: False
+vcpu_pin_set: "^0,^2"

@@ -39,12 +39,20 @@ nova-cloud-controller:
   config-flags: "force_config_drive=always"
   console-access-protocol: novnc
   network-manager: Neutron
+  {% if enable_dpdk -%}
+  scheduler-default-filters: "RetryFilter,AvailabilityZoneFilter,CoreFilter,RamFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter,NUMATopologyFilter"
+  {% endif %}
 
 nova-compute:
   openstack-origin: "cloud:trusty-kilo"
   virt-type: kvm
-  config-flags: "firewall_driver=nova.virt.firewall.NoopFirewallDriver"
   disable-neutron-security-groups: "True"
+  {% if enable_dpdk -%}
+  config-flags: "firewall_driver=nova.virt.firewall.NoopFirewallDriver,vcpu_pin_set={{ vcpu_pin_set }}"
+  {% else -%}
+  config-flags: "firewall_driver=nova.virt.firewall.NoopFirewallDriver"
+  {% endif %}
+
 
 nrpe: {}
 
