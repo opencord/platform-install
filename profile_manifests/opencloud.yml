@@ -15,6 +15,8 @@ use_maas: False
 xos_tosca_config_templates:
   - xos-gui-extensions.yml
   - vtn-service.yaml
+  - opencloud-services.yaml
+  - public-net.yaml
   - management-net.yaml
 
 # GUI Config [new GUI], used in app.config.js.j2 and style.config.js.j2
@@ -36,9 +38,14 @@ xos_services:
     keypair: onos_rsa
   - name: vrouter
     path: orchestration/xos_services/vrouter
+  - name: exampleservice
+    path: orchestration/xos_services/exampleservice
+    keypair: exampleservice_rsa
 
 # External interface name on compute nodes
-compute_external_interface: eth0
+# NOTE - this isn't needed due to creating `fabric` in the interface-config role
+# compute_external_interfaces:
+#  - eth0
 
 # VTN network configuration
 management_network_cidr: 172.27.0.0/24
