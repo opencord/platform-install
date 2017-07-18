@@ -37,6 +37,9 @@ xos_services:
     keypair: onos_rsa
   - name: vrouter
     path: orchestration/xos_services/vrouter
+  - name: exampleservice
+    path: orchestration/xos_services/exampleservice
+    keypair: exampleservice_rsa
 
 # SSL certificate generation
 ssl_cert_subj_prefix: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU={{ site_humanname }} Deployment"
@@ -77,14 +80,19 @@ nsd_zones:
     aliases:
       - { name: "apt-cache", dest: "{{ headnode }}" }
       - { name: "cordloghost", dest: "{{ headnode }}" }
+      - { name: "consul", dest: "{{ headnode }}" }
       - { name: "docker", dest: "{{ headnode }}" }
+      - { name: "mavenrepo", dest: "{{ headnode }}" }
       - { name: "ns", dest: "{{ headnode }}" }
       - { name: "ns1", dest: "{{ headnode }}" }
       - { name: "onos-cord", dest: "{{ headnode }}" }
       - { name: "xos", dest: "{{ headnode }}" }
       - { name: "xos-chameleon", dest: "{{ headnode }}" }
-      - { name: "xos-rest-gw", dest: "{{ headnode }}" }
+      - { name: "xos-consul", dest: "{{ headnode }}" }
+      - { name: "xos-core", dest: "{{ headnode }}" }
       - { name: "xos-gui", dest: "{{ headnode }}" }
+      - { name: "xos-tosca", dest: "{{ headnode }}" }
+      - { name: "xos-ws", dest: "{{ headnode }}" }
 
 unbound_listen_all: True
 
@@ -111,7 +119,8 @@ physical_node_list:
     ipv4_last_octet: 21
 
 # External interface name on compute nodes
-compute_external_interface: eth0
+compute_external_interfaces:
+  - eth0
 
 # VTN network configuration
 management_network_cidr: 172.27.0.0/24
