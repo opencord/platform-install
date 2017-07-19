@@ -19,7 +19,7 @@
     update_cache: yes
   with_items:
   - "apache2"
-  - "libapache2-mod-fastcgi"
+  - "libapache2-mod-fcgid"
   - "apache2-mpm-worker"
 
 - name: Configure Apache
