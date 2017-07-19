@@ -1,0 +1,8 @@
+---
+# setup-nova-dpdk/defaults/main.yml
+
+site_name: placeholder-sitename
+site_suffix: "{{ site_name }}.test"
+
+requests_ca_bundle: "/etc/ssl/certs/ca-certificates.crt"
+keystone_admin_password: "{{ lookup('password', credentials_dir ~ '/cord_keystone_admin chars=ascii_letters,digits') }}"

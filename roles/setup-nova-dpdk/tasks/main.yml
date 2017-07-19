@@ -1,0 +1,51 @@
+---
+# Setup nova flavors with perf attributes
+
+- name: Upgrade pbr
+  pip:
+    name: pbr
+    extra_args: --upgrade
+  become: True
+
+- name: Install shade
+  pip:
+    name: shade
+  become: True
+
+- name: Delete existing flavors except m1.tiny
+  os_nova_flavor:
+    state: absent
+    cacert: "{{ requests_ca_bundle }}"
+    auth:
+      auth_url: "https://keystone.{{ site_suffix }}:5000/v2.0"
+      username: admin
+      password: "{{ keystone_admin_password }}"
+      project_name: admin
+    name: "{{ item }}"
+  with_items:
+    - m1.small
+    - m1.medium
+    - m1.large
+    - m1.xlarge
+
+- name: Re-create flavors with perf attributes
+  os_nova_flavor:
+    state: present
+    cacert: "{{ requests_ca_bundle }}"
+    auth:
+      auth_url: "https://keystone.{{ site_suffix }}:5000/v2.0"
+      username: admin
+      password: "{{ keystone_admin_password }}"
+      project_name: admin
+    name: "{{ item.name }}"
+    ram: "{{ item.ram }}"
+    vcpus: "{{ item.vcpus }}"
+    disk: "{{ item.disk }}"
+    extra_specs:
+      "hw:mem_page_size": 2048
+      "hw:cpu_policy": dedicated
+  with_items:
+    - { name: 'm1.small',   ram: 2048,  vcpus: 1, disk: 20  }
+    - { name: 'm1.medium',  ram: 4096,  vcpus: 2, disk: 40  }
+    - { name: 'm1.large',   ram: 8192,  vcpus: 4, disk: 80  }
+    - { name: 'm1.xlarge',  ram: 16384, vcpus: 8, disk: 160 }
