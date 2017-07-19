@@ -1,0 +1,10 @@
+- name: Nova flavor add attributes
+  shell: bash -c "source /opt/cord_profile/admin-openrc.sh; nova flavor-key {{ item }} set hw:mem_page_size=2048 hw:cpu_policy=dedicated"
+  with_items:
+#  - m1.tiny # This should fail
+   - m1.small
+   - m1.medium
+   - m1.large
+   - m1.xlarge
+  tags:
+    - skip_ansible_lint
