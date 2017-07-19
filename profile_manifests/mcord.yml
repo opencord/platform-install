@@ -71,18 +71,18 @@ xos_services:
   - name: fabric
     path: orchestration/xos_services/fabric
     synchronizer: true
-#  - name: vbbu
-#    path: orchestration/xos_services/vbbu
-#    keypair: mcord_rsa
-#    synchronizer: true
-#  - name: vmme
-#    path: orchestration/xos_services/vmme
-#    keypair: mcord_rsa
-#    synchronizer: true
-#  - name: vsgw
-#    path: orchestration/xos_services/vsgw
-#    keypair: mcord_rsa
-#    synchronizer: true
+  - name: vbbu
+    path: orchestration/xos_services/vbbu
+    keypair: mcord_rsa
+    synchronizer: true
+  - name: vmme
+    path: orchestration/xos_services/vmme
+    keypair: mcord_rsa
+    synchronizer: true
+  - name: vsgw
+    path: orchestration/xos_services/vsgw
+    keypair: mcord_rsa
+    synchronizer: true
 #  - name: vpgwc
 #    path: orchestration/xos_services/vpgwc
 #    keypair: mcord_rsa
