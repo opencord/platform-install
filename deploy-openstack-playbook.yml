@@ -28,3 +28,9 @@
     - juju-setup
     - juju-finish
 
+- name: Configure Nova with DPDK-enabled flavors
+  hosts: head
+  roles:
+    - { role: setup-nova-dpdk, when: enable_dpdk | default(False) }
+  tags:
+    - skip_ansible_lint
