@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a1a2d67_53bf04d1",
+        "filename": "roles/juju-setup/templates/juju_config.yml.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000141
+      },
+      "writtenOn": "2017-07-19T03:04:30Z",
+      "side": 1,
+      "message": "This might need to be wrapped around an if else block\n\n{% if enable_dpdk %}\nconfig-flags: \"force_config_drive\u003dalways,scheduler_default_filters\u003d...\"\n{% else %}\nconfig-flags: \"force_config_drive\u003dalways\"\n{% endif %}\n\nCheck with Andy or Zack",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 263
+      },
+      "revId": "7d727f6cc779d1d5c563d16ad59f66781a39ccc6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a1a2d67_13b98ce9",
+        "filename": "roles/juju-setup/templates/juju_config.yml.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000141
+      },
+      "writtenOn": "2017-07-19T03:04:30Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 46,
+        "startChar": 2,
+        "endLine": 46,
+        "endChar": 103
+      },
+      "revId": "7d727f6cc779d1d5c563d16ad59f66781a39ccc6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
