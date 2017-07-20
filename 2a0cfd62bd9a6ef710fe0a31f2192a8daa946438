@@ -93,6 +93,30 @@
       "revId": "2a0cfd62bd9a6ef710fe0a31f2192a8daa946438",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a1a2d67_1603ba74",
+        "filename": "roles/juju-setup/templates/juju_config.yml.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000141
+      },
+      "writtenOn": "2017-07-20T20:59:27Z",
+      "side": 1,
+      "message": "@Andy, but that is not the charm we are using right?\nI don\u0027t see that setting in https://jujucharms.com/u/cordteam/nova-compute/trusty/2",
+      "parentUuid": "1a1a2d67_b6dac615",
+      "range": {
+        "startLine": 40,
+        "startChar": 2,
+        "endLine": 40,
+        "endChar": 14
+      },
+      "revId": "2a0cfd62bd9a6ef710fe0a31f2192a8daa946438",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
