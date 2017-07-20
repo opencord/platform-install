@@ -69,6 +69,30 @@
       "revId": "2a0cfd62bd9a6ef710fe0a31f2192a8daa946438",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a1a2d67_b6dac615",
+        "filename": "roles/juju-setup/templates/juju_config.yml.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-07-20T20:33:32Z",
+      "side": 1,
+      "message": "See the example I gave above.  Instead of changing config-flags: option we should add a scheduler-default-filters: option here.\n\nhttps://jujucharms.com/nova-cloud-controller/#charm-config-scheduler-default-filters",
+      "parentUuid": "1a1a2d67_76dd4e14",
+      "range": {
+        "startLine": 40,
+        "startChar": 2,
+        "endLine": 40,
+        "endChar": 14
+      },
+      "revId": "2a0cfd62bd9a6ef710fe0a31f2192a8daa946438",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
