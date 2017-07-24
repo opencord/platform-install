@@ -49,6 +49,6 @@
 
 # Doesn't work right now, but reported: https://github.com/ansible/ansible/issues/24794
 # see also http://docs.ansible.com/ansible/intro_configuration.html#openssh-specific-settings
-- name: Reset ssh connection so user gains docker group membership
-  meta: reset_connection
+#- name: Reset ssh connection so user gains docker group membership
+#  meta: reset_connection
 
