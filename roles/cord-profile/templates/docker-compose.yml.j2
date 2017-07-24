@@ -159,7 +159,7 @@ services:
     restart: unless-stopped
 
   gui_extensions_store:
-    image: {{ pull_docker_registry }}node:7.9.0
+    image: {{ pull_docker_registry }}node:{{ pull_docker_tag }}
     networks:
 {% for network in xos_docker_networks %}
      - {{ network }}
