@@ -1,7 +1,7 @@
 ---
 # compute-node-enable-maas/defaults/main.yml
 
-credentials_dir: "{{ playbook_dir }}/credentials"
+credentials_dir: "/opt/credentials"
 head_cord_profile_dir: "/opt/cord_profile"
 
 xos_admin_user: "xosadmin@opencord.org"
