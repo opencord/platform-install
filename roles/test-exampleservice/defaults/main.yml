@@ -2,6 +2,7 @@
 # test-exampleservice/defaults/main.yml
 
 head_cord_profile_dir: "/opt/cord_profile"
+credentials_dir: "/opt/credentials"
 
 xos_ui_port: 9000
 
