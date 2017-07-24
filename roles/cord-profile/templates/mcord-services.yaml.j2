@@ -7,8 +7,8 @@ imports:
    - custom_types/vmme.yaml
    - custom_types/vbbu.yaml
    - custom_types/vsgw.yaml
-#   - custom_types/vhss.yaml
-#   - custom_types/vpgwc.yaml
+   - custom_types/vhss.yaml
+   - custom_types/vpgwc.yaml
 
 topology_template:
   node_templates:
@@ -64,15 +64,22 @@ topology_template:
       type: tosca.nodes.VBBUService
       properties:
           view_url: /admin/vbbu/vbbuservice/$id$/
+          kind: vRAN
 
-#    service#vpgwc:
-#      type: tosca.nodes.VPGWCService
-#      properties:
-#          view_url: /admin/vpgwc/vpgwcservice/$id$/
-#          kind: vEPC
+    service#vpgwc:
+      type: tosca.nodes.VPGWCService
+      properties:
+          view_url: /admin/vpgwc/vpgwcservice/$id$/
+          kind: vEPC
 
     service#vsgw:
       type: tosca.nodes.VSGWService
       properties:
           view_url: /admin/vsgw/vsgwservice/$id$/
+          kind: vEPC
+
+    service#vhss:
+      type: tosca.nodes.VHSSService
+      properties:
+          view_url: /admin/vhss/vhssservice/$id$/
           kind: vEPC

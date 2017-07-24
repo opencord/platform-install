@@ -83,10 +83,10 @@ xos_services:
     path: orchestration/xos_services/vsgw
     keypair: mcord_rsa
     synchronizer: true
-#  - name: vpgwc
-#    path: orchestration/xos_services/vpgwc
-#    keypair: mcord_rsa
-#    synchronizer: true
+  - name: vpgwc
+    path: orchestration/xos_services/vpgwc
+    keypair: mcord_rsa
+    synchronizer: true
 # needed onboarding synchronizer doesn't require service code to be present when started
   - name: exampleservice
     path: orchestration/xos_services/exampleservice
@@ -96,10 +96,10 @@ xos_services:
     path: orchestration/xos_services/monitoring
     keypair: monitoringservice_rsa
     synchronizer: false
-#  - name: vhss
-#    path: orchestration/xos_services/vhss
-#    keypaird: mcord_rsa
-#    synchronizer: true
+  - name: vhss
+    path: orchestration/xos_services/vhss
+    keypaird: mcord_rsa
+    synchronizer: true
 
 xos_service_sshkeys:
   - name: onos_rsa
