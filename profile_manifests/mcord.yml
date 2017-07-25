@@ -21,13 +21,10 @@ xos_tosca_config_templates:
   - vtn-service.yaml
   - fabric-service.yaml
   - management-net.yaml
-  - mcord-services.yaml  # should unify this with services.yaml.j2 eventually
   - shared-net.yaml
   - wan-net.yaml
   - vsg-net.yaml
-# - public-net.yaml
-# - volt-devices.yaml
-# - vrouter.yaml
+  - mcord-services.yaml
 
 xos_other_templates:
   - fabric-network-cfg.json
