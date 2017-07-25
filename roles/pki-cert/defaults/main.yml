@@ -8,7 +8,26 @@ cert_size: 2048
 cert_digest: "sha256"
 cert_days: 365
 
+# site names
+site_name: placeholder-sitename
+site_humanname: "Placeholder Site HumanName"
+site_suffix: "{{ site_name }}.test"
+
+# Default subject prefix
+ssl_cert_subj_prefix: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU={{ site_humanname }} Deployment"
+
 # lists of certificates to create
-server_certs: []
+server_certs:
+  - cn: "keystone.{{ site_suffix }}"
+    subj: "{{ ssl_cert_subj_prefix }}/CN=keystone.{{ site_suffix }}"
+    altnames:
+      - "DNS:keystone.{{ site_suffix }}"
+      - "DNS:keystone"
+  - cn: "xos-core.{{ site_suffix }}"
+    subj: "{{ ssl_cert_subj_prefix }}/CN=xos-core.{{ site_suffix }}"
+    altnames:
+      - "DNS:xos-core.{{ site_suffix }}"
+      - "DNS:xos-core"
+
 client_certs: []
 

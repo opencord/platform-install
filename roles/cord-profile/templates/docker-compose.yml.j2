@@ -320,6 +320,7 @@ services:
       - xos_redis:redis
 {% endif %}
     volumes:
+      - {{ head_cord_profile_dir }}/xos_config_synchronizer.yaml:/opt/xos/xos_config.yaml:ro
       - {{ head_cord_profile_dir }}/node_key:/opt/cord_profile/node_key:ro
       - {{ head_credentials_dir }}:/opt/xos/services/{{ svc.name }}/credentials:ro
       - {{ head_cord_profile_dir }}/im_cert_chain.pem:/usr/local/share/ca-certificates/local_certs.crt:ro

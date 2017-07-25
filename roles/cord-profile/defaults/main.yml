@@ -4,17 +4,14 @@
 # where the cord_profile directory is on the config node
 config_cord_profile_dir: "/opt/cord_profile"
 
-head_cord_dir: "/opt/cord"
-
 pki_dir: "{{ playbook_dir }}/pki"
 ssh_pki_dir: "{{ playbook_dir }}/ssh_pki"
 credentials_dir: "{{ playbook_dir }}/credentials"
 
-head_credentials_dir: "/opt/credentials"
-
 # where cord files are copied to on head node
-head_cord_profile_dir: "/opt/cord_profile"
 head_cord_dir: "/opt/cord"
+head_cord_profile_dir: "/opt/cord_profile"
+head_credentials_dir: "/opt/credentials"
 
 # For storing OpenStack images
 image_dir: /opt/images

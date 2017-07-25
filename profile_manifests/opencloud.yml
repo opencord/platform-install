@@ -10,7 +10,6 @@ deployment_type: campus
 
 # Feature toggles
 use_maas: False
-use_apt_cache: True
 
 # XOS config
 xos_tosca_config_templates:
@@ -37,78 +36,6 @@ xos_services:
     keypair: onos_rsa
   - name: vrouter
     path: orchestration/xos_services/vrouter
-
-# SSL certificate generation
-ssl_cert_subj_prefix: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU={{ site_humanname }} Deployment"
-
-server_certs:
-  - cn: "keystone.{{ site_suffix }}"
-    subj: "{{ ssl_cert_subj_prefix }}/CN=keystone.{{ site_suffix }}"
-    altnames:
-      - "DNS:keystone.{{ site_suffix }}"
-      - "DNS:keystone"
-  - cn: "xos-core.{{ site_suffix }}"
-    subj: "{{ ssl_cert_subj_prefix }}/CN=xos-core.{{ site_suffix }}"
-    altnames:
-      - "DNS:xos-core.{{ site_suffix }}"
-
-# Network/DNS settings
-headnode: head1
-
-dns_search:
-  - "{{ site_suffix }}"
-
-mgmt_ipv4_first_octets: "192.168.200"
-
-dns_servers:
-  - "{{ mgmt_ipv4_first_octets }}.1"
-
-# DNS settings for NSD/Unbound
-nsd_zones:
-  - name: "{{ site_suffix }}"
-    ipv4_first_octets: "{{ mgmt_ipv4_first_octets }}"
-    name_reverse_unbound: "168.192.in-addr.arpa"
-    soa: ns1
-    ns:
-      - { name: ns1 }
-    nodelists:
-      - head_lxd_list
-      - physical_node_list
-    aliases:
-      - { name: "apt-cache", dest: "{{ headnode }}" }
-      - { name: "cordloghost", dest: "{{ headnode }}" }
-      - { name: "docker", dest: "{{ headnode }}" }
-      - { name: "ns", dest: "{{ headnode }}" }
-      - { name: "ns1", dest: "{{ headnode }}" }
-      - { name: "onos-cord", dest: "{{ headnode }}" }
-      - { name: "xos", dest: "{{ headnode }}" }
-      - { name: "xos-chameleon", dest: "{{ headnode }}" }
-      - { name: "xos-rest-gw", dest: "{{ headnode }}" }
-      - { name: "xos-gui", dest: "{{ headnode }}" }
-
-unbound_listen_all: True
-
-unbound_interfaces:
-  - "{{ mgmt_ipv4_first_octets }}.1/24"
-
-dhcpd_subnets:
-  - interface: mgmtbr
-    cidr: "{{ mgmt_ipv4_first_octets }}.1/24"
-    dhcp_first: 129
-    dhcp_last: 254
-    other_static:
-      - physical_node_list
-      - head_lxd_list
-
-physical_node_list:
-  - name: head1
-    ipv4_last_octet: 1
-    aliases:
-      - head
-  - name: compute1
-    ipv4_last_octet: 20
-  - name: compute2
-    ipv4_last_octet: 21
 
 # External interface name on compute nodes
 compute_external_interface: eth0

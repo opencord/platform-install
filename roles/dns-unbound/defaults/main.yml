@@ -6,6 +6,52 @@ unbound_group: "wheel"
 
 unbound_listen_on_default: False
 
-unbound_listen_all: False
+unbound_listen_all: True
 
-unbound_interfaces: []
+# NOTE - many of the below settings are shared with the dns-nsd role, and you
+# may need to update them in the defaults of both.
+
+site_name: placeholder-sitename
+site_suffix: "{{ site_name }}.test"
+
+headnode: head1
+
+# Management IP range from DHCP settings
+mgmt_ipv4_first_octets: "192.168.200"
+mgmt_name_reverse_unbound: "168.192.in-addr.arpa"
+
+unbound_interfaces:
+  - "{{ mgmt_ipv4_first_octets }}.1/24"
+
+# node lists
+head_lxd_list: []
+physical_node_list: []
+
+# DNS settings for NSD/Unbound
+nsd_zones:
+  - name: "{{ site_suffix }}"
+    ipv4_first_octets: "{{ mgmt_ipv4_first_octets }}"
+    name_reverse_unbound: "{{ mgmt_name_reverse_unbound }}"
+    soa: ns1
+    ns:
+      - { name: ns1 }
+    nodelists:
+      - head_lxd_list
+      - physical_node_list
+    aliases:
+      - { name: "apt-cache", dest: "{{ headnode }}" }
+      - { name: "cordloghost", dest: "{{ headnode }}" }
+      - { name: "consul", dest: "{{ headnode }}" }
+      - { name: "docker", dest: "{{ headnode }}" }
+      - { name: "mavenrepo", dest: "{{ headnode }}" }
+      - { name: "ns", dest: "{{ headnode }}" }
+      - { name: "ns1", dest: "{{ headnode }}" }
+      - { name: "onos-cord", dest: "{{ headnode }}" }
+      - { name: "xos", dest: "{{ headnode }}" }
+      - { name: "xos-chameleon", dest: "{{ headnode }}" }
+      - { name: "xos-consul", dest: "{{ headnode }}" }
+      - { name: "xos-core", dest: "{{ headnode }}" }
+      - { name: "xos-gui", dest: "{{ headnode }}" }
+      - { name: "xos-tosca", dest: "{{ headnode }}" }
+      - { name: "xos-ws", dest: "{{ headnode }}" }
+

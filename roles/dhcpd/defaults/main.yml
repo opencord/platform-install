@@ -1,13 +1,33 @@
 ---
 # dhcpd/defaults/main.yml
 
-dns_search: []
-dns_servers: []
-
 # http://serverfault.com/questions/40712/what-range-of-mac-addresses-can-i-safely-use-for-my-virtual-machines
 hwaddr_prefix: "c2a4"
 
-dhcpd_subnets: []
+site_name: placeholder-sitename
+site_suffix: "{{ site_name }}.test"
+
+# Management IP range from DHCP settings
+mgmt_ipv4_first_octets: "192.168.200"
+
+# node lists
+head_lxd_list: []
+physical_node_list: []
+
+dns_search:
+  - "{{ site_suffix }}"
+
+dns_servers:
+  - "{{ mgmt_ipv4_first_octets }}.1"
+
+dhcpd_subnets:
+  - interface: mgmtbr
+    cidr: "{{ mgmt_ipv4_first_octets }}.1/24"
+    dhcp_first: 129
+    dhcp_last: 254
+    other_static:
+      - physical_node_list
+      - head_lxd_list
 
 # example dhcpd_subnets:
 #
@@ -23,5 +43,4 @@ dhcpd_subnets: []
 #         filename: boot.tftp
 #     other_static:
 #       - head_lxd_list
-
 
