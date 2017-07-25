@@ -28,7 +28,6 @@
     dest: "{{ head_onos_cord_dir }}/{{ item }}"
   with_items:
     - Dockerfile
-    - onos-service
     - org.ops4j.pax.logging.cfg
     - docker-compose.yml
 
