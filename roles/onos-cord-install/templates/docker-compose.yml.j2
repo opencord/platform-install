@@ -4,7 +4,7 @@ version: '2'
 services:
 
    xos-onos:
-      image: xos/onos:{{ deploy_docker_tag }}
+      image: xos/onos:{{ pull_docker_tag }}
       ports:
        - "6654:6653"
        - "8102:8101"

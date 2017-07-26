@@ -5,7 +5,7 @@
 head_onos_fabric_dir: "/opt/onos_fabric/"
 
 # ONOS docker image to use
-deploy_docker_registry: ""
-deploy_docker_tag: "candidate"
-onos_docker_image: "{{ deploy_docker_registry }}onosproject/onos:{{ deploy_docker_tag }}"
+pull_docker_registry: ""
+pull_docker_tag: "candidate"
+onos_docker_image: "{{ pull_docker_registry }}onosproject/onos:{{ pull_docker_tag }}"
 

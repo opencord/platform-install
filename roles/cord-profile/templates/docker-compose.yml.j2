@@ -11,7 +11,7 @@ networks:
 
 services:
   consul:
-    image: {{ deploy_docker_registry }}gliderlabs/consul-server:{{ deploy_docker_tag }}
+    image: {{ pull_docker_registry }}gliderlabs/consul-server:{{ pull_docker_tag }}
     command: "-advertise=${MYHOST} -server -bootstrap"
     ports:
       - "127.0.0.1:8500:8500"
@@ -28,7 +28,7 @@ services:
       SERVICE_8600_IGNORE: "yes"
     restart: unless-stopped
   registrator:
-    image: {{ deploy_docker_registry }}gliderlabs/registrator:{{ deploy_docker_tag }}
+    image: {{ pull_docker_registry }}gliderlabs/registrator:{{ pull_docker_tag }}
     command: [
          "-ip=${DOCKER_HOST_IP}",
          "-internal",
@@ -47,7 +47,7 @@ services:
       - consul
     restart: unless-stopped
   xos_db:
-    image: {{ deploy_docker_registry }}xosproject/xos-postgres:{{ deploy_docker_tag }}
+    image: {{ pull_docker_registry }}xosproject/xos-postgres:{{ pull_docker_tag }}
     networks:
 {% for network in xos_docker_networks %}
       - {{ network }}
@@ -62,7 +62,7 @@ services:
 
 {% if use_redis %}
   xos_redis:
-    image: {{ deploy_docker_registry }}redis:{{ deploy_docker_tag }}
+    image: {{ pull_docker_registry }}redis:{{ pull_docker_tag }}
     networks:
 {% for network in xos_docker_networks %}
      - {{ network }}
@@ -80,7 +80,7 @@ services:
 {% endif %}
 
   xos_gui:
-    image: {{ deploy_docker_registry }}xosproject/xos-gui:{{ deploy_docker_tag }}
+    image: {{ pull_docker_registry }}xosproject/xos-gui:{{ pull_docker_tag }}
     networks:
 {% for network in xos_docker_networks %}
      - {{ network }}
@@ -111,7 +111,7 @@ services:
     restart: unless-stopped
 
   xos_tosca:
-    image: {{ deploy_docker_registry }}xosproject/xos-tosca:{{ deploy_docker_tag }}
+    image: {{ pull_docker_registry }}xosproject/xos-tosca:{{ pull_docker_tag }}
     networks:
 {% for network in xos_docker_networks %}
      - {{ network }}
@@ -135,7 +135,7 @@ services:
     restart: unless-stopped
 
   xos_chameleon:
-    image: {{ deploy_docker_registry }}xosproject/chameleon:{{ deploy_docker_tag }}
+    image: {{ pull_docker_registry }}xosproject/chameleon:{{ pull_docker_tag }}
     networks:
 {% for network in xos_docker_networks %}
      - {{ network }}
@@ -159,7 +159,7 @@ services:
     restart: unless-stopped
 
   gui_extensions_store:
-    image: {{ deploy_docker_registry }}node:7.9.0
+    image: {{ pull_docker_registry }}node:7.9.0
     networks:
 {% for network in xos_docker_networks %}
      - {{ network }}
@@ -176,7 +176,7 @@ services:
       - registrator
 
   xos_ws:
-    image: {{ deploy_docker_registry }}xosproject/xos-ws:{{ deploy_docker_tag }}
+    image: {{ pull_docker_registry }}xosproject/xos-ws:{{ pull_docker_tag }}
     networks:
 {% for network in xos_docker_networks %}
      - {{ network }}
@@ -208,7 +208,7 @@ services:
     restart: unless-stopped
 
   xos_ui:
-    image: {{ deploy_docker_registry }}xosproject/xos-ui:{{ deploy_docker_tag }}
+    image: {{ pull_docker_registry }}xosproject/xos-ui:{{ pull_docker_tag }}
     networks:
 {% for network in xos_docker_networks %}
      - {{ network }}
@@ -244,7 +244,7 @@ services:
     restart: unless-stopped
 
   xos_core:
-    image: {{ deploy_docker_registry }}xosproject/xos-ui:{{ deploy_docker_tag }}
+    image: {{ pull_docker_registry }}xosproject/xos-ui:{{ pull_docker_tag }}
     networks:
 {% for network in xos_docker_networks %}
      - {{ network }}
@@ -283,7 +283,7 @@ services:
 
 {% for ext in enabled_gui_extensions %}
   gui-extension-{{ ext.name }}:
-    image: {{ deploy_docker_registry }}xosproject/gui-extension-{{ ext.name }}:{{ deploy_docker_tag }}
+    image: {{ pull_docker_registry }}xosproject/gui-extension-{{ ext.name }}:{{ pull_docker_tag }}
     networks:
 {% for network in xos_docker_networks %}
      - {{ network }}
@@ -304,7 +304,7 @@ services:
 {% for svc in xos_services %}
 {% if svc.synchronizer is not defined or svc.synchronizer %}
   {{ svc.name }}-synchronizer:
-    image: {{ deploy_docker_registry }}xosproject/{{ svc.name }}-synchronizer:{{ deploy_docker_tag }}
+    image: {{ pull_docker_registry }}xosproject/{{ svc.name }}-synchronizer:{{ pull_docker_tag }}
     networks:
 {% for network in xos_docker_networks %}
      - {{ network }}

@@ -31,8 +31,8 @@ use_redis: True
 use_vtn: True
 
 # Docker related settings
-deploy_docker_registry: ""
-deploy_docker_tag: "candidate"
+pull_docker_registry: ""
+pull_docker_tag: "candidate"
 
 xos_docker_networks:
   - "xos"
