@@ -45,7 +45,7 @@
 
 - name: Build xos/onos docker image
   docker_image:
-    name: "xos/onos:{{ deploy_docker_tag }}"
+    name: "xos/onos:{{ pull_docker_tag }}"
     path: "{{ head_onos_cord_dir }}"
     pull: False
     force: True

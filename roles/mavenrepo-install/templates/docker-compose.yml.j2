@@ -4,7 +4,7 @@ version: '2'
 services:
 
   mavenrepo:
-    image: {{ deploy_docker_registry }}opencord/mavenrepo:{{ deploy_docker_tag }}
+    image: {{ pull_docker_registry }}opencord/mavenrepo:{{ pull_docker_tag }}
     container_name: mavenrepo
     ports:
       - "8080:80"
