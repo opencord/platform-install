@@ -131,7 +131,7 @@ charm_versions:
   mongodb: "cs:trusty/mongodb-33"
   percona-cluster: "cs:trusty/percona-cluster-31"
   nagios: "cs:trusty/nagios-10"
-  neutron-api: "cs:~cordteam/trusty/neutron-api-5"
+  neutron-api: "cs:~cordteam/trusty/neutron-api-6"
   nova-cloud-controller: "cs:trusty/nova-cloud-controller-64"
   nova-compute: "cs:~cordteam/trusty/nova-compute-2"
   nrpe: "cs:trusty/nrpe-4"

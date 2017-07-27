@@ -52,7 +52,7 @@ charm_versions:
   glance: "cs:trusty/glance-28"
   keystone: "cs:trusty/keystone-33"
   mongodb: "cs:trusty/mongodb-33"
-  neutron-api: "cs:~cordteam/trusty/neutron-api-5"
+  neutron-api: "cs:~cordteam/trusty/neutron-api-6"
   nova-cloud-controller: "cs:trusty/nova-cloud-controller-64"
   nova-compute: "cs:~cordteam/trusty/nova-compute-2"
   ntp: "cs:trusty/ntp-14"
