@@ -31,6 +31,9 @@ neutron-api:
   onos-vtn-port: 8182
   neutron-security-groups: "True"
   overlay-network-type: vxlan
+  {% if enable_dpdk -%}
+  onos-vtn-branch: cord-2.0-dpdk-kilo
+  {% endif %}
 
 neutron-openvswitch: {}
 
