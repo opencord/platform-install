@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a1a2d67_2711e2ac",
+        "filename": "roles/cord-profile/templates/cord-services.yaml.j2",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2017-07-27T15:44:47Z",
+      "side": 1,
+      "message": "As a note, Sapan and I were discussing that would be nice not to require the User to create services, but let XOS create this object when a service is onboarded, and to prevent the user from removing it.",
+      "range": {
+        "startLine": 36,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 31
+      },
+      "revId": "b6a8055b970f0e76a031dd02dbf7b451e6b74361",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
