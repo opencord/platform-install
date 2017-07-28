@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a1a2d67_02b0148a",
+        "filename": "profile_manifests/rcord.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-07-28T19:19:35Z",
+      "side": 1,
+      "message": "Let\u0027s bump the neutron-api charm in the other profiles that use it.  That way everyone is using the same version.  There should be no ill effects of doing so.",
+      "range": {
+        "startLine": 89,
+        "startChar": 36,
+        "endLine": 89,
+        "endChar": 49
+      },
+      "revId": "a2f5a0b854ae2b3fa21fd8b926f4e40636ac17e9",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a1a2d67_e2acf837",
+        "filename": "roles/juju-setup/templates/juju_config.yml.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-07-28T19:19:35Z",
+      "side": 1,
+      "message": "The charm specifies default values for onos-vtn-repo and onos-vtn-branch, so we only need to include these if we want to change the defaults.\n\nDo you think it helps with clarity if we always make them explicit?  I\u0027m fine either way.",
+      "range": {
+        "startLine": 34,
+        "startChar": 2,
+        "endLine": 34,
+        "endChar": 15
+      },
+      "revId": "a2f5a0b854ae2b3fa21fd8b926f4e40636ac17e9",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
