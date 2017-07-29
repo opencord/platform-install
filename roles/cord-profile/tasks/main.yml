@@ -87,6 +87,7 @@
   with_items:
     - xos_config.yaml
     - xos_config_synchronizer.yaml
+    - initial_data.yaml
     - deployment.yaml
     - xos.yaml
     - gateway-config.yml
