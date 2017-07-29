@@ -45,18 +45,6 @@ topology_template:
 
 {% endfor %}
 
-# Site
-    {{ site_name }}:
-      type: tosca.nodes.Site
-      properties:
-        display_name: {{ site_humanname }}
-        site_url: http://{{ site_name }}.opencloud.us/
-        hosts_nodes: true
-      requirements:
-        - deployment:
-            node: {{ deployment_type }}
-            relationship: tosca.relationships.MemberOfDeployment
-
 # Attach the Tenant view to the deployment
     Tenant:
       type: tosca.nodes.DashboardView
@@ -67,40 +55,3 @@ topology_template:
         - deployment:
             node: {{ deployment_type }}
             relationship: tosca.relationships.SupportsDeployment
-
-# XOS Users
-# Default admin user account
-    {{ xos_admin_user }}:
-      type: tosca.nodes.User
-      properties:
-        password: {{ xos_admin_pass }}
-        firstname: {{ xos_admin_first }}
-        lastname: {{ xos_admin_last }}
-        is_admin: True
-      requirements:
-        - site:
-            node: {{ site_name }}
-            relationship: tosca.relationships.MemberOfSite
-        - tenant_dashboard:
-            node: Tenant
-            relationship: tosca.relationships.UsesDashboard
-
-# All other users
-{% for user in xos_users %}
-    {{ user.email }}:
-      type: tosca.nodes.User
-      properties:
-        password: {{ user.password }}
-        firstname: {{ user.first | default(user.email) }}
-        lastname: {{ user.last | default("unknown") }}
-        is_admin: {{ user.admin | default("false") }}
-      requirements:
-        - site:
-            node: {{ site_name }}
-            relationship: tosca.relationships.MemberOfSite
-        - tenant_dashboard:
-            node: Tenant
-            relationship: tosca.relationships.UsesDashboard
-
-{% endfor %}
-
