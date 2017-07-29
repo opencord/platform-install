@@ -20,10 +20,15 @@
 
 - include: add-onboard-containers-playbook.yml
 
-- name: Check to see if XOS UI is ready, apply profile config
-  hosts: xos_ui
+- name: Check XOS Ready
+  hosts: head
   connection: docker
   roles:
     - xos-ready
+
+- name: Apply profile config
+  hosts: xos_ui
+  connection: docker
+  roles:
     - xos-config
 

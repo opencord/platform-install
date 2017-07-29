@@ -36,7 +36,6 @@ needs_pki_install: True
 build_xos_base_image: True
 
 xos_tosca_config_templates:
-  - sample.yaml
   - management-net.yaml
   - mock-onos.yaml
   - cord-services.yaml
@@ -103,3 +102,5 @@ server_certs:
     subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=xos-core.{{ site_suffix }}"
     altnames:
       - "DNS:xos-core.{{ site_suffix }}"
+
+xos_images: []

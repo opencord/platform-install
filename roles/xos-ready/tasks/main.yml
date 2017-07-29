@@ -17,9 +17,11 @@
 ---
 # xos-ready/tasks/main.yml
 
-- name: Wait for XOS to be ready after service onboarding
-  wait_for:
-    host: localhost
-    port: "{{ xos_ui_port }}"
-    timeout: 300
-
+- name: Wait for XOS Chameleon to be ready after service onboarding #this means core is ready
+  shell: curl localhost:{{ xos_chameleon_port }}/xosapi/v1/modeldefs
+  register: result
+  until: result.stdout.find("items") != -1
+  retries: 10
+  delay: 20
+  tags:
+    - skip_ansible_lint # running a sub job
