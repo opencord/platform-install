@@ -231,7 +231,7 @@ services:
 {% for network in xos_docker_networks %}
      - {{ network }}
 {% endfor %}
-    command: python /opt/xos/manage.py runserver 0.0.0.0:9000 --insecure --makemigrations
+    command: python /opt/xos/manage.py runserver 0.0.0.0:9000 --insecure
     ports:
       - "9000:9000"
     links:
@@ -288,6 +288,7 @@ services:
       - {{ head_cord_profile_dir }}:/opt/cord_profile:ro
       - {{ head_cord_dir }}/orchestration/xos_libraries/ng-xos-lib:/opt/xos_libraries/ng-xos-lib:ro
       - {{ head_cord_profile_dir }}/im_cert_chain.pem:/usr/local/share/ca-certificates/local_certs.crt:ro
+      - {{ head_cord_profile_dir }}/initial_data.yaml:/opt/xos/core/migrations/initial_data.yaml:ro
       - /var/run/docker.sock:/var/run/docker.sock
     logging:
       driver: "json-file"
