@@ -22,6 +22,30 @@
       "revId": "d1b54b65f1c329946f91d2b701f4e3887bffdd73",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a1a2d67_42128c63",
+        "filename": "roles/juju-setup/templates/juju_config.yml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-07-29T21:53:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a1a2d67_4244cc73",
+      "range": {
+        "startLine": 35,
+        "startChar": 19,
+        "endLine": 35,
+        "endChar": 32
+      },
+      "revId": "d1b54b65f1c329946f91d2b701f4e3887bffdd73",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
