@@ -103,6 +103,7 @@
   with_items:
     - xos_config.yaml
     - xos_config_synchronizer.yaml
+    - initial_data.yaml
     - deployment.yaml
     - xos.yaml
     - gateway-config.yml
@@ -126,7 +127,6 @@
   with_items: "{{ xos_other_templates }}"
 
 - name: Create OpenStack config and TOSCA onboarding
-  when: use_openstack
   template:
     src: "{{ item }}.j2"
     dest: "{{ config_cord_profile_dir }}/{{ item }}"
