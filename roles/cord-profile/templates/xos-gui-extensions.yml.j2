@@ -13,5 +13,6 @@ topology_template:
     {{ext.name}}:
       type: tosca.nodes.XOSGuiExtension
       properties:
-        files: /xos/extensions/{{ext.name}}/vendor.js, /xos/extensions/{{ext.name}}/app.js
+        files: /xos/extensions/{{ext.name}}/vendor.js, /xos/extensions/{{ext.name}}/app.js {% if ext.extra_files is defined %}{% for file in ext.extra_files%}, /xos/extensions/{{ext.name}}/{{file}} {% endfor %}{% endif %}
+
 {% endfor %}

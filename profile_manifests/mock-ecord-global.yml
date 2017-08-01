@@ -36,6 +36,8 @@ gui_branding_bg: "/static/cord-bg.jpg"
 enabled_gui_extensions:
   - name: metro-net-gui
     path: orchestration/xos_services/metro-net/xos/gui
+    extra_files:
+      - app/style/style.css
 
 # paths defined in manifest/default.xml
 xos_services:
