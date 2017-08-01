@@ -92,30 +92,54 @@ topology_template:
       properties:
           view_url: /admin/vmme/vmmeservice/$id$/
           kind: vEPC
+          public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
+          private_key_fn: /opt/xos/services/vmme/keys/mcord_rsa
+      artifacts:
+          pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
 
     service#vbbu:
       type: tosca.nodes.VBBUService
       properties:
           view_url: /admin/vbbu/vbbuservice/$id$/
           kind: vRAN
+          public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
+          private_key_fn: /opt/xos/services/vbbu/keys/mcord_rsa
+      artifacts:
+          pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
+
 
     service#vpgwc:
       type: tosca.nodes.VPGWCService
       properties:
           view_url: /admin/vpgwc/vpgwcservice/$id$/
           kind: vEPC
+          public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
+          private_key_fn: /opt/xos/services/vpgwc/keys/mcord_rsa
+      artifacts:
+          pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
+
 
     service#vsgw:
       type: tosca.nodes.VSGWService
       properties:
           view_url: /admin/vsgw/vsgwservice/$id$/
           kind: vEPC
+          public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
+          private_key_fn: /opt/xos/services/vsgw/keys/mcord_rsa
+      artifacts:
+          pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
+
 
     service#vhss:
       type: tosca.nodes.VHSSService
       properties:
           view_url: /admin/vhss/vhssservice/$id$/
           kind: vEPC
+          public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
+          private_key_fn: /opt/xos/services/vhss/keys/mcord_rsa
+      artifacts:
+          pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
+
 
 # CORD Slices
     mysite_vBBU_slice:
