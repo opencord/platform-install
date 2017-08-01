@@ -18,17 +18,18 @@ limitations under the License.
 
 tosca_definitions_version: tosca_simple_yaml_1_0
 
+description: Persist xos-sample-gui-extension
+
 imports:
    - custom_types/xos.yaml
-
-description: enough onos config to make the mock work
 
 topology_template:
   node_templates:
 
-    service#ONOS_Fabric:
-      type: tosca.nodes.ONOSService
-
-    service#ONOS_CORD:
-      type: tosca.nodes.ONOSService
-
+    # UI Extension
+{% for ext in enabled_gui_extensions %}
+    {{ext.name}}:
+      type: tosca.nodes.XOSGuiExtension
+      properties:
+        files: /xos/extensions/{{ext.name}}/vendor.js, /xos/extensions/{{ext.name}}/app.js {% if ext.extra_files is defined %}{% for file in ext.extra_files%}, /xos/extensions/{{ext.name}}/{{file}} {% endfor %}{% endif %}
+{% endfor %}
