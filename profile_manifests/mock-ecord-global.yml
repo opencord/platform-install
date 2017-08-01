@@ -33,6 +33,10 @@ gui_branding_icon: "/static/cord-logo.png"
 gui_branding_favicon: "/static/cord-favicon.png"
 gui_branding_bg: "/static/cord-bg.jpg"
 
+enabled_gui_extensions:
+  - name: metro-net-gui
+    path: orchestration/xos_services/metro-net/xos/gui
+
 # paths defined in manifest/default.xml
 xos_services:
   - name: onos
