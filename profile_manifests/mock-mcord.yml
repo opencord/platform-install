@@ -21,6 +21,7 @@ xos_tosca_config_templates:
   - sample.yaml
   - management-net.yaml
   - mock-mcord.yaml
+  - xos-gui-extensions.yml
 
 # GUI Config [new GUI]
 gui_project_name: "M-CORD"

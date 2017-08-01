@@ -18,6 +18,7 @@ xos_admin_last: admin
 
 xos_tosca_config_templates:
   - sample.yaml
+  - xos-gui-extensions.yml
 
 # site domain suffix
 site_suffix: opencloud.us

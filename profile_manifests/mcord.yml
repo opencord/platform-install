@@ -25,6 +25,7 @@ xos_tosca_config_templates:
   - wan-net.yaml
   - vsg-net.yaml
   - mcord-services.yaml
+  - xos-gui-extensions.yml
   #- ng-core.yaml
 
 xos_other_templates:

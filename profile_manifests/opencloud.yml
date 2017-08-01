@@ -21,6 +21,7 @@ xos_tosca_config_templates:
   - nodes.yaml
   - vtn-service.yaml
   - management-net.yaml
+  - xos-gui-extensions.yml
 
 cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
 
