@@ -33,12 +33,20 @@ gui_branding_icon: "/static/cord-logo.png"
 gui_branding_favicon: "/static/cord-favicon.png"
 gui_branding_bg: "/static/cord-bg.jpg"
 
+enabled_gui_extensions:
+  - name: metro-net-gui
+    path: orchestration/xos_services/metro-net/xos/gui
+    extra_files:
+      - app/style/style.css
+
 # paths defined in manifest/default.xml
 xos_services:
   - name: onos
     path: orchestration/xos_services/onos-service
-  - name: metronetwork
+    synchronizer: true
+  - name: metro-net
     path: orchestration/xos_services/metro-net
+    synchronizer: true
 
 xos_service_sshkeys:
   - name: onos_rsa
