@@ -9,6 +9,7 @@
 
 - name: Compute node diag collection
   shell: "{{ item }} > /tmp/{{ hostvars[groups['head'][0]]['diag_dir'] }}/{{ inventory_hostname }}/{{ item | regex_replace('[^\\w-]', '_')}}"
+  ignore_errors: yes
   args:
     creates: "compute_diag_dir.stat.path/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
@@ -20,4 +21,6 @@
    - "ifconfig -a"
    - "route -n"
    - "sudo ovs-vsctl show"
+   - "sudo ovs-vsctl get-controller br-int"
+
 
