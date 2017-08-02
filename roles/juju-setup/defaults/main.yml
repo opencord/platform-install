@@ -17,3 +17,8 @@ keystone_admin_password: "{{ lookup('password', credentials_dir ~ '/cord_keyston
 
 enable_dpdk: False
 vcpu_pin_set: "^0,^2"
+hugepages: "60%"
+dpdk_socket_memory: "1024,0"
+dpdk_lcore_mask: "0x1"
+fabric_interfaces: "eth2"
+pmd_cpu_mask: "0x2"
