@@ -52,6 +52,12 @@ nova-compute:
   disable-neutron-security-groups: "True"
   {% if enable_dpdk -%}
   config-flags: "firewall_driver=nova.virt.firewall.NoopFirewallDriver,vcpu_pin_set={{ vcpu_pin_set }}"
+  enable-dpdk: True
+  hugepages: "{{ hugepages }}"
+  dpdk-socket-memory: "{{ dpdk_socket_memory }}"
+  dpdk-lcore-mask: "{{ dpdk_lcore_mask }}"
+  pmd-cpu-mask: "{{ pmd_cpu_mask }}"
+  fabric-interfaces: "{{ fabric_interfaces }}"
   {% else -%}
   config-flags: "firewall_driver=nova.virt.firewall.NoopFirewallDriver"
   {% endif %}
