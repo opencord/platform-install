@@ -26,3 +26,19 @@
     state: absent
   ignore_errors: yes
   when: delete_cord_profile_dir
+
+- name: Check if nova is installed
+  shell: which nova
+  register: nova_output
+  tags: nova_out
+
+- name: Find nova instances after purging XOS database
+  shell: source /opt/cord_profile/admin-openrc.sh; nova list --all-tenants | grep -i my | awk '{print $2}' | grep -v ^ID | grep -v ^$ | xargs -n1 echo
+  register: output
+  tags: register
+  when: nova_output.stdout != ""
+  ignore_errors: yes
+
+- name: Delete Nova instances
+  shell: source /opt/cord_profile/admin-openrc.sh; nova list --all-tenants | grep -i my | awk '{print $2}' | grep -v ^ID | grep -v ^$ | xargs -n1 nova delete
+  when: nova_output.stdout != "" and output.stdout != ""
