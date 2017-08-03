@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa3479d7_55681ef5",
+        "filename": "roles/cord-profile/templates/mcord-services.yaml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2017-08-03T06:08:54Z",
+      "side": 1,
+      "message": "you did not rebase, so you missed the keys here",
+      "range": {
+        "startLine": 96,
+        "startChar": 10,
+        "endLine": 96,
+        "endChar": 20
+      },
+      "revId": "c7787359c8339250c5c7e52da540d1fe85cb06ed",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
