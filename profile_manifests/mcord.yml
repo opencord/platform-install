@@ -90,6 +90,14 @@ xos_services:
     path: orchestration/xos_services/vhss
     keypaird: mcord_rsa
     synchronizer: true
+  - name: vmm
+    path: orchestration/xos_services/vmm
+    keypaird: mcord_rsa
+    synchronizer: true
+  - name: vsm
+    path: orchestration/xos_services/vsm
+    keypaird: mcord_rsa
+    synchronizer: true
 # needed onboarding synchronizer doesn't require service code to be present when started
   - name: exampleservice
     path: orchestration/xos_services/exampleservice
