@@ -9,6 +9,8 @@ imports:
    - custom_types/vsgw.yaml
    - custom_types/vhss.yaml
    - custom_types/vpgwc.yaml
+   - custom_types/vmm.yaml
+   - custom_types/vsm.yaml
 
 topology_template:
   node_templates:
@@ -134,6 +136,26 @@ topology_template:
           kind: vEPC
           public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
           private_key_fn: /opt/xos/services/vhss/keys/mcord_rsa
+      artifacts:
+          pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
+
+    service#vmm:
+      type: tosca.nodes.VMMService
+      properties:
+          view_url: /admin/vmm/vmmservice/$id$/
+          kind: vEPC
+          public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
+          private_key_fn: /opt/xos/services/vmm/keys/mcord_rsa
+      artifacts:
+          pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
+
+    service#vsm:
+      type: tosca.nodes.VSMService
+      properties:
+          view_url: /admin/vsm/vsmservice/$id$/
+          kind: vEPC
+          public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
+          private_key_fn: /opt/xos/services/vsm/keys/mcord_rsa
       artifacts:
           pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
 
@@ -272,4 +294,54 @@ topology_template:
               relationship: tosca.relationships.ConnectsToNetwork
           - connection_to_wan_network:
               node: wan_network
+              relationship: tosca.relationships.ConnectsToNetwork
+
+    mysite_vMM_slice:
+      description: vMM Service Slice
+      type: tosca.nodes.Slice
+      properties:
+          network: noauto
+      requirements:
+          - site:
+              node: mysite
+              relationship: tosca.relationships.MemberOfSite
+          - vPMM:
+              node: service#vmm
+              relationship: tosca.relationships.MemberOfService
+          - default_image:
+              node: trusty-server-multi-nic
+              relationship: tosca.relationships.DefaultImage
+          - default_flavor:
+              node: m1.small
+              relationship: tosca.relationships.DefaultFlavor
+          - connection_to_management:
+              node: management
+              relationship: tosca.relationships.ConnectsToNetwork
+          - connection_to_shared_network:
+              node: shared_network
+              relationship: tosca.relationships.ConnectsToNetwork
+
+    mysite_vSM_slice:
+      description: vSM Service Slice
+      type: tosca.nodes.Slice
+      properties:
+          network: noauto
+      requirements:
+          - site:
+              node: mysite
+              relationship: tosca.relationships.MemberOfSite
+          - vPMM:
+              node: service#vsm
+              relationship: tosca.relationships.MemberOfService
+          - default_image:
+              node: trusty-server-multi-nic
+              relationship: tosca.relationships.DefaultImage
+          - default_flavor:
+              node: m1.small
+              relationship: tosca.relationships.DefaultFlavor
+          - connection_to_management:
+              node: management
+              relationship: tosca.relationships.ConnectsToNetwork
+          - connection_to_shared_network:
+              node: shared_network
               relationship: tosca.relationships.ConnectsToNetwork
