@@ -1,0 +1,8 @@
+---
+# teardown-nova-playbook.yml
+
+- name: Teardown Nova instances
+  hosts: head
+  roles:
+   - teardown-nova
+
