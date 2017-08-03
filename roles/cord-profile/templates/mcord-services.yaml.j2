@@ -25,10 +25,10 @@ topology_template:
     m1.xlarge:
       type: tosca.nodes.Flavor
 
-    #image#trusty-server-multi-nic:
-    #  type: tosca.nodes.Image
-    image#vsg-1.1:
+    trusty-server-multi-nic:
       type: tosca.nodes.Image
+    #image#vsg-1.1:
+    #  type: tosca.nodes.Image
 
 
 # management networks, fully created in management-net.yaml
@@ -107,7 +107,6 @@ topology_template:
       artifacts:
           pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
 
-
     service#vpgwc:
       type: tosca.nodes.VPGWCService
       properties:
@@ -117,7 +116,6 @@ topology_template:
           private_key_fn: /opt/xos/services/vpgwc/keys/mcord_rsa
       artifacts:
           pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
-
 
     service#vsgw:
       type: tosca.nodes.VSGWService
@@ -129,7 +127,6 @@ topology_template:
       artifacts:
           pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
 
-
     service#vhss:
       type: tosca.nodes.VHSSService
       properties:
@@ -139,7 +136,6 @@ topology_template:
           private_key_fn: /opt/xos/services/vhss/keys/mcord_rsa
       artifacts:
           pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
-
 
 # CORD Slices
     mysite_vBBU_slice:
@@ -154,9 +150,9 @@ topology_template:
           - vBBU:
               node: service#vbbu
               relationship: tosca.relationships.MemberOfService
-          #- default_image:
-          #    node: trusty-server-multi-nic
-          #    relationship: tosca.relationships.DefaultImage
+          - default_image:
+              node: trusty-server-multi-nic
+              relationship: tosca.relationships.DefaultImage
           - default_flavor:
               node: m1.xlarge
               relationship: tosca.relationships.DefaultFlavor
@@ -184,9 +180,9 @@ topology_template:
           - vMME:
               node: service#vmme
               relationship: tosca.relationships.MemberOfService
-          #- default_image:
-          #    node: trusty-server-multi-nic
-          #    relationship: tosca.relationships.DefaultImage
+          - default_image:
+              node: trusty-server-multi-nic
+              relationship: tosca.relationships.DefaultImage
           - default_flavor:
               node: m1.small
               relationship: tosca.relationships.DefaultFlavor
@@ -209,9 +205,9 @@ topology_template:
           - vHSS:
               node: service#vhss
               relationship: tosca.relationships.MemberOfService
-          #- default_image:
-          #    node: trusty-server-multi-nic
-          #    relationship: tosca.relationships.DefaultImage
+          - default_image:
+              node: trusty-server-multi-nic
+              relationship: tosca.relationships.DefaultImage
           - default_flavor:
               node: m1.small
               relationship: tosca.relationships.DefaultFlavor
@@ -237,9 +233,9 @@ topology_template:
           - vSGW:
               node: service#vsgw
               relationship: tosca.relationships.MemberOfService
-          #- default_image:
-          #    node: trusty-server-multi-nic
-          #    relationship: tosca.relationships.DefaultImage
+          - default_image:
+              node: trusty-server-multi-nic
+              relationship: tosca.relationships.DefaultImage
           - default_flavor:
               node: m1.small
               relationship: tosca.relationships.DefaultFlavor
@@ -262,9 +258,9 @@ topology_template:
           - vPGWC:
               node: service#vpgwc
               relationship: tosca.relationships.MemberOfService
-          #- default_image:
-          #    node: trusty-server-multi-nic
-          #    relationship: tosca.relationships.DefaultImage
+          - default_image:
+              node: trusty-server-multi-nic
+              relationship: tosca.relationships.DefaultImage
           - default_flavor:
               node: m1.small
               relationship: tosca.relationships.DefaultFlavor
