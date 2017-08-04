@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa3479d7_7be9d319",
+        "filename": "roles/cord-profile/templates/mcord-services.yaml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2017-08-04T02:07:43Z",
+      "side": 1,
+      "message": "does not need the wan network",
+      "range": {
+        "startLine": 323,
+        "startChar": 11,
+        "endLine": 325,
+        "endChar": 65
+      },
+      "revId": "c84397d7b3850a119b23ea9bfeba069e6f9f63ed",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa3479d7_5bee0f24",
+        "filename": "roles/cord-profile/templates/mcord-services.yaml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2017-08-04T02:07:43Z",
+      "side": 1,
+      "message": "does not need the wan network",
+      "range": {
+        "startLine": 351,
+        "startChar": 13,
+        "endLine": 351,
+        "endChar": 38
+      },
+      "revId": "c84397d7b3850a119b23ea9bfeba069e6f9f63ed",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
