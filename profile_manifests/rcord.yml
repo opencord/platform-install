@@ -20,7 +20,6 @@ xos_tosca_config_templates:
   - management-net.yaml
   - cord-services.yaml  # should unify this with services.yaml.j2 eventually
   - public-net.yaml
-  - volt-devices.yaml
   - vrouter.yaml
   - xos-gui-extensions.yml
 

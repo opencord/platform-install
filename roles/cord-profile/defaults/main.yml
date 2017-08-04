@@ -125,12 +125,4 @@ management_hosts_net_range_xos_high: "10.1.0.254"
 use_fabric: False
 fabric_network_cfg_json: "/opt/cord_profile/fabric-network-cfg.json"
 
-# used in volt-devices.yaml.j2
-volt_devices:
-  - name: voltdev
-    openflow_id: "of:1000000000000001"
-    access_devices: "2 222, 3 223, 4 224"
-    agent_mac: "AA:BB:CC:DD:EE:FF"
-    agent_port_mappings: "of:0000000000000002/2 DE:AD:BE:EF:BA:11, of:0000000000000002/3 BE:EF:DE:AD:BE:EF"
-
 cord_app_version: "1.2-SNAPSHOT"
