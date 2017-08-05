@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da3975d1_31fed06c",
+        "filename": "roles/teardown-nova/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-08-05T00:58:40Z",
+      "side": 1,
+      "message": "Can you make the registered variable this more descriptive?  Say `nova_installed` ? \n\nAlso, it may be better to use the stat module, pass the path to the command, and then check for `\u003cregistervar\u003e.stat.exists`, similar to this:\n\nhttps://github.com/opencord/platform-install/blob/master/roles/common-prep/tasks/main.yml#L13-L16",
+      "range": {
+        "startLine": 8,
+        "startChar": 11,
+        "endLine": 8,
+        "endChar": 23
+      },
+      "revId": "59b021be6bffd0577b217de8f8c82cb2d37a7ce8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da3975d1_1103cc74",
+        "filename": "roles/teardown-nova/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-08-05T00:58:40Z",
+      "side": 1,
+      "message": "Not all site names contain `my`.",
+      "range": {
+        "startLine": 13,
+        "startChar": 77,
+        "endLine": 13,
+        "endChar": 87
+      },
+      "revId": "59b021be6bffd0577b217de8f8c82cb2d37a7ce8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da3975d1_f1f7288b",
+        "filename": "roles/teardown-nova/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-08-05T00:58:40Z",
+      "side": 1,
+      "message": "make more descriptive.",
+      "range": {
+        "startLine": 14,
+        "startChar": 11,
+        "endLine": 14,
+        "endChar": 18
+      },
+      "revId": "59b021be6bffd0577b217de8f8c82cb2d37a7ce8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da3975d1_d13b0437",
+        "filename": "roles/teardown-nova/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-08-05T00:58:40Z",
+      "side": 1,
+      "message": "If you\u0027re looking for UUID\u0027s, something like:\n\nnova list --fields name --all-tenants | perl -ne \u0027while(/([a-f0-9-]{36})\\s/g){print \"$\u0026\\n\";}\u0027\n\nMight be better - grab just the uuid and name, then find a UUID looking string (hex, 36 characters with dashes)",
+      "range": {
+        "startLine": 21,
+        "startChar": 51,
+        "endLine": 21,
+        "endChar": 145
+      },
+      "revId": "59b021be6bffd0577b217de8f8c82cb2d37a7ce8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
