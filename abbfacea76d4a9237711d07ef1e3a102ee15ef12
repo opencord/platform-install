@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a437d4f_ef1f4108",
+        "filename": "roles/cord-profile/templates/carrierethernet-global-app.yaml.j2",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000029
+      },
+      "writtenOn": "2017-08-08T18:57:47Z",
+      "side": 1,
+      "message": "Why is this needed? This can be specified in the app\u0027s buck file using \u0027required_apps\u0027",
+      "revId": "abbfacea76d4a9237711d07ef1e3a102ee15ef12",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a437d4f_cf1c7d16",
+        "filename": "roles/cord-profile/templates/carrierethernet-local-app.yaml.j2",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000029
+      },
+      "writtenOn": "2017-08-08T18:57:47Z",
+      "side": 1,
+      "message": "same",
+      "revId": "abbfacea76d4a9237711d07ef1e3a102ee15ef12",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
