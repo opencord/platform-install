@@ -54,7 +54,7 @@ charm_versions:
   mongodb: "cs:trusty/mongodb-33"
   neutron-api: "cs:~cordteam/trusty/neutron-api-6"
   nova-cloud-controller: "cs:trusty/nova-cloud-controller-64"
-  nova-compute: "cs:~cordteam/trusty/nova-compute-2"
+  nova-compute: "cs:~cordteam/trusty/nova-compute-3"
   ntp: "cs:trusty/ntp-14"
   openstack-dashboard: "cs:trusty/openstack-dashboard-19"
   percona-cluster: "cs:trusty/percona-cluster-31"
