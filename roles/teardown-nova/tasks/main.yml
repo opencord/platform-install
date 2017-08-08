@@ -1,0 +1,35 @@
+---
+# teardown-nova/tasks/main.yml
+# Destroys the currently created nova instances
+# NOTE: ignoring errors so that incomplete builds can be removed
+
+- name: Check if nova is installed
+  stat:
+    path: /usr/bin/nova
+  register: nova_installed
+
+
+- name: Find nova instances after purging XOS database
+  shell: source /opt/cord_profile/admin-openrc.sh; nova list --all-tenants | awk '{print $2}' | grep -v ^ID | grep -v ^$ | xargs -n1 echo
+  register: nova_instances
+  when: nova_installed.stat.exists == True
+  ignore_errors: yes
+  tags:
+     - skip_ansible_lint # running a sub job
+
+- name: Delete Nova instances
+  shell: source /opt/cord_profile/admin-openrc.sh; nova list --all-tenants| awk '{print $2}' | grep -v ^ID | grep -v ^$ | xargs -n1 nova delete
+  when: nova_installed.stat.exists == True and nova_instances.stdout != ""
+  ignore_errors: yes
+  tags:
+     - skip_ansible_lint # running a sub job
+
+- name: Waiting for Nova instances to be deleted
+  shell: source /opt/cord_profile/admin-openrc.sh; nova list --all-tenants | grep | awk '{print $2}' | grep -v ^ID | grep -v ^$ | xargs -n1 echo
+  register: task_result
+  when: nova_installed.stat.exists == True
+  until: task_result.stdout== ""
+  retries: 20
+  delay: 10
+  tags:
+     - skip_ansible_lint # running a sub job
