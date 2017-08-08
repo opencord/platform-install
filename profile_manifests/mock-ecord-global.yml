@@ -38,6 +38,7 @@ enabled_gui_extensions:
     path: orchestration/xos_services/metro-net/xos/gui
     extra_files:
       - app/style/style.css
+      - mapconstants.js
 
 # paths defined in manifest/default.xml
 xos_services:
