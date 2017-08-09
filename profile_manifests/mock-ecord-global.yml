@@ -21,6 +21,7 @@ xos_tosca_config_templates:
   - mock-onos.yaml
   - vnodglobal-service.yaml
   - xos-gui-extensions.yml
+  - carrierethernet-global-app.yaml
 
 # GUI Config [new GUI]
 gui_project_name: "E-CORD"
@@ -38,6 +39,7 @@ enabled_gui_extensions:
     path: orchestration/xos_services/metro-net/xos/gui
     extra_files:
       - app/style/style.css
+      - mapconstants.js
 
 # paths defined in manifest/default.xml
 xos_services:
