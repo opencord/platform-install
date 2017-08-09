@@ -91,6 +91,13 @@ topology_template:
 # CORD Services
     service#vmme:
       type: tosca.nodes.VMMEService
+      requirements:
+        - vsgw_tenant:
+            node: service#vsgw
+            relationship: tosca.relationships.TenantOfService
+        - vhss_tenant:
+            node: service#vhss
+            relationship: tosca.relationships.TenantOfService
       properties:
           view_url: /admin/vmme/vmmeservice/$id$/
           kind: vEPC
@@ -101,6 +108,13 @@ topology_template:
 
     service#vbbu:
       type: tosca.nodes.VBBUService
+      requirements:
+        - vmme_tenant:
+            node: service#vmme
+            relationship: tosca.relationships.TenantOfService
+        - vsgw_tenant:
+            node: service#vsgw
+            relationship: tosca.relationships.TenantOfService
       properties:
           view_url: /admin/vbbu/vbbuservice/$id$/
           kind: vRAN
@@ -121,6 +135,10 @@ topology_template:
 
     service#vsgw:
       type: tosca.nodes.VSGWService
+      requirements:
+        - vpgwc_tenant:
+            node: service#vpgwc
+            relationship: tosca.relationships.TenantOfService
       properties:
           view_url: /admin/vsgw/vsgwservice/$id$/
           kind: vEPC
