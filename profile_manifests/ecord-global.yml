@@ -20,6 +20,8 @@ xos_tosca_config_templates:
   - openstack.yaml
   - vnodglobal-service.yaml
   - xos-gui-extensions.yml
+  - carrierethernet-global-app.yaml
+
 
 cord_profile_dir: "{{ ansible_user_dir + '/cord_profile' }}"
 
@@ -38,7 +40,12 @@ gui_branding_icon: "/static/cord-logo.png"
 gui_branding_favicon: "/static/cord-favicon.png"
 gui_branding_bg: "/static/cord-bg.jpg"
 
-enabled_gui_extensions: []
+enabled_gui_extensions:
+  - name: metro-net-gui
+    path: orchestration/xos_services/metro-net/xos/gui
+    extra_files:
+      - app/style/style.css
+      - mapconstants.js
 
 # paths defined in manifest/default.xml
 xos_services:
