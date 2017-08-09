@@ -25,6 +25,7 @@ xos_tosca_config_templates:
   - public-net.yaml
   - vee-service.yaml
   - xos-gui-extensions.yml
+  - carrierethernet-local-app.yaml
 
 xos_other_templates:
   - fabric-network-cfg.json
@@ -46,28 +47,38 @@ gui_branding_icon: "/static/cord-logo.png"
 gui_branding_favicon: "/static/cord-favicon.png"
 gui_branding_bg: "/static/cord-bg.jpg"
 
-enabled_gui_extensions: []
+enabled_gui_extensions:
+  - name: vtr
+    path: orchestration/xos_services/vtr/xos/gui
 
 # paths defined in manifest/default.xml
 xos_services:
   - name: openstack
     path: orchestration/xos_services/openstack
+    synchronizer: true
   - name: onos
     path: orchestration/xos_services/onos-service
     keypair: onos_rsa
+    synchronizer: true
   - name: vtn
     path: onos-apps/apps/vtn
+    synchronizer: true
   - name: fabric
     path: orchestration/xos_services/fabric
+    synchronizer: true
   - name: vrouter
     path: orchestration/xos_services/vrouter
+    synchronizer: true
   - name: veg
     path: orchestration/xos_services/vEG
     keypair: veg_rsa
+    synchronizer: true
   - name: vnodlocal
     path: orchestration/xos_services/metronet-local
+    synchronizer: true
   - name: vee
     path: orchestration/xos_services/vEE
+    synchronizer: true
 
 xos_service_sshkeys:
   - name: onos_rsa
