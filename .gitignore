@@ -27,6 +27,7 @@ Thumbs.db
 
 # Vagrant
 .vagrant
+pki/*
 
 # Docker registry
 /registry
