@@ -16,6 +16,24 @@
       "revId": "078b37acba61a5ff14e0109267145853fd7c6ead",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a437d4f_12b06af3",
+        "filename": "roles/onos-cord-install/templates/Dockerfile.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-08-09T17:53:17Z",
+      "side": 1,
+      "message": "I\u0027m testing to see if it can.  I think it packages all the system certs into a JKS in /etc/ssl/certs/java/cacert.  So if we add CORD certs to the system certs and then add this package, it seems like it should work.",
+      "parentUuid": "9a437d4f_d2e30204",
+      "revId": "078b37acba61a5ff14e0109267145853fd7c6ead",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
