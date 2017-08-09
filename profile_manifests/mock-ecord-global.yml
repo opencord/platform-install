@@ -21,6 +21,7 @@ xos_tosca_config_templates:
   - mock-onos.yaml
   - vnodglobal-service.yaml
   - xos-gui-extensions.yml
+  - carrierethernet-global-app.yaml
 
 # GUI Config [new GUI]
 gui_project_name: "E-CORD"
