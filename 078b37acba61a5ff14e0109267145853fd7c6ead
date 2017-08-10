@@ -34,6 +34,24 @@
       "revId": "078b37acba61a5ff14e0109267145853fd7c6ead",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a437d4f_955e8411",
+        "filename": "roles/onos-cord-install/templates/Dockerfile.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-08-10T02:13:20Z",
+      "side": 1,
+      "message": "Might this also eliminate the `trustStorePassword` further down in the Dockerfile?",
+      "parentUuid": "9a437d4f_12b06af3",
+      "revId": "078b37acba61a5ff14e0109267145853fd7c6ead",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
