@@ -46,7 +46,7 @@ topology_template:
               node: service#vtn
               relationship: tosca.relationships.UsedByService
       properties:
-          install_dependencies: http://mavenrepo:8080/repository/org/opencord/cord-config/{{ cord_app_version }}/cord-config-{{ cord_app_version }}.oar,http://mavenrepo:8080/repository/org/opencord/vtn/{{ cord_app_version }}/vtn-{{ cord_app_version }}.oar
+          install_dependencies: http://mavenrepo:8080/repository/org/opencord/cord-config/{{ cord_config_app_version }}/cord-config-{{ cord_config_app_version }}.oar,http://mavenrepo:8080/repository/org/opencord/vtn/{{ cord_vtn_app_version }}/vtn-{{ cord_vtn_app_version }}.oar
           dependencies: org.onosproject.drivers, org.onosproject.drivers.ovsdb, org.onosproject.openflow-base, org.onosproject.ovsdb-base, org.onosproject.dhcp
           autogenerate: vtn-network-cfg
 
