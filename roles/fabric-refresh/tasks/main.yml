@@ -1,4 +1,3 @@
-
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,18 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Install httpie
+  pip:
+    name: httpie
+    state: present
+  become: yes
 
-- name: Remove old ONOS fabric configuration file
-  file:
-    path: "{{ service_profile_repo_dest }}/{{ xos_configuration }}/network-cfg-quickstart.json"
-    state: absent
-
+# This step could be implemented more cleanly (i.e., broken into multiple
+# tasks, use "uri" module).  It was done this way to mirror what is
+# in the documentation (quickstart_physical.md).
 - name: Rebuild and reinstall ONOS fabric configuration
-  make:
-    chdir: "{{ service_profile_repo_dest }}/{{ xos_configuration }}"
-    target: "{{ item }}"
+  shell: "{{ item }}"
+  args:
+    chdir: /opt/cord_profile
   with_items:
-  - network-cfg-quickstart.json
-  - delete_fabric_config
-  - fabric
-  - reactivate_fabric_apps
+    - "cord generate > fabric-network-cfg.json"
+    - "http -a onos:rocks DELETE http://onos-fabric:8181/onos/v1/network/configuration/"
+    - "docker-compose -p {{ cord_profile }} exec -T xos_ui python /opt/xos/tosca/run.py xosadmin@opencord.org /opt/cord_profile/fabric-service.yaml"
+    - "http -a onos:rocks POST http://onos-fabric:8181/onos/v1/applications/org.onosproject.vrouter/active"
+    - "http -a onos:rocks POST http://onos-fabric:8181/onos/v1/applications/org.onosproject.segmentrouting/active"
+  tags:
+    - skip_ansible_lint # running a sub job

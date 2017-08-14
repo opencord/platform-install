@@ -24,9 +24,8 @@
     - name: Include variables
       include_vars: "{{ item }}"
       with_items:
-        - profile_manifests/cord_defaults.yml
-        - profile_manifests/cord.yml
-        - profile_manifests/example_keystone.yml
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
 
 - name: Prep fabric on head node
   hosts: head
