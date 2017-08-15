@@ -91,6 +91,13 @@ topology_template:
 # CORD Services
     service#vmme:
       type: tosca.nodes.VMMEService
+      requirements:
+        - vhss_service:
+            node: service#vhss
+            relationship: tosca.relationships.TenantOfService
+        - vsgw_service:
+            node: service#vsgw
+            relationship: tosca.relationships.TenantOfService
       properties:
           view_url: /admin/vmme/vmmeservice/$id$/
           kind: vEPC
@@ -101,6 +108,13 @@ topology_template:
 
     service#vbbu:
       type: tosca.nodes.VBBUService
+      requirements:
+        - vmme_service:
+            node: service#vmme
+            relationship: tosca.relationships.TenantOfService
+        - vsgw_service:
+            node: service#vsgw
+            relationship: tosca.relationships.TenantOfService
       properties:
           view_url: /admin/vbbu/vbbuservice/$id$/
           kind: vRAN
@@ -119,8 +133,41 @@ topology_template:
       artifacts:
           pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
 
+#    tenant#vpgwctenant1:
+#      type: tosca.nodes.VPGWCTenant
+#      properties:
+#          kind: vEPC
+#      requirements:
+#          - tenant:
+#              node: service#vpgwc
+#              relationship: tosca.relationships.TenantOfService
+#          - dependency:
+#              node: mysite_vPGWC_slice
+#              relationship: tosca.relationships.DependsOn
+#
+#    instance#vpgwcinstance1:
+#      type: tosca.nodes.Compute
+#      capabilities:
+#          # Host container properties
+#          host:
+#            properties:
+#              num_cpus: 1
+#              disk_size: 10 GB
+#              mem_size: 2 GB
+#      requirements:
+#          - slice:
+#              node: mysite_vPGWC_slice
+#              relationship: tosca.relationships.MemberOfSlice
+#          - image:
+#              node: trusty-server-multi-nic
+#              relationship: tosca.relationships.UseImage
+
     service#vsgw:
       type: tosca.nodes.VSGWService
+      requirements:
+        - vpgwc_service:
+            node: service#vpgwc
+            relationship: tosca.relationships.TenantOfService
       properties:
           view_url: /admin/vsgw/vsgwservice/$id$/
           kind: vEPC
