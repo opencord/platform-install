@@ -17,13 +17,13 @@
 ---
 - name: Remove old local images
   docker_image:
-    name: "{{ deploy_docker_registry }}/{{ item.tags[0].split(':')[0] }}:{{ deploy_docker_tag }}"
+    name: "{{ deploy_docker_registry }}/{{ item.base }}:{{ deploy_docker_tag }}"
     state: absent
   with_items: "{{ ib_built }} + {{ ib_pulled }}"
 
 - name: Tag and push the images managed by ImageBuilder
   docker_image:
-    name: "{{ item.tags[0].split(':')[0] }}:{{ build_docker_tag }}"
-    repository: "{{ deploy_docker_registry }}/{{ item.tags[0].split(':')[0] }}:{{ deploy_docker_tag }}"
+    name: "{{ item.base }}:{{ build_docker_tag }}"
+    repository: "{{ deploy_docker_registry }}/{{ item.base }}:{{ deploy_docker_tag }}"
     push: True
   with_items: "{{ ib_built }} + {{ ib_pulled }}"
