@@ -1,5 +1,6 @@
 credentials/*
 cord_profile/
+pki/
 *.retry
 *.swp
 
@@ -45,3 +46,6 @@ ansible/*.retry
 
 # Backup files
 *.bak
+
+# Logs
+*.log
