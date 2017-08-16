@@ -1,5 +1,6 @@
 credentials/*
 cord_profile/
+pki/
 *.retry
 *.swp
 
