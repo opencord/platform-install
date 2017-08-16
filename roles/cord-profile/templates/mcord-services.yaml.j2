@@ -6,9 +6,11 @@ imports:
    - custom_types/xos.yaml
    - custom_types/vmme.yaml
    - custom_types/vbbu.yaml
-   - custom_types/vsgw.yaml
+   - custom_types/vsgwc.yaml
+   - custom_types/vsgwu.yaml
    - custom_types/vhss.yaml
    - custom_types/vpgwc.yaml
+   - custom_types/vpgwu.yaml
    - custom_types/vmm.yaml
    - custom_types/vsm.yaml
 
@@ -119,13 +121,33 @@ topology_template:
       artifacts:
           pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
 
-    service#vsgw:
-      type: tosca.nodes.VSGWService
+    service#vpgwu:
+      type: tosca.nodes.VPGWUService
       properties:
-          view_url: /admin/vsgw/vsgwservice/$id$/
+          view_url: /admin/vpgwu/vpgwuservice/$id$/
           kind: vEPC
           public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
-          private_key_fn: /opt/xos/services/vsgw/keys/mcord_rsa
+          private_key_fn: /opt/xos/services/vpgwu/keys/mcord_rsa
+      artifacts:
+          pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
+
+    service#vsgwc:
+      type: tosca.nodes.VSGWCService
+      properties:
+          view_url: /admin/vsgwc/vsgwcservice/$id$/
+          kind: vEPC
+          public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
+          private_key_fn: /opt/xos/services/vsgwc/keys/mcord_rsa
+      artifacts:
+          pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
+
+    service#vsgwu:
+      type: tosca.nodes.VSGWUService
+      properties:
+          view_url: /admin/vsgwu/vsgwuservice/$id$/
+          kind: vEPC
+          public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
+          private_key_fn: /opt/xos/services/vsgwu/keys/mcord_rsa
       artifacts:
           pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
 
@@ -243,8 +265,8 @@ topology_template:
               node: wan_network
               relationship: tosca.relationships.ConnectsToNetwork
 
-    mysite_vSGW_slice:
-      description: vSGW Service Slice
+    mysite_vSGWC_slice:
+      description: vSGWC Service Slice
       type: tosca.nodes.Slice
       properties:
           network: noauto
@@ -253,7 +275,32 @@ topology_template:
               node: mysite
               relationship: tosca.relationships.MemberOfSite
           - vSGW:
-              node: service#vsgw
+              node: service#vsgwc
+              relationship: tosca.relationships.MemberOfService
+          - default_image:
+              node: trusty-server-multi-nic
+              relationship: tosca.relationships.DefaultImage
+          - default_flavor:
+              node: m1.small
+              relationship: tosca.relationships.DefaultFlavor
+          - connection_to_management:
+              node: management
+              relationship: tosca.relationships.ConnectsToNetwork
+          - connection_to_shared_network:
+              node: shared_network
+              relationship: tosca.relationships.ConnectsToNetwork
+
+    mysite_vSGWU_slice:
+      description: vSGWU Service Slice
+      type: tosca.nodes.Slice
+      properties:
+          network: noauto
+      requirements:
+          - site:
+              node: mysite
+              relationship: tosca.relationships.MemberOfSite
+          - vSGW:
+              node: service#vsgwu
               relationship: tosca.relationships.MemberOfService
           - default_image:
               node: trusty-server-multi-nic
@@ -279,6 +326,34 @@ topology_template:
               relationship: tosca.relationships.MemberOfSite
           - vPGWC:
               node: service#vpgwc
+              relationship: tosca.relationships.MemberOfService
+          - default_image:
+              node: trusty-server-multi-nic
+              relationship: tosca.relationships.DefaultImage
+          - default_flavor:
+              node: m1.small
+              relationship: tosca.relationships.DefaultFlavor
+          - connection_to_management:
+              node: management
+              relationship: tosca.relationships.ConnectsToNetwork
+          - connection_to_shared_network:
+              node: shared_network
+              relationship: tosca.relationships.ConnectsToNetwork
+          - connection_to_wan_network:
+              node: wan_network
+              relationship: tosca.relationships.ConnectsToNetwork
+
+    mysite_vPGWU_slice:
+      description: vPGWU Service Slice
+      type: tosca.nodes.Slice
+      properties:
+          network: noauto
+      requirements:
+          - site:
+              node: mysite
+              relationship: tosca.relationships.MemberOfSite
+          - vPGWC:
+              node: service#vpgwu
               relationship: tosca.relationships.MemberOfService
           - default_image:
               node: trusty-server-multi-nic
