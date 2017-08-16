@@ -19,11 +19,17 @@
   docker_image:
     name: "{{ deploy_docker_registry }}/{{ item.base }}:{{ deploy_docker_tag }}"
     state: absent
-  with_items: "{{ ib_built }} + {{ ib_pulled }}"
+  with_flattened:
+    - "{{ ib_built }}"
+    - "{{ ib_pulled }}"
+    - "{{ ib_preexisting_images }}"
 
 - name: Tag and push the images managed by ImageBuilder
   docker_image:
     name: "{{ item.base }}:{{ build_docker_tag }}"
     repository: "{{ deploy_docker_registry }}/{{ item.base }}:{{ deploy_docker_tag }}"
     push: True
-  with_items: "{{ ib_built }} + {{ ib_pulled }}"
+  with_flattened:
+    - "{{ ib_built }}"
+    - "{{ ib_pulled }}"
+    - "{{ ib_preexisting_images }}"
