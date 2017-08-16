@@ -49,4 +49,3 @@ ansible/*.retry
 
 # PKI dir
 pki/
-
