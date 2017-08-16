@@ -15,7 +15,10 @@
 
 
 ---
-# docker-install/defaults/main.yml
+# apache-proxy/handlers/main.yml
 
-docker_apt_repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
-docker_opts: ""
+- name: restart docker
+  become: yes
+  service:
+    name: docker
+    state: restarted

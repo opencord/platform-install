@@ -46,6 +46,16 @@
     update_cache: yes
     cache_valid_time: 3600
 
+- name: Configure Docker
+  become: yes
+  template:
+      src=default_docker.j2
+      dest=/etc/default/docker
+      mode=0644
+      owner=root
+      group=root
+  notify: restart docker
+
 - name: Install docker-compose, docker python module, imagebuilder deps via pip
   become: yes
   pip:
