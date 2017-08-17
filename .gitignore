@@ -45,3 +45,6 @@ ansible/*.retry
 
 # Backup files
 *.bak
+
+# PKI dir
+pki/
