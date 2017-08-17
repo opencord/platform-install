@@ -27,6 +27,11 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
+- name: Prep head node
+  hosts: build
+  roles:
+    - { role: build-prep, become: yes }
+
 - name: Install docker on buildnode, configure
   hosts: build
   roles:
