@@ -15,25 +15,11 @@
 
 
 ---
-# prep-buildnode-playbook.yml
-# Prep build node to create artifacts
+# ansible-install/defaults/main.yml
 
-- name: Include vars
-  hosts: all
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "profile_manifests/{{ cord_profile }}.yml"
-        - profile_manifests/local_vars.yml
+use_maas: false
 
-- name: Install ansible on build node
-  hosts: build
-  roles:
-    - { role: ansible-install, become: yes }
-
-- name: Install docker on buildnode, configure
-  hosts: build
-  roles:
-    - docker-install
+ssh_pki_dir: "{{ playbook_dir }}/ssh_pki"
+ssh_keytype: rsa
+pod_sshkey_name: "headnode"
 
