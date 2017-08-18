@@ -16,6 +16,7 @@
 
 import json
 import subprocess
+import sys
 
 def dict_keys_dash_to_underscore(dashed):
     underscored = dict((k.replace('-','_'),v) for k,v in dashed.items())

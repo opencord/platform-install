@@ -21,7 +21,8 @@
 # Site configuration
 site_name: mysite
 site_humanname: MySite
-site_suffix: "{{ site_name }}.cord.lab"
+# site_suffix: "{{ site_name }}.cord.lab"
+site_suffix: "cord.lab"
 deployment_type: MyDeployment
 
 # Feature toggles
