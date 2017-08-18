@@ -1,0 +1,9 @@
+---
+# test-mcord-tenants-config/tasks/main.yml
+
+- name: Create onboard-mcord-tenants.yaml TOSCA config
+  template:
+    src: onboard-mcord-tenants.yaml.j2
+    dest: "{{ cord_profile_dir }}/onboard-mcord-tenants.yaml"
+    owner: "{{ ansible_user_id }}"
+    mode: 0644

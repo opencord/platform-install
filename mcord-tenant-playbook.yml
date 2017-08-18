@@ -1,0 +1,25 @@
+---
+# mcord-tenant-playbook.yml
+# Creates tenants/instances predefined in TOSCA during build time
+
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
+
+- name: Create mcord tenants/instances
+  hosts: head
+  roles:
+    - test-mcord-tenants-config
+
+- include: add-onboard-containers-playbook.yml
+
+- name: Enable mcord tenants/instances
+  hosts: xos_ui
+  connection: docker
+  roles:
+    - test-mcord-tenants-enable
