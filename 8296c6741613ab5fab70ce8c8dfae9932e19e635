@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3a3291f1_af9ed561",
+        "filename": "roles/imagebuilder-publish/tasks/main.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-08-18T21:34:08Z",
+      "side": 1,
+      "message": "There\u0027s a loop construct, `with_flattened` that will iterate over the items in multiple lists:\n\nhttp://docs.ansible.com/ansible/latest/playbooks_loops.html#flattening-a-list",
+      "range": {
+        "startLine": 22,
+        "startChar": 2,
+        "endLine": 22,
+        "endChar": 12
+      },
+      "revId": "8296c6741613ab5fab70ce8c8dfae9932e19e635",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
