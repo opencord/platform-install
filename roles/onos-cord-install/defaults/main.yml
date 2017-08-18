@@ -34,7 +34,7 @@ onos_log_level: "INFO"
 pod_sshkey_name: "headnode"
 
 # used for Java KeyStore within ONOS image
-trust_store_pw: 222222
+trust_store_pw: "changeit"
 
 # logging_host should be set to DNS or IP addr of logstash host
 logging_host: "cordloghost"

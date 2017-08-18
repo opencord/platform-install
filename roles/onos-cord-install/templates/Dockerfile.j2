@@ -19,26 +19,15 @@
 FROM {{ onos_docker_image }}
 MAINTAINER Zack Williams <zdw@cs.arizona.edu>
 
+RUN apk update && apk add java-cacerts
+
 # Add SSL certs
 COPY cord_root_ca.crt /usr/local/share/ca-certificates/cord_root_ca.crt
 COPY cord_{{ site_name }}_im_ca.crt /usr/local/share/ca-certificates/cord_{{ site_name }}_im_ca.crt
 RUN update-ca-certificates
 
-# Create Java KeyStore from certs
-RUN openssl x509 -in /usr/local/share/ca-certificates/cord_root_ca.crt \
-      -outform der -out /usr/local/share/ca-certificates/cord_root_ca.der && \
-    openssl x509 -in /usr/local/share/ca-certificates/cord_{{ site_name }}_im_ca.crt \
-      -outform der -out /usr/local/share/ca-certificates/cord_{{ site_name }}_im_ca.der && \
-    keytool -import -noprompt -storepass {{ trust_store_pw }} -alias cord_root_ca \
-      -file /usr/local/share/ca-certificates/cord_root_ca.der \
-      -keystore /usr/local/share/ca-certificates/cord_ca_certs.jks && \
-    keytool -import -noprompt -storepass {{ trust_store_pw }} -alias cord_{{ site_name }}_im_ca \
-      -file /usr/local/share/ca-certificates/cord_{{ site_name }}_im_ca.der \
-      -keystore /usr/local/share/ca-certificates/cord_ca_certs.jks
-
 # Let ONOS know where the keystore is
-ENV JAVA_OPTS="-Djavax.net.ssl.trustStore=/usr/local/share/ca-certificates/cord_ca_certs.jks -Djavax.net.ssl.trustStorePassword={{ trust_store_pw }}"
+ENV JAVA_OPTS="-Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts -Djavax.net.ssl.trustStorePassword={{ trust_store_pw }}"
 
 # Configure ONOS to log with log4j to ElasticStack
 COPY org.ops4j.pax.logging.cfg /root/onos/apache-karaf-3.0.5/etc/org.ops4j.pax.logging.cfg
-
