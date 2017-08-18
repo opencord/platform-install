@@ -2,6 +2,7 @@ credentials/*
 cord_profile/
 *.retry
 *.swp
+*.log
 
 # Java
 *.class
@@ -48,3 +49,4 @@ ansible/*.retry
 
 # PKI dir
 pki/
+
