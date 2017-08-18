@@ -142,5 +142,5 @@ use_fabric: False
 fabric_network_cfg_json: "/opt/cord_profile/fabric-network-cfg.json"
 
 # Need to track each application's version separately
-cord_config_app_version: "1.2.0-SNAPSHOT"
-cord_vtn_app_version: "1.2.0-SNAPSHOT"
+cord_config_app_version: "1.3.0-SNAPSHOT"
+cord_vtn_app_version: "1.3.0-SNAPSHOT"
