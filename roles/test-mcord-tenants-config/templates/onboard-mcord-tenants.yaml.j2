@@ -1,0 +1,81 @@
+tosca_definitions_version: tosca_simple_yaml_1_0
+
+description: Creates desired M-CORD instances and tenants during build time
+
+imports:
+   - custom_types/xos.yaml
+   - custom_types/vbbu.yaml
+   - custom_types/vmme.yaml
+
+topology_template:
+  node_templates:
+
+# site, fully created in deployment.yaml
+    {{ site_name }}:
+      type: tosca.nodes.Site
+      properties:
+        no-delete: true
+        no-create: true
+        no-update: true
+
+    trusty-server-multi-nic:
+      type: tosca.nodes.Image
+
+# vbbu and vmme  slices/services fully created in mcord-services.yaml
+    service#vbbu:
+      type: tosca.nodes.VBBUService
+      properties:
+        no-delete: true
+        no-create: true
+        no-update: true
+
+    service#vmme:
+      type: tosca.nodes.VMMEService
+      properties:
+        no-delete: true
+        no-create: true
+        no-update: true
+
+    mysite_vBBU_slice:
+      type: tosca.nodes.Slice
+      properties:
+        no-delete: true
+        no-create: true
+        no-update: true
+
+    mysite_vMME_slice:
+      type: tosca.nodes.Slice
+      properties:
+        no-delete: true
+        no-create: true
+        no-update: true
+
+# create a sample tenant and sample instance
+    tenant#vmmetenant1:
+      type: tosca.nodes.VMMETenant
+      properties:
+           kind: vEPC
+      requirements:
+          - tenant:
+              node: service#vmme
+              relationship: tosca.relationships.TenantOfService
+          - dependency:
+              node: mysite_vMME_slice
+              relationship: tosca.relationships.DependsOn
+
+    instance#vbbuinstance1:
+      type: tosca.nodes.Compute
+      capabilities:
+          # Host container properties
+          host:
+            properties:
+              num_cpus: 1
+              disk_size: 10 GB
+              mem_size: 2 GB
+      requirements:
+          - slice:
+              node: mysite_vBBU_slice
+              relationship: tosca.relationships.MemberOfSlice
+          - image:
+              node: trusty-server-multi-nic
+              relationship: tosca.relationships.UseImage
