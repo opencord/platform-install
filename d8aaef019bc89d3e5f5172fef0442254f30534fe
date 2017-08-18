@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3a3291f1_6c747b9c",
+        "filename": "roles/docker-install/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-08-18T00:05:12Z",
+      "side": 1,
+      "message": "Remove spaces at end of line",
+      "range": {
+        "startLine": 50,
+        "startChar": 13,
+        "endLine": 50,
+        "endChar": 14
+      },
+      "revId": "d8aaef019bc89d3e5f5172fef0442254f30534fe",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3a3291f1_8c5e8711",
+        "filename": "roles/docker-install/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-08-18T00:05:12Z",
+      "side": 1,
+      "message": "Need to add this handler?",
+      "range": {
+        "startLine": 57,
+        "startChar": 10,
+        "endLine": 57,
+        "endChar": 24
+      },
+      "revId": "d8aaef019bc89d3e5f5172fef0442254f30534fe",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
