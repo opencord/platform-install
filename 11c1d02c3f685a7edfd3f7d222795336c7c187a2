@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3a3291f1_0fecc9c6",
+        "filename": "profile_manifests/ecord-global.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-08-18T22:09:07Z",
+      "side": 1,
+      "message": "From rcord profile, looks like it should be just \"cord.lab\"",
+      "range": {
+        "startLine": 25,
+        "startChar": 14,
+        "endLine": 25,
+        "endChar": 23
+      },
+      "revId": "11c1d02c3f685a7edfd3f7d222795336c7c187a2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
