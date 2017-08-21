@@ -76,6 +76,9 @@ topology_template:
       properties:
           view_url: /admin/vrouter/vrouterservice/$id$/
           replaces: service_vrouter
+
+    service#addressmanager:
+      type: tosca.nodes.AddressManagerService
       requirements:
           - addresses_vsg:
               node: addresses_vsg
@@ -83,4 +86,3 @@ topology_template:
           - addresses_service1:
               node: addresses_exampleservice-public
               relationship: tosca.relationships.ProvidesAddresses
-
