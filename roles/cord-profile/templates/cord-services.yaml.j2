@@ -23,6 +23,7 @@ description: Just enough Tosca to get the vSG slice running on the CORD POD, cre
 imports:
    - custom_types/xos.yaml
    - custom_types/vtr.yaml
+   - custom_types/addressmanager.yaml
 
 topology_template:
   node_templates:
@@ -113,6 +114,9 @@ topology_template:
     service#vsg:
       type: tosca.nodes.VSGService
       requirements:
+        - addressing_tenant:
+            node: service#addressmanager
+            relationship: tosca.relationships.TenantOfService
         - vrouter_tenant:
             node: service#vrouter
             relationship: tosca.relationships.TenantOfService
@@ -126,11 +130,8 @@ topology_template:
       artifacts:
         pubkey: /opt/cord_profile/key_import/vsg_rsa.pub
 
-    service#vrouter:
-      type: tosca.nodes.VRouterService
-      properties:
-        view_url: /admin/vrouter/vrouterservice/$id$/
-        replaces: service_vrouter
+    service#addressmanager:
+      type: tosca.nodes.AddressManagerService
       requirements:
         - addresses_vsg:
             node: addresses_vsg
@@ -138,6 +139,12 @@ topology_template:
         - addresses_public:
             node: addresses_public
             relationship: tosca.relationships.ProvidesAddresses
+
+    service#vrouter:
+      type: tosca.nodes.VRouterService
+      properties:
+        view_url: /admin/vrouter/vrouterservice/$id$/
+        replaces: service_vrouter
 
     vRouter_ONOS_app:
       type: tosca.nodes.ONOSvRouterApp
@@ -250,11 +257,11 @@ topology_template:
             node: out#wanside
             relationship: tosca.relationships.IsType
 
-    vrouter_wanside:
+    addressmanager_wanside:
       type: tosca.nodes.ServiceInterface
       requirements:
         - service:
-            node: service#vrouter
+            node: service#addressmanager
             relationship: tosca.relationships.MemberOfService
         - interface:
             node: in#wanside
