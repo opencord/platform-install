@@ -70,6 +70,8 @@ xos_services:
     keypair: onos_rsa
   - name: vrouter
     path: orchestration/xos_services/vrouter
+  - name: addressmanager
+    path: orchestration/xos_services/addressmanager
   - name: vsg
     path: orchestration/xos_services/vsg
     keypair: vsg_rsa
