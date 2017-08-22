@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3a3291f1_5517fea3",
+        "filename": "prep-buildnode-playbook.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-08-22T21:21:23Z",
+      "side": 1,
+      "message": "build ?",
+      "range": {
+        "startLine": 30,
+        "startChar": 13,
+        "endLine": 30,
+        "endChar": 17
+      },
+      "revId": "7c79158c7c84747d9fe53b546d6ad0464db9d62b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
