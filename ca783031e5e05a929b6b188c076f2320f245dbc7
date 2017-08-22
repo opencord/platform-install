@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3a3291f1_5565be43",
+        "filename": "roles/fabric-refresh/tasks/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-08-22T21:50:58Z",
+      "side": 1,
+      "message": "This could probably be split up into many separate tasks, but as it\u0027s a test it\u0027s probably OK.",
+      "range": {
+        "startLine": 25,
+        "startChar": 2,
+        "endLine": 25,
+        "endChar": 13
+      },
+      "revId": "ca783031e5e05a929b6b188c076f2320f245dbc7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
