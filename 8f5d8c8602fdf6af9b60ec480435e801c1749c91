@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3a3291f1_55637eb1",
+        "filename": "roles/build-prep/tasks/main.yml",
+        "patchSetId": 10
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-08-22T19:57:09Z",
+      "side": 1,
+      "message": "I would think most of these are not needed on the build node.  We should really only need Ansible and Docker.",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 24
+      },
+      "revId": "8f5d8c8602fdf6af9b60ec480435e801c1749c91",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3a3291f1_3558f2f9",
+        "filename": "roles/build-prep/tasks/main.yml",
+        "patchSetId": 10
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-08-22T19:57:09Z",
+      "side": 1,
+      "message": "See comment above.",
+      "range": {
+        "startLine": 70,
+        "startChar": 8,
+        "endLine": 70,
+        "endChar": 31
+      },
+      "revId": "8f5d8c8602fdf6af9b60ec480435e801c1749c91",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
