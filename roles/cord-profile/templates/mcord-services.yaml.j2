@@ -20,7 +20,7 @@ topology_template:
 # site, image, fully created in deployment.yaml
     {{ site_name }}:
       type: tosca.nodes.Site
-    
+
     m1.small:
       type: tosca.nodes.Flavor
     m1.large:
@@ -57,6 +57,7 @@ topology_template:
         no-create: true
         no-delete: true
         no-update: true
+
 # wan_network for vPGWU and its upstream connectivity, fully created in wan-net.yaml
     wan_network:
       type: tosca.nodes.network.Network.XOS
@@ -64,8 +65,17 @@ topology_template:
         no-create: true
         no-delete: true
         no-update: true
+
 # VLAN networks for RRH and vBBU, fully created in vsg-net.yaml
     vsg_network:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+
+# flat network for vMME, vSGWC, vSGWU, to connect to RRU, fully created in flat-net.yaml
+    flat_network:
       type: tosca.nodes.network.Network.XOS
       properties:
         no-create: true
@@ -98,7 +108,7 @@ topology_template:
           private_key_fn: /opt/xos/services/vbbu/keys/mcord_rsa
       artifacts:
           pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
-          
+
     service#vhss:
       type: tosca.nodes.VHSSService
       properties:
@@ -108,7 +118,7 @@ topology_template:
           private_key_fn: /opt/xos/services/vhss/keys/mcord_rsa
       artifacts:
           pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
-          
+
     service#vmme:
       type: tosca.nodes.VMMEService
       properties:
@@ -118,7 +128,7 @@ topology_template:
           private_key_fn: /opt/xos/services/vmme/keys/mcord_rsa
       artifacts:
           pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
-          
+
     service#vmm:
       type: tosca.nodes.VMMService
       properties:
@@ -259,6 +269,9 @@ topology_template:
           - connection_to_shared_network:
               node: shared_network
               relationship: tosca.relationships.ConnectsToNetwork
+          - connection_to_flat_network:
+              node: flat_network
+              relationship: tosca.relationships.ConnectsToNetwork
 
     mysite_vMM_slice:
       description: vMM Service Slice
@@ -334,6 +347,9 @@ topology_template:
           - connection_to_shared_network:
               node: shared_network
               relationship: tosca.relationships.ConnectsToNetwork
+          - connection_to_flat_network:
+              node: flat_network
+              relationship: tosca.relationships.ConnectsToNetwork
 
     mysite_vSGWU_slice:
       description: vSGWU Service Slice
@@ -358,6 +374,9 @@ topology_template:
               relationship: tosca.relationships.ConnectsToNetwork
           - connection_to_shared_network:
               node: shared_network
+              relationship: tosca.relationships.ConnectsToNetwork
+          - connection_to_flat_network:
+              node: flat_network
               relationship: tosca.relationships.ConnectsToNetwork
 
     mysite_vPGWC_slice:
@@ -412,3 +431,4 @@ topology_template:
           - connection_to_wan_network:
               node: wan_network
               relationship: tosca.relationships.ConnectsToNetwork
+
