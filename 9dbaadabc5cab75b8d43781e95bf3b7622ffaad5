@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3a3291f1_400f3ee2",
+        "filename": "roles/ansible-install/tasks/main.yml",
+        "patchSetId": 13
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-08-23T15:43:04Z",
+      "side": 1,
+      "message": "If the `python-netaddr` is installed here, there\u0027s no need to have the `Install packages` task later on and we have one less call to apt.",
+      "revId": "9dbaadabc5cab75b8d43781e95bf3b7622ffaad5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3a3291f1_201432f4",
+        "filename": "roles/ansible-install/tasks/main.yml",
+        "patchSetId": 13
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-08-23T15:43:04Z",
+      "side": 1,
+      "message": "Better to delete than comment out.",
+      "revId": "9dbaadabc5cab75b8d43781e95bf3b7622ffaad5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3a3291f1_00f936c8",
+        "filename": "roles/ansible-install/tasks/main.yml",
+        "patchSetId": 13
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-08-23T15:43:04Z",
+      "side": 1,
+      "message": "Same, delete instead of commenting out.  \n\nI only really leave old code in comments if there\u0027s history behind it, and as these roles are new files in this patch, it\u0027s confusing if someone was to see this and go look for history where there is none.",
+      "revId": "9dbaadabc5cab75b8d43781e95bf3b7622ffaad5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
