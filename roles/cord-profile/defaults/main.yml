@@ -58,9 +58,6 @@ xos_ui_port: 9000
 
 xos_users: []
 
-xos_libraries:
-  - "ng-xos-lib"
-
 # name of master ssh key for this pod
 pod_sshkey_name: "headnode"
 

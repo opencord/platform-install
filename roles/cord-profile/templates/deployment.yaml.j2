@@ -44,14 +44,3 @@ topology_template:
             relationship: tosca.relationships.SupportsFlavor
 
 {% endfor %}
-
-# Attach the Tenant view to the deployment
-    Tenant:
-      type: tosca.nodes.DashboardView
-      properties:
-        no-create: true
-        no-delete: true
-      requirements:
-        - deployment:
-            node: {{ deployment_type }}
-            relationship: tosca.relationships.SupportsDeployment
