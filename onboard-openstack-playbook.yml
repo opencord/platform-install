@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,17 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # onboard-openstack-playbook.yml
 # Onboard Openstack into XOS
 
+- name: Check to see if XOS is ready
+  hosts: head
+  roles:
+    - xos-ready
+
 - include: add-onboard-containers-playbook.yml
 
-- name: Check to see if XOS UI is ready, apply profile config
+- name: Enable compute nodes
   hosts: xos_ui
   connection: docker
   roles:
-    - xos-ready
     - compute-node-enable
 
