@@ -26,11 +26,6 @@
     recipes: "{{ recipes }} + [ '/opt/cord/{{ item.path }}/xos/{{ item.name }}-{{ item.operation | default('onboard') }}.yaml']"
   with_items: "{{ xos_services }}"
 
-- name: Generate list of libraries
-  set_fact:
-    recipes: "{{ recipes }} + [ '/opt/cord/orchestration/xos_libraries/{{ item }}/{{ item }}-onboard.yaml']"
-  with_items: "{{ xos_libraries }}"
-
 - name: Add in the profile library
   set_fact:
     recipes: "{{ recipes }} + [ '/opt/cord/orchestration/profiles/{{ profile_library }}/xos/{{ profile_library }}-onboard.yaml']"
