@@ -20,9 +20,6 @@
 build_cord_dir: "{{ playbook_dir ~ '/../..' }}"
 build_docker_tag: "candidate"
 
-xos_libraries:
-  - "ng-xos-lib"
-
 profile_library: ""
 
 xos_services: []
