@@ -88,59 +88,6 @@ topology_template:
       type: tosca.nodes.Flavor
 
 # -----------------------------------------------------------------------------
-# Dashboard Views
-# -----------------------------------------------------------------------------
-
-# Temporary removed, waiting for a new Angular Base Implementation
-#    xsh:
-#      type: tosca.nodes.DashboardView
-#      properties:
-#          url: template:xsh
-
-    Customize:
-      type: tosca.nodes.DashboardView
-      properties:
-        url: template:xosDashboardManager
-        custom_icon: true
-
-    Diagnostic:
-      type: tosca.nodes.DashboardView
-      properties:
-        url: template:xosDiagnostic
-        custom_icon: true
-
-    Truckroll:
-      type: tosca.nodes.DashboardView
-      properties:
-        url: template:xosTruckroll
-        custom_icon: true
-
-    Monitoring:
-      type: tosca.nodes.DashboardView
-      properties:
-        url: template:xosCeilometerDashboard
-
-    Subscribers:
-      type: tosca.nodes.DashboardView
-      properties:
-        url: template:xosSubscribers
-
-    Tenant:
-      type: tosca.nodes.DashboardView
-      properties:
-        url: template:xosTenant
-
-    Developer:
-      type: tosca.nodes.DashboardView
-      properties:
-        url: template:xosDeveloper
-
-    Services Grid:
-      type: tosca.nodes.DashboardView
-      properties:
-        url: template:xosServiceGrid
-
-# -----------------------------------------------------------------------------
 # Network Templates
 # -----------------------------------------------------------------------------
 
