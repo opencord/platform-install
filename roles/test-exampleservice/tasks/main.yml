@@ -47,7 +47,7 @@
     - skip_ansible_lint # running a sub job
 
 - name: Get public IP of VM
-  shell: bash -c "source /opt/cord_profile/admin-openrc.sh; nova interface-list {{ nova_id.stdout }}|grep -o -m 1 '10\.6\.[[:digit:]]*\.[[:digit:]]*'"
+  shell: bash -c "source /opt/cord_profile/admin-openrc.sh; nova interface-list {{ nova_id.stdout }}|grep -o -m 1 '10\.8\.[[:digit:]]*\.[[:digit:]]*'"
   register: public_ip
   tags:
     - skip_ansible_lint # running a sub job
