@@ -17,36 +17,40 @@ limitations under the License.
 # Site
 - model: core.Site
   fields:
-    name: {{ site_name }}
-    site_url: http://{{ site_name }}.opencloud.us/
+    name: "{{ site_humanname }}"
+    abbreviated_name: "{{ site_name }}"
+    login_base: "{{ site_name }}"
+    site_url: "http://{{ site_name }}.opencloud.us/"
     hosts_nodes: true
 
 # User
 - model: core.User
   fields:
-    email: {{ xos_admin_user }}
-    password: {{ xos_admin_pass }}
-    firstname: {{ xos_admin_first }}
-    lastname: {{ xos_admin_last }}
+    email: "{{ xos_admin_user }}"
+    password: "{{ xos_admin_pass }}"
+    firstname: "{{ xos_admin_first }}"
+    lastname: "{{ xos_admin_last }}"
     is_admin: True
   relations:
     site:
       fields:
-        name: {{ site_name }}
+        name: "{{ site_humanname }}"
       model: core.Site
 
 # All other users
 {% for user in xos_users %}
 - model: core.User
   fields:
-    email: {{ user.email }}
-    password: {{ user.password }}
-    firstname: {{ user.first | default(user.email) }}
-    lastname: {{ user.last | default("unknown")  }}
-    is_admin: {{ user.admin | default("false") }}
+    email: "{{ user.email }}"
+    password: "{{ user.password }}"
+    firstname: "{{ user.first | default(user.email) }}"
+    lastname: "{{ user.last | default("unknown")  }}"
+    is_admin: "{{ user.admin | default("false") }}"
   relations:
     site:
       fields:
-        name: {{ site_name }}
+        name: "{{ site_humanname }}"
       model: core.Site
+
 {% endfor %}
+
