@@ -23,11 +23,18 @@ accessor:
   endpoint: "xos-core.{{ site_suffix }}:50051"
 
 logging:
-  file: '/var/log/xos_synchronizer.log'
-  logstash_hostport: 'cordloghost.{{ site_suffix }}:5617'
-  level: {{ xos_logging_level }}
-  channels:
-{% for channel in xos_logging_channels %}
-    - {{ channel }}
-{% endfor %}
-
+  version: 1
+  handlers:
+    console:
+      class: logging.StreamHandler
+    file:
+      class: logging.handlers.RotatingFileHandler
+      filename: /var/log/xos.log
+      maxBytes: 10485760
+      backupCount: 5
+  loggers:
+    '':
+      handlers:
+          - console
+          - file
+      level: DEBUG
