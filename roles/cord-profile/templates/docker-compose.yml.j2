@@ -299,6 +299,7 @@ services:
       SERVICE_50051_NAME: "xos-grpc-secure"
       SERVICE_50055_NAME: "xos-grpc-insecure"
     restart: unless-stopped
+    tty: true
 
 {% for ext in enabled_gui_extensions %}
   gui-extension-{{ ext.name }}:
@@ -357,6 +358,7 @@ services:
     environment:
       SERVICE_NAME: "xos-{{ svc.name }}-synchronizer"
     restart: unless-stopped
+    tty: true
 
 {% endif %}
 {% endfor %}
