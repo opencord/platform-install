@@ -74,10 +74,6 @@ xos_other_templates: []
 xos_db_name: xos
 xos_db_username: postgres
 xos_db_password: password
-xos_logging_level: debug
-xos_logging_channels:
-      - file
-      - console
 xos_dir: /opt/xos
 
 # GUI Config [new GUI], used in app.config.js.j2 and style.config.js.j2
