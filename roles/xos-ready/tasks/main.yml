@@ -21,7 +21,7 @@
   shell: curl localhost:{{ xos_chameleon_port }}/xosapi/v1/modeldefs
   register: result
   until: result.stdout.find("items") != -1
-  retries: 10
+  retries: 30
   delay: 20
   tags:
     - skip_ansible_lint # running a sub job
