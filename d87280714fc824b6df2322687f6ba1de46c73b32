@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a2f8d8d_2e3b07ed",
+        "filename": "roles/cord-profile/templates/carrierethernet-global-app.yaml.j2",
+        "patchSetId": 7
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2017-08-28T11:55:19Z",
+      "side": 1,
+      "message": "this has to be ONOS_CORD in order not to distrupt fabric",
+      "range": {
+        "startLine": 31,
+        "startChar": 28,
+        "endLine": 31,
+        "endChar": 39
+      },
+      "revId": "d87280714fc824b6df2322687f6ba1de46c73b32",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a2f8d8d_0e404b55",
+        "filename": "roles/cord-profile/templates/carrierethernet-local-app.yaml.j2",
+        "patchSetId": 7
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2017-08-28T11:55:19Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 31,
+        "startChar": 28,
+        "endLine": 31,
+        "endChar": 39
+      },
+      "revId": "d87280714fc824b6df2322687f6ba1de46c73b32",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
