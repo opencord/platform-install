@@ -76,7 +76,7 @@ xos_services:
     synchronizer: true
   - name: vhss
     path: orchestration/xos_services/vhss
-    keypaird: mcord_rsa
+    keypair: mcord_rsa
     synchronizer: true
   - name: vmme
     path: orchestration/xos_services/vmme
@@ -84,11 +84,11 @@ xos_services:
     synchronizer: true
   - name: vmm
     path: orchestration/xos_services/vmm
-    keypaird: mcord_rsa
+    keypair: mcord_rsa
     synchronizer: true
   - name: vsm
     path: orchestration/xos_services/vsm
-    keypaird: mcord_rsa
+    keypair: mcord_rsa
     synchronizer: true
   - name: vsgwc
     path: orchestration/xos_services/vsgwc
@@ -96,15 +96,15 @@ xos_services:
     synchronizer: true
   - name: vsgwu
     path: orchestration/xos_services/vsgwu
-    keypaird: mcord_rsa
+    keypair: mcord_rsa
     synchronizer: true
   - name: vpgwc
     path: orchestration/xos_services/vpgwc
-    keypaird: mcord_rsa
+    keypair: mcord_rsa
     synchronizer: true
   - name: vpgwu
     path: orchestration/xos_services/vpgwu
-    keypaird: mcord_rsa
+    keypair: mcord_rsa
     synchronizer: true
 # needed onboarding synchronizer doesn't require service code to be present when started
   - name: exampleservice
