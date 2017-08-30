@@ -55,7 +55,7 @@ enabled_gui_extensions: []
 # paths defined in manifest/default.xml
 xos_services:
   - name: vtn
-    path: onos-apps/apps/vtn
+    path: orchestration/xos_services/vtn-service
   - name: openstack
     path: orchestration/xos_services/openstack
   - name: fabric

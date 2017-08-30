@@ -62,7 +62,7 @@ xos_services:
     path: orchestration/xos_services/onos-service
     keypair: onos_rsa
   - name: vtn
-    path: onos-apps/apps/vtn
+    path: orchestration/xos_services/vtn-service
   - name: fabric
     path: orchestration/xos_services/fabric
   - name: vrouter
