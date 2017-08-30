@@ -75,7 +75,7 @@ gui_branding_bg: "/static/cord-bg.jpg"
 # paths defined in manifest/default.xml
 xos_services:
   - name: volt
-    path: onos-apps/apps/olt
+    path: orchestration/xos_services/olt-service
     keypair: volt_rsa
   - name: onos
     path: orchestration/xos_services/onos-service
