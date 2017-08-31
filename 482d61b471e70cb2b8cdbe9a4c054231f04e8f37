@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa5d592f_0d03b574",
+        "filename": "profile_manifests/ecord-global.yml",
+        "patchSetId": 9
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2017-08-31T11:04:02Z",
+      "side": 1,
+      "message": "changing this to onos:1.10.4 (when it comes out won\u0027t work on 3.0, correct?) It will work on 4.0/master",
+      "range": {
+        "startLine": 100,
+        "startChar": 20,
+        "endLine": 100,
+        "endChar": 43
+      },
+      "revId": "482d61b471e70cb2b8cdbe9a4c054231f04e8f37",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
