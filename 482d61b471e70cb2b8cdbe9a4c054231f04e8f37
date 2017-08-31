@@ -22,6 +22,30 @@
       "revId": "482d61b471e70cb2b8cdbe9a4c054231f04e8f37",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa5d592f_0d5f3574",
+        "filename": "profile_manifests/ecord-global.yml",
+        "patchSetId": 9
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-08-31T15:27:41Z",
+      "side": 1,
+      "message": "4.0 specifies versions of ONOS elsewhere. The global profile will need some work to get going in 4.0, so this is really a 3.0 specific setting.",
+      "parentUuid": "fa5d592f_0d03b574",
+      "range": {
+        "startLine": 100,
+        "startChar": 20,
+        "endLine": 100,
+        "endChar": 43
+      },
+      "revId": "482d61b471e70cb2b8cdbe9a4c054231f04e8f37",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
