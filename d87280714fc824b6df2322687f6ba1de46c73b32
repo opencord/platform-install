@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "fa5d592f_4d0acdd3",
+        "filename": "roles/cord-profile/templates/carrierethernet-global-app.yaml.j2",
+        "patchSetId": 7
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-08-31T00:32:19Z",
+      "side": 1,
+      "message": "Fixed in next patch",
+      "parentUuid": "1a2f8d8d_2e3b07ed",
+      "range": {
+        "startLine": 31,
+        "startChar": 28,
+        "endLine": 31,
+        "endChar": 39
+      },
+      "revId": "d87280714fc824b6df2322687f6ba1de46c73b32",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a2f8d8d_0e404b55",
         "filename": "roles/cord-profile/templates/carrierethernet-local-app.yaml.j2",
         "patchSetId": 7
@@ -36,6 +60,30 @@
       "writtenOn": "2017-08-28T11:55:19Z",
       "side": 1,
       "message": "same",
+      "range": {
+        "startLine": 31,
+        "startChar": 28,
+        "endLine": 31,
+        "endChar": 39
+      },
+      "revId": "d87280714fc824b6df2322687f6ba1de46c73b32",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa5d592f_2d0f99e3",
+        "filename": "roles/cord-profile/templates/carrierethernet-local-app.yaml.j2",
+        "patchSetId": 7
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-08-31T00:32:19Z",
+      "side": 1,
+      "message": "Fixed in next patch",
+      "parentUuid": "1a2f8d8d_0e404b55",
       "range": {
         "startLine": 31,
         "startChar": 28,
