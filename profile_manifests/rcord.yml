@@ -101,7 +101,7 @@ charm_versions:
   ceilometer-agent: "cs:trusty/ceilometer-agent-13"
   ceilometer: "cs:trusty/ceilometer-17"
   glance: "cs:trusty/glance-28"
-  keystone: "cs:trusty/keystone-33"
+  keystone: "cs:trusty/keystone-267"
   mongodb: "cs:trusty/mongodb-33"
   nagios: "cs:trusty/nagios-10"
   neutron-api: "cs:~cordteam/trusty/neutron-api-6"
