@@ -123,7 +123,7 @@ charm_versions:
   ceilometer: "cs:trusty/ceilometer-17"
   ceilometer-agent: "cs:trusty/ceilometer-agent-13"
   glance: "cs:trusty/glance-28"
-  keystone: "cs:trusty/keystone-33"
+  keystone: "cs:trusty/keystone-267"
   mongodb: "cs:trusty/mongodb-33"
   percona-cluster: "cs:trusty/percona-cluster-31"
   nagios: "cs:trusty/nagios-10"
