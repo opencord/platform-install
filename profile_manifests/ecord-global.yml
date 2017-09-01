@@ -33,7 +33,7 @@ use_apt_cache: True
 xos_tosca_config_templates:
   - vtn-service.yaml
   - fabric-service.yaml
-  - vnodglobal-service.yaml
+  - vnaasglobal-service.yaml
   - xos-gui-extensions.yml
   - carrierethernet-global-app.yaml
 
@@ -63,8 +63,8 @@ xos_services:
     path: orchestration/xos_services/fabric
   - name: onos
     path: orchestration/xos_services/onos-service
-  - name: metro-net
-    path: orchestration/xos_services/metro-net
+  - name: vnaas
+    path: orchestration/xos_services/vnaas
 
 # VTN network configuration
 management_network_ip: 172.27.0.1/24
