@@ -33,7 +33,7 @@ use_apt_cache: True
 xos_tosca_config_templates:
   - vtn-service.yaml
   - fabric-service.yaml
-  - vnodglobal-service.yaml
+  - vnaasglobal-service.yaml
   - xos-gui-extensions.yml
 
 xos_other_templates:
@@ -50,7 +50,12 @@ gui_branding_icon: "/static/cord-logo.png"
 gui_branding_favicon: "/static/cord-favicon.png"
 gui_branding_bg: "/static/cord-bg.jpg"
 
-enabled_gui_extensions: []
+enabled_gui_extensions:
+  - name: vnaasgui
+    path: orchestration/xos_services/vnaas/xos/gui
+    extra_files:
+      - app/style/style.css
+      - mapconstants.js
 
 # paths defined in manifest/default.xml
 xos_services:
@@ -62,8 +67,8 @@ xos_services:
     path: orchestration/xos_services/fabric
   - name: onos
     path: orchestration/xos_services/onos-service
-  - name: metro-net
-    path: orchestration/xos_services/metro-net
+  - name: vnaas
+    path: orchestration/xos_services/vnaas
 
 # SSL server certificate generation
 server_certs:

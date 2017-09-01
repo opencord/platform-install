@@ -36,7 +36,7 @@ build_xos_base_image: True
 
 xos_tosca_config_templates:
   - mock-onos.yaml
-  - vnodglobal-service.yaml
+  - vnaasglobal-service.yaml
   - xos-gui-extensions.yml
 
 # GUI Config [new GUI]
@@ -51,17 +51,18 @@ gui_branding_favicon: "/static/cord-favicon.png"
 gui_branding_bg: "/static/cord-bg.jpg"
 
 enabled_gui_extensions:
-  - name: metro-net-gui
-    path: orchestration/xos_services/metro-net/xos/gui
+  - name: vnaasgui
+    path: orchestration/xos_services/vnaas/xos/gui
     extra_files:
       - app/style/style.css
+      - mapconstants.js
 
 # paths defined in manifest/default.xml
 xos_services:
   - name: onos
     path: orchestration/xos_services/onos-service
-  - name: metro-net
-    path: orchestration/xos_services/metro-net
+  - name: vnaas
+    path: orchestration/xos_services/vnaas
 
 xos_service_sshkeys:
   - name: onos_rsa
