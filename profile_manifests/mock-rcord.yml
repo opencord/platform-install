@@ -84,7 +84,6 @@ xos_services:
     path: orchestration/xos_services/vrouter
   - name: addressmanager
     path: orchestration/xos_services/addressmanager
-    synchronizer: false
   - name: vsg
     path: orchestration/xos_services/vsg
     keypair: vsg_rsa
