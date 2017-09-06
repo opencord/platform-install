@@ -70,6 +70,9 @@ xos_services:
   - name: fabric
     path: orchestration/xos_services/fabric
     synchronizer: true
+  - name: vepc
+    path: orchestration/xos_services/vepc
+    synchronizer: false
   - name: vbbu
     path: orchestration/xos_services/vbbu
     keypair: mcord_rsa

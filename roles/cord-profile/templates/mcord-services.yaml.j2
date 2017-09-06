@@ -13,6 +13,7 @@ imports:
    - custom_types/vsgwu.yaml
    - custom_types/vpgwc.yaml
    - custom_types/vpgwu.yaml
+   - custom_types/vepc.yaml
 
 topology_template:
   node_templates:
@@ -99,6 +100,11 @@ topology_template:
         no-update: true
 
 # CORD Services
+    service#vepc:
+      type: tosca.nodes.VEPCService
+      properties:
+          kind: vEPC
+          
     service#vbbu:
       type: tosca.nodes.VBBUService
       properties:
@@ -181,6 +187,19 @@ topology_template:
           pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
 
 # CORD Slices
+    mysite_vEPC_slice:
+      description: vEPC Service Slice
+      type: tosca.nodes.Slice
+      properties:
+          network: noauto
+      requirements:
+          - site:
+              node: mysite
+              relationship: tosca.relationships.MemberOfSite
+          - vepc_service:
+              node: service#vepc
+              relationship: tosca.relationships.MemberOfService
+
     mysite_vBBU_slice:
       description: vBBU Service Slice
       type: tosca.nodes.Slice
