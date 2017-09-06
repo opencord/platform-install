@@ -49,6 +49,9 @@ gui_branding_bg: "/static/mcord-bg.jpg"
 
 enabled_gui_extensions: []
 #enabled_gui_extensions:
+#  - name: vepc
+#    path: orchestration/xos_services/vepc/xos/gui
+#enabled_gui_extensions:
 #  - name: vtr
 #    path: orchestration/xos_services/vtr/xos/gui
 #  - name: rcord
@@ -70,6 +73,9 @@ xos_services:
   - name: fabric
     path: orchestration/xos_services/fabric
     synchronizer: true
+  - name: vepc
+    path: orchestration/xos_services/vepc
+    synchronizer: false
   - name: vbbu
     path: orchestration/xos_services/vbbu
     keypair: mcord_rsa
