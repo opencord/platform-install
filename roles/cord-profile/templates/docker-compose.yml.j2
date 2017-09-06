@@ -231,7 +231,7 @@ services:
 {% for network in xos_docker_networks %}
      - {{ network }}
 {% endfor %}
-    command: python /opt/xos/manage.py runserver 0.0.0.0:9000 --insecure
+    command: python /opt/xos/manage.py runserver 0.0.0.0:9000
     ports:
       - "9000:9000"
     links:

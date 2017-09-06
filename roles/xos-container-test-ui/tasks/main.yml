@@ -17,7 +17,7 @@
 #xos-ui tests
 
 - name: Check UI Process
-  shell: ps -f | grep "python /opt/xos/manage.py runserver 0.0.0.0:9000 --insecure --makemigrations"
+  shell: ps -f | grep "python /opt/xos/manage.py runserver 0.0.0.0:9000 --makemigrations"
   register: result
   until: result | success
   retries: 10
