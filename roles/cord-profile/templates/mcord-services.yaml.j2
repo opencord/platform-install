@@ -102,7 +102,6 @@ topology_template:
     service#vbbu:
       type: tosca.nodes.VBBUService
       properties:
-          view_url: /admin/vbbu/vbbuservice/$id$/
           kind: vRAN
           public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
           private_key_fn: /opt/xos/services/vbbu/keys/mcord_rsa
@@ -112,7 +111,6 @@ topology_template:
     service#vhss:
       type: tosca.nodes.VHSSService
       properties:
-          view_url: /admin/vhss/vhssservice/$id$/
           kind: vEPC
           public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
           private_key_fn: /opt/xos/services/vhss/keys/mcord_rsa
@@ -122,7 +120,6 @@ topology_template:
     service#vmme:
       type: tosca.nodes.VMMEService
       properties:
-          view_url: /admin/vmme/vmmeservice/$id$/
           kind: vEPC
           public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
           private_key_fn: /opt/xos/services/vmme/keys/mcord_rsa
@@ -132,7 +129,6 @@ topology_template:
     service#vmm:
       type: tosca.nodes.VMMService
       properties:
-          view_url: /admin/vmm/vmmservice/$id$/
           kind: vEPC
           public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
           private_key_fn: /opt/xos/services/vmm/keys/mcord_rsa
@@ -142,7 +138,6 @@ topology_template:
     service#vsm:
       type: tosca.nodes.VSMService
       properties:
-          view_url: /admin/vsm/vsmservice/$id$/
           kind: vEPC
           public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
           private_key_fn: /opt/xos/services/vsm/keys/mcord_rsa
@@ -152,7 +147,6 @@ topology_template:
     service#vsgwc:
       type: tosca.nodes.VSGWCService
       properties:
-          view_url: /admin/vsgwc/vsgwcservice/$id$/
           kind: vEPC
           public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
           private_key_fn: /opt/xos/services/vsgwc/keys/mcord_rsa
@@ -162,7 +156,6 @@ topology_template:
     service#vsgwu:
       type: tosca.nodes.VSGWUService
       properties:
-          view_url: /admin/vsgwu/vsgwuservice/$id$/
           kind: vEPC
           public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
           private_key_fn: /opt/xos/services/vsgwu/keys/mcord_rsa
@@ -172,7 +165,6 @@ topology_template:
     service#vpgwc:
       type: tosca.nodes.VPGWCService
       properties:
-          view_url: /admin/vpgwc/vpgwcservice/$id$/
           kind: vEPC
           public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
           private_key_fn: /opt/xos/services/vpgwc/keys/mcord_rsa
@@ -182,7 +174,6 @@ topology_template:
     service#vpgwu:
       type: tosca.nodes.VPGWUService
       properties:
-          view_url: /admin/vpgwu/vpgwuservice/$id$/
           kind: vEPC
           public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
           private_key_fn: /opt/xos/services/vpgwu/keys/mcord_rsa
