@@ -19,7 +19,7 @@
 # Prep build node to create artifacts
 
 - name: Include vars
-  hosts: all
+  hosts: build
   tasks:
     - name: Include variables
       include_vars: "{{ item }}"
