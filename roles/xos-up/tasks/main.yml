@@ -22,8 +22,7 @@
     name: "{{ item }}"
   with_items: "{{ xos_docker_networks }}"
 
-- name: Start all XOS services using latest images in registry
+- name: Bring up XOS services
   docker_service:
     project_name: "{{ cord_profile | regex_replace('\\W','') }}"
     project_src: "{{ head_cord_profile_dir }}"
-    pull: true
