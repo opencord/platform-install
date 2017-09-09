@@ -28,6 +28,17 @@ networks:
 {% endfor %}
 
 services:
+  elk:
+    image: {{ pull_docker_registry }}varunbelur/elk:{{ pull_docker_tag }}
+    ports:
+      - "5601:5601"
+      - "9200:9200"
+      - "5044:5044"
+      - "5617:5617"
+    networks:
+{% for network in xos_docker_networks %}
+      - {{ network }}
+{% endfor %} 
   consul:
     image: {{ pull_docker_registry }}gliderlabs/consul-server:{{ pull_docker_tag }}
     command: "-advertise=${MYHOST} -server -bootstrap"
