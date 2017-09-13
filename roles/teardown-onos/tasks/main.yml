@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,15 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# teardown-onos/tasks/main.yml
+#
+# Destroys the ONOS containers
+# NOTE: ignoring errors so that incomplete builds can be removed
 
----
-# onos-fabric-install/defaults/main.yml
+- name: Stop and remove onos-cord containers
+  docker_service:
+    project_name: "onoscord"
+    project_src: "{{ head_onos_cord_dir }}"
+    state: absent
+    remove_images: local
+  ignore_errors: yes
 
-# paths
-head_onos_fabric_dir: "/opt/onos_fabric"
-
-# ONOS docker image to use
-pull_docker_registry: ""
-pull_docker_tag: "candidate"
-onos_docker_image: "{{ pull_docker_registry }}onosproject/onos:{{ pull_docker_tag }}"
+- name: Stop and remove onos-fabric containers
+  when: use_fabric
+  docker_service:
+    project_name: "onosfabric"
+    project_src: "{{ head_onos_fabric_dir }}"
+    state: absent
+    remove_images: local
+  ignore_errors: yes
 

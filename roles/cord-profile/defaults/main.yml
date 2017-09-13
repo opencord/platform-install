@@ -93,14 +93,6 @@ gui_routes:
   - label: "Instances"
     state: "xos.core.instance"
 
-# GUI branding, used in xos_common_config.j2
-disable_minidashboard: "True"
-gui_branding_name: "OpenCloud"
-gui_branding_icon: "/static/logo.png"
-gui_branding_favicon: "/static/favicon.png"
-gui_branding_bg: "/static/bg.jpg"
-gui_service_view_class: False
-
 # used in admin-openrc.sh.j2
 keystone_admin_password: "{{ lookup('password', credentials_dir ~ '/cord_keystone_admin chars=ascii_letters,digits') }}"
 

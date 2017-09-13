@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,15 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # test-exampleservice/defaults/main.yml
 
 head_cord_profile_dir: "/opt/cord_profile"
-credentials_dir: "/opt/credentials"
 
 xos_ui_port: 9000
 
 xos_admin_user: "xosadmin@opencord.org"
-xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+maas_xos_admin_pass: "{{ lookup('file', '/opt/credentials/xosadmin@opencord.org') }}"
 

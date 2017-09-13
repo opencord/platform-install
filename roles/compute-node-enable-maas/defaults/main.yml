@@ -1,3 +1,4 @@
+---
 
 # Copyright 2017-present Open Networking Foundation
 #
@@ -13,14 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # compute-node-enable-maas/defaults/main.yml
 
-credentials_dir: "/opt/credentials"
 head_cord_profile_dir: "/opt/cord_profile"
 
 xos_admin_user: "xosadmin@opencord.org"
-xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+maas_xos_admin_pass: "{{ lookup('file', '/opt/credentials/xosadmin@opencord.org') }}"
 
 xos_ui_port: 9000

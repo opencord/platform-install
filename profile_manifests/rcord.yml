@@ -1,3 +1,4 @@
+---
 
 # Copyright 2017-present Open Networking Foundation
 #
@@ -13,8 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # profile_manifests/rcord.yml
 # R-CORD Profile Manifest
 
@@ -41,12 +40,6 @@ xos_tosca_config_templates:
 
 xos_other_templates:
   - fabric-network-cfg.json
-
-# GUI branding [OLD GUI to be removed]
-gui_branding_name: "CORD"
-gui_branding_icon: "/static/cord-logo.png"
-gui_branding_favicon: "/static/cord-favicon.png"
-gui_branding_bg: "/static/cord-bg.jpg"
 
 enabled_gui_extensions:
   - name: vtr

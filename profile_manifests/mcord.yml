@@ -1,3 +1,4 @@
+---
 
 # Copyright 2017-present Open Networking Foundation
 #
@@ -13,8 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # profile_manifests/mcord.yml
 # Configures an M-CORD pod
 
@@ -34,10 +33,6 @@ xos_tosca_config_templates:
   - fabric-service.yaml
   - management-net.yaml
   - xos-gui-extensions.yml
-#  - mcord-services.yaml  # should unify this with services.yaml.j2 eventually
-# - public-net.yaml
-# - volt-devices.yaml
-# - vrouter.yaml
 
 xos_other_templates:
   - fabric-network-cfg.json
@@ -46,18 +41,7 @@ xos_other_templates:
 gui_project_name: "M-CORD"
 gui_background: "cord-bg.jpg" # TODO find mcord image
 
-# GUI branding [OLD GUI to be removed]
-gui_branding_name: "MCORD"
-gui_branding_icon: "/static/mcord-logo.png"
-gui_branding_favicon: "/static/mcord-favicon.png"
-gui_branding_bg: "/static/mcord-bg.jpg"
-
 enabled_gui_extensions: []
-#enabled_gui_extensions:
-#  - name: vtr
-#    path: orchestration/xos_services/vtr/xos/gui
-#  - name: rcord
-#    path: orchestration/profiles/rcord/xos/gui
 
 # paths defined in manifest/default.xml
 xos_services:
@@ -75,23 +59,10 @@ xos_services:
   - name: fabric
     path: orchestration/xos_services/fabric
     synchronizer: true
-#  - name: vBBU
-#    path: orchestration/xos_services/vBBU
-#    keypair: mcord_rsa
-#    synchronizer: true
   - name: vmme
     path: orchestration/xos_services/vmme
     keypair: mcord_rsa
     synchronizer: true
-#  - name: vSGW
-#    path: orchestration/xos_services/vSGW
-#    keypair: mcord_rsa
-#    synchronizer: true
-#  - name: vPGWC
-#    path: orchestration/xos_services/vPGWC
-#    keypair: mcord_rsa
-#    synchronizer: true
-# needed onboarding synchronizer doesn't require service code to be present when started
   - name: exampleservice
     path: orchestration/xos_services/exampleservice
     keypair: exampleservice_rsa
@@ -100,8 +71,6 @@ xos_services:
     path: orchestration/xos_services/monitoring
     keypair: monitoringservice_rsa
     synchronizer: false
-
-# profile_library: "mcord"
 
 # SSL server certificate generation
 server_certs:

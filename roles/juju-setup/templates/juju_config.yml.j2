@@ -1,4 +1,4 @@
-
+---
 {#
 Copyright 2017-present Open Networking Foundation
 
@@ -15,8 +15,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 #}
 
-
----
 # juju configuration file for CORD deployments
 
 ceilometer:
@@ -49,7 +47,7 @@ neutron-api:
   onos-vtn-port: 8182
   neutron-security-groups: "True"
   overlay-network-type: vxlan
-  {% if enable_dpdk -%}
+  {% if use_dpdk -%}
   onos-vtn-branch: cord-2.0-dpdk-kilo
   {% endif %}
 
@@ -60,7 +58,7 @@ nova-cloud-controller:
   config-flags: "force_config_drive=always"
   console-access-protocol: novnc
   network-manager: Neutron
-  {% if enable_dpdk -%}
+  {% if use_dpdk -%}
   scheduler-default-filters: "RetryFilter,AvailabilityZoneFilter,CoreFilter,RamFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter,NUMATopologyFilter"
   {% endif %}
 
@@ -68,7 +66,7 @@ nova-compute:
   openstack-origin: "cloud:trusty-kilo"
   virt-type: kvm
   disable-neutron-security-groups: "True"
-  {% if enable_dpdk -%}
+  {% if use_dpdk -%}
   config-flags: "firewall_driver=nova.virt.firewall.NoopFirewallDriver,vcpu_pin_set={{ vcpu_pin_set }}"
   enable-dpdk: True
   hugepages: "{{ hugepages }}"
