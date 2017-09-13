@@ -140,6 +140,7 @@ services:
       - xos_core:xos-core
     volumes:
       - {{ head_cord_profile_dir }}/xos-tosca.config.yaml:/opt/xos-tosca/src/xos-tosca.config.yaml
+      - {{ head_cord_profile_dir }}/im_cert_chain.pem:/usr/local/share/ca-certificates/local_certs.crt:ro
     depends_on:
       - xos_core
       - registrator
