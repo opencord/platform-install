@@ -17,6 +17,21 @@ limitations under the License.
 
 
 name: xos-tosca
-grpc:
-  secure_endpoint: "xos-core.{{ site_suffix }}:50051"
-  insecure_endpoint: "xos-core.{{ site_suffix }}:50055"
+gprc_endpoint: "xos-core.{{ site_suffix }}"
+local_cert: /usr/local/share/ca-certificates/local_certs.crt
+logging:
+  version: 1
+  handlers:
+    console:
+      class: logging.StreamHandler
+    file:
+      class: logging.handlers.RotatingFileHandler
+      filename: /var/log/xos.log
+      maxBytes: 10485760
+      backupCount: 5
+  loggers:
+    '':
+      handlers:
+          - console
+          - file
+      level: DEBUG
