@@ -1,8 +1,0 @@
-; mock-mcord configuration
-
-[all:vars]
-cord_profile=mock-mcord
-
-[head]
-localhost ansible_connection=local
-
