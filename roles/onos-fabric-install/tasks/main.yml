@@ -41,5 +41,6 @@
 
 - name: Start ONOS for fabric
   docker_service:
+    project_name: "onosfabric"
     project_src: "{{ head_onos_fabric_dir }}"
 
