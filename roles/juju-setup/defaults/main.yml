@@ -1,3 +1,4 @@
+---
 
 # Copyright 2017-present Open Networking Foundation
 #
@@ -13,10 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # juju-setup/defaults/main.yml
-
+#
 # note: juju_config_path and charm_versions are also set in
 # `juju-compute-setup/defaults/main.yml`.  Keep these in sync.
 
@@ -31,7 +30,7 @@ site_suffix: "{{ site_name }}.test"
 
 keystone_admin_password: "{{ lookup('password', credentials_dir ~ '/cord_keystone_admin chars=ascii_letters,digits') }}"
 
-enable_dpdk: False
+use_dpdk: False
 vcpu_pin_set: "^0,^2"
 hugepages: "60%"
 dpdk_socket_memory: "1024,0"
