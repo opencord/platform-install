@@ -1,8 +1,0 @@
-; devstack configuration
-
-[all:vars]
-cord_profile=devstack
-
-[head]
-localhost ansible_connection=local
-
