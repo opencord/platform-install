@@ -29,7 +29,7 @@ xos_admin_last: Admin
 
 frontend_only: False
 use_openstack: False
-use_vtn: False
+use_vtn: True
 needs_pki_install: True
 
 build_xos_base_image: True
@@ -37,8 +37,8 @@ build_xos_base_image: True
 xos_tosca_config_templates:
   - management-net.yaml
   - mock-onos.yaml
-#  - vtn-service.yaml # rimosso
-#  - fabric-service.yaml # rimosso
+ # - vtn-service.yaml
+  - fabric-service.yaml
   - ecord-services.yaml
   - vee-service.yaml
   - xos-gui-extensions.yml
@@ -60,8 +60,8 @@ xos_services:
     path: orchestration/xos_services/openstack
   - name: onos
     path: orchestration/xos_services/onos-service
-  - name: vtn
-    path: orchestration/xos_services/vtn-service
+#  - name: vtn
+#    path: orchestration/xos_services/vtn-service
   - name: fabric
     path: orchestration/xos_services/fabric
   - name: vrouter
