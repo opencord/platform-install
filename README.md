@@ -5,67 +5,7 @@ installing and configuring software components that build a CORD POD:
 OpenStack, ONOS, and XOS.
 
 It is used as a sub-module of the [main CORD
-repository](https://github.com/opencord/cord), but can independently bring up
-various CORD profiles for development work.
-
-If you want to set up an entire CORD pod on physical hardware, or set up the
-Cord-in-a-Box deployment, you should start at the [CORD
 repository](https://github.com/opencord/cord).
-
-## Using platform-install for development
-
-### Bootstrapping your development environment
-
-There's a helper script,
-[scripts/cord-bootstrap.sh](https://github.com/opencord/platform-install/blob/master/scripts/cord-bootstrap.sh).
-that will install development environment prerequisites on a Ubuntu 14.04 node.
-You can download it with:
-
-```
-curl -o ~/cord-bootstrap.sh https://raw.githubusercontent.com/opencord/platform-install/master/scripts/cord-bootstrap.sh
-```
-
-Running the script will install the [repo](https://code.google.com/p/git-repo/)
-tool, [Ansible](https://docs.ansible.com/ansible/index.html), and
-[Docker](https://www.docker.com/), as well as make a checkout of the CORD
-[manifest](https://gerrit.opencord.org/gitweb?p=manifest.git;a=blob;f=default.xml)
-into `/opt/cord`.
-
-You can specify which gerrit changesets you would like repo to checkout using
-the `-b` option on the script [as documented
-here](https://github.com/opencord/cord/blob/master/docs/quickstart.md#using-cord-in-a-boxsh-to-download-development-code-from-gerrit).
-
-Once you have done this, if you're not already in the `docker` group, you
-should logout and log back into your system to refresh your user account's
-group membership. If you don't do this, any docker command you run or ansible
-runs for you will fail. You can check your group membership by running
-`groups`.
-
-Once you log back in, you may want to run `tmux` to maintain a server-side
-session you can reconnect to, in case of network trouble.
-
-All of the commands below assume you're in the `/opt/cord/build/platform-install` directory.
-
-### Creating a development environment on you machine
-
-If you are doing work that does not involve `openstack` you can create a
-development environment inside a VM on your local machine. This environment is
-mostly designed to do `GUI`, `APIs` and `modeling` related work. It can also be
-useful to test a `synchronizer` whose job is synchronizing data using REST
-APIs.
-
-To do that we provided a `Vagrant` VM.  From this folder just execute `vagrant
-up head-node`. We'll create an Ubuntu based VM with all the `cord` code shared
-from your local machine, so that you can make your changes locally and quickly
-test the outcome.
-
-Once the `vm` is created you can connect to it with `vagrant ssh head-node` and
-then from the `/opt/cord/build/platform-install` execute the profile you are
-interested in.  For instance you can spin up the `frontend` configuration with:
-`ansible-playbook -i inventory/frontend deploy-xos-playbook.yml`.
-
-_Note that the `cord-bootstrap.sh` script is automatically invoked by the
-provisioning script and the `vagrant` vm requires VirtualBox_
 
 ### Credentials
 
@@ -75,65 +15,11 @@ contents of the file is the password.
 
 For most profiles the XOS admin user is named `xosadmin@opencord.org`.
 
-### Development Loop
-
-Most profiles are run by specifying an inventory file when running
-`ansible-playbook`. For most frontend or mock profiles, you'll want to run the
-`deploy-xos-playbook.yml` playbook.
-
-For example, to run the `frontend` config, you would run:
-
-```
-ansible-playbook -i inventory/frontend deploy-xos-playbook.yml
-```
-
-Setting up the initial environment, and launching XOS for the first time,
-will take about 30 minutes.  You can then explore the environment you've set up.
-
-Suppose you've made a change to your code and want the changes reflected
-in the running XOS containers.  To get there, run:
-
-```
-ansible-playbook -i inventory/frontend redeploy-xos-playbook.yml
-```
-
-Rebuilding and redeploying containers using this method will usually take much
-less time than the initial setup phase.  All changes to the local environment's
-source tree should be reflected in the redeployed containers.  Note that
-running the above playbook will preserve the existing database.
-
-When you're ready to tear down your environment, for example to switch
-to another profile, or to launch the current profile again from a fresh
-database, run:
-
-```
-ansible-playbook -i inventory/frontend teardown-playbook.yml
-```
-
-This will destroy all the docker containers created.  Note that you must run the
-`teardown-playbook.yml` using the same inventory file it was created with,
-otherwise rogue docker containers may still be running after the teardown.
-
-You can then make changes to code and re-run the same or a different profile.
-
 ### Creating a new CORD profile
 
-To create a new CORD profile, you should:
-
-1. Create an inventory file in `inventory/` that defines the `cord_profile`
-   variable, with the name of your profile.
-
-```
-[all:vars]
-cord_profile=my-profile
-```
-
-2. Create a .yaml variables file in `profile_manifests/` with the name of your
-   profile (ex: `my-profile.yaml`), and populate it with your configuration.
-
-3. To test the profile, run the `deploy-xos-playbook.yml` playbook using your
-   inventory profile:
-   `ansible-playbook -i inventory/my-profile deploy-xos-playbook.yml`
+To create a new CORD profile, you should create a .yaml variables file in
+`profile_manifests/` with the name of your profile (ex: `my-profile.yaml`), and
+populate it with your configuration.
 
 ### Making changes and lint checking your changes
 
@@ -142,26 +28,6 @@ will perform the same [ansible-lint](https://pypi.python.org/pypi/ansible-lint)
 check that Jenkins performs when in review in gerrit.
 
 ## Specific profiles notes
-
-### api-test
-
-This profile runs API tests for both the REST and TOSCA APIs. This can be done
-in an automated fashion:
-
-`ansible-playbook -i inventory/api-test api-test-playbook.yml`
-
-The XOS credentials in this config are `padmin@vicci.org` and `letmein` (until
-the tests are modified to support generated credentials).
-
-### frontend
-
-Builds a basic XOS frontend installation, useful for UI testing and
-experimentation.
-
-### mock-rcord, mock-mcord
-
-Builds a Mock R-CORD or Mock M-CORD pod, without running service synchronizers
-in a manner similar to frontend.
 
 ### opencloud
 
@@ -178,28 +44,13 @@ like MaaS, OpenStack, and ONOS.  See the [CORD-in-a-Box Quick Start
 Guide](https://github.com/opencord/cord/blob/master/docs/quickstart.md) for how
 to set up a virtual multi-node R-CORD pod on a single host.
 
-If you've already built a CiaB and want to go through the dev loop described
-above on the head/production node, when running `ansible-playbook` you must
-pass the path to the configuration file that was generated by Gradle during the
-build:
+### ecord
 
-```
-ansible-playbook -i inventory/head-localhost --extra-vars @../genconfig/config.yml playbook.yml
-```
+E-CORD description goes here.
 
-You may find the following shell aliases to be helpful during development:
+### mcord
 
-```
-alias xos-teardown="pushd /opt/cord/build/platform-install; ansible-playbook -i inventory/head-localhost --extra-vars @/opt/cord/build/genconfig/config.yml teardown-playbook.yml"
-alias xos-launch="pushd /opt/cord/build/platform-install; ansible-playbook -i inventory/head-localhost --extra-vars @/opt/cord/build/genconfig/config.yml launch-xos-playbook.yml"
-alias compute-node-refresh="pushd /opt/cord/build/platform-install; ansible-playbook -i /etc/maas/ansible/pod-inventory --extra-vars=@/opt/cord/build/genconfig/config.yml compute-node-refresh-playbook.yml"
-```
-
-With these aliases, tearing down XOS and rebuilding it from a fresh database becomes:
-
-```
-xos-teardown; xos-launch; compute-node-refresh
-```
+M-CORD description goes here.
 
 ## Design Notes for Developers
 
@@ -248,6 +99,6 @@ Use the YAML style syntax for tasks, not the older `=` syntax, as the former is
 more likely to indent and syntax highlight properly in most editors.
 
 Roles should always have the same outcome, so avoid using conditionals or tags
-to change the behavior of a role. 
-
+to change the behavior of a role. These features should only be used for
+avoiding time-consuming tasks in an idempotent manner.
 

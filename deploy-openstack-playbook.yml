@@ -47,4 +47,4 @@
 - name: Configure Nova with DPDK-enabled flavors
   hosts: head
   roles:
-    - { role: setup-nova-dpdk, when: enable_dpdk | default(False) }
+    - { role: setup-nova-dpdk, when: use_dpdk | default(False) }

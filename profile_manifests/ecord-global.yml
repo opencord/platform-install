@@ -1,3 +1,4 @@
+---
 
 # Copyright 2017-present Open Networking Foundation
 #
@@ -13,15 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # profile_manifests/ecord-global.yml
 # E-CORD Profile Manifest
 
 # Site configuration
 site_name: mysite
 site_humanname: MySite
-# site_suffix: "{{ site_name }}.cord.lab"
 site_suffix: "cord.lab"
 deployment_type: MyDeployment
 
@@ -43,12 +41,6 @@ xos_other_templates:
 gui_project_name: "E-CORD"
 gui_background: "cord-bg.jpg" # TODO find ecord image
 gui_payoff: "Your Enterprise VNF orchestrator"
-
-# GUI branding
-gui_branding_name: "ECORD"
-gui_branding_icon: "/static/cord-logo.png"
-gui_branding_favicon: "/static/cord-favicon.png"
-gui_branding_bg: "/static/cord-bg.jpg"
 
 enabled_gui_extensions: []
 

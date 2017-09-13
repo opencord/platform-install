@@ -1,8 +1,0 @@
-; rcord configuration
-
-[all:vars]
-cord_profile=rcord-new
-
-[head]
-localhost ansible_connection=local
-
