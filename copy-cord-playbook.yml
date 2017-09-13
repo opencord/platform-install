@@ -1,3 +1,4 @@
+---
 
 # Copyright 2017-present Open Networking Foundation
 #
@@ -13,13 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # copy-cord-playbook.yml
 # Copy the cord directory from config node to head node
 
 - name: Include vars
-  hosts: config
+  hosts: head
   tasks:
     - name: Include variables
       include_vars: "{{ item }}"
