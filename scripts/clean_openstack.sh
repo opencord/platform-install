@@ -29,7 +29,7 @@ function cleanup_network {
   neutron net-delete $NETWORK
 }
 
-source ./admin-openrc.sh
+source /opt/cord_profile/admin-openrc.sh
 
 echo "Deleting VMs"
 # Delete all VMs
