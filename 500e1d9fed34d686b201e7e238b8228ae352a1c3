@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_2d82f900",
+        "filename": "roles/cord-profile/templates/carrierethernet-local-app.yaml.j2",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000029
+      },
+      "writtenOn": "2017-09-14T16:41:05Z",
+      "side": 1,
+      "message": "why are we using ovsdb?",
+      "revId": "500e1d9fed34d686b201e7e238b8228ae352a1c3",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
