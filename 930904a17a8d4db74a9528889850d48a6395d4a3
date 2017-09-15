@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_3b822f01",
+        "filename": "roles/cord-profile/templates/mcord-services.yaml.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2017-09-15T22:16:16Z",
+      "side": 1,
+      "message": "why we add a vsg image",
+      "range": {
+        "startLine": 36,
+        "startChar": 3,
+        "endLine": 37,
+        "endChar": 22
+      },
+      "revId": "930904a17a8d4db74a9528889850d48a6395d4a3",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
