@@ -21,6 +21,7 @@
   command: >
     openssl genrsa
       -out {{ pki_dir }}/{{ site_name }}_im_ca/private/{{ item.cn }}_key.pem
+      {{ cert_size }}
   args:
     creates: "{{ pki_dir }}/{{ site_name }}_im_ca/private/{{ item.cn }}_key.pem"
   with_items: "{{ server_certs }}"
@@ -91,6 +92,7 @@
   command: >
     openssl genrsa
       -out {{ pki_dir }}/{{ site_name }}_im_ca/private/{{ item.cn }}_key.pem
+      {{ cert_size }}
   args:
     creates: "{{ pki_dir }}/{{ site_name }}_im_ca/private/{{ item.cn }}_key.pem"
   with_items: "{{ client_certs }}"
