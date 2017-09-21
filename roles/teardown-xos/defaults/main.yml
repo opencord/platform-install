@@ -1,3 +1,4 @@
+---
 
 # Copyright 2017-present Open Networking Foundation
 #
@@ -13,9 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
-# teardown-profile/defaults/main.yml
+# teardown-xos/defaults/main.yml
 
 head_cord_profile_dir: "/opt/cord_profile"
 

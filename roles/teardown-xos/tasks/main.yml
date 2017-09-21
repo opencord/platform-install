@@ -1,3 +1,4 @@
+---
 
 # Copyright 2017-present Open Networking Foundation
 #
@@ -14,9 +15,8 @@
 # limitations under the License.
 
 
----
-# teardown-profile/tasks/main.yml
-# Destroys the currently created profile
+# teardown-xos/tasks/main.yml
+# Removes XOS Docker containers
 # NOTE: ignoring errors so that incomplete builds can be removed
 
 - name: Stop and remove XOS containers
