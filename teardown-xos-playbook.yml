@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # teardown-playbook.yml
 
 - name: Include vars
-  hosts: all
+  hosts: head
   tasks:
     - name: Include variables
       include_vars: "{{ item }}"
@@ -26,7 +24,7 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
-- name: Teardown CORD profile
+- name: Teardown XOS containers
   hosts: head
   roles:
-   - teardown-profile
+   - teardown-xos
