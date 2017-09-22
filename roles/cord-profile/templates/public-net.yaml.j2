@@ -60,6 +60,12 @@ topology_template:
               node: service#addressmanager
               relationship: tosca.relationships.TenantOfService
 
+    addresses_public:
+      type: tosca.node.AddressPool
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
 
     {{ site_name }}_public:
       description: This slice exists solely to own the public network
