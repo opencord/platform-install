@@ -17,5 +17,5 @@
 ---
 # copy-profile/defaults/main.yml
 
-config_cord_profile_dir: "/opt/cord_profile"
+config_cord_profile_dir: "~/cord_profile"
 head_cord_profile_dir: "/opt/cord_profile"

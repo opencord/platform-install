@@ -49,6 +49,8 @@ enabled_gui_extensions: []
 
 # paths defined in manifest/default.xml
 xos_services:
+  - name: addressmanager
+    path: orchestration/xos_services/addressmanager
   - name: openstack
     path: orchestration/xos_services/openstack
   - name: onos
@@ -63,8 +65,8 @@ xos_services:
   - name: veg
     path: orchestration/xos_services/vEG
     keypair: veg_rsa
-  - name: vnodlocal
-    path: orchestration/xos_services/metronet-local
+  # - name: vnodlocal
+  #   path: orchestration/xos_services/metronet-local
   - name: vee
     path: orchestration/xos_services/vEE
 
