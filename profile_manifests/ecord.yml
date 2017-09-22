@@ -60,11 +60,11 @@ xos_services:
     path: orchestration/xos_services/fabric
   - name: vrouter
     path: orchestration/xos_services/vrouter
-  - name: veg
-    path: orchestration/xos_services/vEG
-    keypair: veg_rsa
-  - name: vnodlocal
-    path: orchestration/xos_services/metronet-local
+  # - name: veg
+  #   path: orchestration/xos_services/vEG
+  #   keypair: veg_rsa
+  # - name: vnodlocal
+  #   path: orchestration/xos_services/metronet-local
   - name: vee
     path: orchestration/xos_services/vEE
 
