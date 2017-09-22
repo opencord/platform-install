@@ -23,7 +23,7 @@ description: Just enough Tosca to get the vEG slice running on the CORD POD, cre
 imports:
    - custom_types/xos.yaml
    - custom_types/veg.yaml
-   - custom_types/vnodlocal.yaml
+   - custom_types/addressmanager.yaml
 
 topology_template:
   node_templates:
@@ -69,6 +69,9 @@ topology_template:
         no-update: true
 
 # CORD Services
+
+    
+
     addresses_veg:
       type: tosca.nodes.AddressPool
       properties:
@@ -102,6 +105,16 @@ topology_template:
       artifacts:
         pubkey: /opt/cord_profile/key_import/veg_rsa.pub
 
+    service#addressmanager:
+      type: tosca.nodes.AddressManagerService
+      requirements:
+        - addresses_veg:
+            node: addresses_veg
+            relationship: tosca.relationships.ProvidesAddresses
+        - addresses_public:
+            node: addresses_public
+            relationship: tosca.relationships.ProvidesAddresses
+
     service#vrouter:
       type: tosca.nodes.VRouterService
       properties:
@@ -110,9 +123,6 @@ topology_template:
       requirements:
         - addresses_veg:
             node: addresses_veg
-            relationship: tosca.relationships.ProvidesAddresses
-        - addresses_public:
-            node: addresses_public
             relationship: tosca.relationships.ProvidesAddresses
 
     vRouter_ONOS_app:
@@ -125,7 +135,7 @@ topology_template:
             node: service#vrouter
             relationship: tosca.relationships.UsedByService
       properties:
-        dependencies: org.onosproject.vrouter
+        dependencies: org.onosproject.fpm
         autogenerate: vrouter-network-cfg
 
     template#veg:
@@ -135,10 +145,6 @@ topology_template:
         translation: none
         vtn_kind: VEG
 
-    service#vnodlocal:
-      type: tosca.nodes.VNodLocalService
-      properties:
-      requirements:
 
     # Networks required by the CORD setup
     {{ site_name }}_veg-access:
@@ -181,3 +187,53 @@ topology_template:
             node: image#vsg-1.1
             relationship: tosca.relationships.DefaultImage
 
+    in#lanside:
+      type: tosca.nodes.InterfaceType
+      properties:
+         direction: in
+
+    out#lanside:
+      type: tosca.nodes.InterfaceType
+      properties:
+         direction: out
+
+    in#wanside:
+      type: tosca.nodes.InterfaceType
+      properties:
+         direction: in
+
+    out#wanside:
+      type: tosca.nodes.InterfaceType
+      properties:
+         direction: out
+
+    veg_lanside:
+      type: tosca.nodes.ServiceInterface
+      requirements:
+        - service:
+            node: service#veg
+            relationship: tosca.relationships.MemberOfService
+        - interface:
+            node: in#lanside
+            relationship: tosca.relationships.IsType
+
+    veg_wanside:
+      type: tosca.nodes.ServiceInterface
+      requirements:
+        - service:
+            node: service#veg
+            relationship: tosca.relationships.MemberOfService
+        - interface:
+            node: out#wanside
+            relationship: tosca.relationships.IsType
+
+    addressmanager_wanside:
+      type: tosca.nodes.ServiceInterface
+      requirements:
+        - service:
+            node: service#addressmanager
+            relationship: tosca.relationships.MemberOfService
+        - interface:
+            node: in#wanside
+            relationship: tosca.relationships.IsType
+            
