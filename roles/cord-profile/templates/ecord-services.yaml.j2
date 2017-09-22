@@ -23,7 +23,7 @@ description: Just enough Tosca to get the vEG slice running on the CORD POD, cre
 imports:
    - custom_types/xos.yaml
    - custom_types/veg.yaml
-   - custom_types/vnodlocal.yaml
+   # - custom_types/vnodlocal.yaml
 
 topology_template:
   node_templates:
@@ -135,10 +135,10 @@ topology_template:
         translation: none
         vtn_kind: VEG
 
-    service#vnodlocal:
-      type: tosca.nodes.VNodLocalService
-      properties:
-      requirements:
+    #service#vnodlocal:
+    #  type: tosca.nodes.VNodLocalService
+    #  properties:
+    #  requirements:
 
     # Networks required by the CORD setup
     {{ site_name }}_veg-access:

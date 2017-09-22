@@ -24,7 +24,7 @@ imports:
    - custom_types/xos.yaml
    - custom_types/vee.yaml
    - custom_types/veg.yaml
-   - custom_types/vnodlocal.yaml
+#   - custom_types/vnodlocal.yaml
 
 topology_template:
   node_templates:
@@ -66,13 +66,13 @@ topology_template:
         no-create: true
         no-update: true
 
-    service#vnodlocal:
-      type: tosca.nodes.VNodLocalService
-      properties:
-        no-delete: true
-        no-create: true
-        no-update: true
-      requirements:
+#    service#vnodlocal:
+#      type: tosca.nodes.VNodLocalService
+#      properties:
+#        no-delete: true
+#        no-create: true
+#        no-update: true
+#      requirements:
 
 # Test subscriber
 
