@@ -20,12 +20,12 @@
 # site configuration
 site_name: mysite
 site_humanname: MySite
-site_suffix: "{{ site_name }}.opencord.org"
+#site_suffix: "{{ site_name }}.opencord.org"
+site_suffix: "cord.lab"
 deployment_type: MyDeployment
 
 # Feature toggles
 use_maas: True
-use_apt_cache: True
 
 # XOS config
 xos_tosca_config_templates:
@@ -48,86 +48,25 @@ xos_services:
   - name: vtn
     path: orchestration/xos_services/vtn-service
     keypair: vsg_rsa
-    synchronizer: true
   - name: openstack
     path: orchestration/xos_services/openstack
-    synchronizer: true
   - name: onos
     path: orchestration/xos_services/onos-service
     keypair: onos_rsa
-    synchronizer: true
   - name: fabric
     path: orchestration/xos_services/fabric
-    synchronizer: true
-  - name: vmme
-    path: orchestration/xos_services/vmme
-    keypair: mcord_rsa
-    synchronizer: true
+#  uncomment this when vmme migration is to be done.
+#  - name: vmme
+#    path: orchestration/xos_services/vmme
+#    keypair: mcord_rsa
+#    synchronizer: true
   - name: exampleservice
     path: orchestration/xos_services/exampleservice
     keypair: exampleservice_rsa
-    synchronizer: true
-  - name: monitoring
-    path: orchestration/xos_services/monitoring
-    keypair: monitoringservice_rsa
-    synchronizer: false
-
-# SSL server certificate generation
-server_certs:
-  - cn: "keystone.{{ site_suffix }}"
-    subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=keystone.{{ site_suffix }}"
-    altnames:
-      - "DNS:keystone.{{ site_suffix }}"
-      - "DNS:keystone"
-  - cn: "xos-core.{{ site_suffix }}"
-    subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=xos-core.{{ site_suffix }}"
-    altnames:
-      - "DNS:xos-core.{{ site_suffix }}"
-
-# Network/DNS settings
-headnode: head1
-
-dns_search:
-  - "{{ site_suffix }}"
-
-mgmt_ipv4_first_octets: "192.168.200"
-
-dns_servers:
-  - "{{ mgmt_ipv4_first_octets }}.1"
-
-# DNS settings for NSD/Unbound
-nsd_zones:
-  - name: "{{ site_suffix }}"
-    ipv4_first_octets: "{{ mgmt_ipv4_first_octets }}"
-    name_reverse_unbound: "168.192.in-addr.arpa"
-    soa: ns1
-    ns:
-      - { name: ns1 }
-    nodelists:
-      - head_lxd_list
-      - physical_node_list
-    aliases:
-      - { name: "apt-cache", dest: "{{ headnode }}" }
-      - { name: "cordloghost", dest: "{{ headnode }}" }
-      - { name: "docker", dest: "{{ headnode }}" }
-      - { name: "ns", dest: "{{ headnode }}" }
-      - { name: "ns1", dest: "{{ headnode }}" }
-      - { name: "onos-cord", dest: "{{ headnode }}" }
-      - { name: "xos", dest: "{{ headnode }}" }
-      - { name: "xos-chameleon", dest: "{{ headnode }}" }
-      - { name: "xos-rest-gw", dest: "{{ headnode }}" }
-      - { name: "xos-gui", dest: "{{ headnode }}" }
-
-unbound_listen_all: True
-
-unbound_interfaces:
-  - "{{ mgmt_ipv4_first_octets }}.1/24"
-
-physical_node_list:
-  - name: head1
-    ipv4_last_octet: 1
-    aliases:
-      - head
+#  - name: monitoring
+#    path: orchestration/xos_services/monitoring
+#    keypair: monitoringservice_rsa
+#    synchronizer: false
 
 # VTN network configuration
 management_network_cidr: 172.27.0.0/24
