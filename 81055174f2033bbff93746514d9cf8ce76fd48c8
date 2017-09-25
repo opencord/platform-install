@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_d34d37c6",
+        "filename": "profile_manifests/mcord.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2017-09-25T23:02:10Z",
+      "side": 1,
+      "message": "why we delete this part?",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 24
+      },
+      "revId": "81055174f2033bbff93746514d9cf8ce76fd48c8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_b34ac3aa",
+        "filename": "profile_manifests/mcord.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2017-09-25T23:02:10Z",
+      "side": 0,
+      "message": "what will happen, if you enable the synchronizer",
+      "range": {
+        "startLine": 51,
+        "startChar": 3,
+        "endLine": 51,
+        "endChar": 22
+      },
+      "revId": "33191c2e72354f38273774704b14d19c32887c4f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
