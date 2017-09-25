@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_709a0116",
+        "filename": "roles/cord-profile/templates/public-net.yaml.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2017-09-25T13:10:13Z",
+      "side": 0,
+      "message": "why is this removed ? might be needed by rcord or mcord",
+      "range": {
+        "startLine": 23,
+        "startChar": 3,
+        "endLine": 23,
+        "endChar": 37
+      },
+      "revId": "09765839e374339d7fa6ca817d2a05fd3eb787f7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
