@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # test-vsg/tasks/main.yml
 #
 # Run tests to check that the CORD-in-a-Box deployment has worked.
@@ -73,7 +71,7 @@
 
 - name: Test external connectivity in test client
   become: yes
-  command: lxc exec testclient -- ping -c 3 8.8.8.8
+  command: "lxc exec testclient -- ping -c 3 {{ lookup('dig', vsg_test_ping_target) }}"
   register: pingtest
   tags:
     - skip_ansible_lint # running a sub job
