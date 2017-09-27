@@ -71,9 +71,15 @@
   tags:
     - skip_ansible_lint # running a sub job
 
+# Ping the ONF website as a test
+# $ date -u
+# Wed Sep 27 22:12:17 UTC 2017
+# $ dig +short opennetworking.org
+# 104.197.35.99
+
 - name: Test external connectivity in test client
   become: yes
-  command: lxc exec testclient -- ping -c 3 8.8.8.8
+  command: lxc exec testclient -- ping -c 3 104.197.35.99
   register: pingtest
   tags:
     - skip_ansible_lint # running a sub job
