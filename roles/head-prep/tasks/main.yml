@@ -49,9 +49,11 @@
     - libssl-dev
     - libvirt-bin
     - python-dev
+    - python-dnspython
     - python-glanceclient
     - python-keystoneclient
     - python-lxml
+    - python-netaddr
     - python-neutronclient
     - python-novaclient
     - python-pip
