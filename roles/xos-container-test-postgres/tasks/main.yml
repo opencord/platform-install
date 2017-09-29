@@ -12,27 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#xos-onos-sync tests
+#xos-postgres tests
 
-- name: Check XOS ONOS Synchronizer Process
-  shell: ps -f | grep "python onos-synchronizer.py -C /opt/xos/synchronizers/onos/onos_synchronizer_config"
+- name: Check PSQL Service Status
+  service:
+    name: postgresql
+    state: started
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Check PSQL Service Version/Port
+  shell: service postgresql status | grep "{{ item }}"
   register: result
-  until: result | success
-  retries: 10
-  delay: 5
+  with_items:
+    - 9.6/main
+    - port 5432
+    - online
   tags:
     - skip_ansible_lint # running a sub job
-
-- name: Get Volume Mounts on XOS ONOS Synchronizer Container
-  shell: mount -l | grep xos_services
-  register: volumes
-  tags:
-    - skip_ansible_lint # running a sub job
-
-- name: Validate Volume Mounts on XOS ONOS Synchronizer  Container
-  assert:
-    that: "'/opt/xos_services/{{ item.name }}' in volumes.stdout|lower"
-  with_items: "{{ xos_services }}"
-  when:
-    - "'{{ item.name }}' != 'vnodlocal'"
-    - "'{{ item.name }}' != 'volt'"
