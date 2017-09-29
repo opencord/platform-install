@@ -12,27 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#xos-onos-sync tests
 
-- name: Check XOS ONOS Synchronizer Process
-  shell: ps -f | grep "python onos-synchronizer.py -C /opt/xos/synchronizers/onos/onos_synchronizer_config"
+#xos-addressmanager-sync tests
+
+- name: Check XOS AddressManager Synchronizer Process
+  shell: ps -f | grep "python addressmanager-synchronizer.py -C /opt/xos/synchronizers/addressmanager/addressmanager_synchronizer_config"
   register: result
   until: result | success
   retries: 10
   delay: 5
   tags:
     - skip_ansible_lint # running a sub job
-
-- name: Get Volume Mounts on XOS ONOS Synchronizer Container
-  shell: mount -l | grep xos_services
-  register: volumes
-  tags:
-    - skip_ansible_lint # running a sub job
-
-- name: Validate Volume Mounts on XOS ONOS Synchronizer  Container
-  assert:
-    that: "'/opt/xos_services/{{ item.name }}' in volumes.stdout|lower"
-  with_items: "{{ xos_services }}"
-  when:
-    - "'{{ item.name }}' != 'vnodlocal'"
-    - "'{{ item.name }}' != 'volt'"

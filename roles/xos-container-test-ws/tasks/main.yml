@@ -1,4 +1,3 @@
-
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,11 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#xos-ws tests
 
-#xos-vtn-sync tests
-
-- name: Check XOS VTN Synchronizer Process
-  shell: ps -f | grep "python vtn-synchronizer.py -C /opt/xos/synchronizers/vtn/vtn_synchronizer_config"
+- name: Check Rest GW Process
+  shell: ps -f | grep "node src/server.js --config gateway-config.yml"
   register: result
   until: result | success
   retries: 10
@@ -25,16 +23,3 @@
   tags:
     - skip_ansible_lint # running a sub job
 
-- name: Get Volume Mounts on XOS VTN Synchronizer Container
-  shell: mount -l | grep xos_services
-  register: volumes
-  tags:
-    - skip_ansible_lint # running a sub job
-
-- name: Validate Volume Mounts on XOS VTN Synchronizer Container
-  assert:
-    that: "'/opt/xos_services/{{ item.name }}' in volumes.stdout|lower"
-  with_items: "{{ xos_services }}"
-  when:
-    - "'{{ item.name }}' != 'vnodlocal'"
-    - "'{{ item.name }}' != 'volt'"
