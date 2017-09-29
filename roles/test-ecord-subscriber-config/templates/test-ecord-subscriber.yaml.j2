@@ -1,4 +1,3 @@
-
 {#
 Copyright 2017-present Open Networking Foundation
 
@@ -15,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 #}
 
-
 tosca_definitions_version: tosca_simple_yaml_1_0
 
 description: Creates a CORD test subscriber, created by platform-install
@@ -24,7 +22,6 @@ imports:
    - custom_types/xos.yaml
    - custom_types/vee.yaml
    - custom_types/veg.yaml
-   - custom_types/vnodlocal.yaml
 
 topology_template:
   node_templates:
@@ -65,14 +62,6 @@ topology_template:
         no-delete: true
         no-create: true
         no-update: true
-
-    service#vnodlocal:
-      type: tosca.nodes.VNodLocalService
-      properties:
-        no-delete: true
-        no-create: true
-        no-update: true
-      requirements:
 
 # Test subscriber
 
@@ -117,12 +106,8 @@ topology_template:
         - provider_service:
             node: service#veg
             relationship: tosca.relationships.MemberOfService
-            node: service#vnodlocal
-            relationship: tosca.relationships.MemberOfService
         - subscriber_tenant:
             node: service#vee
-            relationship: tosca.relationships.BelongsToTenant
-            node: service#vnodlocal
             relationship: tosca.relationships.BelongsToTenant
         - subscriber:
             node: My Enterprise
