@@ -20,6 +20,7 @@
 # Site configuration
 site_name: mysite
 site_humanname: MySite
+#site_suffix: "{{ site_name }}.cord.lab" - broken, see CORD-1520
 site_suffix: "cord.lab"
 deployment_type: MyDeployment
 
@@ -38,9 +39,9 @@ xos_other_templates:
  - fabric-network-cfg.json
 
 # GUI Config [new GUI]
-gui_project_name: "E-CORD"
+gui_project_name: "E-CORD Global"
 gui_background: "cord-bg.jpg" # TODO find ecord image
-gui_payoff: "Your Enterprise VNF orchestrator"
+gui_payoff: "Your Enterprise Global VNF orchestrator"
 
 enabled_gui_extensions:
   - name: vnaasgui
