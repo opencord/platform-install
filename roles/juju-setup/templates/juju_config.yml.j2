@@ -25,6 +25,7 @@ ceilometer-agent: {}
 glance:
   openstack-origin: "cloud:trusty-kilo"
   ha-mcastport: 5402
+  worker-multiplier: 1
 
 keystone:
   openstack-origin: "cloud:trusty-kilo"
@@ -35,6 +36,7 @@ keystone:
   ssl_key: {{ lookup('file', '{{ pki_dir }}/{{ site_name }}_im_ca/private/keystone.{{ site_suffix }}_key.pem') | b64encode }}
   ssl_cert: {{ lookup('file', '{{ pki_dir }}/{{ site_name }}_im_ca/certs/keystone.{{ site_suffix }}_cert.pem') | b64encode }}
   ssl_ca: {{ lookup('file', '{{ pki_dir }}//{{ site_name }}_im_ca/certs/im_cert_chain.pem') | b64encode }}
+  worker-multiplier: 1.0
 
 mongodb: {}
 
@@ -47,6 +49,7 @@ neutron-api:
   onos-vtn-port: 8182
   neutron-security-groups: "True"
   overlay-network-type: vxlan
+  worker-multiplier: 1
   {% if use_dpdk -%}
   onos-vtn-branch: cord-2.0-dpdk-kilo
   {% endif %}
@@ -58,6 +61,7 @@ nova-cloud-controller:
   config-flags: "force_config_drive=always"
   console-access-protocol: novnc
   network-manager: Neutron
+  worker-multiplier: 1
   {% if use_dpdk -%}
   scheduler-default-filters: "RetryFilter,AvailabilityZoneFilter,CoreFilter,RamFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter,NUMATopologyFilter"
   {% endif %}
