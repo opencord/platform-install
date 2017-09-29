@@ -89,5 +89,6 @@ if command_on_fail != None:
 # Output the results
 print json.dumps(result)
 
-if result["failed"]:
+if 'failed' in result:
     sys.exit(1)
+

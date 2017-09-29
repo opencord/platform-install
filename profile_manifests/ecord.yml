@@ -1,5 +1,4 @@
 ---
-
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,12 +19,14 @@
 # Site configuration
 site_name: mysite
 site_humanname: MySite
-site_suffix: "{{ site_name }}.opencord.org"
+#site_suffix: "{{ site_name }}.cord.lab" - broken, see CORD-1520
+site_suffix: "cord.lab"
 deployment_type: MyDeployment
 
 # Feature toggles
-use_maas: True
 use_apt_cache: True
+use_fabric: True
+use_maas: True
 
 # XOS config
 xos_tosca_config_templates:
@@ -49,6 +50,8 @@ enabled_gui_extensions: []
 
 # paths defined in manifest/default.xml
 xos_services:
+  - name: addressmanager
+    path: orchestration/xos_services/addressmanager
   - name: openstack
     path: orchestration/xos_services/openstack
   - name: onos
@@ -63,71 +66,10 @@ xos_services:
   - name: veg
     path: orchestration/xos_services/vEG
     keypair: veg_rsa
-  - name: vnodlocal
-    path: orchestration/xos_services/metronet-local
   - name: vee
     path: orchestration/xos_services/vEE
 
-# SSL server certificate generation
-server_certs:
-  - cn: "keystone.{{ site_suffix }}"
-    subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=keystone.{{ site_suffix }}"
-    altnames:
-      - "DNS:keystone.{{ site_suffix }}"
-      - "DNS:keystone"
-  - cn: "xos-core.{{ site_suffix }}"
-    subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=xos-core.{{ site_suffix }}"
-    altnames:
-      - "DNS:xos-core.{{ site_suffix }}"
-
-# Network/DNS settings
-headnode: head1
-
-dns_search:
-  - "{{ site_suffix }}"
-
-mgmt_ipv4_first_octets: "192.168.200"
-
-dns_servers:
-  - "{{ mgmt_ipv4_first_octets }}.1"
-
-# DNS settings for NSD/Unbound
-nsd_zones:
-  - name: "{{ site_suffix }}"
-    ipv4_first_octets: "{{ mgmt_ipv4_first_octets }}"
-    name_reverse_unbound: "168.192.in-addr.arpa"
-    soa: ns1
-    ns:
-      - { name: ns1 }
-    nodelists:
-      - head_lxd_list
-      - physical_node_list
-    aliases:
-      - { name: "apt-cache", dest: "{{ headnode }}" }
-      - { name: "cordloghost", dest: "{{ headnode }}" }
-      - { name: "docker", dest: "{{ headnode }}" }
-      - { name: "ns", dest: "{{ headnode }}" }
-      - { name: "ns1", dest: "{{ headnode }}" }
-      - { name: "onos-cord", dest: "{{ headnode }}" }
-      - { name: "xos", dest: "{{ headnode }}" }
-      - { name: "xos-chameleon", dest: "{{ headnode }}" }
-      - { name: "xos-rest-gw", dest: "{{ headnode }}" }
-      - { name: "xos-gui", dest: "{{ headnode }}" }
-
-unbound_listen_all: True
-
-unbound_interfaces:
-  - "{{ mgmt_ipv4_first_octets }}.1/24"
-
-
-physical_node_list:
-  - name: head1
-    ipv4_last_octet: 1
-    aliases:
-      - head
-
 # VTN network configuration
-management_network_cidr: 172.27.0.0/24
 management_network_ip: 172.27.0.1/24
 data_plane_ip: 10.168.0.253/24
 
@@ -138,7 +80,6 @@ charm_versions:
   glance: "cs:trusty/glance-28"
   keystone: "cs:trusty/keystone-267"
   mongodb: "cs:trusty/mongodb-33"
-  percona-cluster: "cs:trusty/percona-cluster-31"
   nagios: "cs:trusty/nagios-10"
   neutron-api: "cs:~cordteam/trusty/neutron-api-6"
   nova-cloud-controller: "cs:trusty/nova-cloud-controller-64"
@@ -146,6 +87,7 @@ charm_versions:
   nrpe: "cs:trusty/nrpe-4"
   ntp: "cs:trusty/ntp-14"
   openstack-dashboard: "cs:trusty/openstack-dashboard-19"
+  percona-cluster: "cs:trusty/percona-cluster-31"
   rabbitmq-server: "cs:trusty/rabbitmq-server-42"
 
 head_lxd_list:
