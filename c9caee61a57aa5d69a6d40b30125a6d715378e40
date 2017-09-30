@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_7a941837",
+        "filename": "roles/juju-setup/templates/juju_config.yml.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-09-30T17:08:43Z",
+      "side": 1,
+      "message": "why 1.0, not 1?  Is there something different about this charm?",
+      "range": {
+        "startLine": 39,
+        "startChar": 20,
+        "endLine": 39,
+        "endChar": 24
+      },
+      "revId": "c9caee61a57aa5d69a6d40b30125a6d715378e40",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
