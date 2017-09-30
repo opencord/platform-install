@@ -22,6 +22,30 @@
       "revId": "c9caee61a57aa5d69a6d40b30125a6d715378e40",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_fa9fe84e",
+        "filename": "roles/juju-setup/templates/juju_config.yml.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-09-30T17:57:16Z",
+      "side": 1,
+      "message": "Yes.  Older versions of the charms use an int for worker-multipler, while more recent versions use a float.  The keystone charm is running a much more recent version than the others and so expects a float; specifying \"1\" instead of \"1.0\" causes an error.",
+      "parentUuid": "9a5c5d37_7a941837",
+      "range": {
+        "startLine": 39,
+        "startChar": 20,
+        "endLine": 39,
+        "endChar": 24
+      },
+      "revId": "c9caee61a57aa5d69a6d40b30125a6d715378e40",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
