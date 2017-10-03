@@ -31,8 +31,7 @@ use_apt_cache: True
 
 # XOS config
 xos_tosca_config_templates:
-  - vtn-service.yaml
-  - fabric-service.yaml
+  - onos-global-service.yaml
   - vnaasglobal-service.yaml
   - xos-gui-extensions.yml
   - carrierethernet-global-app.yaml
@@ -55,12 +54,6 @@ enabled_gui_extensions:
 
 # paths defined in manifest/default.xml
 xos_services:
-  - name: vtn
-    path: orchestration/xos_services/vtn-service
-  - name: openstack
-    path: orchestration/xos_services/openstack
-  - name: fabric
-    path: orchestration/xos_services/fabric
   - name: onos
     path: orchestration/xos_services/onos-service
   - name: vnaas
@@ -69,4 +62,3 @@ xos_services:
 # VTN network configuration
 management_network_ip: 172.27.0.1/24
 data_plane_ip: 10.168.0.253/24
-
