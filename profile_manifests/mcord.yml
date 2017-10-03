@@ -55,18 +55,11 @@ xos_services:
     keypair: onos_rsa
   - name: fabric
     path: orchestration/xos_services/fabric
-#  uncomment this when vmme migration is to be done.
-#  - name: vmme
-#    path: orchestration/xos_services/vmme
-#    keypair: mcord_rsa
-#    synchronizer: true
   - name: exampleservice
     path: orchestration/xos_services/exampleservice
     keypair: exampleservice_rsa
-#  - name: monitoring
-#    path: orchestration/xos_services/monitoring
-#    keypair: monitoringservice_rsa
-#    synchronizer: false
+
+profile_library: "mcord"
 
 # VTN network configuration
 management_network_cidr: 172.27.0.0/24
