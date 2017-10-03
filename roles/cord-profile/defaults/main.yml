@@ -65,6 +65,8 @@ xos_services: []
 
 xos_tosca_config_templates: []
 
+xos_new_tosca_config_templates: []
+
 xos_other_templates: []
 
 # XOS Config (xos_config.yaml)
