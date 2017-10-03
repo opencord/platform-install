@@ -55,11 +55,9 @@ xos_services:
     keypair: onos_rsa
   - name: fabric
     path: orchestration/xos_services/fabric
-#  uncomment this when vmme migration is to be done.
-#  - name: vmme
-#    path: orchestration/xos_services/vmme
-#    keypair: mcord_rsa
-#    synchronizer: true
+  - name: vmme
+    path: orchestration/xos_services/vmme
+    keypair: mcord_rsa
   - name: exampleservice
     path: orchestration/xos_services/exampleservice
     keypair: exampleservice_rsa
