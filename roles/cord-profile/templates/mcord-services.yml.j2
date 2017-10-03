@@ -22,6 +22,7 @@ description: created by platform-install, need to add M-CORD services later
 
 imports:
    - custom_types/xos.yaml
+   - custom_types/mcord_service.yaml
 
 topology_template:
   node_templates:
@@ -49,6 +50,12 @@ topology_template:
         no-delete: true
         no-update: true
 {% endif %}
+
+# M-CORD Service (represent the subscriber)
+    service#mcord:
+      type: tosca.nodes.MCordSubscriberService
+      properties:
+        name: mcord
 
 # ONOS_CORD, fully created in vtn.yaml
     service#ONOS_CORD:
