@@ -64,6 +64,7 @@ nsd_zones:
       - { name: "ns", dest: "{{ headnode }}" }
       - { name: "ns1", dest: "{{ headnode }}" }
       - { name: "onos-cord", dest: "{{ headnode }}" }
+      - { name: "onos-fabric", dest: "{{ headnode }}" }
       - { name: "xos", dest: "{{ headnode }}" }
       - { name: "xos-chameleon", dest: "{{ headnode }}" }
       - { name: "xos-consul", dest: "{{ headnode }}" }
