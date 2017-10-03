@@ -120,6 +120,12 @@
     dest: "{{ config_cord_profile_dir }}/{{ item }}"
   with_items: "{{ xos_tosca_config_templates }}"
 
+- name: Create profile specific templated TOSCA config files (new Engine)
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ config_cord_profile_dir }}/{{ item }}"
+  with_items: "{{ xos_new_tosca_config_templates }}"
+
 - name: Create profile specific templated non-TOSCA files
   template:
     src: "{{ item }}.j2"
