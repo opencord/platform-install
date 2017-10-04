@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_1c93d7a4",
+        "filename": "roles/test-vsg/defaults/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2017-10-04T17:01:12Z",
+      "side": 1,
+      "message": "is this the ip address of the onf website? Any chance we can test a resolved dns name rather than an ip? I can\u0027t guarantee this will remain necessarily the same for a long time",
+      "range": {
+        "startLine": 24,
+        "startChar": 22,
+        "endLine": 24,
+        "endChar": 35
+      },
+      "revId": "9e15523a863436db49ee47b251843fb48169ef99",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
