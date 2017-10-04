@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_dc5e5f12",
+        "filename": "roles/cord-profile/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-10-04T16:01:24Z",
+      "side": 1,
+      "message": "More concise method of iterating over both lists:\n\n with_flattened:\n   - \"{{ xos_tosca_config_templates }}\"\n   - \"{{ xos_new_tosca_config_templates }}\"\n\nSee: http://docs.ansible.com/ansible/latest/playbooks_loops.html#flattening-a-list",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 52
+      },
+      "revId": "62cee57a0af45be0ef37cefa87f8c374aeea1172",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_1c6517e1",
+        "filename": "roles/cord-profile/templates/mcord-services.yml.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-10-04T16:01:24Z",
+      "side": 1,
+      "message": "representS\n\nJust one subscriber or more than one?",
+      "range": {
+        "startLine": 54,
+        "startChar": 18,
+        "endLine": 54,
+        "endChar": 31
+      },
+      "revId": "62cee57a0af45be0ef37cefa87f8c374aeea1172",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_5c738fb1",
+        "filename": "roles/xos-config-new-tosca/defaults/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-10-04T16:01:24Z",
+      "side": 1,
+      "message": "Put at top of YAML file.",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 3
+      },
+      "revId": "62cee57a0af45be0ef37cefa87f8c374aeea1172",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_3c68dbb9",
+        "filename": "roles/xos-config-new-tosca/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-10-04T16:01:24Z",
+      "side": 1,
+      "message": "top of file",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 3
+      },
+      "revId": "62cee57a0af45be0ef37cefa87f8c374aeea1172",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
