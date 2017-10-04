@@ -46,6 +46,8 @@ enabled_gui_extensions:
     path: orchestration/xos_services/vtr/xos/gui
   - name: rcord
     path: orchestration/profiles/rcord/xos/gui
+    extra_files:
+      - index.css
 
 # paths defined in manifest/default.xml
 xos_services:
