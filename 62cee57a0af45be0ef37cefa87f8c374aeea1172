@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "9a5c5d37_1c1d1710",
+        "filename": "roles/cord-profile/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2017-10-04T18:27:19Z",
+      "side": 1,
+      "message": "I kept them separated as once we have completed the migration we can just remove the old one",
+      "parentUuid": "9a5c5d37_dc5e5f12",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 52
+      },
+      "revId": "62cee57a0af45be0ef37cefa87f8c374aeea1172",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a5c5d37_1c6517e1",
         "filename": "roles/cord-profile/templates/mcord-services.yml.j2",
         "patchSetId": 2
@@ -71,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "9a5c5d37_fc192323",
+        "filename": "roles/xos-config-new-tosca/defaults/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2017-10-04T18:27:19Z",
+      "side": 1,
+      "message": "It\u0027s in this position for all the files",
+      "parentUuid": "9a5c5d37_5c738fb1",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 3
+      },
+      "revId": "62cee57a0af45be0ef37cefa87f8c374aeea1172",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a5c5d37_3c68dbb9",
         "filename": "roles/xos-config-new-tosca/tasks/main.yml",
         "patchSetId": 2
@@ -105,6 +153,30 @@
       "writtenOn": "2017-10-04T16:04:18Z",
       "side": 1,
       "message": "can the ansible uri module perform this query?\n\nhttp://docs.ansible.com/ansible/latest/uri_module.html",
+      "range": {
+        "startLine": 21,
+        "startChar": 1,
+        "endLine": 21,
+        "endChar": 176
+      },
+      "revId": "62cee57a0af45be0ef37cefa87f8c374aeea1172",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_dc165ff1",
+        "filename": "roles/xos-config-new-tosca/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2017-10-04T18:27:19Z",
+      "side": 1,
+      "message": "This make sense",
+      "parentUuid": "9a5c5d37_3cafbbe5",
       "range": {
         "startLine": 21,
         "startChar": 1,
