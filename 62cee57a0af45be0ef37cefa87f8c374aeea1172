@@ -91,6 +91,29 @@
       "revId": "62cee57a0af45be0ef37cefa87f8c374aeea1172",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_3cafbbe5",
+        "filename": "roles/xos-config-new-tosca/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-10-04T16:04:18Z",
+      "side": 1,
+      "message": "can the ansible uri module perform this query?\n\nhttp://docs.ansible.com/ansible/latest/uri_module.html",
+      "range": {
+        "startLine": 21,
+        "startChar": 1,
+        "endLine": 21,
+        "endChar": 176
+      },
+      "revId": "62cee57a0af45be0ef37cefa87f8c374aeea1172",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
