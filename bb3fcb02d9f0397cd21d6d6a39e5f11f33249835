@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_9f369902",
+        "filename": "roles/test-vsg/tasks/main.yml",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-10-05T16:51:54Z",
+      "side": 1,
+      "message": "We could just have {{ vsg_test_ping_target }}, to also exercise DNS lookup in the testclient.",
+      "range": {
+        "startLine": 74,
+        "startChar": 45,
+        "endLine": 74,
+        "endChar": 86
+      },
+      "revId": "bb3fcb02d9f0397cd21d6d6a39e5f11f33249835",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
