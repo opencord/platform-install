@@ -31,17 +31,18 @@ topology_template:
     service#ONOS_Fabric:
       type: tosca.nodes.ONOSService
       properties:
-        no-delete: true
-        no-create: true
-        no-update: true
+        must-exist: true
+
+    service#ONOS_CORD:
+      type: tosca.nodes.ONOSService
+      properties:
+        must-exist: true
 
     service#veg:
       type: tosca.nodes.VEGService
       requirements:
       properties:
-        no-delete: true
-        no-create: true
-        no-update: true
+        must-exist: true
       artifacts:
         pubkey: /opt/xos/services/veg/keys/veg_rsa.pub
 

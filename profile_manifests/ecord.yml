@@ -35,9 +35,11 @@ xos_tosca_config_templates:
   - management-net.yaml
   - ecord-services.yaml
   - public-net.yaml
-  - vee-service.yaml
   - xos-gui-extensions.yml
   - carrierethernet-local-app.yaml
+
+xos_new_tosca_config_templates:
+  - vee-service.yaml
 
 xos_other_templates:
   - fabric-network-cfg.json
