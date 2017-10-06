@@ -28,7 +28,7 @@
   command: >
     ansible containers -u ubuntu
      -m uri
-     -a "url=http://opencord.org"
+     -a "url=http://opencord.org validate_certs=no"
   tags:
     - skip_ansible_lint # connectivity check
 
