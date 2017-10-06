@@ -33,10 +33,14 @@ xos_tosca_config_templates:
   - fabric-service.yaml
   - management-net.yaml
   - xos-gui-extensions.yml
-  - mcord-services.yml
 
 xos_new_tosca_config_templates:
   - mcord-subscriber.yml
+  - shared-net.yaml
+  - wan-net.yaml
+  - vsg-net.yaml
+  - flat-net.yaml
+  - mcord-services.yml
 
 xos_other_templates:
   - fabric-network-cfg.json
