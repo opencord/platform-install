@@ -62,6 +62,8 @@ xos_services:
   - name: exampleservice
     path: orchestration/xos_services/exampleservice
     keypair: exampleservice_rsa
+  - name: venb
+    path: orchestration/xos_services/venb
 
 profile_library: "mcord"
 
