@@ -112,7 +112,7 @@
     - skip_ansible_lint # connectivity check
 
 - name: Verify that containers have external connectivity
-  command: ansible containers -m uri -u ubuntu -a "url=http://opencord.org"
+  command: ansible containers -m uri -u ubuntu -a "url=http://opencord.org validate_certs=no"
   tags:
     - skip_ansible_lint # connectivity check
 
