@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_2d20a748",
+        "filename": "roles/cord-profile/templates/vee-service.yaml.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2017-10-06T17:50:26Z",
+      "side": 1,
+      "message": "We should start using the new TOSCA engine instead of the old one. Instructions are here: \n- https://guide.opencord.org/platform-install/bootstrap_models_in_xos.html\n- https://guide.opencord.org/xos-tosca/#where-to-find-the-generated-specs",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 43,
+        "endChar": 23
+      },
+      "revId": "bb2fad575921492543e0c975c442c188e919a4f7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
