@@ -40,7 +40,7 @@ xos_tosca_config_templates:
   - xos-gui-extensions.yml
 
 xos_new_tosca_config_templates:
-  - mcord-subscriber.yml
+  - mcord-service-graph.yml
 
 xos_other_templates:
   - fabric-network-cfg.json
@@ -68,6 +68,9 @@ xos_services:
     keypair: exampleservice_rsa
   - name: vmme
     path: orchestration/xos_services/vmme
+    keypair: mcord_rsa
+  - name: venb
+    path: orchestration/xos_services/venb
     keypair: mcord_rsa
 
 profile_library: "mcord"
