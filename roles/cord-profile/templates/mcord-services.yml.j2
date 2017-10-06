@@ -22,6 +22,7 @@ description: created by platform-install, need to add M-CORD services later
 
 imports:
    - custom_types/xos.yaml
+   - custom_types/vmme.yaml
 
 topology_template:
   node_templates:
@@ -30,7 +31,16 @@ topology_template:
     {{ site_name }}:
       type: tosca.nodes.Site
 
-    image#vsg-1.1:
+    m1.small:
+      type: tosca.nodes.Flavor
+    m1.large:
+      type: tosca.nodes.Flavor
+    m1.medium:
+      type: tosca.nodes.Flavor
+    m1.xlarge:
+      type: tosca.nodes.Flavor
+
+    trusty-server-multi-nic:
       type: tosca.nodes.Image
 
 # management networks, fully created in management-net.yaml
@@ -50,6 +60,38 @@ topology_template:
         no-update: true
 {% endif %}
 
+# shared_network is for connectivity between VMs, fully created in shared-net.yaml
+    shared_network:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+
+# wan_network for vPGWU and its upstream connectivity, fully created in wan-net.yaml
+    wan_network:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+
+# VLAN networks for RRH and vBBU, fully created in vsg-net.yaml
+    vsg_network:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+
+# flat network for vMME, vSGWC, vSGWU, to connect to RRU, fully created in flat-net.yaml
+    flat_network:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+
 # ONOS_CORD, fully created in vtn.yaml
     service#ONOS_CORD:
       type: tosca.nodes.ONOSService
@@ -66,4 +108,41 @@ topology_template:
         no-create: true
         no-update: true
 
-# CORD Services, add later
+# CORD Services
+    service#vmme:
+      type: tosca.nodes.VMMEService
+      properties:
+          kind: vEPC
+          public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
+          private_key_fn: /opt/xos/services/vmme/keys/mcord_rsa
+      artifacts:
+          pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
+
+# CORD Slices
+    mysite_vMME_slice:
+      description: vMME Service Slice
+      type: tosca.nodes.Slice
+      properties:
+          network: noauto
+      requirements:
+          - site:
+              node: mysite
+              relationship: tosca.relationships.MemberOfSite
+          - vmme_service:
+              node: service#vmme
+              relationship: tosca.relationships.MemberOfService
+          - default_image:
+              node: trusty-server-multi-nic
+              relationship: tosca.relationships.DefaultImage
+          - default_flavor:
+              node: m1.small
+              relationship: tosca.relationships.DefaultFlavor
+          - connection_to_management:
+              node: management
+              relationship: tosca.relationships.ConnectsToNetwork
+          - connection_to_shared_network:
+              node: shared_network
+              relationship: tosca.relationships.ConnectsToNetwork
+          - connection_to_flat_network:
+              node: flat_network
+              relationship: tosca.relationships.ConnectsToNetwork
