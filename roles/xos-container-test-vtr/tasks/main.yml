@@ -13,10 +13,10 @@
 # limitations under the License.
 
 
-#xos-fabric-sync tests
+#xos-vtr-sync tests
 
-- name: Check XOS Fabric Synchronizer Process
-  shell: ps -f | grep "python fabric-synchronizer.py -C /opt/xos/synchronizers/fabric/fabric_synchronizer_config"
+- name: Check XOS VTR Synchronizer Process
+  shell: ps -f | grep "python vtr-synchronizer.py -C /opt/xos/synchronizers/vtr/vtr_synchronizer_config"
   register: result
   until: result | success
   retries: 10
