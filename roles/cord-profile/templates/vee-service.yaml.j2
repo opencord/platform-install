@@ -35,6 +35,13 @@ topology_template:
         no-create: true
         no-update: true
 
+    service#ONOS_CORD:
+      type: tosca.nodes.ONOSService
+      properties:
+        no-delete: true
+        no-create: true
+        no-update: true
+
     service#veg:
       type: tosca.nodes.VEGService
       requirements:
