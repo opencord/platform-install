@@ -62,6 +62,9 @@ xos_services:
   - name: exampleservice
     path: orchestration/xos_services/exampleservice
     keypair: exampleservice_rsa
+  - name: vmme
+    path: orchestration/xos_services/vmme
+    keypair: mcord_rsa
 
 profile_library: "mcord"
 
