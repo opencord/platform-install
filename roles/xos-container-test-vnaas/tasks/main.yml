@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-#xos-vnod-sync tests
+#xos-vnaas-sync tests
 
 - name: Check XOS VNAAS Synchronizer Process
   shell: ps -f | grep "python vnaas-synchronizer.py -C /opt/xos/synchronizers/vnaas/vnaas_synchronizer_config"
