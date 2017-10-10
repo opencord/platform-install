@@ -24,17 +24,3 @@
   delay: 5
   tags:
     - skip_ansible_lint # running a sub job
-
-- name: Get Volume Mounts on UI Container
-  shell: mount -l | grep xos_services
-  register: volumes
-  tags:
-    - skip_ansible_lint # running a sub job
-
-- name: Validate Volume Mounts on UI Container
-  assert:
-    that: "'/opt/xos_services/{{ item.name }}' in volumes.stdout|lower"
-  with_items: "{{ xos_services }}"
-  when:
-    - "'{{ item.name }}' != 'vnodlocal'"
-    - "'{{ item.name }}' != 'volt'"
