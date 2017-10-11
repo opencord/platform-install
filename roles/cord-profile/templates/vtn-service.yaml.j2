@@ -47,7 +47,7 @@ topology_template:
           sshUser: root
           sshKeyFile: /root/node_key
           sshPort: 22
-          xosEndpoint: http://xos:{{ xos_ui_port }}/
+          xosEndpoint: xos-chameleon:{{ xos_chameleon_port }}
           xosUser: {{ xos_admin_user }}
           xosPassword: {{ xos_admin_pass }}
           replaces: service_vtn
