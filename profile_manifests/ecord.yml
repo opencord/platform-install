@@ -47,7 +47,9 @@ gui_project_name: "E-CORD"
 gui_background: "cord-bg.jpg" # TODO find ecord image
 gui_payoff: "Your Enterprise VNF orchestrator"
 
-enabled_gui_extensions: []
+enabled_gui_extensions:
+  - name: veestat
+    path: orchestration/xos_services/vEE/xos/veestat
 
 # paths defined in manifest/default.xml
 xos_services:
