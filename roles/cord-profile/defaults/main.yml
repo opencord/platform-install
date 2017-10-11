@@ -55,6 +55,7 @@ xos_docker_networks:
 
 xos_bootstrap_ui_port: 9001
 xos_ui_port: 9000
+xos_chameleon_port: 9101
 
 xos_users: []
 
