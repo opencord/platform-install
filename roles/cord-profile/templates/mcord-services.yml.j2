@@ -60,6 +60,42 @@ topology_template:
         no-update: true
 {% endif %}
 
+# s1u_network is for connectivity between VMs, fully created in s1u-net.yaml
+    s1u_network:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+# s11_network is for connectivity between VMs, fully created in s11-net.yaml
+    s11_network:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+# nbi_network is for connectivity between VMs, fully created in nbi-net.yaml
+    nbi_network:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+# sbi_network is for connectivity between VMs, fully created in sbi-net.yaml
+    sbi_network:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+# sgi_network is for connectivity between VMs, fully created in sgi-net.yaml
+    sgi_network:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+
 # shared_network is for connectivity between VMs, fully created in shared-net.yaml
     shared_network:
       type: tosca.nodes.network.Network.XOS
