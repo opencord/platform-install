@@ -80,25 +80,22 @@ topology_template:
             node: {{ site_name }}_veg
             relationship: tosca.relationships.DependsOn
 
+    # Subscribers require a service in 4.0, so make sure we have an ecordlocal service.
+    # FIXME: Move to a different tosca recipe?
+    service#ecordlocal:
+      type: tosca.nodes.Service
+
     # A subscriber
     My Enterprise:
-      type: tosca.nodes.Subscriber
-      properties:
-      requirements:
-
-    My vEG:
       type: tosca.nodes.Tenant
       properties:
         service_specific_id: 123
       requirements:
         - provider_service:
-            node: service#vrouter
+            node: service#ecordlocal
             relationship: tosca.relationships.MemberOfService
-        - subscriber_tenant:
-            node: service#vrouter
-            relationship: tosca.relationships.BelongsToTenant
 
-    My vEE:
+    My vEG:
       type: tosca.nodes.Tenant
       properties:
         service_specific_id: 123
@@ -107,11 +104,20 @@ topology_template:
             node: service#veg
             relationship: tosca.relationships.MemberOfService
         - subscriber_tenant:
-            node: service#vee
+            node: My vEE
             relationship: tosca.relationships.BelongsToTenant
+
+    My vEE:
+      type: tosca.nodes.Tenant
+      properties:
+        service_specific_id: 123
+      requirements:
+        - provider_service:
+            node: service#vee
+            relationship: tosca.relationships.MemberOfService
         - subscriber:
             node: My Enterprise
             relationship: tosca.relationships.BelongsToSubscriber
-        - dependency:
-            node: {{ site_name }}_veg
-            relationship: tosca.relationships.DependsOn
+#        - dependency:
+#            node: {{ site_name }}_veg
+#            relationship: tosca.relationships.DependsOn
