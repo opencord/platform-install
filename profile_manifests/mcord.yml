@@ -38,6 +38,7 @@ xos_tosca_config_templates:
   - flat-net.yaml
   - mcord-services.yml
   - xos-gui-extensions.yml
+  - internet-emulator-service.yaml
 
 xos_new_tosca_config_templates:
   - mcord-subscriber.yml
@@ -65,6 +66,9 @@ xos_services:
     path: orchestration/xos_services/fabric
   - name: vmme
     path: orchestration/xos_services/vmme
+    keypair: mcord_rsa
+  - name: internetemulator
+    path: orchestration/xos_services/internetemulator
     keypair: mcord_rsa
   - name: exampleservice
     path: orchestration/xos_services/exampleservice
