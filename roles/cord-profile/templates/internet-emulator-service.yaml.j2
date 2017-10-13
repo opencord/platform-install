@@ -60,32 +60,8 @@ topology_template:
         no-update: true
 {% endif %}
 
-# shared_network is for connectivity between VMs, fully created in shared-net.yaml
-    shared_network:
-      type: tosca.nodes.network.Network.XOS
-      properties:
-        no-create: true
-        no-delete: true
-        no-update: true
-
-# wan_network for vPGWU and its upstream connectivity, fully created in wan-net.yaml
-    wan_network:
-      type: tosca.nodes.network.Network.XOS
-      properties:
-        no-create: true
-        no-delete: true
-        no-update: true
-
-# VLAN networks for RRH and vBBU, fully created in vsg-net.yaml
-    vsg_network:
-      type: tosca.nodes.network.Network.XOS
-      properties:
-        no-create: true
-        no-delete: true
-        no-update: true
-
-# flat network for vMME, vSGWC, vSGWU, to connect to RRU, fully created in flat-net.yaml
-    flat_network:
+# sgi_network is for connectivity between VMs, fully created in sgi-net.yaml
+    sgi_network:
       type: tosca.nodes.network.Network.XOS
       properties:
         no-create: true
@@ -124,3 +100,17 @@ topology_template:
           - connection_to_management:
               node: management
               relationship: tosca.relationships.ConnectsToNetwork
+          - connection_to_sgi_network:
+              node: sgi_network
+              relationship: tosca.relationships.ConnectsToNetwork
+
+# CORD Service Instances
+    serviceinstance#internetemulator:
+      type: tosca.nodes.InternetEmulatorServiceInstance
+      requirements:
+        - tenant:
+            node: service#internetemulator
+            relationship: tosca.relationships.TenantOfService
+        - dependency:
+            node: {{ site_name }}_internetemulator
+            relationship: tosca.relationships.DependsOn
