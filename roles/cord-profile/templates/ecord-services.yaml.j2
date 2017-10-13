@@ -104,7 +104,7 @@ topology_template:
         view_url: /admin/vEG/vegservice/$id$/
         backend_network_label: hpc_client
         public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
-        private_key_fn: /opt/cord_profile/key_import/veg_rsa
+        private_key_fn: /opt/xos/services/veg/keys/veg_rsa
 #       node_label: label_veg
         replaces: service_veg
       artifacts:
@@ -141,7 +141,7 @@ topology_template:
       properties:
         visibility: private
         translation: none
-        vtn_kind: VEG
+        vtn_kind: VSG
 
     # Networks required by the CORD setup
     {{ site_name }}_veg-access:

@@ -46,6 +46,7 @@ cleanup_network lan_network
 cleanup_network wan_network
 cleanup_network mysite_vcpe-private
 cleanup_network mysite_vsg-access
+cleanup_network mysite_veg-access
 cleanup_network management
 cleanup_network management_hosts
 
@@ -65,5 +66,6 @@ neutron net-delete ceilometer_network || true
 neutron net-delete management || true
 neutron net-delete management_hosts || true
 neutron net-delete mysite_vsg-access || true
+neutron net-delete mysite_veg-access || true
 neutron net-delete public || true
 neutron net-delete exampleservice_network || true
