@@ -17,7 +17,7 @@
 
 # xos-config/defaults/main.yml
 
-credentials_dir: "{{ playbook_dir }}/credentials"
+credentials_dir: "{{ head_credentials_dir }}"
 
 xos_admin_user: "xosadmin@opencord.org"
 xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
