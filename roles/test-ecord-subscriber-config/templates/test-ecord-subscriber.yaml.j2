@@ -96,7 +96,7 @@ topology_template:
             relationship: tosca.relationships.MemberOfService
 
     My vEG:
-      type: tosca.nodes.Tenant
+      type: tosca.nodes.VEGTenant
       properties:
         service_specific_id: 123
       requirements:
@@ -108,9 +108,11 @@ topology_template:
             relationship: tosca.relationships.BelongsToTenant
 
     My vEE:
-      type: tosca.nodes.Tenant
+      type: tosca.nodes.VEEServiceInstance
       properties:
         service_specific_id: 123
+        s_tag: 123
+        c_tag: 123
       requirements:
         - provider_service:
             node: service#vee
