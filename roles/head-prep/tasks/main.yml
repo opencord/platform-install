@@ -41,6 +41,9 @@
     - python-dev
     - sshpass
 
+- name: Install Cryptography package via pip
+  pip: name=cryptography version=1.9
+
 - name: Install Ansible via pip
   pip: name=ansible version=2.2.2.0
 # - name: Make sure Ansible is newest version
