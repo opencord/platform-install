@@ -46,6 +46,30 @@
       "revId": "889281b895dfb6e4d52a0e467596cae5de2311e5",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_f847e649",
+        "filename": "roles/cord-profile/templates/mcord-service-graph.yml.j2",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2017-10-13T22:49:17Z",
+      "side": 1,
+      "message": "ok, just let you know there is already a file with similar function.\n\nI am refactoring the content inside.",
+      "parentUuid": "9a5c5d37_58415238",
+      "range": {
+        "startLine": 28,
+        "startChar": 12,
+        "endLine": 28,
+        "endChar": 18
+      },
+      "revId": "889281b895dfb6e4d52a0e467596cae5de2311e5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
