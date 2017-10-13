@@ -17,10 +17,10 @@
 
 # xos-config/defaults/main.yml
 
-credentials_dir: "{{ playbook_dir }}/credentials"
+head_credentials_dir: "/opt/credentials"
 
 xos_admin_user: "xosadmin@opencord.org"
-xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+xos_admin_pass: "{{ lookup('password', head_credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
 
 xos_tosca_config_templates: []
 
