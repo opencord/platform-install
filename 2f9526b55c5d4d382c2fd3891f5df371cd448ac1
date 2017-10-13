@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_45096f30",
+        "filename": "roles/cord-profile/templates/carrierethernet-local-app.yaml.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000029
+      },
+      "writtenOn": "2017-10-13T17:54:49Z",
+      "side": 1,
+      "message": "should we not make this one explicit also? So keep ce-api, and replace ecord-local-app by vee app?",
+      "revId": "2f9526b55c5d4d382c2fd3891f5df371cd448ac1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_e5186386",
+        "filename": "roles/cord-profile/templates/carrierethernet-local-app.yaml.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000029
+      },
+      "writtenOn": "2017-10-13T17:54:49Z",
+      "side": 1,
+      "message": "do we need dependencies here like segmentrouting app?\nhttps://wiki.opencord.org/display/CORD/Fabric+Installation+Guide#FabricInstallationGuide-A2.StartONOSApps",
+      "revId": "2f9526b55c5d4d382c2fd3891f5df371cd448ac1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
