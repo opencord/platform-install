@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_8549a78d",
+        "filename": "roles/cord-profile/templates/mcord-service-graph.yml.j2",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2017-10-13T17:35:20Z",
+      "side": 1,
+      "message": "do you know mcord-services.yml.j2 ? they are quite same. Should we just use one file?",
+      "range": {
+        "startLine": 28,
+        "startChar": 12,
+        "endLine": 28,
+        "endChar": 18
+      },
+      "revId": "889281b895dfb6e4d52a0e467596cae5de2311e5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
