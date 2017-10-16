@@ -44,6 +44,7 @@ xos_tosca_config_templates:
   - mcord-services.yml
   - xos-gui-extensions.yml
   - internet-emulator-service.yaml
+  - vmme-service.yaml
 
 xos_new_tosca_config_templates:
   - mcord-subscriber.yml
