@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "9a5c5d37_7803f673",
+        "filename": "roles/cord-profile/templates/carrierethernet-local-app.yaml.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000029
+      },
+      "writtenOn": "2017-10-16T23:47:15Z",
+      "side": 1,
+      "message": "Yes I would change it. When my fabric patch gets merged, we will have two implementations of the MetroNetworkVirtualNodeService. I am not sure how osgi/karaf will deal with it.",
+      "parentUuid": "9a5c5d37_f89b6670",
+      "revId": "2f9526b55c5d4d382c2fd3891f5df371cd448ac1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a5c5d37_e5186386",
         "filename": "roles/cord-profile/templates/carrierethernet-local-app.yaml.j2",
         "patchSetId": 8
