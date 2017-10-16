@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9a5c5d37_f89b6670",
+        "filename": "roles/cord-profile/templates/carrierethernet-local-app.yaml.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2017-10-16T18:38:00Z",
+      "side": 1,
+      "message": "I think that since this works we can leave as is for now and do some optimisation later if needed. you prefer to change it ?",
+      "parentUuid": "9a5c5d37_45096f30",
+      "revId": "2f9526b55c5d4d382c2fd3891f5df371cd448ac1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a5c5d37_e5186386",
         "filename": "roles/cord-profile/templates/carrierethernet-local-app.yaml.j2",
         "patchSetId": 8
@@ -30,6 +48,24 @@
       "writtenOn": "2017-10-13T17:54:49Z",
       "side": 1,
       "message": "do we need dependencies here like segmentrouting app?\nhttps://wiki.opencord.org/display/CORD/Fabric+Installation+Guide#FabricInstallationGuide-A2.StartONOSApps",
+      "revId": "2f9526b55c5d4d382c2fd3891f5df371cd448ac1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_f8724648",
+        "filename": "roles/cord-profile/templates/carrierethernet-local-app.yaml.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2017-10-16T18:38:00Z",
+      "side": 1,
+      "message": "I think the SR app and the other dependencies are brought in when we ask for the fabric (ONOS_Fabric) and is defined here https://github.com/opencord/platform-install/blob/master/roles/cord-profile/templates/fabric-service.yaml.j2#L58\nI believe we can leave as is. If it fails in the deployment we will address.",
+      "parentUuid": "9a5c5d37_e5186386",
       "revId": "2f9526b55c5d4d382c2fd3891f5df371cd448ac1",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
