@@ -1,0 +1,194 @@
+
+{#
+Copyright 2017-present Open Networking Foundation
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+#}
+
+
+tosca_definitions_version: tosca_simple_yaml_1_0
+
+description: created by platform-install, need to add M-CORD services later
+
+imports:
+   - custom_types/xos.yaml
+   - custom_types/vmme.yaml
+
+topology_template:
+  node_templates:
+
+# site, image, fully created in deployment.yaml
+    {{ site_name }}:
+      type: tosca.nodes.Site
+
+    m1.small:
+      type: tosca.nodes.Flavor
+    m1.large:
+      type: tosca.nodes.Flavor
+    m1.medium:
+      type: tosca.nodes.Flavor
+    m1.xlarge:
+      type: tosca.nodes.Flavor
+
+    trusty-server-multi-nic:
+      type: tosca.nodes.Image
+
+# management networks, fully created in management-net.yaml
+    management:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+
+{% if use_management_hosts %}
+    management_hosts:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+{% endif %}
+
+# s1u_network is for connectivity between VMs, fully created in s1u-net.yaml
+    s1u_network:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+# s11_network is for connectivity between VMs, fully created in s11-net.yaml
+    s11_network:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+# nbi_network is for connectivity between VMs, fully created in nbi-net.yaml
+    nbi_network:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+# sbi_network is for connectivity between VMs, fully created in sbi-net.yaml
+    sbi_network:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+# sgi_network is for connectivity between VMs, fully created in sgi-net.yaml
+    sgi_network:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+
+# shared_network is for connectivity between VMs, fully created in shared-net.yaml
+    shared_network:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+
+# wan_network for vPGWU and its upstream connectivity, fully created in wan-net.yaml
+    wan_network:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+
+# VLAN networks for RRH and vBBU, fully created in vsg-net.yaml
+    vsg_network:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+
+# flat network for vMME, vSGWC, vSGWU, to connect to RRU, fully created in flat-net.yaml
+    flat_network:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+
+# ONOS_CORD, fully created in vtn.yaml
+    service#ONOS_CORD:
+      type: tosca.nodes.ONOSService
+      properties:
+        no-delete: true
+        no-create: true
+        no-update: true
+
+# ONOS_Fabric, fully created in fabric.yaml
+    service#ONOS_Fabric:
+      type: tosca.nodes.ONOSService
+      properties:
+        no-delete: true
+        no-create: true
+        no-update: true
+
+    service#vmme:
+      type: tosca.nodes.VMMEService
+      properties:
+          kind: vEPC
+          public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
+          private_key_fn: /opt/xos/services/vmme/keys/mcord_rsa
+      artifacts:
+          pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
+
+    {{ site_name }}_vmme:
+      description: vMME Service Slice
+      type: tosca.nodes.Slice
+      properties:
+          network: noauto
+      requirements:
+          - site:
+              node: mysite
+              relationship: tosca.relationships.MemberOfSite
+          - vmme_service:
+              node: service#vmme
+              relationship: tosca.relationships.MemberOfService
+          - default_image:
+              node: trusty-server-multi-nic
+              relationship: tosca.relationships.DefaultImage
+          - default_flavor:
+              node: m1.small
+              relationship: tosca.relationships.DefaultFlavor
+          - connection_to_management:
+              node: management
+              relationship: tosca.relationships.ConnectsToNetwork
+          - connection_to_shared_network:
+              node: shared_network
+              relationship: tosca.relationships.ConnectsToNetwork
+          - connection_to_flat_network:
+              node: flat_network
+              relationship: tosca.relationships.ConnectsToNetwork
+
+    # Spin up a vMME Tenant using default settings on slice
+    tenant#vmme1:
+      description: Default VMME Tenant
+      type: tosca.nodes.VMMETenant
+      requirements:
+        - tenant:
+            node: service#vmme
+            relationship: tosca.relationships.TenantOfService
+        - dependency:
+            node: {{ site_name }}_vmme
+            relationship: tosca.relationships.DependsOn
