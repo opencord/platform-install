@@ -23,6 +23,7 @@ description: created by platform-install, need to add M-CORD services later
 imports:
    - custom_types/xos.yaml
    - custom_types/vmme.yaml
+   - custom_types/sdncontroller.yaml
 
 topology_template:
   node_templates:
@@ -154,6 +155,15 @@ topology_template:
       artifacts:
           pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
 
+    service#sdncontroller:
+      type: tosca.nodes.SDNControllerService
+      properties:
+          kind: vEPC
+          public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
+          private_key_fn: /opt/xos/services/sdncontroller/keys/mcord_rsa
+      artifacts:
+          pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
+
 # CORD Slices
     mysite_vMME_slice:
       description: vMME Service Slice
@@ -181,4 +191,32 @@ topology_template:
               relationship: tosca.relationships.ConnectsToNetwork
           - connection_to_flat_network:
               node: flat_network
+              relationship: tosca.relationships.ConnectsToNetwork
+
+    mysite_sdncontroller_slice:
+      description: sdn-controller Service Slice
+      type: tosca.nodes.Slice
+      properties:
+          network: noauto
+      requirements:
+          - site:
+              node: mysite
+              relationship: tosca.relationships.MemberOfSite
+          - sdncontroller_service:
+              node: service#sdncontroller
+              relationship: tosca.relationships.MemberOfService
+          - default_image:
+              node: trusty-server-multi-nic
+              relationship: tosca.relationships.DefaultImage
+          - default_flavor:
+              node: m1.small
+              relationship: tosca.relationships.DefaultFlavor
+          - connection_to_management:
+              node: management
+              relationship: tosca.relationships.ConnectsToNetwork
+          - connection_to_nbi_network:
+              node: nbi_network
+              relationship: tosca.relationships.ConnectsToNetwork
+          - connection_to_sbi_network:
+              node: sbi_network
               relationship: tosca.relationships.ConnectsToNetwork
