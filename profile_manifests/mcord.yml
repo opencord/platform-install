@@ -75,6 +75,9 @@ xos_services:
   - name: internetemulator
     path: orchestration/xos_services/internetemulator
     keypair: mcord_rsa
+  - name: sdncontroller
+    path: orchestration/xos_services/sdn-controller
+    keypair: mcord_rsa
   - name: exampleservice
     path: orchestration/xos_services/exampleservice
     keypair: exampleservice_rsa
