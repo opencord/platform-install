@@ -37,18 +37,19 @@ xos_tosca_config_templates:
   - vsg-net.yaml
   - flat-net.yaml
   - s1u-net.yaml
-  - s11-net.yaml
   - s1mme-net.yaml
   - nbi-net.yaml
   - sbi-net.yaml
   - sgi-net.yaml
-  - mcord-services.yml
+#  - mcord-services.yml
   - xos-gui-extensions.yml
   - internet-emulator-service.yaml
 
 xos_new_tosca_config_templates:
   - mcord-subscriber.yml
-  - vmme-service.yaml
+  - s11-net.yaml
+  - mcord-services.yml
+
 
 xos_other_templates:
   - fabric-network-cfg.json
