@@ -60,32 +60,48 @@ topology_template:
         no-update: true
 {% endif %}
 
-# shared_network is for connectivity between VMs, fully created in shared-net.yaml
-    shared_network:
+# s1u_network is for connectivity between VMs, fully created in s1u-net.yaml
+    s1u_network:
       type: tosca.nodes.network.Network.XOS
       properties:
         no-create: true
         no-delete: true
         no-update: true
 
-# wan_network for vPGWU and its upstream connectivity, fully created in wan-net.yaml
-    wan_network:
+# s11_network is for connectivity between VMs, fully created in s11-net.yaml
+    s11_network:
       type: tosca.nodes.network.Network.XOS
       properties:
         no-create: true
         no-delete: true
         no-update: true
 
-# VLAN networks for RRH and vBBU, fully created in vsg-net.yaml
-    vsg_network:
+# s1mme_network is for connectivity between VMs, fully created in s1mme-net.yaml
+    s1mme_network:
       type: tosca.nodes.network.Network.XOS
       properties:
         no-create: true
         no-delete: true
         no-update: true
 
-# flat network for vMME, vSGWC, vSGWU, to connect to RRU, fully created in flat-net.yaml
-    flat_network:
+# nbi_network is for connectivity between VMs, fully created in nbi-net.yaml
+    nbi_network:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+
+# sbi_network is for connectivity between VMs, fully created in sbi-net.yaml
+    sbi_network:
+      type: tosca.nodes.network.Network.XOS
+      properties:
+        no-create: true
+        no-delete: true
+        no-update: true
+
+# sgi_network is for connectivity between VMs, fully created in sgi-net.yaml
+    sgi_network:
       type: tosca.nodes.network.Network.XOS
       properties:
         no-create: true
@@ -119,7 +135,7 @@ topology_template:
           pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
 
 # CORD Slices
-    mysite_vMME_slice:
+    {{ site_name }}_vmme:
       description: vMME Service Slice
       type: tosca.nodes.Slice
       properties:
@@ -140,9 +156,9 @@ topology_template:
           - connection_to_management:
               node: management
               relationship: tosca.relationships.ConnectsToNetwork
-          - connection_to_shared_network:
-              node: shared_network
+          - connection_to_s11_network:
+              node: s11_network
               relationship: tosca.relationships.ConnectsToNetwork
-          - connection_to_flat_network:
-              node: flat_network
+          - connection_to_s1mme_network:
+              node: s1mme_network
               relationship: tosca.relationships.ConnectsToNetwork
