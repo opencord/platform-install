@@ -47,6 +47,7 @@ xos_tosca_config_templates:
 
 xos_new_tosca_config_templates:
   - mcord-subscriber.yml
+  - vmme-service.yaml
 
 xos_other_templates:
   - fabric-network-cfg.json
