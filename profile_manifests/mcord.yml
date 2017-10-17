@@ -38,6 +38,7 @@ xos_tosca_config_templates:
   - flat-net.yaml
   - s1u-net.yaml
   - s11-net.yaml
+  - s1mme-net.yaml
   - nbi-net.yaml
   - sbi-net.yaml
   - sgi-net.yaml
@@ -47,6 +48,7 @@ xos_tosca_config_templates:
 
 xos_new_tosca_config_templates:
   - mcord-subscriber.yml
+  - vmme-service.yaml
 
 xos_other_templates:
   - fabric-network-cfg.json
