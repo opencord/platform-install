@@ -27,6 +27,8 @@
   with_items:
     - management
     - sgi_network
+    - s11_network
+    - s1mme_network
   tags:
     - skip_ansible_lint # running a sub job
 
@@ -38,5 +40,6 @@
   delay: 60
   with_items:
     - internetemulator
+    - vmme
   tags:
     - skip_ansible_lint # running a sub job
