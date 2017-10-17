@@ -41,12 +41,13 @@ xos_tosca_config_templates:
   - nbi-net.yaml
   - sbi-net.yaml
   - sgi-net.yaml
-  - mcord-services.yml
+#  - mcord-services.yml
   - xos-gui-extensions.yml
   - internet-emulator-service.yaml
 
 xos_new_tosca_config_templates:
   - mcord-subscriber.yml
+  - mcord-services.yml
 
 xos_other_templates:
   - fabric-network-cfg.json
