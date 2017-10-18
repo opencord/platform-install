@@ -44,6 +44,7 @@ xos_tosca_config_templates:
 #  - mcord-services.yml
   - xos-gui-extensions.yml
   - internet-emulator-service.yaml
+  - sdn-controller-service.yaml
 
 xos_new_tosca_config_templates:
   - mcord-subscriber.yml
@@ -77,6 +78,9 @@ xos_services:
     keypair: mcord_rsa
   - name: internetemulator
     path: orchestration/xos_services/internetemulator
+    keypair: mcord_rsa
+  - name: sdncontroller
+    path: orchestration/xos_services/sdn-controller
     keypair: mcord_rsa
   - name: exampleservice
     path: orchestration/xos_services/exampleservice
