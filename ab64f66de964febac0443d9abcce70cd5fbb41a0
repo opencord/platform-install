@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_96831bcc",
+        "filename": "roles/cord-profile/templates/s11-net.yaml.j2",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2017-10-18T06:04:30Z",
+      "side": 1,
+      "message": "if you add \"name: {{ site_name }}_s11\" you should be able to solve this issue",
+      "range": {
+        "startLine": 54,
+        "startChar": 6,
+        "endLine": 54,
+        "endChar": 16
+      },
+      "revId": "ab64f66de964febac0443d9abcce70cd5fbb41a0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
