@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_0c771c04",
+        "filename": "roles/cord-profile/templates/sdn-controller-service.yaml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2017-10-19T20:15:14Z",
+      "side": 1,
+      "message": "the name should be management host",
+      "range": {
+        "startLine": 67,
+        "startChar": 14,
+        "endLine": 67,
+        "endChar": 24
+      },
+      "revId": "8e59b64a90856ade5635901f2e5931e2b6331b34",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
