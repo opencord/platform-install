@@ -142,6 +142,7 @@ topology_template:
           private_key_fn: /opt/xos/services/vmme/keys/mcord_rsa
       artifacts:
           pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
+
     intel_mme:
       type: tosca.nodes.VMMEVendor
       properties:
@@ -186,12 +187,6 @@ topology_template:
           - default_flavor:
               node: m1.small
               relationship: tosca.relationships.BelongsToOne
-          #- connection_to_management:
-          #    node: management
-          #    relationship: tosca.relationships.BelongsToMany
-          #- connection_to_s11_network:
-          #    node: s11_network
-          #   relationship: tosca.relationships.ConnectsToNetwork
 
 # will enable this part after sapan fix the obj issue
 #    mme_slice_s11_network:
