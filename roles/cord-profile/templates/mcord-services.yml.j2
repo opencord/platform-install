@@ -188,13 +188,12 @@ topology_template:
               node: m1.small
               relationship: tosca.relationships.BelongsToOne
 
-# will enable this part after sapan fix the obj issue
-#    mme_slice_s11_network:
-#      type: tosca.nodes.NetworkSlice
-#      requirements:
-#        - network:
-#            node: s11_network
-#            relationship: tosca.relationships.BelongsToOne
-#        - slice:
-#            node: {{ site_name }}_vmme
-#            relationship: tosca.relationships.BelongsToOne
+    mme_slice_s11_network:
+      type: tosca.nodes.NetworkSlice
+      requirements:
+        - network:
+            node: s11_network
+            relationship: tosca.relationships.BelongsToOne
+        - slice:
+            node: {{ site_name }}_vmme
+            relationship: tosca.relationships.BelongsToOne

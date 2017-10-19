@@ -33,6 +33,7 @@ topology_template:
       properties:
           name: s1u_network
           subnet: 111.0.0.0/24
+          permit_all_slices: true
       requirements:
           - template:
               node: s1u_template
