@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_ac793095",
+        "filename": "roles/cord-profile/templates/s11-net.yaml.j2",
+        "patchSetId": 14
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-10-19T01:37:11Z",
+      "side": 1,
+      "message": "Can we get rid of this?",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 34
+      },
+      "revId": "a9cb0c32477931f7dea27ec4df7d216ecc8ca575",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_cc74649e",
+        "filename": "roles/cord-profile/templates/s11-net.yaml.j2",
+        "patchSetId": 14
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-10-19T01:37:11Z",
+      "side": 1,
+      "message": "Can we get rid of this?",
+      "range": {
+        "startLine": 50,
+        "startChar": 1,
+        "endLine": 52,
+        "endChar": 62
+      },
+      "revId": "a9cb0c32477931f7dea27ec4df7d216ecc8ca575",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
