@@ -81,7 +81,7 @@ topology_template:
       properties:
           name: internetemulator
           public_key: {{ lookup('file', config_cord_profile_dir + '/key_import/mcord_rsa.pub') }}
-          private_key_fn: /opt/xos/services/vmme/keys/mcord_rsa
+          private_key_fn: /opt/xos/services/internetemulator/keys/mcord_rsa
       artifacts:
           pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
 
@@ -113,9 +113,6 @@ topology_template:
 #      properties:
 #          name: internetemulator_instance
 #      requirements:
-#        - tenant:
-#           node: service#internetemulator
-#            relationship: tosca.relationships.TenantOfService
-#        - dependency:
-#            node: {{ site_name }}_internetemulator
-#            relationship: tosca.relationships.DependsOn
+#        - owner:
+#            node: service#internetemulator
+#            relationship: tosca.relationships.BelongsToOne
