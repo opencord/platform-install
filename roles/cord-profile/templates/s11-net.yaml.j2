@@ -8,7 +8,6 @@ imports:
    - custom_types/network.yaml
    - custom_types/networktemplate.yaml
 
-
 description: network for S11 interface
 
 topology_template:
@@ -19,12 +18,6 @@ topology_template:
       type: tosca.nodes.Site
       properties:
           name: {{ site_name }}
-
-#    mysite_vMME_slice:
-#      type: tosca.nodes.Slice
-#      properties:
-#          must-exist: true
-#          name: mysite_vMME_slice
 
 # s11 network
     s11_template:
@@ -47,10 +40,6 @@ topology_template:
           - owner:
               node: {{ site_name }}_s11
               relationship: tosca.relationships.BelongsToOne
- #         - slices:
- #             node: mysite_vMME_slice
- #             relationship: tosca.relationships.BelongsToMany
-
 
     {{ site_name }}_s11:
       description: This slice exists solely to own the private network
