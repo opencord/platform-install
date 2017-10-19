@@ -2,6 +2,11 @@ tosca_definitions_version: tosca_simple_yaml_1_0
 
 imports:
    - custom_types/xos.yaml
+   - custom_types/site.yaml
+   - custom_types/slice.yaml
+   - custom_types/flavor.yaml
+   - custom_types/network.yaml
+   - custom_types/networktemplate.yaml
 
 description: network for north bound interface (nbi)
 
@@ -11,36 +16,39 @@ topology_template:
 # site, fully created in deployment.yaml
     {{ site_name }}:
       type: tosca.nodes.Site
+      properties:
+          name: {{ site_name }}
 
 # nbi network
     nbi_template:
       type: tosca.nodes.NetworkTemplate
       properties:
+          name: nbi_template
           visibility: private
           translation: none
           vtn_kind: PRIVATE
 
     nbi_network:
-      type: tosca.nodes.network.Network
+      type: tosca.nodes.Network
       properties:
-          ip_version: 4
-          cidr: 113.0.0.0/24
+          name: nbi_network
+          subnet: 113.0.0.0/24
       requirements:
-          - network_template:
+          - template:
               node: nbi_template
-              relationship: tosca.relationships.UsesNetworkTemplate
+              relationship: tosca.relationships.BelongsToOne
           - owner:
               node: {{ site_name }}_nbi
-              relationship: tosca.relationships.MemberOfSlice
+              relationship: tosca.relationships.BelongsToOne
 
     {{ site_name }}_nbi:
       description: This slice exists solely to own the private network
       type: tosca.nodes.Slice
       properties:
-          network: noauto
+          name: {{ site_name }}_nbi
+          default_isolation: vm
       requirements:
           - site:
               node: {{ site_name }}
-              relationship: tosca.relationships.MemberOfSite
-
+              relationship: tosca.relationships.BelongsToOne
 
