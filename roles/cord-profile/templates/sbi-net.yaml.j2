@@ -33,6 +33,7 @@ topology_template:
       properties:
           name: sbi_network
           subnet: 114.0.0.0/24
+          permit_all_slices: true
       requirements:
           - template:
               node: sbi_template
@@ -47,6 +48,7 @@ topology_template:
       properties:
           name: {{ site_name }}_sbi
           default_isolation: vm
+          network: noauto
       requirements:
           - site:
               node: {{ site_name }}

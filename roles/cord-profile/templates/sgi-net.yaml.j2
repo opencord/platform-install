@@ -33,6 +33,7 @@ topology_template:
       properties:
           name: sgi_network
           subnet: 115.0.0.0/24
+          permit_all_slices: true
       requirements:
           - template:
               node: sgi_template
@@ -47,6 +48,7 @@ topology_template:
       properties:
           name: {{ site_name }}_sgi
           default_isolation: vm
+          network: noauto
       requirements:
           - site:
               node: {{ site_name }}

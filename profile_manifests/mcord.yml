@@ -48,7 +48,7 @@ xos_new_tosca_config_templates:
   - sgi-net.yaml
   - mcord-services.yml
   - internet-emulator-service.yaml
-#  - sdn-controller-service.yaml
+  - sdn-controller-service.yaml
 
 xos_other_templates:
   - fabric-network-cfg.json

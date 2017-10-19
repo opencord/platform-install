@@ -33,6 +33,7 @@ topology_template:
       properties:
           name: s1mme_network
           subnet: 116.0.0.0/24
+          permit_all_slices: true
       requirements:
           - template:
               node: s1mme_template
@@ -47,6 +48,7 @@ topology_template:
       properties:
           name: {{ site_name }}_s1mme
           default_isolation: vm
+          network: noauto
       requirements:
           - site:
               node: {{ site_name }}

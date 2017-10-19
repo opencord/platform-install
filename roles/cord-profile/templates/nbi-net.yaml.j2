@@ -33,6 +33,7 @@ topology_template:
       properties:
           name: nbi_network
           subnet: 113.0.0.0/24
+          permit_all_slices: true
       requirements:
           - template:
               node: nbi_template
@@ -47,6 +48,7 @@ topology_template:
       properties:
           name: {{ site_name }}_nbi
           default_isolation: vm
+          network: noauto
       requirements:
           - site:
               node: {{ site_name }}

@@ -27,6 +27,7 @@ imports:
    - custom_types/image.yaml
    - custom_types/flavor.yaml
    - custom_types/network.yaml
+   - custom_types/networkslice.yaml
    - custom_types/internetemulatorservice.yaml
    - custom_types/internetemulatorserviceinstance.yaml
 
@@ -64,7 +65,7 @@ topology_template:
       type: tosca.nodes.Network
       properties:
         must-exist: true
-        name: management
+        name: management_hosts
 {% endif %}
 
 # sgi_network is for connectivity between VMs, fully created in sgi-net.yaml
@@ -86,12 +87,13 @@ topology_template:
           pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
 
 # CORD Slices
-    mysite_internetemulator:
+    {{ site_name }}_internetemulator:
       description: Internet Emulator Slice
       type: tosca.nodes.Slice
       properties:
           name: {{ site_name }}_internetemulator
           default_isolation: vm
+          network: noauto
       requirements:
           - site:
               node: mysite
@@ -106,13 +108,33 @@ topology_template:
               node: m1.small
               relationship: tosca.relationships.BelongsToOne
 
-# TODO: will refactor this part later
 # CORD Service Instances
-#    serviceinstance#internetemulator_instance:
-#      type: tosca.nodes.InternetEmulatorServiceInstance
-#      properties:
-#          name: internetemulator_instance
-#      requirements:
-#        - owner:
-#            node: service#internetemulator
-#            relationship: tosca.relationships.BelongsToOne
+    serviceinstance#internetemulator_instance:
+      type: tosca.nodes.InternetEmulatorServiceInstance
+      properties:
+          name: internetemulator_instance
+      requirements:
+        - owner:
+            node: service#internetemulator
+            relationship: tosca.relationships.BelongsToOne
+
+# CORD NetworkSlices
+    internetemulator_slice_management_network:
+      type: tosca.nodes.NetworkSlice
+      requirements:
+        - network:
+            node: management
+            relationship: tosca.relationships.BelongsToOne
+        - slice:
+            node: {{ site_name }}_internetemulator
+            relationship: tosca.relationships.BelongsToOne
+
+    internetemulator_slice_sgi_network:
+      type: tosca.nodes.NetworkSlice
+      requirements:
+        - network:
+            node: sgi_network
+            relationship: tosca.relationships.BelongsToOne
+        - slice:
+            node: {{ site_name }}_internetemulator
+            relationship: tosca.relationships.BelongsToOne
