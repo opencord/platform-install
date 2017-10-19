@@ -47,28 +47,23 @@ topology_template:
       type: tosca.nodes.Flavor
       properties:
         name: m1.small
-        must-exist: true
     m1.large:
       type: tosca.nodes.Flavor
       properties:
         name: m1.large
-        must-exist: true
     m1.medium:
       type: tosca.nodes.Flavor
       properties:
         name: m1.medium
-        must-exist: true
     m1.xlarge:
       type: tosca.nodes.Flavor
       properties:
         name: m1.xlarge
-        must-exist: true
 
     trusty-server-multi-nic:
       type: tosca.nodes.Image
       properties:
         name: trusty-server-multi-nic
-        must-exist: true
 
 # management networks, fully created in management-net.yaml
     management:
@@ -188,13 +183,12 @@ topology_template:
               node: m1.small
               relationship: tosca.relationships.BelongsToOne
 
-# will enable this part after sapan fix the obj issue
-#    mme_slice_s11_network:
-#      type: tosca.nodes.NetworkSlice
-#      requirements:
-#        - network:
-#            node: s11_network
-#            relationship: tosca.relationships.BelongsToOne
-#        - slice:
-#            node: {{ site_name }}_vmme
-#            relationship: tosca.relationships.BelongsToOne
+    mme_slice_s11_network:
+      type: tosca.nodes.NetworkSlice
+      requirements:
+        - network:
+            node: s11_network
+            relationship: tosca.relationships.BelongsToOne
+        - slice:
+            node: {{ site_name }}_vmme
+            relationship: tosca.relationships.BelongsToOne
