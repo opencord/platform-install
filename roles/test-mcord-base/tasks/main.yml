@@ -29,6 +29,8 @@
     - sgi_network
     - s11_network
     - s1mme_network
+    - sbi_network
+    - nbi_network
   tags:
     - skip_ansible_lint # running a sub job
 
@@ -41,5 +43,6 @@
   with_items:
     - internetemulator
     - vmme
+    - sdncontroller
   tags:
     - skip_ansible_lint # running a sub job
