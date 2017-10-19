@@ -33,6 +33,7 @@ topology_template:
       properties:
           name: s11_network
           subnet: 112.0.0.0/24
+          permit_all_slices: true
       requirements:
           - template:
               node: s11_template
@@ -47,6 +48,7 @@ topology_template:
       properties:
           name: {{ site_name }}_s11
           default_isolation: vm
+          network: noauto
       requirements:
           - site:
               node: {{ site_name }}
