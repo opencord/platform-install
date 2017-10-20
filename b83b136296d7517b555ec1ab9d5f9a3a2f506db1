@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "9a5c5d37_27ff9b36",
+        "filename": "roles/cord-profile/templates/carrierethernet-local-app.yaml.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2017-10-20T14:40:30Z",
+      "side": 1,
+      "message": "This tells tosca to treat the next block of text as the value to be assigned to the variable.",
+      "parentUuid": "9a5c5d37_673a3338",
+      "range": {
+        "startLine": 33,
+        "startChar": 28,
+        "endLine": 33,
+        "endChar": 29
+      },
+      "revId": "b83b136296d7517b555ec1ab9d5f9a3a2f506db1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a5c5d37_87352748",
         "filename": "roles/cord-profile/templates/carrierethernet-local-app.yaml.j2",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2017-10-20T10:04:23Z",
       "side": 1,
       "message": "just to be safe let\u0027s up these to 60",
+      "range": {
+        "startLine": 36,
+        "startChar": 47,
+        "endLine": 36,
+        "endChar": 49
+      },
+      "revId": "b83b136296d7517b555ec1ab9d5f9a3a2f506db1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_e7f8634b",
+        "filename": "roles/cord-profile/templates/carrierethernet-local-app.yaml.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2017-10-20T14:40:30Z",
+      "side": 1,
+      "message": "okay, will do.",
+      "parentUuid": "9a5c5d37_87352748",
       "range": {
         "startLine": 36,
         "startChar": 47,
