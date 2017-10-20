@@ -36,20 +36,20 @@ xos_tosca_config_templates:
   - wan-net.yaml
   - vsg-net.yaml
   - flat-net.yaml
+  - xos-gui-extensions.yml
+
+xos_new_tosca_config_templates:
+  - mcord-subscriber.yml
+  - s11-net.yaml
   - s1u-net.yaml
   - s1mme-net.yaml
   - nbi-net.yaml
   - sbi-net.yaml
   - sgi-net.yaml
-#  - mcord-services.yml
-  - xos-gui-extensions.yml
-  - internet-emulator-service.yaml
-
-xos_new_tosca_config_templates:
-  - mcord-subscriber.yml
-  - s11-net.yaml
   - mcord-services.yml
-
+  - internet-emulator-service.yaml
+  - sdn-controller-service.yaml
+  - vspgwc-service.yaml
 
 xos_other_templates:
   - fabric-network-cfg.json
@@ -72,12 +72,21 @@ xos_services:
     keypair: onos_rsa
   - name: fabric
     path: orchestration/xos_services/fabric
-  - name: exampleservice
-    path: orchestration/xos_services/exampleservice
-    keypair: exampleservice_rsa
   - name: vmme
     path: orchestration/xos_services/vmme
     keypair: mcord_rsa
+  - name: internetemulator
+    path: orchestration/xos_services/internetemulator
+    keypair: mcord_rsa
+  - name: sdncontroller
+    path: orchestration/xos_services/sdn-controller
+    keypair: mcord_rsa
+  - name: vspgwc
+    path: orchestration/xos_services/vspgwc
+    keypair: mcord_rsa
+  - name: exampleservice
+    path: orchestration/xos_services/exampleservice
+    keypair: exampleservice_rsa
 
 profile_library: "mcord"
 

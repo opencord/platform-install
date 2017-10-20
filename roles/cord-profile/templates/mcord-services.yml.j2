@@ -82,7 +82,7 @@ topology_template:
       type: tosca.nodes.Network
       properties:
         must-exist: true
-        name: management
+        name: management_hosts
 {% endif %}
 
 # s1u_network is for connectivity between VMs, fully created in s1u-net.yaml
@@ -115,6 +115,12 @@ topology_template:
       properties:
         must-exist: true
         name: sgi_network
+# s1mme_network is for connectivity between VMs, fully created in s1mme-net.yaml
+    s1mme_network:
+      type: tosca.nodes.Network
+      properties:
+        must-exist: true
+        name: s1mme_network
 
 
 
@@ -142,6 +148,7 @@ topology_template:
           private_key_fn: /opt/xos/services/vmme/keys/mcord_rsa
       artifacts:
           pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
+
     intel_mme:
       type: tosca.nodes.VMMEVendor
       properties:
@@ -173,6 +180,7 @@ topology_template:
       properties:
           name: {{ site_name }}_vmme
           default_isolation: vm
+          network: noauto
       requirements:
           - site:
               node: mysite
@@ -186,20 +194,33 @@ topology_template:
           - default_flavor:
               node: m1.small
               relationship: tosca.relationships.BelongsToOne
-          #- connection_to_management:
-          #    node: management
-          #    relationship: tosca.relationships.BelongsToMany
-          #- connection_to_s11_network:
-          #    node: s11_network
-          #   relationship: tosca.relationships.ConnectsToNetwork
 
-# will enable this part after sapan fix the obj issue
-#    mme_slice_s11_network:
-#      type: tosca.nodes.NetworkSlice
-#      requirements:
-#        - network:
-#            node: s11_network
-#            relationship: tosca.relationships.BelongsToOne
-#        - slice:
-#            node: {{ site_name }}_vmme
-#            relationship: tosca.relationships.BelongsToOne
+    mme_slice_management_network:
+      type: tosca.nodes.NetworkSlice
+      requirements:
+        - network:
+            node: management
+            relationship: tosca.relationships.BelongsToOne
+        - slice:
+            node: {{ site_name }}_vmme
+            relationship: tosca.relationships.BelongsToOne
+
+    mme_slice_s11_network:
+      type: tosca.nodes.NetworkSlice
+      requirements:
+        - network:
+            node: s11_network
+            relationship: tosca.relationships.BelongsToOne
+        - slice:
+            node: {{ site_name }}_vmme
+            relationship: tosca.relationships.BelongsToOne
+
+    mme_slice_s1mme_network:
+      type: tosca.nodes.NetworkSlice
+      requirements:
+        - network:
+            node: s1mme_network
+            relationship: tosca.relationships.BelongsToOne
+        - slice:
+            node: {{ site_name }}_vmme
+            relationship: tosca.relationships.BelongsToOne
