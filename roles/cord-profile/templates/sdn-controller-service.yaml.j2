@@ -1,4 +1,3 @@
-
 {#
 Copyright 2017-present Open Networking Foundation
 
@@ -28,8 +27,9 @@ imports:
    - custom_types/flavor.yaml
    - custom_types/network.yaml
    - custom_types/networkslice.yaml
-   - custom_types/internetemulatorservice.yaml
-   - custom_types/internetemulatorserviceinstance.yaml
+   - custom_types/sdncontrollerservice.yaml
+   - custom_types/sdncontrollervendor.yaml
+   - custom_types/sdncontrollerserviceinstance.yaml
 
 topology_template:
   node_templates:
@@ -68,30 +68,37 @@ topology_template:
         name: management_hosts
 {% endif %}
 
-# sgi_network is for connectivity between VMs, fully created in sgi-net.yaml
-    sgi_network:
+# sbi_network is for connectivity between VMs, fully created in sbi-net.yaml
+    sbi_network:
       type: tosca.nodes.Network
       properties:
         must-exist: true
-        name: sgi_network
+        name: sbi_network
+
+# nbi_network is for connectivity between VMs, fully created in nbi-net.yaml
+    nbi_network:
+      type: tosca.nodes.Network
+      properties:
+        must-exist: true
+        name: nbi_network
 
 
 # CORD Services
-    service#internetemulator:
-      type: tosca.nodes.InternetEmulatorService
+    service#sdncontroller:
+      type: tosca.nodes.SDNControllerService
       properties:
-          name: internetemulator
+          name: sdncontroller
           public_key: {{ lookup('file', config_cord_profile_dir + '/key_import/mcord_rsa.pub') }}
-          private_key_fn: /opt/xos/services/internetemulator/keys/mcord_rsa
+          private_key_fn: /opt/xos/services/sdncontroller/keys/mcord_rsa
       artifacts:
           pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
 
 # CORD Slices
-    {{ site_name }}_internetemulator:
-      description: Internet Emulator Slice
+    {{ site_name }}_sdncontroller:
+      description: SDN controller slice
       type: tosca.nodes.Slice
       properties:
-          name: {{ site_name }}_internetemulator
+          name: {{ site_name }}_sdncontroller
           default_isolation: vm
           network: noauto
       requirements:
@@ -99,7 +106,7 @@ topology_template:
               node: mysite
               relationship: tosca.relationships.BelongsToOne
           - service:
-              node: service#internetemulator
+              node: service#sdncontroller
               relationship: tosca.relationships.BelongsToOne
           - default_image:
               node: trusty-server-multi-nic
@@ -109,32 +116,58 @@ topology_template:
               relationship: tosca.relationships.BelongsToOne
 
 # CORD Service Instances
-    serviceinstance#internetemulator_instance:
-      type: tosca.nodes.InternetEmulatorServiceInstance
+
+    intel_sdncontroller:
+      type: tosca.nodes.SDNControllerVendor
       properties:
-          name: internetemulator_instance
+        name: intel_sdncontroller
       requirements:
+        - image:
+            node: trusty-server-multi-nic
+            relationship: tosca.relationships.BelongsToOne
+        - flavor:
+            node: m1.small
+            relationship: tosca.relationships.BelongsToOne
+
+    serviceinstance#sdncontroller_instance:
+      type: tosca.nodes.SDNControllerServiceInstance
+      properties:
+          name: sdncontroller_instance1
+      requirements:
+        - sdncontroller_vendor:
+            node: intel_sdncontroller
+            relationship: tosca.relationships.BelongsToOne
         - owner:
-            node: service#internetemulator
+            node: service#sdncontroller
             relationship: tosca.relationships.BelongsToOne
 
 # CORD NetworkSlices
-    internetemulator_slice_management_network:
+    sdncontroller_slice_management_network:
       type: tosca.nodes.NetworkSlice
       requirements:
         - network:
             node: management
             relationship: tosca.relationships.BelongsToOne
         - slice:
-            node: {{ site_name }}_internetemulator
+            node: {{ site_name }}_sdncontroller
             relationship: tosca.relationships.BelongsToOne
 
-    internetemulator_slice_sgi_network:
+    sdncontroller_slice_sbi_network:
       type: tosca.nodes.NetworkSlice
       requirements:
         - network:
-            node: sgi_network
+            node: sbi_network
             relationship: tosca.relationships.BelongsToOne
         - slice:
-            node: {{ site_name }}_internetemulator
+            node: {{ site_name }}_sdncontroller
+            relationship: tosca.relationships.BelongsToOne
+
+    sdncontroller_slice_nbi_network:
+      type: tosca.nodes.NetworkSlice
+      requirements:
+        - network:
+            node: nbi_network
+            relationship: tosca.relationships.BelongsToOne
+        - slice:
+            node: {{ site_name }}_sdncontroller
             relationship: tosca.relationships.BelongsToOne
