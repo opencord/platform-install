@@ -49,6 +49,7 @@ xos_new_tosca_config_templates:
   - mcord-services.yml
   - internet-emulator-service.yaml
   - sdn-controller-service.yaml
+  - vspgwc-service.yaml
 
 xos_other_templates:
   - fabric-network-cfg.json
@@ -79,6 +80,9 @@ xos_services:
     keypair: mcord_rsa
   - name: sdncontroller
     path: orchestration/xos_services/sdn-controller
+    keypair: mcord_rsa
+  - name: vspgwc
+    path: orchestration/xos_services/vspgwc
     keypair: mcord_rsa
   - name: exampleservice
     path: orchestration/xos_services/exampleservice
