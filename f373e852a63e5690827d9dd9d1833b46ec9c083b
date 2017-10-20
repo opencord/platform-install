@@ -22,6 +22,30 @@
       "revId": "f373e852a63e5690827d9dd9d1833b46ec9c083b",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_e7baa309",
+        "filename": "roles/cord-profile/templates/sdn-controller-service.yaml.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-10-20T00:29:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a5c5d37_67aa33d6",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 24
+      },
+      "revId": "f373e852a63e5690827d9dd9d1833b46ec9c083b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
