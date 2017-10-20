@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_a30ede32",
+        "filename": "roles/cord-profile/templates/carrierethernet-local-app.yaml.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000029
+      },
+      "writtenOn": "2017-10-20T20:48:40Z",
+      "side": 1,
+      "message": "let\u0027s set both of them to 100",
+      "revId": "a76c5a3a689c5b58f8d6f8e94dc1f5715e21df42",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
