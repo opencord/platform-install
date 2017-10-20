@@ -28,7 +28,7 @@ topology_template:
               node: service#ONOS_CORD
               relationship: tosca.relationships.TenantOfService
       properties:
-          install_dependencies: http://mavenrepo:8080/repository/org/opencord/ce/ce-api/1.0.0-SNAPSHOT/ce-api-1.0.0-SNAPSHOT.oar, http://mavenrepo:8080/repository/org/opencord/ce/vee/1.0.0-SNAPSHOT/vee-1.0.0-SNAPSHOT.oar
+          install_dependencies: http://mavenrepo:8080/repository/org/opencord/ce/ce-api/1.0.0-SNAPSHOT/ce-api-1.0.0-SNAPSHOT.oar, http://mavenrepo:8080/repository/org/opencord/ce/local-channel/1.0.0-SNAPSHOT/local-channel-1.0.0-SNAPSHOT.oar, http://mavenrepo:8080/repository/org/opencord/ce/bigswitch/1.0.0-SNAPSHOT/bigswitch-1.0.0-SNAPSHOT.oar, http://mavenrepo:8080/repository/org/opencord/ce/vee/1.0.0-SNAPSHOT/vee-1.0.0-SNAPSHOT.oar
           dependencies: org.onosproject.drivers.microsemi, org.onosproject.netconf, org.onosproject.cfm
 
 
@@ -39,4 +39,4 @@ topology_template:
               node: service#ONOS_Fabric
               relationship: tosca.relationships.TenantOfService
       properties:
-          install_dependencies: http://mavenrepo:8080/repository/org/opencord/ce/ce-api/1.0.0-SNAPSHOT/ce-api-1.0.0-SNAPSHOT.oar, http://mavenrepo:8080/repository/org/opencord/ce/fabric/1.0.0-SNAPSHOT/fabric-1.0.0-SNAPSHOT.oar
+          install_dependencies: http://mavenrepo:8080/repository/org/opencord/ce/ce-api/1.0.0-SNAPSHOT/ce-api-1.0.0-SNAPSHOT.oar, http://mavenrepo:8080/repository/org/opencord/ce/local-channel/1.0.0-SNAPSHOT/local-channel-1.0.0-SNAPSHOT.oar, http://mavenrepo:8080/repository/org/opencord/ce/bigswitch/1.0.0-SNAPSHOT/bigswitch-1.0.0-SNAPSHOT.oar, http://mavenrepo:8080/repository/org/opencord/ce/fabric/1.0.0-SNAPSHOT/fabric-1.0.0-SNAPSHOT.oar
