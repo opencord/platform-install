@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_4303a2b8",
+        "filename": "roles/cord-profile/templates/s11-net.yaml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2017-10-20T22:37:19Z",
+      "side": 1,
+      "message": "if do not use this line, what will happen?",
+      "range": {
+        "startLine": 51,
+        "startChar": 10,
+        "endLine": 51,
+        "endChar": 25
+      },
+      "revId": "359a59617172eb72bd4a900c34e22e204f413e82",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
