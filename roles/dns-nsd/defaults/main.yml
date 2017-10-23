@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # dns-nsd/defaults/main.yml
 
 nsd_ip: 127.0.0.1
@@ -28,7 +26,7 @@ dns_ttl: 3600
 # NOTE - many of the below settings are shared with the dns-nsd role, and you
 # may need to update them in the defaults of both.
 
-headnode: head1
+headnode_dns: head1
 
 site_name: placeholder-sitename
 site_suffix: "{{ site_name }}.test"
@@ -56,18 +54,20 @@ nsd_zones:
       - head_lxd_list
       - physical_node_list
     aliases:
-      - { name: "apt-cache", dest: "{{ headnode }}" }
-      - { name: "cordloghost", dest: "{{ headnode }}" }
-      - { name: "consul", dest: "{{ headnode }}" }
-      - { name: "docker", dest: "{{ headnode }}" }
-      - { name: "mavenrepo", dest: "{{ headnode }}" }
-      - { name: "ns", dest: "{{ headnode }}" }
-      - { name: "ns1", dest: "{{ headnode }}" }
-      - { name: "onos-cord", dest: "{{ headnode }}" }
-      - { name: "xos", dest: "{{ headnode }}" }
-      - { name: "xos-chameleon", dest: "{{ headnode }}" }
-      - { name: "xos-consul", dest: "{{ headnode }}" }
-      - { name: "xos-core", dest: "{{ headnode }}" }
-      - { name: "xos-gui", dest: "{{ headnode }}" }
-      - { name: "xos-tosca", dest: "{{ headnode }}" }
-      - { name: "xos-ws", dest: "{{ headnode }}" }
+      - { name: "apt-cache", dest: "{{ headnode_dns }}" }
+      - { name: "cordloghost", dest: "{{ headnode_dns }}" }
+      - { name: "consul", dest: "{{ headnode_dns }}" }
+      - { name: "docker", dest: "{{ headnode_dns }}" }
+      - { name: "mavenrepo", dest: "{{ headnode_dns }}" }
+      - { name: "ns", dest: "{{ headnode_dns }}" }
+      - { name: "ns1", dest: "{{ headnode_dns }}" }
+      - { name: "onos-cord", dest: "{{ headnode_dns }}" }
+      - { name: "onos-fabric", dest: "{{ headnode_dns }}" }
+      - { name: "xos", dest: "{{ headnode_dns }}" }
+      - { name: "xos-chameleon", dest: "{{ headnode_dns }}" }
+      - { name: "xos-consul", dest: "{{ headnode_dns }}" }
+      - { name: "xos-core", dest: "{{ headnode_dns }}" }
+      - { name: "xos-gui", dest: "{{ headnode_dns }}" }
+      - { name: "xos-tosca", dest: "{{ headnode_dns }}" }
+      - { name: "xos-ws", dest: "{{ headnode_dns }}" }
+
