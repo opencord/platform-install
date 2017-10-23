@@ -1,5 +1,4 @@
 ---
-
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 # xos-config/defaults/main.yml
+
+xos_tosca_host: "xos-tosca"
 
 head_credentials_dir: "/opt/credentials"
 
