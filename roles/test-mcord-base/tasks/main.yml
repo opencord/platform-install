@@ -44,5 +44,7 @@
     - internetemulator
     - vmme
     - sdncontroller
+    - vspgwc
+    - vspgwu
   tags:
     - skip_ansible_lint # running a sub job
