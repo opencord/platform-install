@@ -24,13 +24,7 @@
   until: result | success
   retries: 10
   delay: 60
-  with_items:
-    - management
-    - sgi_network
-    - s11_network
-    - s1mme_network
-    - sbi_network
-    - nbi_network
+  with_items: "{{ test_networks }}"
   tags:
     - skip_ansible_lint # running a sub job
 
@@ -40,9 +34,12 @@
   until: result | success
   retries: 10
   delay: 60
-  with_items:
-    - internetemulator
-    - vmme
-    - sdncontroller
+  with_items: "{{ test_services }}"
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Verify that VMs are properly networked
+  shell: bash -c "source /opt/cord_profile/admin-openrc.sh; nova list --all-tenants|grep '{{ item.vm }}.*ACTIVE.*{{ item.network }}' > /dev/null"
+  with_items: "{{ test_ports }}"
   tags:
     - skip_ansible_lint # running a sub job
