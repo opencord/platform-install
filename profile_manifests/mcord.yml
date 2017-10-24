@@ -39,7 +39,6 @@ xos_tosca_config_templates:
   - xos-gui-extensions.yml
 
 xos_new_tosca_config_templates:
-  - mcord-subscriber.yml
   - s11-net.yaml
   - s1u-net.yaml
   - s1mme-net.yaml
