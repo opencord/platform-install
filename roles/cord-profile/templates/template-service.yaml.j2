@@ -1,0 +1,136 @@
+
+{#
+Copyright 2017-present Open Networking Foundation
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+#}
+
+
+tosca_definitions_version: tosca_simple_yaml_1_0
+
+description: TOSCA example of adding a service and service instance
+
+imports:
+   - custom_types/xos.yaml
+   - custom_types/slice.yaml
+   - custom_types/site.yaml
+   - custom_types/image.yaml
+   - custom_types/flavor.yaml
+   - custom_types/network.yaml
+   - custom_types/networkslice.yaml
+   - custom_types/templateservice.yaml
+   - custom_types/templateserviceinstance.yaml
+
+topology_template:
+  node_templates:
+
+# site, image, fully created in deployment.yaml
+    {{ site_name }}:
+      type: tosca.nodes.Site
+      properties:
+        must-exist: true
+        name: {{ site_name }}
+
+    m1.small:
+      type: tosca.nodes.Flavor
+      properties:
+        name: m1.small
+        must-exist: true
+
+    trusty-server-multi-nic:
+      type: tosca.nodes.Image
+      properties:
+        name: trusty-server-multi-nic
+
+# management networks, fully created in management-net.yaml
+    management:
+      type: tosca.nodes.Network
+      properties:
+        must-exist: true
+        name: management
+
+{% if use_management_hosts %}
+    management_hosts:
+      type: tosca.nodes.Network
+      properties:
+        must-exist: true
+        name: management_hosts
+{% endif %}
+
+# public network, fully created in public-net.yaml
+    public:
+      type: tosca.nodes.Network
+      properties:
+        must-exist: true
+        name: public
+
+# CORD Services
+    service#template:
+      type: tosca.nodes.TemplateService
+      properties:
+          name: template
+          public_key: {{ lookup('file', config_cord_profile_dir + '/key_import/templateservice_rsa.pub') }}
+          private_key_fn: /opt/xos/services/templateservice/keys/templateservice_rsa
+
+# CORD Slices
+    {{ site_name }}_template:
+      description: Template Slice
+      type: tosca.nodes.Slice
+      properties:
+          name: {{ site_name }}_template
+          default_isolation: vm
+          network: noauto
+      requirements:
+          - site:
+              node: mysite
+              relationship: tosca.relationships.BelongsToOne
+          - service:
+              node: service#template
+              relationship: tosca.relationships.BelongsToOne
+          - default_image:
+              node: trusty-server-multi-nic
+              relationship: tosca.relationships.BelongsToOne
+          - default_flavor:
+              node: m1.small
+              relationship: tosca.relationships.BelongsToOne
+
+# CORD Service Instances
+    serviceinstance#template:
+      type: tosca.nodes.TemplateServiceInstance
+      properties:
+          name: template_instance
+      requirements:
+        - owner:
+            node: service#template
+            relationship: tosca.relationships.BelongsToOne
+
+# CORD NetworkSlices
+    template_slice_management_network:
+      type: tosca.nodes.NetworkSlice
+      requirements:
+        - network:
+            node: management
+            relationship: tosca.relationships.BelongsToOne
+        - slice:
+            node: {{ site_name }}_template
+            relationship: tosca.relationships.BelongsToOne
+
+    template_slice_public_network:
+      type: tosca.nodes.NetworkSlice
+      requirements:
+        - network:
+            node: public
+            relationship: tosca.relationships.BelongsToOne
+        - slice:
+            node: {{ site_name }}_template
+            relationship: tosca.relationships.BelongsToOne
