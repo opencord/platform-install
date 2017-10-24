@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,16 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# dns-unbound/tasks/main.yml
 
----
-#file: roles/dns-unbound/tasks/main.yml
-
-- name: Include OS specific vars
-  include_vars: "{{ ansible_os_family }}.yml"
-
-# Debian specific installation
-- include: unbound-Debian.yml
-  when: ansible_os_family == 'Debian'
+- name: Install unbound
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - unbound
 
 - name: create unbound.conf from template
   template:
@@ -34,4 +34,7 @@
     # validate='unbound-checkconf %s' - can't use, checks path, not just config.
   notify:
    - restart-unbound
+
+- name: flush unbound handlers
+  meta: flush_handlers
 
