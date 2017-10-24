@@ -26,21 +26,20 @@ test_networks:
   - management
   - sgi_network
   - s11_network
-  - s1mme_network
   - sbi_network
   - nbi_network
 
 test_services:
-  - internetemulator
-  - vmme
+  - venb
   - vspgwc
   - sdncontroller
   - vspgwu
 
 test_ports:
-  - { vm: vmme, network: management }
-  - { vm: vmme, network: s11_network }
-  - { vm: vmme, network: s1mme_network }
+  - { vm: venb, network: management }
+  - { vm: venb, network: s11_network }
+  - { vm: venb, network: sgi_network }
+  - { vm: venb, network: s1u_network }
   - { vm: vspgwc, network: management }
   - { vm: vspgwc, network: s11_network }
   - { vm: vspgwc, network: nbi_network }
@@ -51,5 +50,3 @@ test_ports:
   - { vm: vspgwu, network: s1u_network }
   - { vm: vspgwu, network: sgi_network }
   - { vm: vspgwu, network: sbi_network }
-  - { vm: internetemulator, network: management }
-  - { vm: internetemulator, network: sgi_network }
