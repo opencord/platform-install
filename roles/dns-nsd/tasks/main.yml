@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +14,16 @@
 # limitations under the License.
 
 
----
-#file: roles/dns-nsd/tasks/main.yml
+# dns-nsd/tasks/main.yml
 
-- name: Include OS specific vars
-  include_vars: "{{ ansible_os_family }}.yml"
-
-# Debian specific installation
-- include: nsd-Debian.yml
-  when: ansible_os_family == 'Debian'
+- name: Install nsd
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - nsd
 
 - name: Ensure that zones directory exists
   file:
@@ -63,4 +64,7 @@
   with_items: "{{ nsd_zones }}"
   notify:
     - reload-nsd
+
+- name: flush nsd handlers
+  meta: flush_handlers
 

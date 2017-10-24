@@ -55,8 +55,8 @@
   become: yes
   roles:
     - { role: head-mgmtbr, when: not use_maas }
-    - { role: dns-unbound, when: not use_maas }
     - { role: dns-nsd, when: not use_maas }
+    - { role: dns-unbound, when: not use_maas }
 
 # needs to be in another set of plays so that nsd/unbound restart handlers run
 - name: Configure DNS resolution, DHCP on head node
