@@ -29,7 +29,7 @@ topology_template:
               relationship: tosca.relationships.TenantOfService
       properties:
           install_dependencies: http://mavenrepo:8080/repository/org/opencord/ce/ce-api/1.0.0-SNAPSHOT/ce-api-1.0.0-SNAPSHOT.oar, http://mavenrepo:8080/repository/org/opencord/ce/bigswitch/1.0.0-SNAPSHOT/bigswitch-1.0.0-SNAPSHOT.oar, http://mavenrepo:8080/repository/org/opencord/ce/local-channel/1.0.0-SNAPSHOT/local-channel-1.0.0-SNAPSHOT.oar, http://mavenrepo:8080/repository/org/opencord/ce/vee/1.0.0-SNAPSHOT/vee-1.0.0-SNAPSHOT.oar
-          dependencies: org.onosproject.drivers.microsemi
+          dependencies: org.onosproject.drivers.microsemi, org.onosproject.cfm
           component_config: >
               {
                   "org.onosproject.netconf.ctl.impl.NetconfControllerImpl": {
