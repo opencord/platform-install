@@ -22,3 +22,34 @@ xos_ui_port: 9000
 xos_admin_user: "xosadmin@opencord.org"
 maas_xos_admin_pass: "{{ lookup('file', '/opt/credentials/xosadmin@opencord.org') }}"
 
+test_networks:
+  - management
+  - sgi_network
+  - s11_network
+  - s1mme_network
+  - sbi_network
+  - nbi_network
+
+test_services:
+  - internetemulator
+  - vmme
+  - vspgwc
+  - sdncontroller
+  - vspgwu
+
+test_ports:
+  - { vm: vmme, network: management }
+  - { vm: vmme, network: s11_network }
+  - { vm: vmme, network: s1mme_network }
+  - { vm: vspgwc, network: management }
+  - { vm: vspgwc, network: s11_network }
+  - { vm: vspgwc, network: nb1_network }
+  - { vm: sdncontroller, network: management }
+  - { vm: sdncontroller, network: nbi_network }
+  - { vm: sdncontroller, network: sbi_network }
+  - { vm: vspgwu, network: management }
+  - { vm: vspgwu, network: s1u_network }
+  - { vm: vspgwu, network: sgi_network }
+  - { vm: vspgwu, network: sbi_network }
+  - { vm: internetemulator, network: management }
+  - { vm: internetemulator, network: sgi_network }
