@@ -15,9 +15,15 @@
 
 # dns-unbound/handlers/main.yml
 
-- name: restart-unbound
+- name: start-unbound
   service:
     name: unbound
     enabled: yes
-    state: restarted
+    state: started
+
+- name: reload-unbound
+  service:
+    name: unbound
+    enabled: yes
+    state: reloaded
 
