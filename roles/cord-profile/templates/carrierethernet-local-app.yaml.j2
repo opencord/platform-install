@@ -35,6 +35,9 @@ topology_template:
                   "org.onosproject.netconf.ctl.impl.NetconfControllerImpl": {
                       "netconfConnectTimeout": "60",
                       "netconfReplyTimeout": "60"
+                  },
+                  "org.opencord.ce.local.bigswitch.BigSwitchManager": {
+                      "domainId": "{{ ansible_default_ipv4.address }}-cord-onos"
                   }
               }
 
@@ -46,3 +49,9 @@ topology_template:
               relationship: tosca.relationships.TenantOfService
       properties:
           install_dependencies: http://mavenrepo:8080/repository/org/opencord/ce/ce-api/1.0.0-SNAPSHOT/ce-api-1.0.0-SNAPSHOT.oar, http://mavenrepo:8080/repository/org/opencord/ce/bigswitch/1.0.0-SNAPSHOT/bigswitch-1.0.0-SNAPSHOT.oar, http://mavenrepo:8080/repository/org/opencord/ce/local-channel/1.0.0-SNAPSHOT/local-channel-1.0.0-SNAPSHOT.oar, http://mavenrepo:8080/repository/org/opencord/ce/fabric/1.0.0-SNAPSHOT/fabric-1.0.0-SNAPSHOT.oar
+          component_config: >
+              {
+                  "org.opencord.ce.local.bigswitch.BigSwitchManager": {
+                      "domainId": "{{ ansible_default_ipv4.address }}-fabric-onos"
+                  }
+              }
