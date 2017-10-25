@@ -33,7 +33,8 @@
     group: "{{ unbound_group }}"
     # validate='unbound-checkconf %s' - can't use, checks path, not just config.
   notify:
-   - restart-unbound
+   - start-unbound
+   - reload-unbound
 
 - name: flush unbound handlers
   meta: flush_handlers
