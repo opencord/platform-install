@@ -26,13 +26,14 @@ test_networks:
   - management
   - sgi_network
   - s11_network
-  - sbi_network
-  - nbi_network
+  - spgw_network
+#  - sbi_network
+#  - nbi_network
 
 test_services:
   - venb
   - vspgwc
-  - sdncontroller
+#  - sdncontroller
   - vspgwu
 
 test_ports:
@@ -42,11 +43,13 @@ test_ports:
   - { vm: venb, network: s1u_network }
   - { vm: vspgwc, network: management }
   - { vm: vspgwc, network: s11_network }
-  - { vm: vspgwc, network: nbi_network }
-  - { vm: sdncontroller, network: management }
-  - { vm: sdncontroller, network: nbi_network }
-  - { vm: sdncontroller, network: sbi_network }
+  - { vm: vspgwc, network: spgw_network }
+#  - { vm: vspgwc, network: nbi_network }
+#  - { vm: sdncontroller, network: management }
+#  - { vm: sdncontroller, network: nbi_network }
+#  - { vm: sdncontroller, network: sbi_network }
   - { vm: vspgwu, network: management }
   - { vm: vspgwu, network: s1u_network }
   - { vm: vspgwu, network: sgi_network }
-  - { vm: vspgwu, network: sbi_network }
+  - { vm: vspgwu, network: spgw_network }
+#  - { vm: vspgwu, network: sbi_network }
