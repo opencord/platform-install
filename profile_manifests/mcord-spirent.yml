@@ -39,16 +39,13 @@ xos_tosca_config_templates:
   - xos-gui-extensions.yml
 
 xos_new_tosca_config_templates:
-  - mcord-subscriber.yml
   - s11-net.yaml
   - s1u-net.yaml
   - nbi-net.yaml
   - sbi-net.yaml
+  - spgw-net.yaml
   - sgi-net.yaml
   - mcord-spirent-services.yml
-  - sdn-controller-service.yaml
-  - vspgwc-service.yaml
-  - vspgwu-service.yaml
 
 xos_other_templates:
   - fabric-network-cfg.json
@@ -74,18 +71,12 @@ xos_services:
   - name: venb
     path: orchestration/xos_services/venb
     keypair: mcord_rsa
-  - name: sdncontroller
-    path: orchestration/xos_services/sdn-controller
-    keypair: mcord_rsa
   - name: vspgwc
     path: orchestration/xos_services/vspgwc
     keypair: mcord_rsa
   - name: vspgwu
     path: orchestration/xos_services/vspgwu
     keypair: mcord_rsa
-  - name: exampleservice
-    path: orchestration/xos_services/exampleservice
-    keypair: exampleservice_rsa
 
 profile_library: "mcord"
 
