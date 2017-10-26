@@ -18,12 +18,17 @@
 # test-examplservice/tasks/main.yml
 # Run tests to check that the single-node deployment has worked
 
-- name: Load TOSCA to apply test config for ExampleService, over REST
-  xostosca:
-    url: "http://xos.{{ site_suffix }}:{{ xos_ui_port }}/api/utility/tosca/run/"
-    user: "{{ xos_admin_user }}"
-    password:  "{{ maas_xos_admin_pass }}"
-    recipe: "{{ lookup('file', head_cord_profile_dir + '/test-exampleservice.yaml' ) }}"
+- name: Configure XOS with profile specific TOSCA (new Engine)
+  uri:
+    url: "http://{{ xos_tosca_host }}/xos-tosca/run"
+    method: POST
+    headers:
+      xos-username: "{{ xos_admin_user }}"
+      xos-password: "{{ xos_admin_pass }}"
+    body: "{{ lookup('file', head_cord_profile_dir + '/test-exampleservice.yaml' ) }}"
+    status_code: 200
+  tags:
+    - skip_ansible_lint # TOSCA loading should be idempotent
 
 - name: Wait for ExampleService VM to come up
   shell: bash -c "source /opt/cord_profile/admin-openrc.sh; nova list --all-tenants|grep 'exampleservice.*ACTIVE' > /dev/null"
