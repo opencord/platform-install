@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_5dbed700",
+        "filename": "roles/cord-profile/templates/mcord-spirent-services.yml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2017-10-27T19:24:00Z",
+      "side": 1,
+      "message": "flat",
+      "range": {
+        "startLine": 129,
+        "startChar": 4,
+        "endLine": 129,
+        "endChar": 8
+      },
+      "revId": "7d2cdec3a2366285008d14e141502a5223739a3e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
