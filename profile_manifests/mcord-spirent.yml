@@ -35,7 +35,6 @@ xos_tosca_config_templates:
   - shared-net.yaml
   - wan-net.yaml
   - vsg-net.yaml
-  - flat-net.yaml
   - xos-gui-extensions.yml
 
 xos_new_tosca_config_templates:
@@ -45,6 +44,7 @@ xos_new_tosca_config_templates:
   - sbi-net.yaml
   - spgw-net.yaml
   - sgi-net.yaml
+  - flat-net.yaml
   - mcord-spirent-services.yml
 
 xos_other_templates:

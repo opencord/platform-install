@@ -119,12 +119,18 @@ topology_template:
       properties:
         must-exist: true
         name: sgi_network
-# spgw_network is for connectivity between VMs, fully created in sgi-net.yaml
+# spgw_network is for connectivity between VMs, fully created in spgw-net.yaml
     spgw_network:
       type: tosca.nodes.Network
       properties:
         must-exist: true
         name: spgw_network
+# flat_network is for connectivity between VM inside cord and server outside, fully created in flat-net.yaml
+    flat_network:
+      type: tosca.nodes.Network
+      properties:
+        must-exist: true
+        name: flat_network
 
 # ONOS_CORD, fully created in vtn.yaml
     service#ONOS_CORD:
@@ -216,6 +222,16 @@ topology_template:
       requirements:
         - network:
             node: sgi_network
+            relationship: tosca.relationships.BelongsToOne
+        - slice:
+            node: {{ site_name }}_venb
+            relationship: tosca.relationships.BelongsToOne
+
+    venb_slice_flat_network:
+      type: tosca.nodes.NetworkSlice
+      requirements:
+        - network:
+            node: flat_network
             relationship: tosca.relationships.BelongsToOne
         - slice:
             node: {{ site_name }}_venb
