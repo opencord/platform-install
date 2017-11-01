@@ -269,3 +269,15 @@ xos_images:
   - name: "ceilometer-service-trusty-server-multi-nic"
     url: "http://www.vicci.org/cord/ceilometer-service-trusty-server-multi-nic.compressed.qcow2.20170131"
     checksum: "sha256:f0341e283f0f2cb8f70cd1a6347e0081c9c8492ef34eb6397c657ef824800d4f"
+
+  - name: "image-venb"
+    url: "http://www.vicci.org/cord/venb-20171031.qcow2"
+    checksum: "sha256:df05f61f2876cb06d6a25ae9b238fad4a0a3d292f8101af2d71fd3c7c806a670"
+
+  - name: "image-spgwc"
+    url: "http://www.vicci.org/cord/ngic-cp1.qcow2.20171101"
+    checksum: "sha256:de6f3b2069f75d7a9292077dc2a19c87008c2f46d48ec5503c7415f80cdc268a"
+
+  - name: "image-spgwu"
+    url: "http://www.vicci.org/cord/ngic-dp1.qcow2.20171101"
+    checksum: "sha256:376eeca731e6c7fbb842a359486340f7ee8b77ed9cc0712f4ffebdcfcf2a75d2"
