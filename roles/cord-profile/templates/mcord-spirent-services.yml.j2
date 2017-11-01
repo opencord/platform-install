@@ -69,10 +69,20 @@ topology_template:
         name: m1.xlarge
         must-exist: true
 
-    trusty-server-multi-nic:
+    image-venb:
       type: tosca.nodes.Image
       properties:
-        name: trusty-server-multi-nic
+        name: image-venb
+
+    image-spgwc:
+      type: tosca.nodes.Image
+      properties:
+        name: image-spgwc
+
+    image-spgwu:
+      type: tosca.nodes.Image
+      properties:
+        name: image-spgwu
 
 # management networks, fully created in management-net.yaml
     management:
@@ -172,10 +182,10 @@ topology_template:
               node: service#venb
               relationship: tosca.relationships.BelongsToOne
           - default_image:
-              node: trusty-server-multi-nic
+              node: image-venb
               relationship: tosca.relationships.BelongsToOne
           - default_flavor:
-              node: m1.small
+              node: m1.xlarge
               relationship: tosca.relationships.BelongsToOne
 
     venb_instance1:
@@ -262,10 +272,10 @@ topology_template:
               node: service#vspgwc
               relationship: tosca.relationships.BelongsToOne
           - default_image:
-              node: trusty-server-multi-nic
+              node: image-spgwc
               relationship: tosca.relationships.BelongsToOne
           - default_flavor:
-              node: m1.small
+              node: m1.large
               relationship: tosca.relationships.BelongsToOne
 
     intel_vspgwc:
@@ -274,10 +284,10 @@ topology_template:
         name: intel_vspgwc
       requirements:
         - image:
-            node: trusty-server-multi-nic
+            node: image-spgwc
             relationship: tosca.relationships.BelongsToOne
         - flavor:
-            node: m1.small
+            node: m1.large
             relationship: tosca.relationships.BelongsToOne
 
     serviceinstance#vspgwc_instance:
@@ -347,10 +357,10 @@ topology_template:
               node: service#vspgwu
               relationship: tosca.relationships.BelongsToOne
           - default_image:
-              node: trusty-server-multi-nic
+              node: image-spgwu
               relationship: tosca.relationships.BelongsToOne
           - default_flavor:
-              node: m1.small
+              node: m1.xlarge
               relationship: tosca.relationships.BelongsToOne
 
     intel_vspgwu:
@@ -359,10 +369,10 @@ topology_template:
         name: intel_vspgwu
       requirements:
         - image:
-            node: trusty-server-multi-nic
+            node: image-spgwu
             relationship: tosca.relationships.BelongsToOne
         - flavor:
-            node: m1.small
+            node: m1.xlarge
             relationship: tosca.relationships.BelongsToOne
 
     serviceinstance#vspgwu_instance:
