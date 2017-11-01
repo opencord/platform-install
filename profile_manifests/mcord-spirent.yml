@@ -25,6 +25,7 @@ site_suffix: "cord.lab"
 deployment_type: MyDeployment
 
 # Feature toggles
+use_fabric: True
 use_maas: True
 
 # XOS config
