@@ -263,9 +263,9 @@ xos_images:
     checksum: "sha256:df05f61f2876cb06d6a25ae9b238fad4a0a3d292f8101af2d71fd3c7c806a670"
 
   - name: "image-spgwc"
-    url: "http://www.vicci.org/cord/ngic-cp1.qcow2.20171101"
-    checksum: "sha256:5a9cd6ab61f1a943d7f99aa019fb6a3328869d28b3e3ef5618dab90c067b9788"
+    url: "http://www.vicci.org/cord/ngic-cp1-cmpress.qcow2.20171102"
+    checksum: "sha256:06d8f95ac7e5825be7b834d45aa74cbdb7453353d03ae8171f302965311f5829"
 
   - name: "image-spgwu"
-    url: "http://www.vicci.org/cord/ngic-dp1.qcow2.20171101"
-    checksum: "sha256:1837358efa156793c6dd07771681acd41b1562d8a765933a77255de6912619df"
+    url: "http://www.vicci.org/cord/ngic-dp1-cmpress.qcow2.20171102"
+    checksum: "sha256:c26bfea5e3e67580cf594e6fd1bcdefa8fbfc1dae57801e250472d054e6be1a6"
