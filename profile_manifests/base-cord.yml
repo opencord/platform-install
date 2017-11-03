@@ -77,7 +77,7 @@ charm_versions:
   nagios: "cs:trusty/nagios-10"
   neutron-api: "cs:~cordteam/trusty/neutron-api-6"
   nova-cloud-controller: "cs:trusty/nova-cloud-controller-64"
-  nova-compute: "cs:~cordteam/trusty/nova-compute-3"
+  nova-compute: "cs:~cordteam/trusty/nova-compute-4"
   nrpe: "cs:trusty/nrpe-4"
   ntp: "cs:trusty/ntp-14"
   openstack-dashboard: "cs:trusty/openstack-dashboard-19"
