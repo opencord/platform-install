@@ -13,4 +13,3 @@ localhost ansible_connection=local
  
 [compute]
 swarm00
-

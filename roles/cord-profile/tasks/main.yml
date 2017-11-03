@@ -140,3 +140,11 @@
     - openstack.yaml
     - admin-openrc.sh
 
+- name: Create Swarm config and TOSCA onboarding
+  when: use_swarm
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ config_cord_profile_dir }}/{{ item }}"
+  with_items:
+    - swarm.yaml
+    - ansible_hosts

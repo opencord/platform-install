@@ -322,6 +322,12 @@ services:
 {% for svc in xos_services %}
 {% if svc.synchronizer is not defined or svc.synchronizer %}
   {{ svc.name }}-synchronizer:
+{% if extra_hosts %}   ##  ADD LINES  (For Swarm synchronizer)
+    extra_hosts:
+{% for extra_host in extra_hosts %}
+      - {{ extra_host }}
+{% endfor %}
+{% endif %} 
     image: {{ pull_docker_registry }}xosproject/{{ svc.name }}-synchronizer:{{ pull_docker_tag }}
     networks:
 {% for network in xos_docker_networks %}
@@ -340,6 +346,7 @@ services:
     volumes:
       - {{ head_cord_profile_dir }}/xos_config_synchronizer.yaml:/opt/xos/xos_config.yaml:ro
       - {{ head_cord_profile_dir }}/node_key:/opt/cord_profile/node_key:ro
+      - {{ head_cord_profile_dir }}/ansible_hosts:/etc/ansible/hosts:ro 
       - {{ head_credentials_dir }}:/opt/xos/services/{{ svc.name }}/credentials:ro
       - {{ head_cord_profile_dir }}/im_cert_chain.pem:/usr/local/share/ca-certificates/local_certs.crt:ro
 {% if svc.keypair is defined %}
@@ -348,6 +355,9 @@ services:
 {% if svc.name == "openstack" %}
       - {{ head_cord_profile_dir }}/images:/opt/xos/images:ro
 {% endif %}
+{% if svc.name == "swarm" %}   ## ADD LINES  (For Swarm synchronizer)
+      - {{ head_cord_profile_dir }}/images:/opt/xos/images:ro
+{% endif %} 
     logging:
       driver: "json-file"
       options:

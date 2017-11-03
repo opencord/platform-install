@@ -1,0 +1,57 @@
+
+# Copyright 2017-present Open Networking Foundation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+---
+# lbaas-image-build/tasks/main.yml
+- name: Build LBaaS docker image
+  docker_image:
+    name: lbaas
+    path: "{{ head_lbaas_dir }}"
+    tag: latest
+    dockerfile: Dockerfile
+    pull: False
+    force: True
+
+- name: Run LBaaS container
+  docker_container:
+    name: lbaas
+    image: lbaas:latest
+
+- name: Archive image
+  docker_image:
+    name: lbaas:latest
+    tag: latest
+    archive_path: lbaas.tar
+
+- name: Stop LBaaS container
+  docker_container:
+    name: lbaas
+    state: stopped
+
+- name: Remove container
+  docker_container:
+    name: lbaas
+    state: absent
+
+- name: Copy LBaaS docker image
+  copy:
+    src: lbaas.tar
+    dest: "{{head_docker_image_dir}}/lbaas.tar"
+
+- name: Delete LBaaS docker image
+  file:
+    state: absent
+    path: lbaas.tar
