@@ -34,7 +34,7 @@
   shell: "lsmod | grep kvm_"
 
 - name: DNS Lookup Check
-  shell: "dig +short {{ dns_check_domain }} | grep {{ dns_check_ipv4 }}"
+  shell: "dig +short {{ dns_check_domain }} | grep '{{ dns_check_record }}'"
   register: dns_lookup_check_result
   until: dns_lookup_check_result.rc == 0
   retries: 3
@@ -45,7 +45,7 @@
   #    that: "{{ lookup('dig', dns_check_domain ) == dns_check_ipv4 }}"
 
 - name: DNS Global Root Connectivity Check
-  shell: "dig @{{ item }} +trace +short {{ dns_check_domain }} | grep {{ dns_check_ipv4 }}"
+  shell: "dig @{{ item }} +trace +short {{ dns_check_domain }} | grep '{{ dns_check_record }}'"
   with_items:
     - 192.5.5.241
     - 198.41.0.4
