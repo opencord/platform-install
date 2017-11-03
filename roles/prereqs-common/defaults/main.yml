@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # prereqs-common/defaults/main.yml
 
 min_memtotal_mb: 48000
@@ -23,5 +21,7 @@ min_processor_vcpus: 12
 kvm_check: true
 
 dns_check_domain: wiki.opencord.org
-dns_check_ipv4: 52.9.82.207
+
+# CNAME record for wiki.opencord.org
+dns_check_record: "cord-confluence-elb-457478507.us-west-2.elb.amazonaws.com."
 
