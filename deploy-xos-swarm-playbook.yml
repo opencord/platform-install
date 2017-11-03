@@ -44,11 +44,11 @@
   hosts: head
   roles:
     - pull-xos-docker-images
- 
+
 # build lbaas image
 - include: build-lbaas-image.yml
 
 # build fwaas image
 #- include: build-fwaas-image.yml
- 
+
 - include: launch-xos-playbook.yml
