@@ -51,6 +51,7 @@ xos_new_tosca_config_templates:
   - sdn-controller-service.yaml
   - vspgwc-service.yaml
   - vspgwu-service.yaml
+  - vepc-service.yaml
 #  - mcord-service-graph.yml
 
 xos_other_templates:
@@ -94,6 +95,9 @@ xos_services:
     keypair: exampleservice_rsa
   - name: venb
     path: orchestration/xos_services/venb
+    keypair: mcord_rsa
+  - name: vepc
+    path: orchestration/xos_services/epc-service
     keypair: mcord_rsa
 
 profile_library: "mcord"
