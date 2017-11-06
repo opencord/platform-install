@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_5b37fae3",
+        "filename": "profile_manifests/mcord.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-11-06T00:49:42Z",
+      "side": 1,
+      "message": "I don\u0027t see the template for this file in this patch or `master` branch - is it in a different patch?",
+      "range": {
+        "startLine": 54,
+        "startChar": 4,
+        "endLine": 54,
+        "endChar": 21
+      },
+      "revId": "9a008a68ff3436badfdec200fcfa664097c912a2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
