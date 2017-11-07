@@ -69,10 +69,10 @@ server_certs:
     subj: "/C=US/ST=California/L=Menlo Park/O=ON.Lab/OU=Test Deployment/CN=xos-core.{{ site_suffix }}"
     altnames:
       - "DNS:xos-core.{{ site_suffix }}"
- 
+
 swarm_manager_node: "swarm00"
 swarm_manager_url: "{{ swarm_manager_node }}:5000"
- 
+
 deployment_flavors:
   - m1.small
   - m1.medium

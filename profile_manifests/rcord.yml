@@ -28,6 +28,10 @@ deployment_type: MyDeployment
 use_fabric: True
 use_maas: True
 
+# Swarm Synchronizer config
+swarm_manager_node: "swarm00"
+swarm_manager_url: "{{ swarm_manager_node }}:5000"
+
 # XOS config
 xos_tosca_config_templates:
   - vtn-service.yaml
