@@ -26,6 +26,7 @@
   - juju
   - openstack
   - onos
+  - onos_fabric
   - docker
 
 - name: Head node diag collection
@@ -99,6 +100,29 @@
    - "hosts"
    - "log:display"
    - "nodes"
+   - "netcfg"
+   - "ports"
+   - "summary"
+
+- name: ONOS_FABRIC diag collection - REST API
+  shell: "curl -X GET -u karaf:karaf http://onos-fabric:8182/onos/v1/{{ item }} | python -m json.tool > ~/{{ diag_dir }}/onos_fabric/rest_{{ item | regex_replace('[^\\w-]', '_') }}"
+  ignore_errors: yes
+  args:
+    creates: "~/{{ diag_dir }}/onos_fabric/rest_{{ item | regex_replace('[^\\w-]', '_')}}"
+    warn: False # get_url or uri can't easily redirect to a file
+  with_items:
+   - "hosts"
+
+- name: ONOS_FABRIC diag collection - ONOS CLI
+  shell: "sshpass -p 'karaf' ssh -p 8101 karaf@onos-fabric {{ item }} > ~/{{ diag_dir }}/onos_fabric/{{ item | regex_replace('[^\\w-]', '_') }}"
+  ignore_errors: yes
+  args:
+    creates: "~/{{ diag_dir }}/onos_fabric/{{ item | regex_replace('[^\\w-]', '_')}}"
+  with_items:
+   - "apps -s -a"
+   - "bundle:list"
+   - "hosts"
+   - "log:display"
    - "netcfg"
    - "ports"
    - "summary"
