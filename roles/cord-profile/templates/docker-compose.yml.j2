@@ -306,7 +306,7 @@ services:
 {% for network in xos_docker_networks %}
      - {{ network }}
 {% endfor %}
-    command: npm run build
+    command: /bin/sh -c "mkdir -p /var/www/dist/extensions/{{ ext.name }}/ && cp -R /tmp/* /var/www/dist/extensions/{{ ext.name }}/"
     volumes_from:
       - gui_extensions_store
     logging:
