@@ -25,8 +25,8 @@
   - head
   - juju
   - openstack
-  - onos
-  - onos_fabric
+  - onos-cord
+  - onos-fabric
   - docker
 
 - name: Head node diag collection
@@ -73,20 +73,20 @@
    - "neutron subnet-list"
    - "neutron port-list"
 
-- name: ONOS diag collection - REST API
-  shell: "curl -X GET -u karaf:karaf http://onos-cord:8182/onos/v1/{{ item }} | python -m json.tool > ~/{{ diag_dir }}/onos/rest_{{ item | regex_replace('[^\\w-]', '_') }}"
+- name: ONOS-CORD diag collection - REST API
+  shell: "curl -X GET -u karaf:karaf http://onos-cord:8182/onos/v1/{{ item }} | python -m json.tool > ~/{{ diag_dir }}/onos-cord/rest_{{ item | regex_replace('[^\\w-]', '_') }}"
   ignore_errors: yes
   args:
-    creates: "~/{{ diag_dir }}/onos/rest_{{ item | regex_replace('[^\\w-]', '_')}}"
+    creates: "~/{{ diag_dir }}/onos-cord/rest_{{ item | regex_replace('[^\\w-]', '_')}}"
     warn: False # get_url or uri can't easily redirect to a file
   with_items:
    - "hosts"
 
-- name: ONOS diag collection - ONOS CLI
-  shell: "sshpass -p 'karaf' ssh -p 8102 karaf@onos-cord {{ item }} > ~/{{ diag_dir }}/onos/{{ item | regex_replace('[^\\w-]', '_') }}"
+- name: ONOS-CORD diag collection - ONOS CLI
+  shell: "sshpass -p 'karaf' ssh -p 8102 karaf@onos-cord {{ item }} > ~/{{ diag_dir }}/onos-cord/{{ item | regex_replace('[^\\w-]', '_') }}"
   ignore_errors: yes
   args:
-    creates: "~/{{ diag_dir }}/onos/{{ item | regex_replace('[^\\w-]', '_')}}"
+    creates: "~/{{ diag_dir }}/onos-cord/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
    - "apps -s -a"
    - "bundle:list"
@@ -104,25 +104,28 @@
    - "ports"
    - "summary"
 
-- name: ONOS_FABRIC diag collection - REST API
-  shell: "curl -X GET -u karaf:karaf http://onos-fabric:8182/onos/v1/{{ item }} | python -m json.tool > ~/{{ diag_dir }}/onos_fabric/rest_{{ item | regex_replace('[^\\w-]', '_') }}"
+- name: ONOS-FABRIC diag collection - REST API
+  shell: "curl -X GET -u karaf:karaf http://onos-fabric:8182/onos/v1/{{ item }} | python -m json.tool > ~/{{ diag_dir }}/onos-fabric/rest_{{ item | regex_replace('[^\\w-]', '_') }}"
   ignore_errors: yes
   args:
-    creates: "~/{{ diag_dir }}/onos_fabric/rest_{{ item | regex_replace('[^\\w-]', '_')}}"
+    creates: "~/{{ diag_dir }}/onos-fabric/rest_{{ item | regex_replace('[^\\w-]', '_')}}"
     warn: False # get_url or uri can't easily redirect to a file
   with_items:
    - "hosts"
 
-- name: ONOS_FABRIC diag collection - ONOS CLI
-  shell: "sshpass -p 'karaf' ssh -p 8101 karaf@onos-fabric {{ item }} > ~/{{ diag_dir }}/onos_fabric/{{ item | regex_replace('[^\\w-]', '_') }}"
+- name: ONOS-FABRIC diag collection - ONOS CLI
+  shell: "sshpass -p 'karaf' ssh -p 8101 karaf@onos-fabric {{ item }} > ~/{{ diag_dir }}/onos-fabric/{{ item | regex_replace('[^\\w-]', '_') }}"
   ignore_errors: yes
   args:
-    creates: "~/{{ diag_dir }}/onos_fabric/{{ item | regex_replace('[^\\w-]', '_')}}"
+    creates: "~/{{ diag_dir }}/onos-fabric/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
    - "apps -s -a"
    - "bundle:list"
+   - "devices"
+   - "flows"
    - "hosts"
    - "log:display"
+   - "nodes"
    - "netcfg"
    - "ports"
    - "summary"
