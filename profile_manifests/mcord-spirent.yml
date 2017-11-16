@@ -259,8 +259,8 @@ xos_images:
     checksum: "sha256:ebf007ba3ec1043b7cd011fc6668e2a1d1d4c69c41071e8513ab355df7a057cb"
 
   - name: "image-venb"
-    url: "http://www.vicci.org/cord/venb-20171031.qcow2"
-    checksum: "sha256:df05f61f2876cb06d6a25ae9b238fad4a0a3d292f8101af2d71fd3c7c806a670"
+    url: "http://www.vicci.org/opencloud/trusty-server-cloudimg-amd64-disk1.img.20170201"
+    checksum: "sha256:ebf007ba3ec1043b7cd011fc6668e2a1d1d4c69c41071e8513ab355df7a057cb"
 
   - name: "image-spgwc"
     url: "http://www.vicci.org/cord/ngic-cp1-cmpress.qcow2.20171102"
