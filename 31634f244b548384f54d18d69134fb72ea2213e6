@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9fcec513_48c8a4a8",
+        "filename": "roles/cord-profile/templates/docker-compose.yml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-11-17T06:56:43Z",
+      "side": 1,
+      "message": "Is this a copy from the /tmp dir inside the GUI extension container to the local filesystem, or to another container?\n\nCould this work like the ONOS apps mavenrepo used to work (before they were downloaded), where all possible apps were built and included in one container?",
+      "range": {
+        "startLine": 309,
+        "startChar": 78,
+        "endLine": 309,
+        "endChar": 91
+      },
+      "revId": "31634f244b548384f54d18d69134fb72ea2213e6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
