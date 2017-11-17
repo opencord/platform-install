@@ -15,11 +15,33 @@
 
 
 ---
-# mcord-test-playbook.yml
+# mcord-spirent-test-playbook.yml
 # Tests CiaB cord-pod XOS configuration
 
 - name: Include vars
   hosts: all
+  vars:
+    test_networks:
+      - management
+      - sgi_network
+      - s11_network
+      - spgw_network
+    test_services:
+      - venb
+      - vspgwc
+      - vspgwu
+    test_ports:
+      - { vm: venb, network: management }
+      - { vm: venb, network: s11_network }
+      - { vm: venb, network: sgi_network }
+      - { vm: venb, network: s1u_network }
+      - { vm: vspgwc, network: management }
+      - { vm: vspgwc, network: s11_network }
+      - { vm: vspgwc, network: spgw_network }
+      - { vm: vspgwu, network: management }
+      - { vm: vspgwu, network: s1u_network }
+      - { vm: vspgwu, network: sgi_network }
+      - { vm: vspgwu, network: spgw_network }
   tasks:
     - name: Include variables
       include_vars: "{{ item }}"
@@ -31,4 +53,4 @@
   hosts: head
   become: no
   roles:
-    - test-mcord-base-spirent
+    - test-mcord-base
