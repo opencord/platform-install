@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "88894153_b5e06cb4",
+        "filename": "profile_manifests/mcord.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1000266
+      },
+      "writtenOn": "2017-11-17T18:21:44Z",
+      "side": 1,
+      "message": "Checksum format need to be `algorithm:hash`",
+      "range": {
+        "startLine": 276,
+        "startChar": 15,
+        "endLine": 276,
+        "endChar": 79
+      },
+      "revId": "39ee6a7b6e4d17b106f36bcd8cc64e54da29e694",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
