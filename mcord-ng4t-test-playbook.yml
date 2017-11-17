@@ -15,7 +15,7 @@
 
 
 ---
-# mcord-spirent-test-playbook.yml
+# mcord-ng4t-test-playbook.yml
 # Tests CiaB cord-pod XOS configuration
 
 - name: Include vars
