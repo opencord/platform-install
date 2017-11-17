@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0d67111e_3b674b68",
+        "filename": "roles/test-mcord-base-ng4t/defaults/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-11-17T18:27:59Z",
+      "side": 1,
+      "message": "Are these lists generic and/or used in other roles? Could they be namespaced to the test type / profile / role?",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 4
+      },
+      "revId": "97fdf99445af7cf90a5cd86c96dcf364071689fe",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "34abe002_2ac31572",
+        "filename": "roles/test-mcord-base-ng4t/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-11-17T18:27:59Z",
+      "side": 1,
+      "message": "Could this be stored in a variable rather than running the command over and over?",
+      "range": {
+        "startLine": 42,
+        "startChar": 18,
+        "endLine": 42,
+        "endChar": 83
+      },
+      "revId": "97fdf99445af7cf90a5cd86c96dcf364071689fe",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
