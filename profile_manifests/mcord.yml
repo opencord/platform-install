@@ -42,15 +42,12 @@ xos_new_tosca_config_templates:
   - s11-net.yaml
   - s1u-net.yaml
   - s1mme-net.yaml
+  - spgw-net.yaml
   - nbi-net.yaml
   - sbi-net.yaml
   - sgi-net.yaml
   - flat-net.yaml
   - mcord-services.yml
-  - internet-emulator-service.yaml
-  - sdn-controller-service.yaml
-  - vspgwc-service.yaml
-  - vspgwu-service.yaml
 #  - vepc-service.yaml
 #  - mcord-service-graph.yml
 
@@ -275,18 +272,14 @@ compute_relations:
 
 
 xos_images:
-  - name: "trusty-server-multi-nic"
-    url: "http://www.vicci.org/opencloud/trusty-server-cloudimg-amd64-disk1.img.20170201"
-    checksum: "sha256:ebf007ba3ec1043b7cd011fc6668e2a1d1d4c69c41071e8513ab355df7a057cb"
+  - name: "image-radisys-mme"
+    url: "http://www.vicci.org/cord/radisys-vmme.img.20171116"
+    checksum: "sha256:0cecaaff8c428e403845660b86ca769e281fc6dbb60819d70480bc3ac0642470"
 
-  - name: "spgw"
-    url: "http://www.vicci.org/cord/spgw.qcow2.20171024"
-    checksum: "sha256:954cce8bb6fdbc684b07e7f4cebc0cb1b3edf9146e1245dbdab88e6ec0dd3e48"
+  - name: "image-spgwc"
+    url: "http://www.vicci.org/cord/ngic-cp1-cmpress.qcow2.20171102"
+    checksum: "sha256:06d8f95ac7e5825be7b834d45aa74cbdb7453353d03ae8171f302965311f5829"
 
-  - name: "ceilometer-trusty-server-multi-nic"
-    url: "http://www.vicci.org/cord/ceilometer-trusty-server-multi-nic.compressed.qcow2"
-    checksum: "sha256:b77ef8d692b640568dea13df99fe1dfcb1f4bb4ac05408db9ff77399b34f754f"
-
-  - name: "ceilometer-service-trusty-server-multi-nic"
-    url: "http://www.vicci.org/cord/ceilometer-service-trusty-server-multi-nic.compressed.qcow2.20170131"
-    checksum: "sha256:f0341e283f0f2cb8f70cd1a6347e0081c9c8492ef34eb6397c657ef824800d4f"
+  - name: "image-spgwu"
+    url: "http://www.vicci.org/cord/ngic-dp1-cmpress.qcow2.20171102"
+    checksum: "sha256:c26bfea5e3e67580cf594e6fd1bcdefa8fbfc1dae57801e250472d054e6be1a6"
