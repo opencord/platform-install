@@ -33,11 +33,6 @@
     src: "{{ head_cord_dir }}/orchestration/xos_services/exampleservice/xos/exampleservice-onboard.yaml"
     dest: "{{ head_cord_profile_dir }}/exampleservice-onboard.yaml"
 
-- name: TOSCA to mount exampleservice volume in XOS container
-  template:
-    src: "xos-exampleservice.yaml.j2"
-    dest: "{{ head_cord_profile_dir }}/xos-exampleservice.yaml"
-
 - name: TOSCA to create exampleservice test config
   template:
     src: "test-exampleservice.yaml.j2"
