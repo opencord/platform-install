@@ -69,3 +69,7 @@ neutron net-delete mysite_vsg-access || true
 neutron net-delete mysite_veg-access || true
 neutron net-delete public || true
 neutron net-delete exampleservice_network || true
+neutron net-delete spgw_network || true
+neutron net-delete s11_network || true
+neutron net-delete s1u_network || true
+neutron net-delete sgi_network || true
