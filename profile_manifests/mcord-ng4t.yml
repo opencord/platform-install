@@ -257,10 +257,9 @@ compute_relations:
 
 
 xos_images:
-  # trusty-server-multi-nic right now
   - name: "image-venb"
-    url: "http://www.vicci.org/opencloud/trusty-server-cloudimg-amd64-disk1.img.20170201"
-    checksum: "sha256:ebf007ba3ec1043b7cd011fc6668e2a1d1d4c69c41071e8513ab355df7a057cb"
+    url: "http://www.vicci.org/cord/ng40-vmcord-1-cloud-init.img.20171122"
+    checksum: "sha256:32aa7f914d358e0e32df01fbb6513e256afbb882e356233ae3770e0a355ad66a"
 
   - name: "image-spgwc"
     url: "http://www.vicci.org/cord/ngic-cp1-cmpress.qcow2.20171121"
