@@ -18,7 +18,7 @@
 # Creates all configuration for a CORD pod
 
 - name: Include vars
-  hosts: config
+  hosts: config, head
   tasks:
     - name: Include variables
       include_vars: "{{ item }}"
