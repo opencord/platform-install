@@ -38,6 +38,9 @@ xos_tosca_config_templates:
   - vrouter.yaml
   - xos-gui-extensions.yml
 
+xos_new_tosca_config_templates:
+  - service-graph-constraints.yaml
+
 xos_other_templates:
   - fabric-network-cfg.json
 
@@ -82,6 +85,9 @@ xos_services:
 #    path: orchestration/xos_services/monitoring
 #    keypair: monitoringservice_rsa
 #    synchronizer: false
+
+# service graph gui constraints
+xos_gui_service_graph_constranints: '[[null, "rcord"], [null, "volt"], ["addressmanager", "vsg"], [null, "vrouter"]]'
 
 profile_library: "rcord"
 
