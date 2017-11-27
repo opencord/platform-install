@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # cord-profile/defaults/main.yml
 
 # where the cord_profile directory is on the config node
@@ -132,3 +130,7 @@ fabric_network_cfg_json: "/opt/cord_profile/fabric-network-cfg.json"
 # Need to track each application's version separately
 cord_config_app_version: "1.4.0-SNAPSHOT"
 cord_vtn_app_version: "1.4.0-SNAPSHOT"
+
+# used in carrierethernet-*.yaml.j2
+carrierethernet_domainid_prefix: "{{ site_name }}"
+
