@@ -54,6 +54,10 @@ topology_template:
 
     service#rcord:
       type: tosca.nodes.Service
+      requirements:
+        - rcord_tenant:
+            node: service#volt
+            relationship: tosca.relationships.TenantOfService
 
 # ONOS_CORD, fully created in vtn.yaml
     service#ONOS_CORD:
