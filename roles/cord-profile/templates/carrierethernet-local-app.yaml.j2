@@ -37,7 +37,7 @@ topology_template:
                       "netconfReplyTimeout": "120"
                   },
                   "org.opencord.ce.local.bigswitch.BigSwitchManager": {
-                      "domainId": "{{ ansible_default_ipv4.address }}-cord-onos"
+                      "domainId": "{{ carrierethernet_domainid_prefix }}-cord-onos"
                   }
               }
 
@@ -52,6 +52,6 @@ topology_template:
           component_config: >
               {
                   "org.opencord.ce.local.bigswitch.BigSwitchManager": {
-                      "domainId": "{{ ansible_default_ipv4.address }}-fabric-onos"
+                      "domainId": "{{ carrierethernet_domainid_prefix }}-fabric-onos"
                   }
               }
