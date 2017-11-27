@@ -78,6 +78,9 @@ xos_services:
   - name: vspgwu
     path: orchestration/xos_services/vspgwu
     keypair: mcord_rsa
+  - name: vepc
+    path: orchestration/xos_services/epc-service
+    keypair: mcord_rsa
 
 profile_library: "mcord"
 
