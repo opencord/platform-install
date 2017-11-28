@@ -127,7 +127,10 @@ management_hosts_net_range_xos_high: "10.1.0.254"
 use_fabric: False
 fabric_network_cfg_json: "/opt/cord_profile/fabric-network-cfg.json"
 
-# Need to track each application's version separately
+# base URL of maven repo where ONOS apps are retrieved
+onos_mavenrepo_url: "{{ 'http://mavenrepo.' ~ site_suffix ~ ':8080' }}"
+
+# Need to track each ONOS application's version separately
 cord_config_app_version: "1.4.0-SNAPSHOT"
 cord_vtn_app_version: "1.4.0-SNAPSHOT"
 
