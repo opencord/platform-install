@@ -33,7 +33,7 @@ topology_template:
           kind: onos
           view_url: /admin/onos/onosservice/$id$/
           no_container: true
-          rest_hostname: onos-fabric
+          rest_hostname: onos-fabric.{{ site_suffix }}
           replaces: service_ONOS_Fabric
           rest_onos/v1/network/configuration/: { get_artifact: [ SELF, fabric_network_cfg_json, LOCAL_FILE ] }
       artifacts:

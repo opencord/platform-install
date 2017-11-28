@@ -33,6 +33,6 @@ topology_template:
           kind: onos
           view_url: /admin/onos/onosservice/$id$/
           no_container: true
-          rest_hostname: onos-cord
+          rest_hostname: onos-cord.{{ site_suffix }}
           rest_port: 8182
           replaces: service_ONOS_CORD
