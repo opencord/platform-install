@@ -1,4 +1,3 @@
-
 {#
 Copyright 2017-present Open Networking Foundation
 
@@ -14,7 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 #}
-
 
 tosca_definitions_version: tosca_simple_yaml_1_0
 
@@ -33,7 +31,7 @@ topology_template:
           kind: onos
           view_url: /admin/onos/onosservice/$id$/
           no_container: true
-          rest_hostname: onos-cord
+          rest_hostname: onos-cord.{{ site_suffix }}
           rest_port: 8182
           replaces: service_ONOS_CORD
 
@@ -47,12 +45,12 @@ topology_template:
           sshUser: root
           sshKeyFile: /root/node_key
           sshPort: 22
-          xosEndpoint: http://xos:{{ xos_ui_port }}/
+          xosEndpoint: xos-chameleon.{{ site_suffix }}:{{ xos_chameleon_port }}
           xosUser: {{ xos_admin_user }}
           xosPassword: {{ xos_admin_pass }}
           replaces: service_vtn
           vtnAPIVersion: 2
-          controllerPort: onos-cord:6654
+          controllerPort: onos-cord.{{ site_suffix }}:6654
 
     VTN_ONOS_app:
       type: tosca.nodes.ONOSVTNApp
@@ -64,7 +62,7 @@ topology_template:
               node: service#vtn
               relationship: tosca.relationships.UsedByService
       properties:
-          install_dependencies: http://mavenrepo:8080/repository/org/opencord/cord-config/{{ cord_config_app_version }}/cord-config-{{ cord_config_app_version }}.oar,http://mavenrepo:8080/repository/org/opencord/vtn/{{ cord_vtn_app_version }}/vtn-{{ cord_vtn_app_version }}.oar
+          install_dependencies: {{ onos_mavenrepo_url }}/repository/org/opencord/cord-config/{{ cord_config_app_version }}/cord-config-{{ cord_config_app_version }}.oar, {{ onos_mavenrepo_url }}/repository/org/opencord/vtn/{{ cord_vtn_app_version }}/vtn-{{ cord_vtn_app_version }}.oar
           dependencies: org.onosproject.drivers, org.onosproject.drivers.ovsdb, org.onosproject.openflow-base, org.onosproject.ovsdb-base, org.onosproject.dhcp
           autogenerate: vtn-network-cfg
 
