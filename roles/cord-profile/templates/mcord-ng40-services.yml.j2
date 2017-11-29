@@ -35,6 +35,8 @@ imports:
    - custom_types/vspgwuservice.yaml
    - custom_types/vspgwuvendor.yaml
    - custom_types/vepcservice.yaml
+   - custom_types/servicedependency.yaml
+   - custom_types/mcordsubscriberservice.yaml
 
 topology_template:
   node_templates:
@@ -282,3 +284,60 @@ topology_template:
           private_key_fn: /opt/xos/services/venb/keys/mcord_rsa
       artifacts:
           pubkey: /opt/cord_profile/key_import/mcord_rsa.pub
+
+
+# ServiceDependencies
+    venb_vspgwc:
+      type: tosca.nodes.ServiceDependency
+      properties:
+        connect_method: None
+      requirements:
+        - subscriber_service:
+            node: service#venb
+            relationship: tosca.relationships.BelongsToOne
+        - provider_service:
+            node: service#vspgwc
+            relationship: tosca.relationships.BelongsToOne
+
+    venb_vspgwu:
+      type: tosca.nodes.ServiceDependency
+      properties:
+        connect_method: None
+      requirements:
+        - subscriber_service:
+            node: service#venb
+            relationship: tosca.relationships.BelongsToOne
+        - provider_service:
+            node: service#vspgwu
+            relationship: tosca.relationships.BelongsToOne
+
+    vspgwc_vspgwu:
+      type: tosca.nodes.ServiceDependency
+      properties:
+        connect_method: None
+      requirements:
+        - subscriber_service:
+            node: service#vspgwc
+            relationship: tosca.relationships.BelongsToOne
+        - provider_service:
+            node: service#vspgwu
+            relationship: tosca.relationships.BelongsToOne
+
+# M-CORD Subscriber
+    service#mcord:
+      type: tosca.nodes.MCordSubscriberService
+      properties:
+        name: mcord
+
+    # ServiceDependency M-CORD to vENB
+    mcord_venb:
+      type: tosca.nodes.ServiceDependency
+      properties:
+        connect_method: None
+      requirements:
+        - subscriber_service:
+            node: service#venb
+            relationship: tosca.relationships.BelongsToOne
+        - provider_service:
+            node: service#mcord
+            relationship: tosca.relationships.BelongsToOne
