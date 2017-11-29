@@ -1,0 +1,6 @@
+; localhost inventory
+; used for installing prereqs with cord-bootstrap.sh script
+
+[head]
+localhost ansible_connection=local
+
