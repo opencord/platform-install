@@ -35,6 +35,7 @@ xos_tosca_config_templates:
   - management-net.yaml
   - addressmanager-service.yaml
   - public-net.yaml
+  - xos-gui-extensions.yml
 
 # An example of adding TOSCA for a service using the new engine.
 #xos_new_tosca_config_templates:
@@ -42,6 +43,23 @@ xos_tosca_config_templates:
 
 xos_other_templates:
   - fabric-network-cfg.json
+
+enabled_gui_extensions:
+  - name: sample
+    path: orchestration/xos-sample-gui-extension
+  - name: rcord
+    path: orchestration/profiles/rcord/xos/gui
+    extra_files:
+      - index.css
+  - name: veestat
+    path: orchestration/xos_services/vEE/xos/veestat
+  - name: vnaas
+    path: orchestration/xos_services/vnaas/xos/gui
+    extra_files:
+      - app/style/style.css
+      - mapconstants.js
+  - name: vtr
+    path: orchestration/xos_services/vtr/xos/gui
 
 # paths defined in manifest/default.xml
 xos_services:

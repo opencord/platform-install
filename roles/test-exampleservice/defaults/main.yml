@@ -19,7 +19,7 @@ head_cord_profile_dir: "/opt/cord_profile"
 
 xos_ui_port: 9000
 
-xos_tosca_host: "xos-tosca"
+xos_tosca_url: "http://xos-tosca/xos-tosca"
 
 head_credentials_dir: "/opt/credentials"
 
