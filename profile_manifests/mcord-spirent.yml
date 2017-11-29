@@ -47,6 +47,7 @@ xos_new_tosca_config_templates:
   - sgi-net.yaml
   - flat-net.yaml
   - mcord-spirent-services.yml
+  - service-graph-constraints.yaml
 
 xos_other_templates:
   - fabric-network-cfg.json
@@ -78,6 +79,9 @@ xos_services:
   - name: vspgwu
     path: orchestration/xos_services/vspgwu
     keypair: mcord_rsa
+
+# service graph gui constraints
+xos_gui_service_graph_constranints: '[]'
 
 profile_library: "mcord"
 
