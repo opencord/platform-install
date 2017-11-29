@@ -46,7 +46,7 @@ xos_new_tosca_config_templates:
   - spgw-net.yaml
   - sgi-net.yaml
   - flat-net.yaml
-  - mcord-ng4t-services.yml
+  - mcord-ng40-services.yml
 
 xos_other_templates:
   - fabric-network-cfg.json
@@ -258,8 +258,8 @@ compute_relations:
 
 xos_images:
   - name: "image-venb"
-    url: "http://www.vicci.org/cord/ng40-vmcord-1-cloud-init.img.20171122"
-    checksum: "sha256:32aa7f914d358e0e32df01fbb6513e256afbb882e356233ae3770e0a355ad66a"
+    url: "http://www.vicci.org/cord/ng40-vmcord-1-limited-wsm.img.20171129"
+    checksum: "sha256:7114b22271fd8d9022ec4cb92dbb946ea98d49380099c91688da84ddb595c339"
 
   - name: "image-spgwc"
     url: "http://www.vicci.org/cord/ngic-cp1-cmpress.qcow2.20171121"
