@@ -17,12 +17,12 @@
 
 - name: Configure XOS with profile specific TOSCA (new Engine)
   uri:
-    url: "http://{{ xos_tosca_host }}/xos-tosca/run"
+    url: "{{ xos_tosca_url }}/run"
     method: POST
     headers:
       xos-username: "{{ xos_admin_user }}"
       xos-password: "{{ xos_admin_pass }}"
-    body: "{{ lookup('file','/opt/cord_profile/' + item ) }}"
+    body: "{{ lookup('file', head_cord_profile_dir + '/' + item ) }}"
     status_code: 200
   with_items: "{{ xos_new_tosca_config_templates }}"
   tags:
