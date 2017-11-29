@@ -15,7 +15,7 @@
 
 
 ---
-# mcord-ng4t-test-playbook.yml
+# mcord-ng40-test-playbook.yml
 # Tests CiaB cord-pod XOS configuration
 
 - name: Include vars

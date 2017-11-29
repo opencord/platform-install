@@ -46,7 +46,7 @@ xos_new_tosca_config_templates:
   - spgw-net.yaml
   - sgi-net.yaml
   - flat-net.yaml
-  - mcord-ng4t-services.yml
+  - mcord-ng40-services.yml
 
 xos_other_templates:
   - fabric-network-cfg.json
