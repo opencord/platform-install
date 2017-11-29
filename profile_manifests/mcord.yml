@@ -51,6 +51,7 @@ xos_new_tosca_config_templates:
   - sdn-controller-service.yaml
   - vspgwc-service.yaml
   - vspgwu-service.yaml
+  - service-graph-constraints.yaml
 #  - vepc-service.yaml
 #  - mcord-service-graph.yml
 
@@ -99,6 +100,9 @@ xos_services:
   - name: vepc
     path: orchestration/xos_services/epc-service
     keypair: mcord_rsa
+
+# service graph gui constraints
+xos_gui_service_graph_constranints: '[]'
 
 profile_library: "mcord"
 
