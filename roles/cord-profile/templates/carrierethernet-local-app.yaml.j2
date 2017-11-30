@@ -28,7 +28,7 @@ topology_template:
               node: service#ONOS_CORD
               relationship: tosca.relationships.TenantOfService
       properties:
-          install_dependencies: {{ onos_mavenrepo_url }}/repository/org/opencord/ce/ce-api/1.0.0-SNAPSHOT/ce-api-1.0.0-SNAPSHOT.oar, {{ onos_mavenrepo_url }}/repository/org/opencord/ce/bigswitch/1.0.0-SNAPSHOT/bigswitch-1.0.0-SNAPSHOT.oar, {{ onos_mavenrepo_url }}/repository/org/opencord/ce/local-channel/1.0.0-SNAPSHOT/local-channel-1.0.0-SNAPSHOT.oar, {{ onos_mavenrepo_url }}//repository/org/opencord/ce/vee/1.0.0-SNAPSHOT/vee-1.0.0-SNAPSHOT.oar
+          install_dependencies: {{ onos_mavenrepo_url }}/repository/org/opencord/ce/ce-api/1.0.0/ce-api-1.0.0.oar, {{ onos_mavenrepo_url }}/repository/org/opencord/ce/bigswitch/1.0.0/bigswitch-1.0.0.oar, {{ onos_mavenrepo_url }}/repository/org/opencord/ce/local-channel/1.0.0/local-channel-1.0.0.oar, {{ onos_mavenrepo_url }}//repository/org/opencord/ce/vee/1.0.0/vee-1.0.0.oar
           dependencies: org.onosproject.drivers.microsemi, org.onosproject.cfm
           component_config: >
               {
@@ -48,7 +48,7 @@ topology_template:
               node: service#ONOS_Fabric
               relationship: tosca.relationships.TenantOfService
       properties:
-          install_dependencies: {{ onos_mavenrepo_url }}/repository/org/opencord/ce/ce-api/1.0.0-SNAPSHOT/ce-api-1.0.0-SNAPSHOT.oar, {{ onos_mavenrepo_url }}/repository/org/opencord/ce/bigswitch/1.0.0-SNAPSHOT/bigswitch-1.0.0-SNAPSHOT.oar, {{ onos_mavenrepo_url }}//repository/org/opencord/ce/local-channel/1.0.0-SNAPSHOT/local-channel-1.0.0-SNAPSHOT.oar, {{ onos_mavenrepo_url }}//repository/org/opencord/ce/fabric/1.0.0-SNAPSHOT/fabric-1.0.0-SNAPSHOT.oar
+          install_dependencies: {{ onos_mavenrepo_url }}/repository/org/opencord/ce/ce-api/1.0.0/ce-api-1.0.0.oar, {{ onos_mavenrepo_url }}/repository/org/opencord/ce/bigswitch/1.0.0/bigswitch-1.0.0.oar, {{ onos_mavenrepo_url }}//repository/org/opencord/ce/local-channel/1.0.0/local-channel-1.0.0.oar, {{ onos_mavenrepo_url }}//repository/org/opencord/ce/fabric/1.0.0/fabric-1.0.0.oar
           component_config: >
               {
                   "org.opencord.ce.local.bigswitch.BigSwitchManager": {
