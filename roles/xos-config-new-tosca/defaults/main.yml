@@ -17,12 +17,12 @@
 
 xos_tosca_url: "http://xos-tosca/xos-tosca"
 
-credentials_dir: "{{ playbook_dir }}/credentials"
+head_credentials_dir: "/opt/credentials"
 
 head_cord_profile_dir: "/opt/cord_profile"
 
 xos_admin_user: "xosadmin@opencord.org"
-xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+xos_admin_pass: "{{ lookup('password', head_credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
 
 xos_tosca_config_templates: []
 
