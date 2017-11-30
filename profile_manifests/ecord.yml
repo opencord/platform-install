@@ -39,6 +39,9 @@ xos_tosca_config_templates:
   - xos-gui-extensions.yml
   - carrierethernet-local-app.yaml
 
+xos_new_tosca_config_templates:
+  - service-graph-constraints.yaml
+
 xos_other_templates:
   - fabric-network-cfg.json
 
@@ -71,6 +74,9 @@ xos_services:
     keypair: veg_rsa
   - name: vee
     path: orchestration/xos_services/vEE
+
+# service graph gui constraints
+xos_gui_service_graph_constranints: '["vee", "veg", "vrouter"]'
 
 # VTN network configuration
 management_network_ip: 172.27.0.1/24
