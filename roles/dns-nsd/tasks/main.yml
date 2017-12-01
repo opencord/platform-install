@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 # dns-nsd/tasks/main.yml
 
 - name: Install nsd
@@ -24,8 +23,16 @@
     cache_valid_time: 3600
   with_items:
     - nsd
+  register: nsd_started
 
-- name: Ensure that zones directory exists
+- name: Stop nsd until config created
+  when: nsd_started.changed
+  service:
+    name: nsd
+    enabled: no
+    state: stopped
+
+- name: Create nsd zones directory
   file:
     name: "{{ nsd_zonesdir }}"
     state: directory
@@ -43,7 +50,7 @@
   notify:
     - restart-nsd
 
-- name: create forward zonefiles from template
+- name: Create forward zonefiles from template
   template:
     src: zone.forward.j2
     dest: "{{ nsd_zonesdir }}/{{ item.name }}.forward"
@@ -54,7 +61,7 @@
   notify:
     - reload-nsd
 
-- name: create reverse zonefiles from template
+- name: Create reverse zonefiles from template
   template:
     src: zone.reverse.j2
     dest: "{{ nsd_zonesdir }}/{{ item.name }}.reverse"
