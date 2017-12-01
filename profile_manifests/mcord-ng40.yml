@@ -262,8 +262,8 @@ compute_relations:
 
 xos_images:
   - name: "image-venb"
-    url: "http://www.vicci.org/cord/ng40-vmcord-1-limited-wsm.img.20171129"
-    checksum: "sha256:7114b22271fd8d9022ec4cb92dbb946ea98d49380099c91688da84ddb595c339"
+    url: "http://www.vicci.org/cord/ng40-vmcord-1-4GB.img.20171201"
+    checksum: "sha256:3d6d385247560c90db90b2591578c200eafaa62c232a964ab664420e8b2b33ac"
 
   - name: "image-spgwc"
     url: "http://www.vicci.org/cord/ngic-cp1-cmpress.qcow2.20171121"
