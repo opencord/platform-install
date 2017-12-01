@@ -208,6 +208,6 @@ compute_relations:
 
 xos_images:
   - name: "trusty-server-multi-nic"
-    url: "http://www.vicci.org/opencloud/trusty-server-cloudimg-amd64-disk1.img"
-    checksum: "sha256:c2d0ffc937aeb96016164881052a496658efeb98959dc68e73d9895c5d9920f7"
+    url: "https://github.com/opencord/platform-install/releases/download/vms/trusty-server-cloudimg-amd64-disk1.img.20170201"
+    checksum: "sha256:ebf007ba3ec1043b7cd011fc6668e2a1d1d4c69c41071e8513ab355df7a057cb"
 
