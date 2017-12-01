@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 #}
 
-
 tosca_definitions_version: tosca_simple_yaml_1_0
 
 imports:
@@ -38,8 +37,8 @@ topology_template:
     {{ site_name }}:
       type: tosca.nodes.Site
       properties:
-        must-exist: true
         name: {{ site_name }}
+        must-exist: true
 
     m1.small:
       type: tosca.nodes.Flavor
@@ -53,7 +52,7 @@ topology_template:
         name: trusty-server-multi-nic
         must-exist: true
 
-# private network template, fully created somewhere else
+# private network template, fully created in fixtures.yml
     private:
       type: tosca.nodes.NetworkTemplate
       properties:
@@ -61,18 +60,26 @@ topology_template:
         name: Private
 
 # management networks, fully created in management-net.yaml
-    management_network:
+    management_local:
       type: tosca.nodes.Network
       properties:
+        name: management_local
         must-exist: true
-        name: management
 
-# public network, fully created somewhere else
-    public_network:
+{% if use_vtn_net_management_host %}
+    management_local:
       type: tosca.nodes.Network
       properties:
+        name: management_local
         must-exist: true
+{% endif %}
+
+# public network, fully created in public-net.yml
+    public:
+      type: tosca.nodes.Network
+      properties:
         name: public
+        must-exist: true
 
     exampleservice_network:
       type: tosca.nodes.Network
@@ -81,7 +88,7 @@ topology_template:
           labels: exampleservice_private_network
       requirements:
           - template:
-              node: private
+              node: private_template
               relationship: tosca.relationships.BelongsToOne
           - owner:
               node: {{ site_name }}_exampleservice
@@ -114,8 +121,13 @@ topology_template:
       type: tosca.nodes.NetworkSlice
       requirements:
         - network:
-            node: management_network
+            node: management_local
             relationship: tosca.relationships.BelongsToOne
+{% if use_vtn_net_management_host %}
+        - network:
+            node: management_host
+            relationship: tosca.relationships.BelongsToOne
+{% endif %}
         - slice:
             node: {{ site_name }}_exampleservice
             relationship: tosca.relationships.BelongsToOne
@@ -124,7 +136,7 @@ topology_template:
       type: tosca.nodes.NetworkSlice
       requirements:
         - network:
-            node: public_network
+            node: public
             relationship: tosca.relationships.BelongsToOne
         - slice:
             node: {{ site_name }}_exampleservice
