@@ -20,7 +20,7 @@ site_suffix: "{{ site_name }}.test"
 
 headnode_dns: head1
 
-management_net_cidr: "192.168.200.0/24"
+management_net_cidr: "10.1.0.0/24"
 
 # node lists
 head_lxd_list: []

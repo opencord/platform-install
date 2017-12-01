@@ -87,16 +87,25 @@
     owner: root
     group: root
     mode: 0644
-  register: compute_fabric_config
+  register: fabric_net_config
 
-- name: Bring up fabric interfaces, if reconfigured
-  when: compute_fabric_config.changed
+- name: Bring up fabricbridge and aliases on head node
+  when: "'head' in group_names and fabric_net_config.changed"
+  command: "ifup {{ item }}"
+  with_items:
+    - "fabricbridge"
+    - "fabricbridge:0"
+    - "fabricbridge:1"
+  tags:
+    - skip_ansible_lint # needs to be run before next steps
+
+- name: Bring up common fabric interfaces, if reconfigured
+  when: fabric_net_config.changed
   command: "ifup {{ item }}"
   with_flattened:
-    - fabricbridge
     - fabricbond
     - "{{ fabric_net_interfaces }}"
-    - vethfabric0
+#    - vethfabric0
   tags:
     - skip_ansible_lint # needs to be run before next steps
 
