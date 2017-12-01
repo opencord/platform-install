@@ -22,11 +22,11 @@ iface fabricbond inet manual
 {% for fab_int in fabric_net_interfaces %}
 auto {{ fab_int }}
 iface {{ fab_int }} inet manual
-  pre-up ip link set {{ mgmt_int }} master fabricbond
+  pre-up ip link set {{ fab_int }} master fabricbond
   bond-master fabricbond
   bond-mode active-backup
-  bond-primary {{ management_net_interfaces | join(' ') }}
-  post-down ip link set dev {{ mgmt_int }} nomaster
+  bond-primary {{ fabric_net_interfaces | join(' ') }}
+  post-down ip link set dev {{ fab_int }} nomaster
 
 {% endfor %}
 {% endif %}
@@ -52,6 +52,7 @@ iface vethfabric1 inet static
   broadcast {{ vtn_net_public_cidr | ipaddr('broadcast') }}
   hwaddress ether {{ ( vtn_net_public_hwaddr_prefix ~ ( vtn_veth_ip | ip4_hex )) | hwaddr('unix') }}
 
+{% if node.name == headnode %}
 {% if use_addresspool_vsg %}
 # vSG public gateway
 {% set ap_vsg_veth_ip = ( addresspool_vsg_cidr | ipaddr(node.ipv4_last_octet) | ipaddr('address')) %}
@@ -60,9 +61,7 @@ iface vethfabric1:0 inet static
   address {{ ap_vsg_veth_ip }}
   network {{ addresspool_vsg_cidr | ipaddr('network') }}
   netmask {{ addresspool_vsg_cidr | ipaddr('netmask') }}
-  gateway {{ addresspool_vsg_cidr | ipaddr('1') | ipaddr('address') }}
   broadcast {{ addresspool_vsg_cidr | ipaddr('broadcast') }}
-  hwaddress ether {{ ( addresspool_vsg_hwaddr_prefix ~ ( ap_vsg_eth_ip | ip4_hex )) | hwaddr('unix') }}
 
 {% endif %}
 
@@ -74,10 +73,9 @@ iface vethfabric1:1 inet static
   address {{ ap_pub_veth_ip }}
   network {{ addresspool_public_cidr | ipaddr('network') }}
   netmask {{ addresspool_public_cidr | ipaddr('netmask') }}
-  gateway {{ addresspool_public_cidr | ipaddr('1') | ipaddr('address') }}
   broadcast {{ addresspool_public_cidr | ipaddr('broadcast') }}
-  hwaddress ether {{ ( addresspool_public_hwaddr_prefix ~ ( ap_pub_veth_ip | ip4_hex )) | hwaddr('unix') }}
 
+{% endif %}
 {% endif %}
 {% endfor %}
 
