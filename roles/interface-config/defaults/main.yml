@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,14 +12,41 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-
----
+#
 # interface-config/defaults/main.yml
 
-mgmt_interface: eth1
-
-mgmt_ipv4_first_octets: "192.168.200"
-
+# list of physical nodes in the scenario
 physical_node_list: []
+
+# headnode internet-facing interface to NAT mgmtbridge traffic out of
+headnode_nat_interface: eth0
+
+# network interfaces on  physical nodes
+management_net_interfaces: []
+fabric_net_interfaces: []
+
+# management network configuration
+management_net_cidr: "192.168.200.0/24"
+dns_servers:
+  - "{{ management_net_cidr | ipaddr('1') | ipaddr('address') }}"
+
+# VTN MANAGEMENT_HOST network
+use_vtn_net_management_host: False
+vtn_net_management_host_cidr: "{{ management_net_cidr }}"
+vtn_net_management_host_hwaddr_prefix: "06A6"
+
+# VTN PUBLIC network, used with fabric
+use_vtn_net_fabric: False
+vtn_data_plane_interface: "vethfabric1"
+vtn_net_public_cidr: "10.6.1.0/24"
+vtn_net_public_hwaddr_prefix: "0242"
+
+# VSG and public address pools
+use_addresspool_vsg: False
+addresspool_vsg_cidr: "10.7.1.0/24"
+addresspool_vsg_hwaddr_prefix: "0ACA"
+
+use_addresspool_public: False
+addresspool_public_cidr: "10.8.1.0/24"
+addresspool_public_hwaddr_prefix: "0EFE"
 

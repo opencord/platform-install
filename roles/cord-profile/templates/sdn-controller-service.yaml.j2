@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 #}
 
-
 tosca_definitions_version: tosca_simple_yaml_1_0
 
 description: created by platform-install, need to add M-CORD services later
@@ -54,19 +53,11 @@ topology_template:
         must-exist: true
 
 # management networks, fully created in management-net.yaml
-    management:
+    management_local:
       type: tosca.nodes.Network
       properties:
         must-exist: true
-        name: management
-
-{% if use_management_hosts %}
-    management_hosts:
-      type: tosca.nodes.Network
-      properties:
-        must-exist: true
-        name: management_hosts
-{% endif %}
+        name: management_local
 
 # sbi_network is for connectivity between VMs, fully created in sbi-net.yaml
     sbi_network:
@@ -146,7 +137,7 @@ topology_template:
       type: tosca.nodes.NetworkSlice
       requirements:
         - network:
-            node: management
+            node: management_local
             relationship: tosca.relationships.BelongsToOne
         - slice:
             node: {{ site_name }}_sdncontroller
