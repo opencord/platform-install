@@ -41,7 +41,7 @@
    - mgmtbridge
    - mgmtbond
    - "{{ management_net_interfaces }}"
-   - vethmgmt0
+#   - vethmgmt0
   tags:
     - skip_ansible_lint # needs to be run before next steps
 
@@ -96,7 +96,7 @@
     - fabricbridge
     - fabricbond
     - "{{ fabric_net_interfaces }}"
-    - vethfabric0
+#    - vethfabric0
   tags:
     - skip_ansible_lint # needs to be run before next steps
 
