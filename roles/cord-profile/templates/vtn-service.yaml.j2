@@ -1,3 +1,4 @@
+---
 {#
 Copyright 2017-present Open Networking Foundation
 
@@ -40,7 +41,7 @@ topology_template:
       properties:
           view_url: /admin/vtn/vtnservice/$id$/
           privateGatewayMac: 00:00:00:00:00:01
-          localManagementIp: {{ management_network_ip }}
+          localManagementIp: {{ vtn_net_management_ip }}
           ovsdbPort: 6641
           sshUser: root
           sshKeyFile: /root/node_key

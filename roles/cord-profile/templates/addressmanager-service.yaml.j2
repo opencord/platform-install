@@ -1,4 +1,3 @@
-
 {#
 Copyright 2017-present Open Networking Foundation
 
@@ -15,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 #}
 
-
 tosca_definitions_version: tosca_simple_yaml_1_0
 
 description: TOSCA for bootstrapping Address Manager service
@@ -30,16 +28,16 @@ topology_template:
     addresses_vsg:
       type: tosca.nodes.AddressPool
       properties:
-        addresses: 10.7.1.0/24
-        gateway_ip: 10.7.1.1
-        gateway_mac: a4:23:05:06:01:01
+        addresses: {{ addresspool_vsg_cidr }}
+        gateway_ip: {{ addresspool_vsg_cidr | ipaddr('1') | ipaddr('address') }}
+        gateway_mac:  {{ ( addresspool_public_hwaddr_prefix ~ ( addresspool_vsg_cidr | ipaddr('1') | ipaddr('address') | ip4_hex )) | hwaddr('unix') }}
 
     addresses_public:
       type: tosca.nodes.AddressPool
       properties:
-        addresses: 10.8.1.0/24
-        gateway_ip: 10.8.1.1
-        gateway_mac: a4:23:05:06:01:01
+        addresses: {{ addresspool_public_cidr }}
+        gateway_ip: {{ addresspool_public_cidr | ipaddr('1') | ipaddr('address') }}
+        gateway_mac:  {{ ( addresspool_vsg_hwaddr_prefix ~ ( addresspool_public_cidr | ipaddr('1') | ipaddr('address') | ip4_hex )) | hwaddr('unix') }}
 
     service#addressmanager:
       type: tosca.nodes.AddressManagerService
