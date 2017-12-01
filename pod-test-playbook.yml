@@ -20,7 +20,7 @@
   hosts: head
   become: yes
   roles:
-    - maas-test-client-install
+    - test-client-install
 
 - name: Create test subscriber
   hosts: head
