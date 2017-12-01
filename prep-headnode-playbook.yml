@@ -39,7 +39,7 @@
   roles:
     - { role: interface-config, when: not use_maas }
 
-- name: Networking and DNS server on head node
+- name: DNS server on head node
   hosts: head
   become: yes
   roles:
@@ -71,3 +71,4 @@
   become: yes
   roles:
     - sysctl
+

@@ -40,7 +40,8 @@
   tags:
    - skip_ansible_lint # needs to run before the DNS check which happens next, so can't be a handler
 
-- name: Check that VM's can be found in DNS
+- name: Check that Openstack LXD containers can be found in DNS
+  when: use_openstack
   shell: "dig +short {{ item.name }}.{{ site_suffix }} | grep {{ item.ipv4_last_octet }}"
   with_items: "{{ head_lxd_list }}"
   tags:

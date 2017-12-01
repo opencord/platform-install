@@ -14,6 +14,7 @@ iface mgmtbridge inet static
   hwaddress ether {{ ( vtn_net_management_host_hwaddr_prefix ~ ( mgmtbr_ip | ip4_hex )) | hwaddr('unix') }}
   dns-search {{ site_suffix }}
   dns-nameservers {{ dns_servers | join(" ") }}
+  post-down ip link del mgmtbridge
 
 # management bond of physical interfaces
 auto mgmtbond

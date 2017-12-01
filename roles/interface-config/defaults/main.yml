@@ -18,15 +18,17 @@
 # list of physical nodes in the scenario
 physical_node_list: []
 
-# headnode internet-facing interface to NAT mgmtbridge traffic out of
+# headnode internet-facing interface to NAT traffic out of
 headnode_nat_interface: eth0
 
-# network interfaces on  physical nodes
+# physical network interfaces on physical nodes, added to bond interfaces
 management_net_interfaces: []
 fabric_net_interfaces: []
 
 # management network configuration
-management_net_cidr: "192.168.200.0/24"
+management_net_cidr: "10.1.0.0/24"
+management_net_bridge: "mgmtbr"
+
 dns_servers:
   - "{{ management_net_cidr | ipaddr('1') | ipaddr('address') }}"
 
@@ -37,7 +39,6 @@ vtn_net_management_host_hwaddr_prefix: "06A6"
 
 # VTN PUBLIC network, used with fabric
 use_vtn_net_fabric: False
-vtn_data_plane_interface: "vethfabric1"
 vtn_net_public_cidr: "10.6.1.0/24"
 vtn_net_public_hwaddr_prefix: "0242"
 

@@ -1,4 +1,3 @@
-
 {#
 Copyright 2017-present Open Networking Foundation
 
@@ -14,7 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 #}
-
 
 tosca_definitions_version: tosca_simple_yaml_1_0
 
@@ -46,7 +44,7 @@ topology_template:
 
 # VTN networking for OpenStack Compute Nodes
 {% for node in groups['compute'] %}
-{% for ext_if in compute_external_interfaces %}
+{% for ext_if in computenode_fabric_interfaces %}
 {% set ansible_ext_if = 'ansible_' ~ ext_if | regex_replace('\W', '_') %}
 {% if hostvars[node][ansible_ext_if] is defined and 'ipv4' in hostvars[node][ansible_ext_if] %}
 {% set node_interface = hostvars[node][ansible_ext_if] %}
@@ -58,12 +56,12 @@ topology_template:
         must-exist: true
         name: {{ hostvars[node]['ansible_hostname'] }}
         bridgeId: of:0000{{ node_interface['macaddress'] | hwaddr('bare') }}
-        dataPlaneIntf: fabric
+        dataPlaneIntf: {{ vtn_integration_bridge_interface }}
         dataPlaneIp: {{ ( node_interface['ipv4']['address'] ~ '/' ~ node_interface['ipv4']['netmask'] ) | ipaddr('cidr') }}
-{% if use_management_hosts %}
-        hostManagementIface: {{ vtn_management_host_net_interface }}
+{% if use_vtn_net_management_host %}
+        hostManagementIface: {{ vtn_net_management_host_interface }}
 {% endif %}
-    
+
 {% endif %}
 {% endfor %}
 {% endfor %}
