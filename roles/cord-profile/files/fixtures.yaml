@@ -130,7 +130,7 @@ topology_template:
 # Network Templates
 # -----------------------------------------------------------------------------
 
-    Private:
+    private_template:
       type: tosca.nodes.NetworkTemplate
       properties:
         name: Private
