@@ -1,4 +1,4 @@
-
+---
 {#
 Copyright 2017-present Open Networking Foundation
 
@@ -15,7 +15,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 #}
 
-
 tosca_definitions_version: tosca_simple_yaml_1_0
 
 imports:
@@ -30,50 +29,13 @@ topology_template:
     {{ site_name }}:
       type: tosca.nodes.Site
 
-# management network
-    management_template:
+# management (vtn: MANAGEMENT_LOCAL) network
+    management_local_template:
       type: tosca.nodes.NetworkTemplate
       properties:
         visibility: private
         translation: none
         vtn_kind: MANAGEMENT_LOCAL
-
-    management:
-      type: tosca.nodes.network.Network
-      properties:
-        ip_version: 4
-        cidr: {{ management_network_cidr }}
-      requirements:
-        - network_template:
-            node: management_template
-            relationship: tosca.relationships.UsesNetworkTemplate
-        - owner:
-            node: {{ site_name }}_management
-            relationship: tosca.relationships.MemberOfSlice
-
-{% if use_management_hosts %}
-    management_hosts_template:
-      type: tosca.nodes.NetworkTemplate
-      properties:
-        visibility: private
-        translation: none
-        vtn_kind: MANAGEMENT_HOST
-
-    management_hosts:
-      type: tosca.nodes.network.Network
-      properties:
-        ip_version: 4
-        cidr: {{ management_hosts_net_cidr }}
-        start_ip: {{ management_hosts_net_range_xos_low }}
-        end_ip: {{ management_hosts_net_range_xos_high }}
-      requirements:
-        - network_template:
-            node: management_hosts_template
-            relationship: tosca.relationships.UsesNetworkTemplate
-        - owner:
-            node: {{ site_name }}_management
-            relationship: tosca.relationships.MemberOfSlice
-{% endif %}
 
     {{ site_name }}_management:
       description: This slice exists solely to own the management network
@@ -84,4 +46,43 @@ topology_template:
         - site:
             node: {{ site_name }}
             relationship: tosca.relationships.MemberOfSite
+
+    management:
+      type: tosca.nodes.network.Network
+      properties:
+        ip_version: 4
+        cidr: {{ vtn_net_management_local_cidr }}
+      requirements:
+        - network_template:
+            node: management_local_template
+            relationship: tosca.relationships.UsesNetworkTemplate
+        - owner:
+            node: {{ site_name }}_management
+            relationship: tosca.relationships.MemberOfSlice
+
+{% if use_vtn_net_management_host %}
+# management_host (vtn: MANAGEMENT_HOST) network
+    management_host_template:
+      type: tosca.nodes.NetworkTemplate
+      properties:
+        visibility: private
+        translation: none
+        vtn_kind: MANAGEMENT_HOST
+
+    management_host:
+      type: tosca.nodes.network.Network
+      properties:
+        ip_version: 4
+        cidr: {{ vtn_net_management_host_cidr }}
+        start_ip: {{ vtn_net_management_host_range_xos_low }}
+        end_ip: {{ vtn_net_management_host_range_xos_high }}
+      requirements:
+        - network_template:
+            node: management_host_template
+            relationship: tosca.relationships.UsesNetworkTemplate
+        - owner:
+            node: {{ site_name }}_management
+            relationship: tosca.relationships.MemberOfSlice
+{% endif %}
+
 
