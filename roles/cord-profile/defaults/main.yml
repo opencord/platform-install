@@ -98,7 +98,6 @@ keystone_admin_password: "{{ lookup('password', credentials_dir ~ '/cord_keyston
 # used in deployment.yaml.j2
 xos_admin_user: "xosadmin@opencord.org"
 xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
-head_xos_admin_pass: "{{ lookup('file', head_credentials_dir ~ '/' ~ xos_admin_user) }}"
 xos_admin_first: XOS
 xos_admin_last: Admin
 
@@ -114,13 +113,38 @@ deployment_flavors:
   - m1.large
   - m1.xlarge
 
-# used in management-net.yaml.j2
-management_network_cidr: 172.27.0.0/24
+## NETWORK CONFIG ##
+# used in *-services.yaml.j2
+vtn_net_public_cidr: "10.6.1.0/24"
+vtn_net_public_hwaddr_prefix: "0242"
 
-use_management_hosts: False
-management_hosts_net_cidr: 10.1.0.1/24
-management_hosts_net_range_xos_low: "10.1.0.128"
-management_hosts_net_range_xos_high: "10.1.0.254"
+# used in management-net.yaml.j2
+management_net_cidr: "10.1.0.0/24"
+
+vtn_net_management_local_cidr: "172.27.0.0/24"
+
+use_vtn_net_management_host: False
+vtn_net_management_host_cidr: "{{ management_net_cidr }}"
+vtn_net_management_host_range_xos_low: "{{ management_net_cidr | ipaddr('129') | ipaddr('address') }}"
+vtn_net_management_host_range_xos_high: "{{ management_net_cidr | ipaddr('254') | ipaddr('address') }}"
+
+# VSG and public address pools
+use_addresspool_vsg: False
+addresspool_vsg_cidr: "10.7.1.0/24"
+addresspool_vsg_hwaddr_prefix: "0ACA"
+
+use_addresspool_public: False
+addresspool_public_cidr: "10.8.1.0/24"
+addresspool_public_hwaddr_prefix: "0EFE"
+
+## LEGACY - remove when profiles have been updated to use new vars (see above)
+# used in management-net.yaml.j2
+management_network_cidr: "{{ vtn_net_management_local_cidr }}"
+
+use_management_hosts: "{{ use_vtn_net_management_host }}"
+management_hosts_net_cidr: "{{ vtn_net_management_host_cidr }}"
+management_hosts_net_range_xos_low: "{{ vtn_net_management_host_range_xos_low }}"
+management_hosts_net_range_xos_high: "{{ vtn_net_management_host_range_xos_high }}"
 
 # used in fabric.yaml.j2
 use_fabric: False
