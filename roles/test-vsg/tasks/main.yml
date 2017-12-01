@@ -48,8 +48,8 @@
   shell: ssh -o ProxyCommand="ssh -W %h:%p -l ubuntu {{ node_name.stdout }}" ubuntu@{{ mgmt_ip.stdout }} "sudo docker ps|grep 'vsg\|vcpe'" > /dev/null
   register: result
   until: result | success
-  retries: 20
-  delay: 60
+  retries: 40
+  delay: 30
   tags:
     - skip_ansible_lint # running a sub job
 
