@@ -26,7 +26,7 @@ management_net_interfaces: []
 fabric_net_interfaces: []
 
 # management network configuration
-management_net_cidr: "192.168.200.0/24"
+management_net_cidr: "10.1.0.0/24"
 dns_servers:
   - "{{ management_net_cidr | ipaddr('1') | ipaddr('address') }}"
 
