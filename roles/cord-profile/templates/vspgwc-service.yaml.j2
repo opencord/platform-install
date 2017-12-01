@@ -60,14 +60,6 @@ topology_template:
         must-exist: true
         name: management
 
-{% if use_management_hosts %}
-    management_hosts:
-      type: tosca.nodes.Network
-      properties:
-        must-exist: true
-        name: management_hosts
-{% endif %}
-
 # s11_network is for connectivity between VMs, fully created in s11-net.yaml
     s11_network:
       type: tosca.nodes.Network
