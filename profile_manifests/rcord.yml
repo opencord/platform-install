@@ -267,17 +267,17 @@ compute_relations:
 
 xos_images:
   - name: "trusty-server-multi-nic"
-    url: "http://www.vicci.org/opencloud/trusty-server-cloudimg-amd64-disk1.img.20170201"
+    url: "https://github.com/opencord/platform-install/releases/download/vms/trusty-server-cloudimg-amd64-disk1.img.20170201"
     checksum: "sha256:ebf007ba3ec1043b7cd011fc6668e2a1d1d4c69c41071e8513ab355df7a057cb"
 
   - name: "vsg-1.1"
-    url: "http://www.vicci.org/cord/vsg-1.1.img"
+    url: "https://github.com/opencord/vsg/releases/download/vms/vsg-1.1.img"
     checksum: "sha256:16b0beb6778aed0f5feecb05f8d5750e6c262f98e6011e99ddadf7d46a177b6f"
 
   - name: "ceilometer-trusty-server-multi-nic"
-    url: "http://www.vicci.org/cord/ceilometer-trusty-server-multi-nic.compressed.qcow2"
+    url: "https://github.com/opencord/platform-install/releases/download/vms/ceilometer-trusty-server-multi-nic.compressed.qcow2"
     checksum: "sha256:b77ef8d692b640568dea13df99fe1dfcb1f4bb4ac05408db9ff77399b34f754f"
 
   - name: "ceilometer-service-trusty-server-multi-nic"
-    url: "http://www.vicci.org/cord/ceilometer-service-trusty-server-multi-nic.compressed.qcow2.20170131"
+    url: "https://github.com/opencord/platform-install/releases/download/vms/ceilometer-service-trusty-server-multi-nic.compressed.qcow2.20170131"
     checksum: "sha256:f0341e283f0f2cb8f70cd1a6347e0081c9c8492ef34eb6397c657ef824800d4f"
