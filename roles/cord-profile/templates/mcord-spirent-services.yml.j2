@@ -1,4 +1,3 @@
-
 {#
 Copyright 2017-present Open Networking Foundation
 
@@ -14,7 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 #}
-
 
 tosca_definitions_version: tosca_simple_yaml_1_0
 
@@ -85,19 +83,11 @@ topology_template:
         name: image-spgwu
 
 # management networks, fully created in management-net.yaml
-    management:
+    management_local:
       type: tosca.nodes.Network
       properties:
         must-exist: true
-        name: management
-
-{% if use_management_hosts %}
-    management_hosts:
-      type: tosca.nodes.Network
-      properties:
-        must-exist: true
-        name: management_hosts
-{% endif %}
+        name: management_local
 
 # s1u_network is for connectivity between VMs, fully created in s1u-net.yaml
     s1u_network:
@@ -201,7 +191,7 @@ topology_template:
       type: tosca.nodes.NetworkSlice
       requirements:
         - network:
-            node: management
+            node: management_local
             relationship: tosca.relationships.BelongsToOne
         - slice:
             node: {{ site_name }}_venb
@@ -306,7 +296,7 @@ topology_template:
       type: tosca.nodes.NetworkSlice
       requirements:
         - network:
-            node: management
+            node: management_local
             relationship: tosca.relationships.BelongsToOne
         - slice:
             node: {{ site_name }}_vspgwc
@@ -391,7 +381,7 @@ topology_template:
       type: tosca.nodes.NetworkSlice
       requirements:
         - network:
-            node: management
+            node: management_local
             relationship: tosca.relationships.BelongsToOne
         - slice:
             node: {{ site_name }}_vspgwu

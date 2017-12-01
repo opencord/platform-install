@@ -1,4 +1,4 @@
-
+---
 {#
 Copyright 2017-present Open Networking Foundation
 
@@ -14,7 +14,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 #}
-
 
 tosca_definitions_version: tosca_simple_yaml_1_0
 
@@ -56,16 +55,17 @@ topology_template:
         name: vsg-1.1
 
 # management networks, fully created in management-net.yaml
-    management:
+    management_local:
       type: tosca.nodes.Network
       properties:
-        name: management
+        name: management_local
         must-exist: true
 
-{% if use_management_hosts %}
-    management_hosts:
+{% if use_vtn_net_management_host %}
+    management_host:
       type: tosca.nodes.Network
       properties:
+        name: management_host
         must-exist: true
 {% endif %}
 
@@ -131,9 +131,10 @@ topology_template:
       type: tosca.nodes.AddressPool
       properties:
         name: addresses_vsg
-        addresses: 10.7.1.0/24
-        gateway_ip: 10.7.1.1
+        addresses: {{ addresspool_vsg_cidr }}
+        gateway_ip: {{ addresspool_vsg_cidr | ipaddr('1') | ipaddr('address') }}
         gateway_mac: a4:23:05:06:01:01
+        # gateway_mac:  {{ ( addresspool_vsg_hwaddr_prefix ~ ( addresspool_vsg_cidr | ipaddr('1') | ipaddr('address') | ip4_hex )) | hwaddr('unix') }}
       requirements:
         - service:
             node: service#addressmanager
@@ -143,9 +144,10 @@ topology_template:
       type: tosca.nodes.AddressPool
       properties:
         name: addresses_public
-        addresses: 10.8.1.0/24
-        gateway_ip: 10.8.1.1
+        addresses: {{ addresspool_public_cidr }}
+        gateway_ip: {{ addresspool_public_cidr | ipaddr('1') | ipaddr('address') }}
         gateway_mac: a4:23:05:06:01:01
+        # gateway_mac:  {{ ( addresspool_public_hwaddr_prefix ~ ( addresspool_public_cidr | ipaddr('1') | ipaddr('address') | ip4_hex )) | hwaddr('unix') }}
       requirements:
         - service:
             node: service#addressmanager
@@ -233,10 +235,10 @@ topology_template:
               node: service#vrouter
               relationship: tosca.relationships.BelongsToOne
 
-    template#vsg:
+    vsg_template:
       type: tosca.nodes.NetworkTemplate
       properties:
-        name: vsg
+        name: vsg_template
         visibility: private
         translation: none
         vtn_kind: VSG
@@ -249,7 +251,7 @@ topology_template:
         # ip_version: 4
       requirements:
         - template:
-            node: template#vsg
+            node: vsg_template
             relationship: tosca.relationships.BelongsToOne
         - owner:
             node: {{ site_name }}_vsg
@@ -272,7 +274,7 @@ topology_template:
       properties:
         network: noauto
         name: {{ site_name }}_vsg
-      requirements: 
+      requirements:
         - service:
             node: service#vsg
             relationship: tosca.relationships.BelongsToOne
@@ -283,28 +285,28 @@ topology_template:
             node: image#vsg-1.1
             relationship: tosca.relationships.BelongsToOne
 
-    networkslice#management_to_{{ site_name }}_vsg:
+    networkslice#management_local_to_{{ site_name }}_vsg:
         type: tosca.nodes.NetworkSlice
         requirements:
           - network:
-              node: management
+              node: management_local
               relationship: tosca.relationships.BelongsToOne
           - slice:
               node: {{ site_name }}_vsg
               relationship: tosca.relationships.BelongsToOne
 
-{% if use_management_hosts %}
-    networkslice#management_hosts_to_{{ site_name }}_vsg:
+{% if use_vtn_net_management_host %}
+    networkslice#management_host_to_{{ site_name }}_vsg:
         type: tosca.nodes.NetworkSlice
         requirements:
           - network:
-              node: management_hosts
+              node: management_host
               relationship: tosca.relationships.BelongsToOne
           - slice:
             node: {{ site_name }}_vsg
             relationship: tosca.relationships.BelongsToOne
 {% endif %}
-    
+
     # TODO: migrate interfaces when we'll start using them
     # in#lanside:
     #   type: tosca.nodes.InterfaceType
@@ -365,3 +367,4 @@ topology_template:
     #     - interface:
     #         node: in#wanside
     #         relationship: tosca.relationships.IsType
+

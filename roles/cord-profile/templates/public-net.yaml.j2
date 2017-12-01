@@ -1,4 +1,4 @@
-
+---
 {#
 Copyright 2017-present Open Networking Foundation
 
@@ -14,7 +14,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 #}
-
 
 tosca_definitions_version: tosca_simple_yaml_1_0
 
@@ -41,7 +40,40 @@ topology_template:
         name: {{ site_name }}
         must-exist: true
 
+    {{ site_name }}_public:
+      description: This slice exists solely to own the public network
+      type: tosca.nodes.Slice
+      properties:
+        network: noauto
+        name: {{ site_name }}_public
+      requirements:
+        - site:
+            node: {{ site_name }}
+            relationship: tosca.relationships.BelongsToOne
 
+# public network
+    public_template:
+      type: tosca.nodes.NetworkTemplate
+      properties:
+        name: public_template
+        visibility: public
+        translation: none
+        vtn_kind: PUBLIC
+
+    public:
+      type: tosca.nodes.Network
+      properties:
+        name: public
+        permit_all_slices: true
+        # ip_version: 4
+        subnet: {{ addresspool_public_cidr }}
+      requirements:
+        - template:
+            node: public_template
+            relationship: tosca.relationships.BelongsToOne
+        - owner:
+            node: {{ site_name }}_public
+            relationship: tosca.relationships.BelongsToOne
 
 # Address Manager service, fully created in cord-service.yaml
     service#addressmanager:
@@ -50,32 +82,6 @@ topology_template:
         name: addressmanager
         must-exist: true
 
-# public network
-
-    public_template:
-      type: tosca.nodes.NetworkTemplate
-      properties:
-          name: public_template
-          visibility: public
-          translation: none
-          vtn_kind: PUBLIC
-
-    public:
-      type: tosca.nodes.Network
-      properties:
-          name: public
-          permit_all_slices: true
-          subnet: 10.8.1.0/24 # NOTE same as AddressPool#addresses_public
-          # ip_version: 4
-      requirements:
-          - template:
-              node: public_template
-              relationship: tosca.relationships.BelongsToOne
-          - owner:
-              node: {{ site_name }}_public
-              relationship: tosca.relationships.BelongsToOne
-
-    # Created in cord-services.yaml.j2
     addresses_public:
       type: tosca.nodes.AddressPool
       properties:
@@ -85,33 +91,22 @@ topology_template:
     AddressManagerServiceInstancePublicNetwork:
       type: tosca.nodes.AddressManagerServiceInstance
       requirements:
-          - owner:
-              node: service#addressmanager
-              relationship: tosca.relationships.BelongsToOne
-          - address_pool:
-              node: addresses_public
-              relationship: tosca.relationships.BelongsToOne
+        - owner:
+            node: service#addressmanager
+            relationship: tosca.relationships.BelongsToOne
+        - address_pool:
+            node: addresses_public
+            relationship: tosca.relationships.BelongsToOne
       properties:
-          name: AM_public_net
+        name: AM_public_net
 
     public_to_address_manager:
-        type: tosca.nodes.ServiceInstanceLink
-        requirements:
-          - provider_service_instance:
-              node: AddressManagerServiceInstancePublicNetwork
-              relationship: tosca.relationships.BelongsToOne
-          - subscriber_network:
-              node: public
-              relationship: tosca.relationships.BelongsToOne
-
-    {{ site_name }}_public:
-      description: This slice exists solely to own the public network
-      type: tosca.nodes.Slice
-      properties:
-          network: noauto
-          name: {{ site_name }}_public
+      type: tosca.nodes.ServiceInstanceLink
       requirements:
-          - site:
-              node: {{ site_name }}
-              relationship: tosca.relationships.BelongsToOne
+        - provider_service_instance:
+            node: AddressManagerServiceInstancePublicNetwork
+            relationship: tosca.relationships.BelongsToOne
+        - subscriber_network:
+            node: public
+            relationship: tosca.relationships.BelongsToOne
 

@@ -85,21 +85,6 @@ topology_template:
       properties:
         name: image-spgwu
 
-# management networks, fully created in management-net.yaml
-    management:
-      type: tosca.nodes.Network
-      properties:
-        must-exist: true
-        name: management
-
-{% if use_management_hosts %}
-    management_hosts:
-      type: tosca.nodes.Network
-      properties:
-        must-exist: true
-        name: management_hosts
-{% endif %}
-
 # flat_network_s1mme is for connectivity between VMs, fully created in flat-net-s1mme.yaml
     flat_network_s1mme:
       type: tosca.nodes.Network
