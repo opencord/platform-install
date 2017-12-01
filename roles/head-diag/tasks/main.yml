@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,14 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # head-diag/tasks/main.yml
 
 - name: Create diag_dir subdirs
   file:
-    dest="~/{{ diag_dir }}/{{ item }}"
-    state=directory
+    dest: "~/{{ diag_dir }}/{{ item }}"
+    state: directory
   with_items:
   - head
   - juju
@@ -35,16 +33,20 @@
   args:
     creates: "~/{{ diag_dir }}/head/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
-   - "ifconfig -a"
-   - "route -n"
    - "arp -n"
-   - "date"
    - "brctl show"
-   - "cat /etc/resolv.conf"
    - "cat /etc/lsb-release"
-   - "sudo virsh list"
-   - "sudo lxc list"
+   - "cat /etc/resolv.conf"
+   - "date -u"
+   - "df -k"
+   - "free"
+   - "ifconfig -a"
+   - "ps aux"
+   - "route -n"
    - "sudo docker ps -a"
+   - "sudo docker stats --no-stream --format 'table {{.Name}}\t{{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}'"
+   - "sudo lxc list"
+   - "sudo virsh list"
 
 - name: Juju diag collection
   shell: "{{ item }} > ~/{{ diag_dir }}/juju/{{ item | regex_replace('[^\\w-]', '_')}}"
