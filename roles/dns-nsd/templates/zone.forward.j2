@@ -1,4 +1,3 @@
-
 {#
 Copyright 2017-present Open Networking Foundation
 
@@ -15,10 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 #}
 
-
 ;## NSD authoritative only DNS
 ;## FORWARD Zone
-;# created by ansible
+;# created by dns-nsd/templates/zone.forward.j2
 
 $ORIGIN {{ item.name }}. ; default zone domain
 $TTL {{ item.ttl | default(dns_ttl) }} ; default time to live
@@ -37,9 +35,6 @@ $TTL {{ item.ttl | default(dns_ttl) }} ; default time to live
 {% endfor %}
 
 ;A and CNAME records
-{% if name_on_public_interface is defined %}
-{{ name_on_public_interface }}    IN    A    {{ ansible_default_ipv4.address }}
-{% endif %}
 {% if item.aliases is defined %}
 {% for alias in item.aliases %}
 {{ alias.name }}    IN    CNAME    {{ alias.dest }}
@@ -50,7 +45,7 @@ $TTL {{ item.ttl | default(dns_ttl) }} ; default time to live
 ; Created from nodelist: {{ nodelist }}
 {% set nodes = vars[nodelist] %}
 {% for node in nodes %}
-{{ node.name }}    IN    A    {{ item.ipv4_first_octets ~ "." ~ node.ipv4_last_octet }}
+{{ node.name }}    IN    A    {{ item.cidr | ipaddr(node.ipv4_last_octet) | ipaddr('address') }}
 {% if node.aliases is defined %}
 {% for alias in node.aliases %}
 {{ alias }}    IN    CNAME    {{ node.name }}
