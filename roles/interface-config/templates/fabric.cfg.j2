@@ -22,11 +22,11 @@ iface fabricbond inet manual
 {% for fab_int in fabric_net_interfaces %}
 auto {{ fab_int }}
 iface {{ fab_int }} inet manual
-  pre-up ip link set {{ mgmt_int }} master fabricbond
+  pre-up ip link set {{ fab_int }} master fabricbond
   bond-master fabricbond
   bond-mode active-backup
-  bond-primary {{ management_net_interfaces | join(' ') }}
-  post-down ip link set dev {{ mgmt_int }} nomaster
+  bond-primary {{ fabric_net_interfaces | join(' ') }}
+  post-down ip link set dev {{ fab_int }} nomaster
 
 {% endfor %}
 {% endif %}
