@@ -47,6 +47,7 @@
    - "sudo ovs-appctl fdb/show br-int"
    - "sudo ovs-appctl vlog/list"
    - "sudo ovs-dpctl dump-flows"
+   - "sudo ovs-dpctl show"
    - "sudo ovs-ofctl dump-flows br-int"
    - "sudo ovs-ofctl dump-ports br-int"
    - "sudo ovs-ofctl dump-ports-desc br-int"
