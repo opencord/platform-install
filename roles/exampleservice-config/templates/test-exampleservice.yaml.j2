@@ -44,21 +44,18 @@ topology_template:
     m1.small:
       type: tosca.nodes.Flavor
       properties:
-        name: m1.small
         must-exist: true
 
     trusty-server-multi-nic:
       type: tosca.nodes.Image
       properties:
-        name: trusty-server-multi-nic
         must-exist: true
 
-# private network template, fully created somewhere else
-    private:
+# private network template, fully created in fixtures.yml
+    private_template:
       type: tosca.nodes.NetworkTemplate
       properties:
         must-exist: true
-        name: Private
 
 # management networks, fully created in management-net.yaml
     management_network:
@@ -67,12 +64,11 @@ topology_template:
         must-exist: true
         name: management
 
-# public network, fully created somewhere else
+# public network, fully created in public-net.yml
     public_network:
       type: tosca.nodes.Network
       properties:
         must-exist: true
-        name: public
 
     exampleservice_network:
       type: tosca.nodes.Network
@@ -81,7 +77,7 @@ topology_template:
           labels: exampleservice_private_network
       requirements:
           - template:
-              node: private
+              node: private_template
               relationship: tosca.relationships.BelongsToOne
           - owner:
               node: {{ site_name }}_exampleservice
