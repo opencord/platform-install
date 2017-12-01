@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # create-lxd/defaults/main.yml
 
 ssh_pki_dir: "{{ playbook_dir }}/ssh_pki"
@@ -23,7 +21,10 @@ pod_sshkey_name: "headnode"
 head_lxd_list: []
 
 # For programatic generation of MAC addresses for LXD containers
-hwaddr_prefix: "c2a4"
-mgmt_ipv4_first_octets: "192.168.200"
+management_net_cidr: "10.1.0.0/24"
+management_net_bridge: "mgmtbr"
+
+vtn_net_management_host_hwaddr_prefix: "06A6"
+vtn_net_management_host_cidr: "{{ management_net_cidr }}"
 
 use_maas: False

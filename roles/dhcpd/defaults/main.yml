@@ -18,7 +18,7 @@
 site_name: placeholder-sitename
 site_suffix: "{{ site_name }}.test"
 
-management_net_cidr: "192.168.200.0/24"
+management_net_cidr: "10.1.0.0/24"
 
 vtn_net_management_host_cidr: "{{ management_net_cidr }}"
 
