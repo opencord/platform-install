@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # pod-test-playbook.yml
 # Tests CiaB cord-pod XOS configuration
 
@@ -22,7 +20,7 @@
   hosts: head
   become: yes
   roles:
-    - maas-test-client-install
+    - test-client-install
 
 - name: Create test subscriber
   hosts: head
