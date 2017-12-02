@@ -262,7 +262,7 @@ compute_relations:
 
 xos_images:
   - name: "image-venb"
-    url: "http://www.vicci.org/cord/ng40-vmcord-1-4GB.img.20171201"
+    url: "https://github.com/opencord/venb/releases/download/vms/ng40-vmcord-1-4GB.img.20171201"
     checksum: "sha256:3d6d385247560c90db90b2591578c200eafaa62c232a964ab664420e8b2b33ac"
 
   - name: "image-spgwc"
