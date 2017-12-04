@@ -76,7 +76,7 @@ xos_services:
     path: orchestration/xos_services/vEE
 
 # service graph gui constraints
-xos_gui_service_graph_constranints: '["vee", "veg", "vrouter"]'
+xos_gui_service_graph_constraints: '["vee", "veg", "vrouter"]'
 
 # VTN network configuration
 management_network_ip: 172.27.0.1/24
