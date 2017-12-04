@@ -62,7 +62,7 @@ pod_sshkey_name: "headnode"
 
 xos_services: []
 
-xos_gui_service_graph_constranints: []
+xos_gui_service_graph_constraints: []
 
 xos_tosca_config_templates: []
 

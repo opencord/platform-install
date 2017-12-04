@@ -87,7 +87,7 @@ xos_services:
 #    synchronizer: false
 
 # service graph gui constraints
-xos_gui_service_graph_constranints: '[[null, "rcord"], [null, "volt"], ["addressmanager", "vsg"], [null, "vrouter"]]'
+xos_gui_service_graph_constraints: '[[null, "rcord"], [null, "volt"], ["addressmanager", "vsg"], [null, "vrouter"]]'
 
 profile_library: "rcord"
 

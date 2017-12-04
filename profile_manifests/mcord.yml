@@ -102,7 +102,7 @@ xos_services:
     keypair: mcord_rsa
 
 # service graph gui constraints
-xos_gui_service_graph_constranints: '[]'
+xos_gui_service_graph_constraints: '[]'
 
 profile_library: "mcord"
 
