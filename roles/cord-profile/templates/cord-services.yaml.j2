@@ -21,170 +21,249 @@ tosca_definitions_version: tosca_simple_yaml_1_0
 description: Just enough Tosca to get the vSG slice running on the CORD POD, created by platform-install
 
 imports:
-   - custom_types/xos.yaml
-   - custom_types/vtr.yaml
-   - custom_types/addressmanager.yaml
+  - custom_types/addressmanagerservice.yaml
+  - custom_types/addresspool.yaml
+  - custom_types/image.yaml
+  - custom_types/network.yaml
+  - custom_types/networkslice.yaml
+  - custom_types/networktemplate.yaml
+  - custom_types/nodelabel.yaml
+  - custom_types/onosapp.yaml
+  - custom_types/onosservice.yaml
+  - custom_types/site.yaml
+  - custom_types/service.yaml
+  - custom_types/servicedependency.yaml
+  - custom_types/serviceinstanceattribute.yaml
+  - custom_types/serviceinstancelink.yaml
+  - custom_types/slice.yaml
+  - custom_types/voltservice.yaml
+  - custom_types/vrouterservice.yaml
+  - custom_types/vsgservice.yaml
+  - custom_types/vtrservice.yaml
 
 topology_template:
   node_templates:
 
-# site, image, fully created in deployment.yaml
     {{ site_name }}:
       type: tosca.nodes.Site
+      properties:
+        name: {{ site_name }}
+        must-exist: true
 
     image#vsg-1.1:
       type: tosca.nodes.Image
+      properties:
+        name: vsg-1.1
 
 # management networks, fully created in management-net.yaml
     management:
-      type: tosca.nodes.network.Network.XOS
+      type: tosca.nodes.Network
       properties:
-        no-create: true
-        no-delete: true
-        no-update: true
+        name: management
+        must-exist: true
 
 {% if use_management_hosts %}
     management_hosts:
-      type: tosca.nodes.network.Network.XOS
+      type: tosca.nodes.Network
       properties:
-        no-create: true
-        no-delete: true
-        no-update: true
+        must-exist: true
 {% endif %}
 
     service#rcord:
       type: tosca.nodes.Service
+      properties:
+        name: rcord
+
+    rcord_volt:
+      type: tosca.nodes.ServiceDependency
+      properties:
+        connect_method: None
       requirements:
-        - rcord_tenant:
+        - subscriber_service:
+            node: service#rcord
+            relationship: tosca.relationships.BelongsToOne
+        - provider_service:
             node: service#volt
-            relationship: tosca.relationships.TenantOfService
+            relationship: tosca.relationships.BelongsToOne
 
 # ONOS_CORD, fully created in vtn.yaml
     service#ONOS_CORD:
       type: tosca.nodes.ONOSService
       properties:
-        no-delete: true
-        no-create: true
-        no-update: true
+        name: ONOS_CORD
+        must-exist: true
 
 # ONOS_Fabric, fully created in fabric.yaml
     service#ONOS_Fabric:
       type: tosca.nodes.ONOSService
       properties:
-        no-delete: true
-        no-create: true
-        no-update: true
+        name: ONOS_Fabric
+        must-exist: true
 
 # CORD Services
     service#vtr:
       type: tosca.nodes.VTRService
       properties:
-        view_url: /admin/vtr/vtrservice/$id$/
-        kind: vTR
-        replaces: service_vtr
+        name: vtr
+        kind: rcord
 
     service#volt:
       type: tosca.nodes.VOLTService
-      requirements:
-        - vsg_tenant:
-            node: service#vsg
-            relationship: tosca.relationships.TenantOfService
       properties:
-        view_url: /admin/volt/voltservice/$id$/
-        kind: vOLT
-        replaces: service_volt
-        public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
+        name: volt
+        kind: rcord
+        public_key: {{ lookup('file', config_cord_profile_dir + '/key_import/volt_rsa.pub') }}
         private_key_fn: /opt/xos/services/volt/keys/volt_rsa
-      artifacts:
-        pubkey: /opt/cord_profile/key_import/volt_rsa.pub
+
+    volt_vsg:
+      type: tosca.nodes.ServiceDependency
+      properties:
+        connect_method: None
+      requirements:
+        - subscriber_service:
+            node: service#volt
+            relationship: tosca.relationships.BelongsToOne
+        - provider_service:
+            node: service#vsg
+            relationship: tosca.relationships.BelongsToOne
 
     addresses_vsg:
       type: tosca.nodes.AddressPool
       properties:
+        name: addresses_vsg
         addresses: 10.7.1.0/24
         gateway_ip: 10.7.1.1
         gateway_mac: a4:23:05:06:01:01
+      requirements:
+        - service:
+            node: service#addressmanager
+            relationship: tosca.relationships.BelongsToOne
 
     addresses_public:
       type: tosca.nodes.AddressPool
       properties:
+        name: addresses_public
         addresses: 10.8.1.0/24
         gateway_ip: 10.8.1.1
         gateway_mac: a4:23:05:06:01:01
+      requirements:
+        - service:
+            node: service#addressmanager
+            relationship: tosca.relationships.BelongsToOne
 
     label_vsg:
       type: tosca.nodes.NodeLabel
+      properties:
+        name: label_vsg
 
     service#vsg:
       type: tosca.nodes.VSGService
-      requirements:
-        - addressing_tenant:
-            node: service#addressmanager
-            relationship: tosca.relationships.TenantOfService
-        - vrouter_tenant:
-            node: service#vrouter
-            relationship: tosca.relationships.TenantOfService
       properties:
-        view_url: /admin/vsg/vsgservice/$id$/
-        backend_network_label: hpc_client
-        public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
+        name: vsg
+        # backend_network_label: hpc_client # what is this? can we drop it?
+        public_key: {{ lookup('file', config_cord_profile_dir + '/key_import/vsg_rsa.pub') }}
         private_key_fn: /opt/xos/services/vsg/keys/vsg_rsa
-#       node_label: label_vsg
-        replaces: service_vsg
-      artifacts:
-        pubkey: /opt/cord_profile/key_import/vsg_rsa.pub
+        # node_label: label_vsg
+
+    vsg_vrouter:
+      type: tosca.nodes.ServiceDependency
+      properties:
+        connect_method: None
+      requirements:
+        - subscriber_service:
+            node: service#vsg
+            relationship: tosca.relationships.BelongsToOne
+        - provider_service:
+            node: service#vrouter
+            relationship: tosca.relationships.BelongsToOne
+
+    vsg_addressmanager:
+      type: tosca.nodes.ServiceDependency
+      properties:
+        connect_method: None
+      requirements:
+        - subscriber_service:
+            node: service#vsg
+            relationship: tosca.relationships.BelongsToOne
+        - provider_service:
+            node: service#addressmanager
+            relationship: tosca.relationships.BelongsToOne
 
     service#addressmanager:
       type: tosca.nodes.AddressManagerService
-      requirements:
-        - addresses_vsg:
-            node: addresses_vsg
-            relationship: tosca.relationships.ProvidesAddresses
-        - addresses_public:
-            node: addresses_public
-            relationship: tosca.relationships.ProvidesAddresses
+      properties:
+        name: addressmanager
 
     service#vrouter:
       type: tosca.nodes.VRouterService
       properties:
-        view_url: /admin/vrouter/vrouterservice/$id$/
-        replaces: service_vrouter
+        name: vrouter
+        rest_hostname: onos-fabric.{{ site_suffix }}
+        rest_port: 8181
+        rest_user: onos
+        rest_pass: rocks
 
     vRouter_ONOS_app:
-      type: tosca.nodes.ONOSvRouterApp
+      type: tosca.nodes.ONOSApp
       requirements:
-        - onos_tenant:
+        - owner:
             node: service#ONOS_Fabric
-            relationship: tosca.relationships.TenantOfService
-        - vrouter_service:
-            node: service#vrouter
-            relationship: tosca.relationships.UsedByService
+            relationship: tosca.relationships.BelongsToOne
       properties:
+        name: vRouter_ONOS_app
         dependencies: org.onosproject.fpm
-        autogenerate: vrouter-network-cfg
+
+    vRouter_ONOS_app_autogenerate:
+        type: tosca.nodes.ServiceInstanceAttribute
+        requirements:
+          - service_instance:
+              node: vRouter_ONOS_app
+              relationship: tosca.relationships.BelongsToOne
+        properties:
+            name: autogenerate
+            value: vrouter-network-cfg
+
+    vRouter_ONOS_app_ONOS_CORD:
+        type: tosca.nodes.ServiceInstanceLink
+        requirements:
+          - provider_service_instance:
+              node: vRouter_ONOS_app
+              relationship: tosca.relationships.BelongsToOne
+          - subscriber_service:
+              node: service#vrouter
+              relationship: tosca.relationships.BelongsToOne
 
     template#vsg:
       type: tosca.nodes.NetworkTemplate
       properties:
+        name: vsg
         visibility: private
         translation: none
         vtn_kind: VSG
 
     # Networks required by the CORD setup
     {{ site_name }}_vsg-access:
-      type: tosca.nodes.network.Network
+      type: tosca.nodes.Network
       properties:
-        ip_version: 4
+        name: {{ site_name }}_vsg-access
+        # ip_version: 4
       requirements:
-        - network_template:
+        - template:
             node: template#vsg
-            relationship: tosca.relationships.UsesNetworkTemplate
+            relationship: tosca.relationships.BelongsToOne
         - owner:
             node: {{ site_name }}_vsg
-            relationship: tosca.relationships.MemberOfSlice
-        - connection:
-            node: {{ site_name }}_vsg
-            relationship: tosca.relationships.ConnectsToSlice
+            relationship: tosca.relationships.BelongsToOne
+
+    networkslice#{{ site_name }}_vsg-access_to_{{ site_name }}_vsg:
+        type: tosca.nodes.NetworkSlice
+        requirements:
+          - network:
+              node: {{ site_name }}_vsg-access
+              relationship: tosca.relationships.BelongsToOne
+          - slice:
+              node: {{ site_name }}_vsg
+              relationship: tosca.relationships.BelongsToOne
 
     # CORD Slices
     {{ site_name }}_vsg:
@@ -192,81 +271,97 @@ topology_template:
       type: tosca.nodes.Slice
       properties:
         network: noauto
-      requirements:
-        - vsg_service:
+        name: {{ site_name }}_vsg
+      requirements: 
+        - service:
             node: service#vsg
-            relationship: tosca.relationships.MemberOfService
+            relationship: tosca.relationships.BelongsToOne
         - site:
             node: {{ site_name }}
-            relationship: tosca.relationships.MemberOfSite
-        - management:
-            node: management
-            relationship: tosca.relationships.ConnectsToNetwork
-{% if use_management_hosts %}
-        - management_hosts:
-            node: management_hosts
-            relationship: tosca.relationships.ConnectsToNetwork
-{% endif %}
-        - image:
+            relationship: tosca.relationships.BelongsToOne
+        - default_image:
             node: image#vsg-1.1
-            relationship: tosca.relationships.DefaultImage
+            relationship: tosca.relationships.BelongsToOne
 
-    in#lanside:
-      type: tosca.nodes.InterfaceType
-      properties:
-         direction: in
+    networkslice#management_to_{{ site_name }}_vsg:
+        type: tosca.nodes.NetworkSlice
+        requirements:
+          - network:
+              node: management
+              relationship: tosca.relationships.BelongsToOne
+          - slice:
+              node: {{ site_name }}_vsg
+              relationship: tosca.relationships.BelongsToOne
 
-    out#lanside:
-      type: tosca.nodes.InterfaceType
-      properties:
-         direction: out
+{% if use_management_hosts %}
+    networkslice#management_hosts_to_{{ site_name }}_vsg:
+        type: tosca.nodes.NetworkSlice
+        requirements:
+          - network:
+              node: management_hosts
+              relationship: tosca.relationships.BelongsToOne
+          - slice:
+            node: {{ site_name }}_vsg
+            relationship: tosca.relationships.BelongsToOne
+{% endif %}
+    
+    # TODO: migrate interfaces when we'll start using them
+    # in#lanside:
+    #   type: tosca.nodes.InterfaceType
+    #   properties:
+    #      direction: in
 
-    in#wanside:
-      type: tosca.nodes.InterfaceType
-      properties:
-         direction: in
+    # out#lanside:
+    #   type: tosca.nodes.InterfaceType
+    #   properties:
+    #      direction: out
 
-    out#wanside:
-      type: tosca.nodes.InterfaceType
-      properties:
-         direction: out
+    # in#wanside:
+    #   type: tosca.nodes.InterfaceType
+    #   properties:
+    #      direction: in
 
-    volt_lanside:
-      type: tosca.nodes.ServiceInterface
-      requirements:
-        - service:
-            node: service#volt
-            relationship: tosca.relationships.MemberOfService
-        - interface:
-            node: out#lanside
-            relationship: tosca.relationships.IsType
+    # out#wanside:
+    #   type: tosca.nodes.InterfaceType
+    #   properties:
+    #      direction: out
 
-    vsg_lanside:
-      type: tosca.nodes.ServiceInterface
-      requirements:
-        - service:
-            node: service#vsg
-            relationship: tosca.relationships.MemberOfService
-        - interface:
-            node: in#lanside
-            relationship: tosca.relationships.IsType
+    # volt_lanside:
+    #   type: tosca.nodes.ServiceInterface
+    #   requirements:
+    #     - service:
+    #         node: service#volt
+    #         relationship: tosca.relationships.MemberOfService
+    #     - interface:
+    #         node: out#lanside
+    #         relationship: tosca.relationships.IsType
 
-    vsg_wanside:
-      type: tosca.nodes.ServiceInterface
-      requirements:
-        - service:
-            node: service#vsg
-            relationship: tosca.relationships.MemberOfService
-        - interface:
-            node: out#wanside
-            relationship: tosca.relationships.IsType
+    # vsg_lanside:
+    #   type: tosca.nodes.ServiceInterface
+    #   requirements:
+    #     - service:
+    #         node: service#vsg
+    #         relationship: tosca.relationships.MemberOfService
+    #     - interface:
+    #         node: in#lanside
+    #         relationship: tosca.relationships.IsType
 
-    addressmanager_wanside:
-      type: tosca.nodes.ServiceInterface
-      requirements:
-        - service:
-            node: service#addressmanager
-            relationship: tosca.relationships.MemberOfService
-        - interface:
-            node: in#wanside
-            relationship: tosca.relationships.IsType
+    # vsg_wanside:
+    #   type: tosca.nodes.ServiceInterface
+    #   requirements:
+    #     - service:
+    #         node: service#vsg
+    #         relationship: tosca.relationships.MemberOfService
+    #     - interface:
+    #         node: out#wanside
+    #         relationship: tosca.relationships.IsType
+
+    # addressmanager_wanside:
+    #   type: tosca.nodes.ServiceInterface
+    #   requirements:
+    #     - service:
+    #         node: service#addressmanager
+    #         relationship: tosca.relationships.MemberOfService
+    #     - interface:
+    #         node: in#wanside
+    #         relationship: tosca.relationships.IsType

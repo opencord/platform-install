@@ -18,7 +18,11 @@
 
 head_cord_profile_dir: "/opt/cord_profile"
 
+credentials_dir: "{{ playbook_dir }}/credentials"
 xos_admin_user: "xosadmin@opencord.org"
+xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+
+
 maas_xos_admin_pass: "{{ lookup('file', '/opt/credentials/xosadmin@opencord.org') }}"
 
-xos_ui_port: 9000
+xos_tosca_url: "http://xos-tosca/xos-tosca"
