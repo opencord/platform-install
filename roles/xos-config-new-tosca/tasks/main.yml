@@ -15,6 +15,35 @@
 
 # xos-config-new-tosca/tasks/main.yml
 
+- name: Bootstrap XOS database - create site, deployment, admin user
+  uri:
+    url: "{{ xos_tosca_url }}/run"
+    method: POST
+    headers:
+      xos-username: "{{ xos_admin_user }}"
+      xos-password: "{{ xos_admin_pass }}"
+    body: "{{ lookup('file', head_cord_profile_dir + '/' + item ) }}"
+    status_code: 200
+  with_items:
+    - "fixtures.yaml"
+    - "deployment.yaml"
+  tags:
+    - skip_ansible_lint # TOSCA loading should be idempotent
+
+- name: Configure XOS with OpenStack config
+  uri:
+    url: "{{ xos_tosca_url }}/run"
+    method: POST
+    headers:
+      xos-username: "{{ xos_admin_user }}"
+      xos-password: "{{ xos_admin_pass }}"
+    body: "{{ lookup('file', head_cord_profile_dir + '/' + item ) }}"
+    status_code: 200
+  with_items:
+    - openstack.yaml
+  tags:
+    - skip_ansible_lint # TOSCA loading should be idempotent
+
 - name: Configure XOS with profile specific TOSCA (new Engine)
   uri:
     url: "{{ xos_tosca_url }}/run"

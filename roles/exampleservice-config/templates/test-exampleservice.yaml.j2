@@ -39,7 +39,7 @@ topology_template:
       type: tosca.nodes.Site
       properties:
         must-exist: true
-        name: {{ site_humanname }}
+        name: {{ site_name }}
 
     m1.small:
       type: tosca.nodes.Flavor
@@ -147,8 +147,6 @@ topology_template:
         public_key: {{ lookup('file', config_cord_profile_dir + '/key_import/exampleservice_rsa.pub') }}
         private_key_fn: /opt/xos/services/exampleservice/keys/exampleservice_rsa
         service_message: hello
-      artifacts:
-        pubkey: /opt/cord_profile/key_import/exampleservice_rsa.pub
 
     exampletenant1:
       type: tosca.nodes.ExampleServiceInstance

@@ -17,7 +17,11 @@ limitations under the License.
 tosca_definitions_version: tosca_simple_yaml_1_0
 
 imports:
-   - custom_types/xos.yaml
+   - custom_types/onosapp.yaml
+   - custom_types/onosservice.yaml
+   - custom_types/serviceinstanceattribute.yaml
+   - custom_types/serviceinstancelink.yaml
+   - custom_types/vtnservice.yaml
 
 description: Configures the VTN ONOS service
 
@@ -26,18 +30,18 @@ topology_template:
 
     service#ONOS_CORD:
       type: tosca.nodes.ONOSService
-      requirements:
       properties:
-          kind: onos
-          view_url: /admin/onos/onosservice/$id$/
+          name: ONOS_CORD
+          kind: platform
           no_container: true
           rest_hostname: onos-cord.{{ site_suffix }}
           rest_port: 8182
-          replaces: service_ONOS_CORD
 
     service#vtn:
       type: tosca.nodes.VTNService
       properties:
+          name: vtn
+          kind: platform
           view_url: /admin/vtn/vtnservice/$id$/
           privateGatewayMac: 00:00:00:00:00:01
           localManagementIp: {{ management_network_ip }}
@@ -48,21 +52,39 @@ topology_template:
           xosEndpoint: xos-chameleon.{{ site_suffix }}:{{ xos_chameleon_port }}
           xosUser: {{ xos_admin_user }}
           xosPassword: {{ xos_admin_pass }}
-          replaces: service_vtn
           vtnAPIVersion: 2
           controllerPort: onos-cord.{{ site_suffix }}:6654
+          resync: false
 
     VTN_ONOS_app:
-      type: tosca.nodes.ONOSVTNApp
+      type: tosca.nodes.ONOSApp
       requirements:
-          - onos_tenant:
+          - owner:
               node: service#ONOS_CORD
-              relationship: tosca.relationships.TenantOfService
-          - vtn_service:
-              node: service#vtn
-              relationship: tosca.relationships.UsedByService
+              relationship: tosca.relationships.BelongsToOne
       properties:
+          name: VTN_ONOS_app
           install_dependencies: {{ onos_mavenrepo_url }}/repository/org/opencord/cord-config/{{ cord_config_app_version }}/cord-config-{{ cord_config_app_version }}.oar, {{ onos_mavenrepo_url }}/repository/org/opencord/vtn/{{ cord_vtn_app_version }}/vtn-{{ cord_vtn_app_version }}.oar
           dependencies: org.onosproject.drivers, org.onosproject.drivers.ovsdb, org.onosproject.openflow-base, org.onosproject.ovsdb-base, org.onosproject.dhcp
-          autogenerate: vtn-network-cfg
+          # autogenerate: vtn-network-cfg
+
+    VTN_ONOS_app_autogenerate:
+        type: tosca.nodes.ServiceInstanceAttribute
+        requirements:
+          - service_instance:
+              node: VTN_ONOS_app
+              relationship: tosca.relationships.BelongsToOne
+        properties:
+            name: autogenerate
+            value: vtn-network-cfg
+
+    VTN_ONOS_app_VTN_Service:
+        type: tosca.nodes.ServiceInstanceLink
+        requirements:
+          - provider_service_instance:
+              node: VTN_ONOS_app
+              relationship: tosca.relationships.BelongsToOne
+          - subscriber_service:
+              node: service#vtn
+              relationship: tosca.relationships.BelongsToOne
 

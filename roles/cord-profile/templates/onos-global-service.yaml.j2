@@ -19,7 +19,7 @@ limitations under the License.
 tosca_definitions_version: tosca_simple_yaml_1_0
 
 imports:
-   - custom_types/xos.yaml
+   - custom_types/onosservice.yaml
 
 description: Configures the global ONOS service
 
@@ -30,9 +30,8 @@ topology_template:
       type: tosca.nodes.ONOSService
       requirements:
       properties:
-          kind: onos
-          view_url: /admin/onos/onosservice/$id$/
+          name: ONOS_CORD
+          kind: ecord
           no_container: true
           rest_hostname: onos-cord.{{ site_suffix }}
           rest_port: 8182
-          replaces: service_ONOS_CORD

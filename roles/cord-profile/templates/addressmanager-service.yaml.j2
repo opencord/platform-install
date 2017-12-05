@@ -15,14 +15,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 #}
 
+# Only used by BASE-CORD
 
 tosca_definitions_version: tosca_simple_yaml_1_0
 
 description: TOSCA for bootstrapping Address Manager service
 
 imports:
-   - custom_types/xos.yaml
-   - custom_types/addressmanager.yaml
+   - custom_types/addressmanagerservice.yaml
+   - custom_types/addresspool.yaml
 
 topology_template:
   node_templates:
@@ -30,23 +31,28 @@ topology_template:
     addresses_vsg:
       type: tosca.nodes.AddressPool
       properties:
+        name: addresses_vsg
         addresses: 10.7.1.0/24
         gateway_ip: 10.7.1.1
         gateway_mac: a4:23:05:06:01:01
+      requirements:
+        - service:
+            node: service#addressmanager
+            relationship: tosca.relationships.BelongsToOne
 
     addresses_public:
       type: tosca.nodes.AddressPool
       properties:
+        name: addresses_public
         addresses: 10.8.1.0/24
         gateway_ip: 10.8.1.1
         gateway_mac: a4:23:05:06:01:01
+      requirements:
+        - service:
+            node: service#addressmanager
+            relationship: tosca.relationships.BelongsToOne
 
     service#addressmanager:
       type: tosca.nodes.AddressManagerService
-      requirements:
-        - addresses_vsg:
-            node: addresses_vsg
-            relationship: tosca.relationships.ProvidesAddresses
-        - addresses_public:
-            node: addresses_public
-            relationship: tosca.relationships.ProvidesAddresses
+      properties:
+        name: addressmanager

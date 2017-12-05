@@ -92,8 +92,6 @@
     dest: "{{ config_cord_profile_dir }}/{{ item }}"
   with_items:
     - fixtures.yaml
-    - enable-onboarding.yaml
-    - disable-onboarding.yaml
 
 - name: Create templated XOS configuration files
   template:

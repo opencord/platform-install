@@ -19,20 +19,20 @@
 
 # TODO move this to the TOSCA container
 
-- name: Bootstrap XOS database - create site, deployment, admin user
-  command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/{{ item }}"
-  with_items:
-    - "fixtures.yaml"
-    - "deployment.yaml"
-  tags:
-    - skip_ansible_lint # TOSCA loading should be idempotent
+# - name: Bootstrap XOS database - create site, deployment, admin user
+#   command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/{{ item }}"
+#   with_items:
+#     - "fixtures.yaml"
+#     - "deployment.yaml"
+#   tags:
+#     - skip_ansible_lint # TOSCA loading should be idempotent
 
-- name: Configure XOS with OpenStack config
-  command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/{{ item }}"
-  with_items:
-    - openstack.yaml
-  tags:
-    - skip_ansible_lint # TOSCA loading should be idempotent
+# - name: Configure XOS with OpenStack config
+#   command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/{{ item }}"
+#   with_items:
+#     - openstack.yaml
+#   tags:
+#     - skip_ansible_lint # TOSCA loading should be idempotent
 
 - name: Configure XOS with profile specific TOSCA
   command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/{{ item }}"
