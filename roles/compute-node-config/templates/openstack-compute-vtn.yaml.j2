@@ -19,7 +19,9 @@ limitations under the License.
 tosca_definitions_version: tosca_simple_yaml_1_0
 
 imports:
-   - custom_types/xos.yaml
+   - custom_types/onosservice.yaml
+   - custom_types/node.yaml
+   - custom_types/node.yaml
 
 description: Configures VTN networking for OpenStack compute nodes
 
@@ -30,18 +32,16 @@ topology_template:
     service#ONOS_CORD:
       type: tosca.nodes.ONOSService
       properties:
-        no-delete: true
-        no-create: true
-        no-update: true
+        name: ONOS_CORD
+        must-exist: true
 
 {% if use_fabric %}
 # Fabric, fully defined in fabric.yaml
     service#ONOS_Fabric:
       type: tosca.nodes.ONOSService
       properties:
-        no-delete: true
-        no-create: true
-        no-update: true
+        name: ONOS_Fabric
+        must-exist: true
 {% endif %}
 
 # VTN networking for OpenStack Compute Nodes
@@ -55,8 +55,8 @@ topology_template:
     {{ hostvars[node]['ansible_hostname'] }}:
       type: tosca.nodes.Node
       properties:
-        no-delete: true
-        no-create: true
+        must-exist: true
+        name: {{ hostvars[node]['ansible_hostname'] }}
         bridgeId: of:0000{{ node_interface['macaddress'] | hwaddr('bare') }}
         dataPlaneIntf: fabric
         dataPlaneIp: {{ ( node_interface['ipv4']['address'] ~ '/' ~ node_interface['ipv4']['netmask'] ) | ipaddr('cidr') }}
