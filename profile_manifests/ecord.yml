@@ -29,18 +29,18 @@ use_fabric: True
 use_maas: True
 
 # XOS config
-xos_tosca_config_templates:
+xos_new_tosca_config_templates:
   - vtn-service.yaml
   - fabric-service.yaml
   - management-net.yaml
-  - ecord-services.yaml
   - public-net.yaml
-  - vee-service.yaml
-  - xos-gui-extensions.yml
-  - carrierethernet-local-app.yaml
-
-xos_new_tosca_config_templates:
   - service-graph-constraints.yaml
+  - xos-gui-extensions.yml
+  
+xos_tosca_config_templates:
+  - ecord-services.yaml
+  - vee-service.yaml
+  - carrierethernet-local-app.yaml
 
 xos_other_templates:
   - fabric-network-cfg.json
