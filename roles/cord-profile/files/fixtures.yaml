@@ -19,13 +19,21 @@ tosca_definitions_version: tosca_simple_yaml_1_0
 description: Some basic fixtures
 
 imports:
-   - custom_types/xos.yaml
+  - custom_types/deploymentrole.yaml
+  - custom_types/flavor.yaml
+  - custom_types/siterole.yaml
+  - custom_types/slicerole.yaml
+  - custom_types/networkparametertype.yaml
+  - custom_types/networktemplate.yaml
+  - custom_types/xos.yaml
 
 topology_template:
   node_templates:
 
     xos:
       type: tosca.nodes.XOS
+      properties:
+        name: xos
 
 # -----------------------------------------------------------------------------
 # Network Parameter Types
@@ -33,21 +41,32 @@ topology_template:
 
     s_tag:
       type: tosca.nodes.NetworkParameterType
-
+      properties:
+        name: s_tag
     c_tag:
       type: tosca.nodes.NetworkParameterType
+      properties:
+        name: c_tag
 
     next_hop:
       type: tosca.nodes.NetworkParameterType
+      properties:
+        name: next_hop
 
     device:
       type: tosca.nodes.NetworkParameterType
+      properties:
+        name: device
 
     bridge:
       type: tosca.nodes.NetworkParameterType
+      properties:
+        name: bridge
 
     neutron_port_name:
       type: tosca.nodes.NetworkParameterType
+      properties:
+        name: neutron_port_name
 
 # ----------------------------------------------------------------------------
 # Roles
@@ -55,21 +74,33 @@ topology_template:
 
     siterole#admin:
       type: tosca.nodes.SiteRole
+      properties:
+        role: admin
 
     siterole#pi:
       type: tosca.nodes.SiteRole
+      properties:
+        role: pi
 
     siterole#tech:
       type: tosca.nodes.SiteRole
+      properties:
+        role: tech
 
     deploymentrole#admin:
       type: tosca.nodes.DeploymentRole
+      properties:
+        role: admin
 
     slicerole#admin:
       type: tosca.nodes.SliceRole
+      properties:
+        role: admin
 
     slicerole#access:
       type: tosca.nodes.SliceRole
+      properties:
+        role: access
 
 # -----------------------------------------------------------------------------
 # Flavors
@@ -77,15 +108,23 @@ topology_template:
 
     m1.small:
       type: tosca.nodes.Flavor
+      properties:
+        name: m1.small
 
     m1.medium:
       type: tosca.nodes.Flavor
+      properties:
+        name: m1.medium
 
     m1.large:
       type: tosca.nodes.Flavor
+      properties:
+        name: m1.large
 
     m1.xlarge:
       type: tosca.nodes.Flavor
+      properties:
+        name: m1.xlarge
 
 # -----------------------------------------------------------------------------
 # Network Templates
@@ -94,12 +133,14 @@ topology_template:
     Private:
       type: tosca.nodes.NetworkTemplate
       properties:
+        name: Private
         visibility: private
         translation: none
 
     Public shared IPv4:
       type: tosca.nodes.NetworkTemplate
       properties:
+        name: Public shared IPv4
         visibility: private
         translation: NAT
         shared_network_name: nat-net
@@ -107,6 +148,7 @@ topology_template:
     Public dedicated IPv4:
       type: tosca.nodes.NetworkTemplate
       properties:
+        name: Public dedicated IPv4
         visibility: public
         translation: none
         shared_network_name: ext-net
