@@ -17,7 +17,7 @@ limitations under the License.
 # Site
 - model: core.Site
   fields:
-    name: "{{ site_humanname }}"
+    name: "{{ site_name }}"
     abbreviated_name: "{{ site_name }}"
     login_base: "{{ site_name }}"
     site_url: "http://{{ site_name }}.opencloud.us/"
@@ -34,7 +34,7 @@ limitations under the License.
   relations:
     site:
       fields:
-        name: "{{ site_humanname }}"
+        name: "{{ site_name }}"
       model: core.Site
 
 # All other users
@@ -49,7 +49,7 @@ limitations under the License.
   relations:
     site:
       fields:
-        name: "{{ site_humanname }}"
+        name: "{{ site_name }}"
       model: core.Site
 
 {% endfor %}
