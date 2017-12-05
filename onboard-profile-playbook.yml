@@ -26,12 +26,6 @@
   roles:
     - xos-ready
 
-- name: Apply profile config
-  hosts: xos_ui
-  connection: docker
-  roles:
-    - xos-config
-
 - name: Include vars
   hosts: config
   tasks:
@@ -46,3 +40,8 @@
   roles:
     - xos-config-new-tosca
 
+- name: Apply profile config
+  hosts: xos_ui
+  connection: docker
+  roles:
+    - xos-config
