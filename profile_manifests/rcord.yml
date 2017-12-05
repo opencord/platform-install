@@ -29,17 +29,14 @@ use_fabric: True
 use_maas: True
 
 # XOS config
-xos_tosca_config_templates:
+xos_new_tosca_config_templates:
   - vtn-service.yaml
   - fabric-service.yaml
   - management-net.yaml
-  - cord-services.yaml  # should unify this with services.yaml.j2 eventually
+  - cord-services.yaml
   - public-net.yaml
-  - vrouter.yaml
-  - xos-gui-extensions.yml
-
-xos_new_tosca_config_templates:
   - service-graph-constraints.yaml
+  - xos-gui-extensions.yml
 
 xos_other_templates:
   - fabric-network-cfg.json
