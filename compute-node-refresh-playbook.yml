@@ -38,8 +38,7 @@
 - include: add-onboard-containers-playbook.yml
 
 - name: Enable compute nodes in XOS
-  hosts: xos_ui
-  connection: docker
+  hosts: head
   roles:
     - compute-node-enable
 
