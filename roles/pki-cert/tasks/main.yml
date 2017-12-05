@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # pki-cert/tasks/main.yml
 
 - name: Generate server private key (no pw)
@@ -26,30 +24,32 @@
     creates: "{{ pki_dir }}/{{ site_name }}_im_ca/private/{{ item.cn }}_key.pem"
   with_items: "{{ server_certs }}"
 
+- name: Generate server-specific openssl config
+  template:
+    src: server.cnf.j2
+    dest: "{{ pki_dir }}/{{ site_name }}_im_ca/server_cnfs/{{ item.cn }}.cnf"
+  with_items: "{{ server_certs }}"
+
 - name: Generate server CSR
   command: >
-    openssl req -config {{ pki_dir }}/{{ site_name }}_im_ca/openssl.cnf
+    openssl req -config {{ pki_dir }}/{{ site_name }}_im_ca/server_cnfs/{{ item.cn }}.cnf
       -key {{ pki_dir }}/{{ site_name }}_im_ca/private/{{ item.cn }}_key.pem
       -new -sha256 -subj "{{ item.subj }}"
       -out {{ pki_dir }}/{{ site_name }}_im_ca/csr/{{ item.cn }}_csr.pem
   args:
     creates: "{{ pki_dir }}/{{ site_name }}_im_ca/csr/{{ item.cn }}_csr.pem"
-  environment:
-    KEY_ALTNAMES: "{{ item.altnames | join(', ') }}"
   with_items: "{{ server_certs }}"
 
 - name: Sign server cert
   command: >
-    openssl ca -config {{ pki_dir }}/{{ site_name }}_im_ca/openssl.cnf -batch
-      -passin file:{{ pki_dir }}/{{ site_name }}_im_ca/private/ca_im_phrase
+    openssl ca -config {{ pki_dir }}/{{ site_name }}_im_ca/server_cnfs/{{ item.cn }}.cnf
+      -batch -passin file:{{ pki_dir }}/{{ site_name }}_im_ca/private/ca_im_phrase
       -extensions server_cert
       -days {{ cert_days }} -md {{ cert_digest }}
       -in {{ pki_dir }}/{{ site_name }}_im_ca/csr/{{ item.cn }}_csr.pem
       -out {{ pki_dir }}/{{ site_name }}_im_ca/certs/{{ item.cn }}_cert.pem
   args:
     creates: "{{ pki_dir }}/{{ site_name }}_im_ca/certs/{{ item.cn }}_cert.pem"
-  environment:
-    KEY_ALTNAMES: "{{ item.altnames | join(', ') }}"
   with_items: "{{ server_certs }}"
 
 - name: Verify cert against root + im chain
@@ -97,30 +97,32 @@
     creates: "{{ pki_dir }}/{{ site_name }}_im_ca/private/{{ item.cn }}_key.pem"
   with_items: "{{ client_certs }}"
 
+- name: Generate client-specific openssl config
+  template:
+    src: client.cnf.j2
+    dest: "{{ pki_dir }}/{{ site_name }}_im_ca/client_cnfs/{{ item.cn }}.cnf"
+  with_items: "{{ client_certs }}"
+
 - name: Generate client CSR
   command: >
-    openssl req -config {{ pki_dir }}/{{ site_name }}_im_ca/openssl.cnf
+    openssl req -config {{ pki_dir }}/{{ site_name }}_im_ca/client_cnfs/{{ item.cn }}.cnf
       -key {{ pki_dir }}/{{ site_name }}_im_ca/private/{{ item.cn }}_key.pem
       -new -sha256 -subj "{{ item.subj }}"
       -out {{ pki_dir }}/{{ site_name }}_im_ca/csr/{{ item.cn }}_csr.pem
   args:
     creates: "{{ pki_dir }}/{{ site_name }}_im_ca/csr/{{ item.cn }}_csr.pem"
-  environment:
-    KEY_ALTNAMES: "{{ item.altnames | join(', ') }}"
   with_items: "{{ client_certs }}"
 
 - name: Sign client cert
   command: >
-    openssl ca -config {{ pki_dir }}/{{ site_name }}_im_ca/openssl.cnf -batch
-      -passin file:{{ pki_dir }}/{{ site_name }}_im_ca/private/ca_im_phrase
-      -extensions user_cert
+    openssl ca -config {{ pki_dir }}/{{ site_name }}_im_ca/client_cnfs/{{ item.cn }}.cnf
+      -batch -passin file:{{ pki_dir }}/{{ site_name }}_im_ca/private/ca_im_phrase
+      -extensions client_cert
       -days {{ cert_days }} -md {{ cert_digest }}
       -in {{ pki_dir }}/{{ site_name }}_im_ca/csr/{{ item.cn }}_csr.pem
       -out {{ pki_dir }}/{{ site_name }}_im_ca/certs/{{ item.cn }}_cert.pem
   args:
     creates: "{{ pki_dir }}/{{ site_name }}_im_ca/certs/{{ item.cn }}_cert.pem"
-  environment:
-    KEY_ALTNAMES: "{{ item.altnames | join(', ') }}"
   with_items: "{{ client_certs }}"
 
 - name: Verify cert against root + im chain

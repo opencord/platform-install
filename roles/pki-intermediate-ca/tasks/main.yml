@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,12 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # pki-intermediate-ca/tasks/main.yml
 
 # if the next two steps fail, may need to include `create-configdirs-become`
 # role to create these directories using become.
+
 - name: Create PKI directory
   file:
     dest: "{{ pki_dir }}"
@@ -45,9 +44,11 @@
     state: directory
   with_items:
     - certs
+    - client_cnfs
     - crl
     - csr
     - newcerts
+    - server_cnfs
 
 - name: Create private CA directory
   file:
@@ -96,8 +97,6 @@
       -out {{ pki_dir }}/{{ site_name }}_im_ca/csr/{{ site_name }}_im_ca_csr.pem
   args:
     creates: "{{ pki_dir }}/{{ site_name }}_im_ca/certs/{{ site_name }}_im_ca_csr.pem"
-  environment:
-    KEY_ALTNAMES: ""
 
 - name: Create intermediate cert from CSR with root CA
   command: >

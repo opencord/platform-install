@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 #}
-# Created by openssl_im.cnf.j2, configured by ansible
+# Created by client.cnf.j2, configured by ansible
 
 [ ca ]
 default_ca  = CA_default
@@ -64,7 +64,7 @@ default_bits         = {{ ca_size }}
 default_md           = {{ ca_digest }}
 distinguished_name   = req_distinguished_name
 string_mask          = utf8only
-x509_extensions      = v3_intermediate_ca
+x509_extensions      = client_cert
 
 [ req_distinguished_name ]
 # See <https://en.wikipedia.org/wiki/Certificate_signing_request>.
@@ -84,10 +84,12 @@ localityName_default            = Menlo Park
 organizationalUnitName_default  = {{ site_humanname }}
 emailAddress_default            = privateca@opencord.org
 
-[ v3_intermediate_ca ]
-# Extensions for a typical intermediate CA (`man x509v3_config`).
+[ client_cert ]
+# Extensions for client certificates (`man x509v3_config`).
 subjectKeyIdentifier = hash
-authorityKeyIdentifier = keyid:always,issuer
-basicConstraints = critical, CA:TRUE, pathlen:0
-keyUsage = critical, digitalSignature, cRLSign, keyCertSign
+authorityKeyIdentifier = keyid,issuer:always
+basicConstraints = CA:FALSE
+keyUsage = critical, digitalSignature, keyEncipherment, nonRepudiation
+extendedKeyUsage = clientAuth, emailProtection
+subjectAltName = {{ item.altnames | join(', ') }}
 
