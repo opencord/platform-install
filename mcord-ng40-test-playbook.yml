@@ -27,6 +27,8 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
+
+
 - name: Run base M-CORD tests
   hosts: head
   become: no
@@ -54,5 +56,12 @@
       - { vm: vspgwu, network: s1u_network }
       - { vm: vspgwu, network: sgi_network }
       - { vm: vspgwu, network: spgw_network }
+    epc_blueprint: build
+    epc_sync_objects:
+      - vspgwu/vspgwutenants
+      - vspgwc/vspgwctenants
+      - venb/venbserviceinstances
   roles:
+    - create-epc
     - test-mcord-base
+    - epc-synced
