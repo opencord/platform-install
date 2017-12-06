@@ -285,9 +285,9 @@ xos_images:
     url: "http://www.vicci.org/opencloud/trusty-server-cloudimg-amd64-disk1.img.20170201"
     checksum: "sha256:ebf007ba3ec1043b7cd011fc6668e2a1d1d4c69c41071e8513ab355df7a057cb"
 
-  - name: "spgw"
-    url: "http://www.vicci.org/cord/spgw.qcow2.20171024"
-    checksum: "sha256:954cce8bb6fdbc684b07e7f4cebc0cb1b3edf9146e1245dbdab88e6ec0dd3e48"
+  - name: "vsg-1.1"
+    url: "http://www.vicci.org/cord/vsg-1.1.img"
+    checksum: "sha256:16b0beb6778aed0f5feecb05f8d5750e6c262f98e6011e99ddadf7d46a177b6f"
 
   - name: "ceilometer-trusty-server-multi-nic"
     url: "http://www.vicci.org/cord/ceilometer-trusty-server-multi-nic.compressed.qcow2"
