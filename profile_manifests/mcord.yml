@@ -74,6 +74,8 @@ xos_services:
   - name: onos
     path: orchestration/xos_services/onos-service
     keypair: onos_rsa
+  - name: addressmanager
+    path: orchestration/xos_services/addressmanager
   - name: fabric
     path: orchestration/xos_services/fabric
   - name: vmme
