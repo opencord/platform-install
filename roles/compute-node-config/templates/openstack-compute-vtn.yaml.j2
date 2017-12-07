@@ -57,82 +57,13 @@ topology_template:
       properties:
         no-delete: true
         no-create: true
-        no-update: true
-
-# VTN bridgeId field for node {{ hostvars[node]['ansible_hostname'] }}
-    {{ hostvars[node]['ansible_hostname'] }}_bridgeId_tag:
-      type: tosca.nodes.Tag
-      properties:
-        name: bridgeId
-        value: of:0000{{ node_interface['macaddress'] | hwaddr('bare') }}
-      requirements:
-        - target:
-            node: {{ hostvars[node]['ansible_hostname'] }}
-            relationship: tosca.relationships.TagsObject
-        - service:
-            node: service#ONOS_CORD
-            relationship: tosca.relationships.MemberOfService
-
-# VTN dataPlaneIntf field for node {{ hostvars[node]['ansible_hostname'] }}
-    {{ hostvars[node]['ansible_hostname'] }}_dataPlaneIntf_tag:
-      type: tosca.nodes.Tag
-      properties:
-        name: dataPlaneIntf
-        value: fabric
-      requirements:
-        - target:
-            node: {{ hostvars[node]['ansible_hostname'] }}
-            relationship: tosca.relationships.TagsObject
-        - service:
-            node: service#ONOS_CORD
-            relationship: tosca.relationships.MemberOfService
-
-# VTN dataPlaneIp field for node {{ hostvars[node]['ansible_hostname'] }}
-    {{ hostvars[node]['ansible_hostname'] }}_dataPlaneIp_tag:
-      type: tosca.nodes.Tag
-      properties:
-        name: dataPlaneIp
-        value: {{ ( node_interface['ipv4']['address'] ~ '/' ~ node_interface['ipv4']['netmask'] ) | ipaddr('cidr') }}
-      requirements:
-        - target:
-            node: {{ hostvars[node]['ansible_hostname'] }}
-            relationship: tosca.relationships.TagsObject
-        - service:
-            node: service#ONOS_CORD
-            relationship: tosca.relationships.MemberOfService
-
+        bridgeId: of:0000{{ node_interface['macaddress'] | hwaddr('bare') }}
+        dataPlaneIntf: fabric
+        dataPlaneIp: {{ ( node_interface['ipv4']['address'] ~ '/' ~ node_interface['ipv4']['netmask'] ) | ipaddr('cidr') }}
 {% if use_management_hosts %}
-    # VTN management interface field for node {{ hostvars[node]['ansible_hostname'] }}
-    {{ hostvars[node]['ansible_hostname'] }}_hostManagementIface_tag:
-      type: tosca.nodes.Tag
-      properties:
-        name: hostManagementIface
-        value: {{ vtn_management_host_net_interface }}
-      requirements:
-        - target:
-            node: {{ hostvars[node]['ansible_hostname'] }}
-            relationship: tosca.relationships.TagsObject
-        - service:
-            node: service#ONOS_CORD
-            relationship: tosca.relationships.MemberOfService
+        hostManagementIface: {{ vtn_management_host_net_interface }}
 {% endif %}
-
-{% if use_fabric %}
-    # Fabric location field for node {{ hostvars[node]['ansible_hostname'] }}
-    {{ hostvars[node]['ansible_hostname'] }}_location_tag:
-      type: tosca.nodes.Tag
-      properties:
-        name: location
-        value: of:0000000000000001/1
-      requirements:
-        - target:
-            node: {{ hostvars[node]['ansible_hostname'] }}
-            relationship: tosca.relationships.TagsObject
-        - service:
-            node: service#ONOS_Fabric
-            relationship: tosca.relationships.MemberOfService
-{% endif %}
-
+    
 {% endif %}
 {% endfor %}
 {% endfor %}
