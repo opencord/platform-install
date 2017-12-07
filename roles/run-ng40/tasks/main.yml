@@ -1,0 +1,49 @@
+---
+
+# Copyright 2017-present Open Networking Foundation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Get ID of VM
+  shell: bash -c "source /opt/cord_profile/admin-openrc.sh; nova list --all-tenants|grep mysite_venb|cut -d '|' -f 2"
+  register: nova_id
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Get mgmt IP of VM
+  shell: bash -c "source /opt/cord_profile/admin-openrc.sh; nova interface-list {{ nova_id.stdout }}|grep -o -m 1 '172\.27\.[[:digit:]]*\.[[:digit:]]*'"
+  register: mgmt_ip
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Get name of compute node
+  shell: bash -c "source /opt/cord_profile/admin-openrc.sh; nova show {{ nova_id.stdout }}|grep hypervisor_hostname|cut -d '|' -f 3"
+  register: node_name
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Write email address to file
+  shell: sshpass -p {{ mcord_ng40_password }} ssh -o ProxyCommand="ssh -W %h:%p -l ubuntu {{ node_name.stdout }}" {{ mcord_ng40_login }}@{{ mgmt_ip.stdout }} "sudo bash -c 'echo {{ mcord_ng40_license_email }} > /opt/ng4t/etc/email'"
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Run ./verify_quick.sh and check for VERDICT_PASS
+  shell: sshpass -p {{ mcord_ng40_password }} ssh -o ProxyCommand="ssh -W %h:%p -l ubuntu {{ node_name.stdout }}" {{ mcord_ng40_login }}@{{ mgmt_ip.stdout }} "./verify_quick.sh"
+  register: result
+  failed_when: "'VERDICT_PASS' not in result.stdout"
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Print result of test
+  debug:
+    var: result.stdout_lines
