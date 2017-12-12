@@ -59,6 +59,7 @@ xos_users: []
 pod_sshkey_name: "headnode"
 
 xos_services: []
+xos_dynamic_services: []
 
 xos_gui_service_graph_constraints: []
 
