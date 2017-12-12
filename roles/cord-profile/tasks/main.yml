@@ -65,6 +65,14 @@
     remote_src: True
   with_items: "{{ xos_services | selectattr('keypair', 'defined') | list }}"
 
+- name: Copy ssh private key to key_import directory for dynamic services that require it
+  copy:
+    src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey"
+    dest: "{{ config_cord_profile_dir }}/key_import/{{ item.keypair }}"
+    mode: 0600
+    remote_src: True
+  with_items: "{{ xos_dynamic_services | selectattr('keypair', 'defined') | list }}"
+
 - name: Copy ssh public key to key_import directory for services that require it
   copy:
     src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey.pub"
@@ -72,6 +80,14 @@
     mode: 0644
     remote_src: True
   with_items: "{{ xos_services | selectattr('keypair', 'defined') | list }}"
+
+- name: Copy ssh public key to key_import directory for dynamic services that require it
+  copy:
+    src: "{{ ssh_pki_dir }}/client_certs/{{ pod_sshkey_name }}_sshkey.pub"
+    dest: "{{ config_cord_profile_dir }}/key_import/{{ item.keypair }}.pub"
+    mode: 0644
+    remote_src: True
+  with_items: "{{ xos_dynamic_services | selectattr('keypair', 'defined') | list }}"
 
 - name: Copy cert chain and core api key and cert
   copy:

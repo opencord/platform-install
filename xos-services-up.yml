@@ -1,4 +1,4 @@
----
+
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,27 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# onboard-profile-playbook.yml
-# Configure XOS with profile-specific config
 
-- name: Check XOS Ready
-  hosts: head
-  roles:
-    - xos-ready
+---
+# start-xos-playbook.yml
+# Start and configure XOS docker containers
 
-- name: Generate config for dynamic services
-  hosts: head
-  roles:
-    - xos-services-config
+- name: Include vars
+  hosts: all
+  tasks:
+    - name: Include variables
+      include_vars: "{{ item }}"
+      with_items:
+        - "profile_manifests/{{ cord_profile }}.yml"
+        - profile_manifests/local_vars.yml
 
-# NOTE the images are built by imagebuilder for services defined in xos_dynamic_services
-# we'll need to manually build the one for real dynamic services
-- name: Run dynamic services
+- name: Start XOS synchronizers containers with docker-compose
   hosts: head
   roles:
     - xos-services-up
-
-- name: Apply profile config
-  hosts: head
-  roles:
-    - xos-config

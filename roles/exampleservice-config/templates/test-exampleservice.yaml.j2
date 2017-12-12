@@ -144,7 +144,7 @@ topology_template:
       type: tosca.nodes.ExampleService
       properties:
         name: exampleservice
-        public_key: {{ lookup('file', config_cord_profile_dir + '/key_import/exampleservice_rsa.pub') }}
+        public_key: {{ lookup('file', head_cord_profile_dir + '/key_import/exampleservice_rsa.pub') }}
         private_key_fn: /opt/xos/services/exampleservice/keys/exampleservice_rsa
         service_message: hello
 
