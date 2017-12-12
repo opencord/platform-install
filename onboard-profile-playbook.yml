@@ -21,6 +21,21 @@
   roles:
     - xos-ready
 
+- name: Build dynamic services containers
+  hosts: build
+  roles:
+    - xos-services-images
+
+- name: Generate config for dynamic services
+  hosts: head
+  roles:
+    - xos-services-config
+
+- name: Run dynamic services
+  hosts: head
+  roles:
+    - xos-services-up
+
 - name: Apply profile config
   hosts: head
   roles:
