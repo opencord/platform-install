@@ -1,0 +1,6 @@
+build_cord_dir: '{{ playbook_dir ~ ''/../..'' }}'
+config_cord_profile_dir: /opt/cord_profile
+pull_docker_registry: ''
+pull_docker_tag: candidate
+xos_docker_networks:
+- xos
