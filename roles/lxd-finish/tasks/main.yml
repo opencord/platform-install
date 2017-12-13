@@ -29,6 +29,10 @@
     ansible containers -u ubuntu
      -m uri
      -a "url=http://opencord.org validate_certs=no"
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
   tags:
     - skip_ansible_lint # connectivity check
 
