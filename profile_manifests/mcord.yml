@@ -33,27 +33,11 @@ xos_tosca_config_templates:
   - vtn-service.yaml
   - fabric-service.yaml
   - management-net.yaml
-  - shared-net.yaml
-  - wan-net.yaml
-  - vsg-net.yaml
   - xos-gui-extensions.yml
 
 xos_new_tosca_config_templates:
-  - s11-net.yaml
-  - s1u-net.yaml
-  - s1mme-net.yaml
-  - nbi-net.yaml
-  - sbi-net.yaml
-  - sgi-net.yaml
-  - flat-net.yaml
   - mcord-services.yml
-  - internet-emulator-service.yaml
-  - sdn-controller-service.yaml
-  - vspgwc-service.yaml
-  - vspgwu-service.yaml
   - service-graph-constraints.yaml
-#  - vepc-service.yaml
-#  - mcord-service-graph.yml
 
 xos_other_templates:
   - fabric-network-cfg.json
@@ -81,23 +65,20 @@ xos_services:
   - name: vmme
     path: orchestration/xos_services/vmme
     keypair: mcord_rsa
-  - name: internetemulator
-    path: orchestration/xos_services/internetemulator
+  - name: vhss
+    path: orchestration/xos_services/vhss
     keypair: mcord_rsa
   - name: sdncontroller
     path: orchestration/xos_services/sdn-controller
+    keypair: mcord_rsa
+  - name: venb
+    path: orchestration/xos_services/venb
     keypair: mcord_rsa
   - name: vspgwc
     path: orchestration/xos_services/vspgwc
     keypair: mcord_rsa
   - name: vspgwu
     path: orchestration/xos_services/vspgwu
-    keypair: mcord_rsa
-  - name: exampleservice
-    path: orchestration/xos_services/exampleservice
-    keypair: exampleservice_rsa
-  - name: venb
-    path: orchestration/xos_services/venb
     keypair: mcord_rsa
   - name: vepc
     path: orchestration/xos_services/epc-service
@@ -285,14 +266,15 @@ xos_images:
     url: "https://github.com/opencord/platform-install/releases/download/vms/trusty-server-cloudimg-amd64-disk1.img.20170201"
     checksum: "sha256:ebf007ba3ec1043b7cd011fc6668e2a1d1d4c69c41071e8513ab355df7a057cb"
 
-  - name: "vsg-1.1"
-    url: "https://github.com/opencord/vsg/releases/download/vms/vsg-1.1.img"
-    checksum: "sha256:16b0beb6778aed0f5feecb05f8d5750e6c262f98e6011e99ddadf7d46a177b6f"
+  - name: "image-venb"
+    url: "https://github.com/opencord/venb/releases/download/vms/ng40-vmcord-1-4GB.img.20171201"
+    checksum: "sha256:3d6d385247560c90db90b2591578c200eafaa62c232a964ab664420e8b2b33ac"
 
-  - name: "ceilometer-trusty-server-multi-nic"
-    url: "https://github.com/opencord/platform-install/releases/download/vms/ceilometer-trusty-server-multi-nic.compressed.qcow2"
-    checksum: "sha256:b77ef8d692b640568dea13df99fe1dfcb1f4bb4ac05408db9ff77399b34f754f"
+  - name: "image-spgwc"
+    url: "http://www.vicci.org/cord/ngic-cp1-cmpress.qcow2.20171121"
+    checksum: "sha256:eca43de006d193625778597cc9b3f171752c31e0ce6dbed363954c87c33935a3"
 
-  - name: "ceilometer-service-trusty-server-multi-nic"
-    url: "https://github.com/opencord/platform-install/releases/download/vms/ceilometer-service-trusty-server-multi-nic.compressed.qcow2.20170131"
-    checksum: "sha256:f0341e283f0f2cb8f70cd1a6347e0081c9c8492ef34eb6397c657ef824800d4f"
+  - name: "image-spgwu"
+    url: "http://www.vicci.org/cord/ngic-dp1-cmpress.qcow2.20171121"
+    checksum: "sha256:2d431dc24b8de5d531ddf9a82c20f692d9ac8c9d4dd0295c535acc06c6635bc5"
+
