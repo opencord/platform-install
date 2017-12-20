@@ -18,15 +18,6 @@
 # deploy-onos-playbook.yml
 # Deploys ONOS in Docker containers on the CORD head node
 
-- name: Include vars
-  hosts: head
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "profile_manifests/{{ cord_profile }}.yml"
-        - profile_manifests/local_vars.yml
-
 - name: Deploy and start ONOS containers
   hosts: head
   roles:

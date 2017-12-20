@@ -18,15 +18,6 @@
 # onboard-monitoringservice.yml
 # Adds the monitoringservice to the currently running pod
 
-- name: Include vars
-  hosts: all
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "profile_manifests/{{ cord_profile }}.yml"
-        - profile_manifests/local_vars.yml
-
 - name: Create monitoringservice config
   hosts: head
   roles:
