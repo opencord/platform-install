@@ -61,7 +61,7 @@
   pip:
     name: "{{ item }}"
   with_items:
-    - docker>=2.4.2
+    - docker==2.6.1
     - docker-compose==1.15.0
     - gitpython
     - graphviz
