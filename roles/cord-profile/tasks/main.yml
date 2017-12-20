@@ -108,25 +108,28 @@
     - style.config.js
     - app.config.js
     - Dockerfile.xos
-    - xos-gui-extensions.yml
     - docker-compose.yml
     - xos-tosca.config.yaml
 
+- name: Set cord_profile_src_dir
+  set_fact:
+    cord_profile_src_dir: "../../orchestration/profiles/{{ cord_use_case }}"
+
 - name: Create profile specific templated TOSCA config files
   template:
-    src: "{{ item }}.j2"
+    src: "{{ cord_profile_src_dir }}/templates/{{ item }}.j2"
     dest: "{{ config_cord_profile_dir }}/{{ item }}"
   with_items: "{{ xos_tosca_config_templates }}"
 
 - name: Create profile specific templated TOSCA config files (new Engine)
   template:
-    src: "{{ item }}.j2"
+    src: "{{ cord_profile_src_dir }}/templates/{{ item }}.j2"
     dest: "{{ config_cord_profile_dir }}/{{ item }}"
   with_items: "{{ xos_new_tosca_config_templates }}"
 
 - name: Create profile specific templated non-TOSCA files
   template:
-    src: "{{ item }}.j2"
+    src: "{{ cord_profile_src_dir }}/templates/{{ item }}.j2"
     dest: "{{ config_cord_profile_dir }}/{{ item }}"
   with_items: "{{ xos_other_templates }}"
 

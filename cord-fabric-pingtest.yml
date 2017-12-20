@@ -18,15 +18,6 @@
 # Send some pings from compute nodes to head node over the fabri
 # Mainly useful for CiaB right now
 
-- name: Include vars
-  hosts: head
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "profile_manifests/{{ cord_profile }}.yml"
-        - profile_manifests/local_vars.yml
-
 - name: Fabric ping test to gateway
   hosts: compute
   remote_user: ubuntu
