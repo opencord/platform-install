@@ -17,15 +17,6 @@
 # cord-config-playbook.yml
 # Creates all configuration for a CORD pod
 
-- name: Include vars
-  hosts: config
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "profile_manifests/{{ cord_profile }}.yml"
-        - profile_manifests/local_vars.yml
-
 - name: Create SSL Root CA, Intermediate CA, Server certs, SSH CA and keypairs
   hosts: config
   roles:
