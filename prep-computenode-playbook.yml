@@ -18,15 +18,6 @@
 # prep-computenode-playbook.yml
 # Prepares a compute node on a CORD pod
 
-- name: Include vars
-  hosts: compute
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "profile_manifests/{{ cord_profile }}.yml"
-        - profile_manifests/local_vars.yml
-
 - name: Common prep, install SSL certificates
   hosts: compute
   become: yes

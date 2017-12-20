@@ -18,15 +18,6 @@
 # Creates a fabric configuration using 'cord generate'
 # Mainly useful for CiaB right now
 
-- name: Include vars
-  hosts: head
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "profile_manifests/{{ cord_profile }}.yml"
-        - profile_manifests/local_vars.yml
-
 - name: Prep fabric on head node
   hosts: head
   roles:

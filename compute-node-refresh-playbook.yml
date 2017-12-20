@@ -21,15 +21,6 @@
 # On physical/CiaB w/MaaS:
 #  ansible-playbook -i /etc/maas/ansible/pod-inventory --extra-vars=@/opt/cord/build/genconfig/config.yml compute-node-refresh-playbook.yml
 
-- name: Include vars
-  hosts: all
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "profile_manifests/{{ cord_profile }}.yml"
-        - profile_manifests/local_vars.yml
-
 - name: Recreate compute node configuration
   hosts: head
   roles:
