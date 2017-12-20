@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ec83b812_23049203",
+        "filename": "compute-node-refresh-playbook.yml",
+        "patchSetId": 33
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-12-20T19:20:30Z",
+      "side": 1,
+      "message": "Unneeded if using `hosts: head` as this just adds the docker containers (`xos_ui` being one of these) to the `hosts` list.",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 46
+      },
+      "revId": "6db89bf7c6b41ee92e10f9bd6f572d58848c0270",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4be87ab8_0812c91e",
+        "filename": "roles/compute-node-enable-maas/defaults/main.yml",
+        "patchSetId": 33
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-12-20T19:20:30Z",
+      "side": 1,
+      "message": "Should this have the FQDN?  ie:\n\n    http://xos-tosca.{{ site_suffix }}/xos-tosca",
+      "range": {
+        "startLine": 28,
+        "startChar": 23,
+        "endLine": 28,
+        "endChar": 32
+      },
+      "revId": "6db89bf7c6b41ee92e10f9bd6f572d58848c0270",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "375d3adb_071d1282",
+        "filename": "roles/cord-profile/templates/ecord-services.yaml.j2",
+        "patchSetId": 33
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-12-20T19:20:30Z",
+      "side": 1,
+      "message": "If this is commented out, should addresses_veg/_public above be commented out as well?",
+      "range": {
+        "startLine": 158,
+        "startChar": 5,
+        "endLine": 159,
+        "endChar": 21
+      },
+      "revId": "6db89bf7c6b41ee92e10f9bd6f572d58848c0270",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
