@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "90379d99_9aedff52",
+        "filename": "roles/cord-profile/templates/carrierethernet-global-app.yaml.j2",
+        "patchSetId": 32
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2017-12-20T09:41:54Z",
+      "side": 1,
+      "message": "while we are at it, missing\n# ONOS_CORD, fully created in vtn.yaml\nfor consistency",
+      "revId": "7d46265aa7ec8a68938094231ad03376f4817a63",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "12bf9dde_eb9c44ab",
+        "filename": "roles/cord-profile/templates/onos-global-service.yaml.j2",
+        "patchSetId": 32
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2017-12-20T09:41:54Z",
+      "side": 1,
+      "message": "this can be used widely and not just by cord",
+      "range": {
+        "startLine": 34,
+        "startChar": 16,
+        "endLine": 34,
+        "endChar": 21
+      },
+      "revId": "7d46265aa7ec8a68938094231ad03376f4817a63",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
