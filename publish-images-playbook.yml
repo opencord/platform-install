@@ -23,8 +23,6 @@
     - name: Include variables
       include_vars: "{{ item }}"
       with_items:
-        - "profile_manifests/{{ cord_profile }}.yml"
-        - profile_manifests/local_vars.yml
         - ../ib_actions.yml
 
 - name: Publish Docker images to registry
