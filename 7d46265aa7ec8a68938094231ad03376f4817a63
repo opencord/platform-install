@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "2f7a92b9_2d4cbb1d",
+        "filename": "roles/cord-profile/templates/carrierethernet-global-app.yaml.j2",
+        "patchSetId": 32
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2017-12-20T18:14:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90379d99_9aedff52",
+      "revId": "7d46265aa7ec8a68938094231ad03376f4817a63",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "12bf9dde_eb9c44ab",
         "filename": "roles/cord-profile/templates/onos-global-service.yaml.j2",
         "patchSetId": 32
@@ -30,6 +48,30 @@
       "writtenOn": "2017-12-20T09:41:54Z",
       "side": 1,
       "message": "this can be used widely and not just by cord",
+      "range": {
+        "startLine": 34,
+        "startChar": 16,
+        "endLine": 34,
+        "endChar": 21
+      },
+      "revId": "7d46265aa7ec8a68938094231ad03376f4817a63",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a1c156fe_5c87263a",
+        "filename": "roles/cord-profile/templates/onos-global-service.yaml.j2",
+        "patchSetId": 32
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2017-12-20T18:14:40Z",
+      "side": 1,
+      "message": "The \"kind\" attribute is just a tag of the service, it will be used to filter between platform and profile services in the graph visualization. I don\u0027t think it prevent anything from using it.",
+      "parentUuid": "12bf9dde_eb9c44ab",
       "range": {
         "startLine": 34,
         "startChar": 16,
