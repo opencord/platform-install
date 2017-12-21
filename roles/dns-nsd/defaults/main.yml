@@ -15,39 +15,34 @@
 
 # dns-nsd/defaults/main.yml
 
-nsd_ip: 127.0.0.1
-
-nsd_conf: "/etc/nsd/nsd.conf"
-nsd_zonesdir: "/var/lib/nsd/zones"
-nsd_group: "nsd"
-
-# default DNS TTL
-dns_ttl: 3600
-
-# NOTE - many of the below settings are shared with the dns-nsd role, and you
-# may need to update them in the defaults of both.
-
-headnode_dns: head1
-
 site_name: placeholder-sitename
 site_suffix: "{{ site_name }}.test"
 
-# Management IP range from DHCP settings
-mgmt_ipv4_first_octets: "192.168.200"
-mgmt_name_reverse_unbound: "168.192.in-addr.arpa"
+headnode_dns: head1
 
-dns_servers:
-  - "{{ mgmt_ipv4_first_octets }}.1"
+management_net_cidr: "192.168.200.0/24"
 
 # node lists
 head_lxd_list: []
 physical_node_list: []
 
+# NOTE - many of the below settings are shared with the dns-nsd role, and you
+# may need to update them in the defaults of both.
+
+nsd_conf: "/etc/nsd/nsd.conf"
+nsd_zonesdir: "/var/lib/nsd/zones"
+
+nsd_group: "nsd"
+
+nsd_ip: 127.0.0.1
+nsd_port: 53
+
+dns_ttl: 3600
+
 # DNS settings for NSD/Unbound
 nsd_zones:
   - name: "{{ site_suffix }}"
-    ipv4_first_octets: "{{ mgmt_ipv4_first_octets }}"
-    name_reverse_unbound: "{{ mgmt_name_reverse_unbound }}"
+    cidr: "{{ management_net_cidr }}"
     soa: ns1
     ns:
       - { name: ns1 }

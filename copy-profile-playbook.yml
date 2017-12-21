@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # copy-profile-playbook.yml
 # Copies the profile to the head node
 
@@ -32,7 +30,7 @@
   roles:
     - { role: copy-profile, become: yes }
     - { role: ssh-install, become: yes }
-    - { role: glance-images, become: yes, when: use_maas }
+    - { role: glance-images, become: yes, when: ( use_openstack | default(True) ) }
     - { role: copy-credentials, become: yes, when: not ( frontend_only | default(False) ) }
 
 - name: Install ssh keys when using MaaS

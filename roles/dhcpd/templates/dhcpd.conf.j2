@@ -1,4 +1,3 @@
-
 {#
 Copyright 2017-present Open Networking Foundation
 
@@ -14,7 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 #}
-
 
 # dhcpd.conf
 # Managed by Ansible!
@@ -52,7 +50,7 @@ subnet {{ subnet.cidr | ipaddr('network') }} netmask {{ subnet.cidr | ipaddr('ne
     option host-name "{{ node.name }}";
 {% set host_ipaddr = (subnet.cidr | ipaddr(node.ipv4_last_octet) | ipaddr('address')) %}
     fixed-address {{ host_ipaddr }};
-    hardware ethernet {{ node.hwaddr | default(hwaddr_prefix ~ (host_ipaddr | ip4_hex)) | hwaddr('unix') }};
+    hardware ethernet {{ node.hwaddr | default(vtn_net_management_host_hwaddr_prefix ~ (host_ipaddr | ip4_hex)) | hwaddr('unix') }};
 {% if node.pxe_filename is defined %}
     filename "{{ node.pxe_filename }}";
     next-server {{ subnet.tftp_server | default(subnet.cidr | ipaddr('1') | ipaddr('address')) }};
@@ -69,7 +67,7 @@ subnet {{ subnet.cidr | ipaddr('network') }} netmask {{ subnet.cidr | ipaddr('ne
     option host-name "{{ node.name }}";
 {% set host_ipaddr = (subnet.cidr | ipaddr(node.ipv4_last_octet) | ipaddr('address')) %}
     fixed-address {{ host_ipaddr }};
-    hardware ethernet {{ node.hwaddr | default(hwaddr_prefix ~ (host_ipaddr | ip4_hex)) | hwaddr('unix') }};
+    hardware ethernet {{ node.hwaddr | default(vtn_net_management_host_hwaddr_prefix ~ (host_ipaddr | ip4_hex)) | hwaddr('unix') }};
 {% if node.pxe_filename is defined %}
     filename "{{ subnet.pxe_filename }}";
     next-server {{ subnet.tftp_server | default(subnet.cidr | ipaddr('1') | ipaddr('address')) }};

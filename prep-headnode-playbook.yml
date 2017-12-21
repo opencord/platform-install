@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # prep-headnode-playbook.yml
 # Preps the head node of a CORD pod for thr est of the install
 
@@ -44,7 +42,7 @@
   roles:
     - docker-install
 
-- name: Configure management network
+- name: Configure network interfaces
   hosts: head
   become: yes
   roles:
@@ -54,7 +52,6 @@
   hosts: head
   become: yes
   roles:
-    - { role: head-mgmtbr, when: not use_maas }
     - { role: dns-nsd, when: not use_maas }
     - { role: dns-unbound, when: not use_maas }
 

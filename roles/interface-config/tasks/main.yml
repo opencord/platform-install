@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,22 +13,90 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # interface-config/tasks/main.yml
 
-- name: Create network interface for management network
+- name: Install bridging/bonding utilities
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - bridge-utils
+    - ifenslave
+    - iptables-persistent
+
+- name: Create management network interfaces
   template:
-    src: eth.cfg.j2
-    dest: "/etc/network/interfaces.d/{{ mgmt_interface }}.cfg"
+    src: management.cfg.j2
+    dest: "/etc/network/interfaces.d/management.cfg"
     owner: root
     group: root
     mode: 0644
-  register: mgmtint_config
+  register: management_net_config
 
-- name: Bring up management network if reconfigured
-  when: mgmtint_config.changed
-  command: "ifup {{ mgmt_interface }}"
+- name: Bring up management network interfaces, if reconfigured
+  when: management_net_config.changed
+  command: "ifup {{ item }}"
+  with_flattened:
+   - mgmtbridge
+   - mgmtbond
+   - "{{ management_net_interfaces }}"
+   - vethmgmt0
+  tags:
+    - skip_ansible_lint # needs to be run before next steps
+
+# NAT/forward management network traffic out the head node
+- name: Default to accept forwarded traffic
+  when: "'head' in group_names and management_net_config.changed"
+  iptables:
+    chain: FORWARD
+    policy: ACCEPT
+  notify:
+    - iptables-save
+  tags:
+    - skip_ansible_lint # need to save config in following steps
+
+- name: Configure forwarding for management bridge
+  when: "'head' in group_names and management_net_config.changed"
+  iptables:
+    chain: FORWARD
+    in_interface: mgmtbridge
+    jump: ACCEPT
+  notify:
+    - iptables-save
+  tags:
+    - skip_ansible_lint # need to save config in following steps
+
+- name: Configure NAT for management network
+  when: "'head' in group_names and management_net_config.changed"
+  iptables:
+    table: nat
+    chain: POSTROUTING
+    out_interface: "{{ headnode_nat_interface }}"
+    jump: MASQUERADE
+  notify:
+    - iptables-save
+  tags:
+    - skip_ansible_lint # need to save config in following steps
+
+# Create fabric bridge and veth pair
+- name: Create fabric network interfaces on compute nodes
+  template:
+    src: fabric.cfg.j2
+    dest: "/etc/network/interfaces.d/fabric.cfg"
+    owner: root
+    group: root
+    mode: 0644
+  register: compute_fabric_config
+
+- name: Bring up fabric interfaces, if reconfigured
+  when: compute_fabric_config.changed
+  command: "ifup {{ item }}"
+  with_flattened:
+    - fabricbridge
+    - fabricbond
+    - "{{ fabric_net_interfaces }}"
+    - vethfabric0
   tags:
     - skip_ansible_lint # needs to be run before next steps
 

@@ -1,4 +1,3 @@
-
 {#
 Copyright 2017-present Open Networking Foundation
 
@@ -15,31 +14,30 @@ See the License for the specific language governing permissions and
 limitations under the License.
 #}
 
-
 # nsd.conf
-# configured by Ansible!
+# created by dns-nsd/templates/nsd.conf.j2
 
 server:
   hide-version: yes
 ## bind to a specific address/port
   ip-address: {{ nsd_ip }}
 ## port number
-  port: {{ nsd_port|default(53) }} 
+  port: {{ nsd_port }}
   server-count: 1
   ip4-only: yes
   zonesdir: {{ nsd_zonesdir }}
 
 remote-control:
-  control-enable: no
+  control-enable: yes
 
-# zones to load
+# zonefiles to load
 {% for zone in nsd_zones %}
 zone:
   name: {{ zone.name }}
   zonefile: {{ zone.name }}.forward
 
 zone:
-  name: {{ (zone.ipv4_first_octets ~ ".0") | ipaddr('revdns') | regex_replace('^0\.','') }} 
+  name: {{ zone.cidr | unbound_revdns }}
   zonefile: {{ zone.name }}.reverse
 
 {% endfor %}

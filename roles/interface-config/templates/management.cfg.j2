@@ -1,0 +1,57 @@
+# Created by platform-install: interface-config/templates/management.cfg.j2
+{% for node in physical_node_list if node.name == ansible_hostname %}
+
+# management bridge between physical and virtual interfaces for VTN
+{% set mgmtbr_ip = ( vtn_net_management_host_cidr | ipaddr(node.ipv4_last_octet) | ipaddr('address')) %}
+auto mgmtbridge
+iface mgmtbridge inet static
+  pre-up ip link add mgmtbridge type bridge
+  bridge_ports mgmtbond vethmgmt0
+  address {{ mgmtbr_ip }}
+  network {{ vtn_net_management_host_cidr | ipaddr('network') }}
+  netmask {{ vtn_net_management_host_cidr | ipaddr('netmask') }}
+  broadcast {{ vtn_net_management_host_cidr | ipaddr('broadcast') }}
+  hwaddress ether {{ ( vtn_net_management_host_hwaddr_prefix ~ ( mgmtbr_ip | ip4_hex )) | hwaddr('unix') }}
+  dns-search {{ site_suffix }}
+  dns-nameservers {{ dns_servers | join(" ") }}
+
+# management bond of physical interfaces
+auto mgmtbond
+iface mgmtbond inet manual
+  pre-up ip link add mgmtbond type bond
+  pre-up ip link set mgmtbond up
+  bond-slaves none
+  bond-mode active-backup
+  bond-miimon 100
+  post-down ip link del mgmtbond
+
+{% if management_net_interfaces %}
+# physical network members of mgmtbond
+{% for mgmt_int in management_net_interfaces %}
+auto {{ mgmt_int }}
+iface {{ mgmt_int }} inet manual
+  pre-up ip link set {{ mgmt_int }} master mgmtbond
+  bond-master mgmtbond
+  bond-mode active-backup
+  bond-primary {{ management_net_interfaces | join(' ') }}
+  post-down ip link set dev {{ mgmt_int }} nomaster
+
+{% endfor %}
+{% endif %}
+
+# veth interfaces for VTN MANAGEMENT_HOST
+# vethmgmt0: connected to mgmtbond
+auto vethmgmt0
+iface vethmgmt0 inet manual
+  pre-up ip link add vethmgmt0 type veth peer name vethmgmt1
+  pre-up ip link set vethmgmt0 up
+  pre-up ip link set vethmgmt1 up
+  post-up ip link set dev vethmgmt0 master mgmtbridge
+  pre-down ip link set dev vethmgmt0 nomaster
+  post-down ip link del vethmgmt0
+
+# vethmgmt1: connected to VTN as hostManagementIface, if enabled
+# Brought up by vethmgmt0
+
+{% endfor %}
+

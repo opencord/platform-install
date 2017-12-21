@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # roles/dns-configure/tasks.yml
 
 - name: Make sure resolvconf is doing DNS resolver mangling
@@ -45,6 +43,15 @@
 - name: Check that VM's can be found in DNS
   shell: "dig +short {{ item.name }}.{{ site_suffix }} | grep {{ item.ipv4_last_octet }}"
   with_items: "{{ head_lxd_list }}"
+  tags:
+   - skip_ansible_lint # purely a way to pass/fail config done so far. Ansible needs a "dns_query" module
+
+- name: Check that aliases can be found in DNS
+  when: not use_maas
+  shell: "dig +short {{ item.1.name }}.{{ site_suffix }} | grep {{ item.1.dest }}"
+  with_subelements:
+    - "{{ nsd_zones }}"
+    - aliases
   tags:
    - skip_ansible_lint # purely a way to pass/fail config done so far. Ansible needs a "dns_query" module
 

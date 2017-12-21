@@ -1,0 +1,83 @@
+# Created by platform-install: interface-config/templates/fabric.cfg.j2
+{% for node in physical_node_list if node.name == ansible_hostname %}
+
+# fabricbridge between physical bond and virtual interfaces for VTN
+auto fabricbridge
+iface fabricbridge inet manual
+  pre-up ip link add fabricbridge type bridge
+  bridge_ports fabricbond vethfabric0
+
+# fabric bond of physical interfaces for VTN
+auto fabricbond
+iface fabricbond inet manual
+  pre-up ip link add fabricbond type bond
+  pre-up ip link set fabricbond up
+  bond-miimon 100
+  bond-slaves none
+  bond-mode active-backup
+  post-down ip link del fabricbond
+
+{% if fabric_net_interfaces %}
+# physical network members of fabricbond
+{% for fab_int in fabric_net_interfaces %}
+auto {{ fab_int }}
+iface {{ fab_int }} inet manual
+  pre-up ip link set {{ mgmt_int }} master fabricbond
+  bond-master fabricbond
+  bond-mode active-backup
+  bond-primary {{ management_net_interfaces | join(' ') }}
+  post-down ip link set dev {{ mgmt_int }} nomaster
+
+{% endfor %}
+{% endif %}
+
+# vethfabric0/vethfabric1 interfaces connect from VTN br-int to fabricbridge
+# vethfabric0: connected to fabricbridge
+auto vethfabric0
+iface vethfabric0 inet manual
+  pre-up ip link add vethfabric0 type veth peer name vethfabric1
+  pre-up ip link set vethfabric0 up
+  post-up ip link set dev vethfabric0 master fabricbridge
+  pre-down ip link set dev vethfabric0 nomaster
+  post-down ip link del vethfabric0
+
+# vethfabric1: becomes a part of br-int, which takes over the IP address
+{% set vtn_veth_ip = ( vtn_net_public_cidr | ipaddr(node.ipv4_last_octet) | ipaddr('address')) %}
+auto vethfabric1
+iface vethfabric1 inet static
+  address {{ vtn_veth_ip }}
+  network {{ vtn_net_public_cidr | ipaddr('network') }}
+  netmask {{ vtn_net_public_cidr | ipaddr('netmask') }}
+  gateway {{ vtn_net_public_cidr | ipaddr('1') | ipaddr('address') }}
+  broadcast {{ vtn_net_public_cidr | ipaddr('broadcast') }}
+  hwaddress ether {{ ( vtn_net_public_hwaddr_prefix ~ ( vtn_veth_ip | ip4_hex )) | hwaddr('unix') }}
+
+{% if use_addresspool_vsg %}
+# vSG public gateway
+{% set ap_vsg_veth_ip = ( addresspool_vsg_cidr | ipaddr(node.ipv4_last_octet) | ipaddr('address')) %}
+auto vethfabric1:0
+iface vethfabric1:0 inet static
+  address {{ ap_vsg_veth_ip }}
+  network {{ addresspool_vsg_cidr | ipaddr('network') }}
+  netmask {{ addresspool_vsg_cidr | ipaddr('netmask') }}
+  gateway {{ addresspool_vsg_cidr | ipaddr('1') | ipaddr('address') }}
+  broadcast {{ addresspool_vsg_cidr | ipaddr('broadcast') }}
+  hwaddress ether {{ ( addresspool_vsg_hwaddr_prefix ~ ( ap_vsg_eth_ip | ip4_hex )) | hwaddr('unix') }}
+
+{% endif %}
+
+{% if use_addresspool_public %}
+# public network gateway
+{% set ap_pub_veth_ip = ( addresspool_public_cidr | ipaddr(node.ipv4_last_octet) | ipaddr('address')) %}
+auto vethfabric1:1
+iface vethfabric1:1 inet static
+  address {{ ap_pub_veth_ip }}
+  network {{ addresspool_public_cidr | ipaddr('network') }}
+  netmask {{ addresspool_public_cidr | ipaddr('netmask') }}
+  gateway {{ addresspool_public_cidr | ipaddr('1') | ipaddr('address') }}
+  broadcast {{ addresspool_public_cidr | ipaddr('broadcast') }}
+  hwaddress ether {{ ( addresspool_public_hwaddr_prefix ~ ( ap_pub_veth_ip | ip4_hex )) | hwaddr('unix') }}
+
+{% endif %}
+{% endfor %}
+

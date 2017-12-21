@@ -15,37 +15,34 @@
 
 # dns-unbound/defaults/main.yml
 
-unbound_conf: "/etc/unbound/unbound.conf"
-unbound_group: "unbound"
-
-unbound_listen_on_default: False
-
-unbound_listen_all: True
-
-# NOTE - many of the below settings are shared with the dns-nsd role, and you
-# may need to update them in the defaults of both.
-
+# Shared settings
 site_name: placeholder-sitename
 site_suffix: "{{ site_name }}.test"
 
 headnode_dns: head1
 
-# Management IP range from DHCP settings
-mgmt_ipv4_first_octets: "192.168.200"
-mgmt_name_reverse_unbound: "168.192.in-addr.arpa"
-
-unbound_interfaces:
-  - "{{ mgmt_ipv4_first_octets }}.1/24"
+management_net_cidr: "192.168.200.0/24"
 
 # node lists
 head_lxd_list: []
 physical_node_list: []
 
+# NOTE - many of the below settings are shared with the dns-nsd role, and you
+# may need to update them in the defaults of both.
+
+nsd_ip: 127.0.0.1
+
+unbound_conf: "/etc/unbound/unbound.conf"
+unbound_group: "unbound"
+
+unbound_listen_on_default: False
+unbound_listen_all: True
+unbound_listen_zones: True
+
 # DNS settings for NSD/Unbound
 nsd_zones:
   - name: "{{ site_suffix }}"
-    ipv4_first_octets: "{{ mgmt_ipv4_first_octets }}"
-    name_reverse_unbound: "{{ mgmt_name_reverse_unbound }}"
+    cidr: "{{ management_net_cidr }}"
     soa: ns1
     ns:
       - { name: ns1 }

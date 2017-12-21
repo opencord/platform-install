@@ -1,4 +1,4 @@
-
+# created by dns-unbound/templates/unbound.conf.j2
 {#
 Copyright 2017-present Open Networking Foundation
 
@@ -15,21 +15,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 #}
 
-
-# unbound.conf (configured by Ansible)
-
 server:
 {% if unbound_listen_on_default %}
-  interface: {{ ansible_default_ipv4.address }}  
+  # created by unbound_listen_on_default
+  interface: {{ ansible_default_ipv4.address }}
 {% endif %}
-{% if unbound_interfaces is defined %}
-{% for cidr_ipv4 in unbound_interfaces %}
-  interface: {{ cidr_ipv4 | ipaddr('address') }}
+{% if unbound_listen_zones %}
+{% for zone in nsd_zones %}
+  # created by nsd_zones: {{ zone.name }}
+  interface: {{ zone.cidr | ipaddr('1') | ipaddr('address') }}
 {% endfor %}
 {% endif %}
   verbosity: 1
   port: 53
   do-ip4: yes
+  do-ip6: no
   do-udp: yes
   do-tcp: yes
 
@@ -41,36 +41,29 @@ server:
   access-control: 0.0.0.0/0 allow
 {% endif %}
 
-{% if unbound_listen_on_default %}
-  # allow from default interfaces
-  access-control: {{ ansible_default_ipv4.address }}/{{ (ansible_default_ipv4.address ~ "/" ~ ansible_default_ipv4.netmask) | ipaddr('prefix') }} allow
-{% endif %}
-
-{% if unbound_interfaces is defined %}
-  # allow from local networks
-{% for cidr_ipv4 in unbound_interfaces %}
-  access-control: {{ cidr_ipv4 | ipaddr('0') }} allow
+{% if nsd_zones %}
+  # allow from networks defined in zones
+{% for zone in nsd_zones %}
+  access-control: {{ zone.cidr | ipaddr('0') }} allow
 {% endfor %}
-{% endif %}
 
-{% if nsd_zones is defined %}
 # allow unbound to query localhost, where nsd is listening
 do-not-query-localhost: no
 
 # allow reverse queries for RFC1918 addresses
 {% for zone in nsd_zones %}
-local-zone: "{{ zone.name_reverse_unbound }}." nodefault
+local-zone: "{{ zone.cidr | unbound_revdns }}" nodefault
 {% endfor %}
 
 # stub-zones zones that nsd is serving
 {% for zone in nsd_zones %}
 stub-zone:
   name: "{{ zone.name }}"
-  stub-addr: {{ nsd_ip | default("127.0.0.1") }}
+  stub-addr: {{ nsd_ip }}
 
 stub-zone:
-  name: "{{ zone.name_reverse_unbound }}."
-  stub-addr: {{ nsd_ip | default("127.0.0.1") }}
+  name: "{{ zone.cidr | unbound_revdns }}"
+  stub-addr: {{ nsd_ip }}
 
 {% endfor %}
 {% endif %}
