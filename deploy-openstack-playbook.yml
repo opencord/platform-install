@@ -18,15 +18,6 @@
 # deploy-openstack-playbook.yml
 # Deploys OpenStack in LXD containers on the CORD head node
 
-- name: Include vars
-  hosts: all
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "profile_manifests/{{ cord_profile }}.yml"
-        - profile_manifests/local_vars.yml
-
 - name: Create LXD containers
   hosts: head
   become: yes

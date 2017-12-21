@@ -19,15 +19,6 @@
 # Enables monitoring for infrastructure services (OpenStack and ONOS)
 # ansible-playbook -i inventory/rcord --extra-vars @../genconfig/config.yml monitoringservice-enable-inframonitoring.yml
 
-- name: Include vars
-  hosts: all
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "profile_manifests/{{ cord_profile }}.yml"
-        - profile_manifests/local_vars.yml
-
 - include: add-onboard-containers-playbook.yml
 
 - name: Run role to execute TOSCA file

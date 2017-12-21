@@ -18,15 +18,6 @@
 # monitoringservice_test_exampleservicemetrics.yml
 # Tests the monitoringservice after enabling monitoring for exampleservice
 
-- name: Include vars
-  hosts: all
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "profile_manifests/{{ cord_profile }}.yml"
-        - profile_manifests/local_vars.yml
-
 - name: Invoke common+test-exampleservicemonitoring roles
   hosts: head
   roles:

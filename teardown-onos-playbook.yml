@@ -16,15 +16,6 @@
 
 # teardown-onos-playbook.yml
 
-- name: Include vars
-  hosts: head
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "profile_manifests/{{ cord_profile }}.yml"
-        - profile_manifests/local_vars.yml
-
 - name: Teardown ONOS docker containers
   hosts: head
   roles:

@@ -24,15 +24,6 @@
   roles:
     - xos-onboard-test-hosts
 
-- name: Include vars
-  hosts: all
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "{{ playbook_dir }}/profile_manifests/{{ cord_profile }}.yml"
-        - "{{ playbook_dir }}/profile_manifests/local_vars.yml"
-
 - name: Check UI Container
   hosts: xos-ui
   connection: docker

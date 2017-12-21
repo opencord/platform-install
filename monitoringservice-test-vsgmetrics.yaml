@@ -18,15 +18,6 @@
 # monitoringservice_test_vsgmetrics.yml
 # Tests the monitoringservice after enabling monitoring for vSG service
 
-- name: Include vars
-  hosts: all
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "profile_manifests/{{ cord_profile }}.yml"
-        - profile_manifests/local_vars.yml
-
 - name: Invoke common+test-vsgmonitoring roles
   hosts: head
   roles:

@@ -16,15 +16,6 @@
 # copy-profile-playbook.yml
 # Copies the profile to the head node
 
-- name: Include vars
-  hosts: head, config
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "profile_manifests/{{ cord_profile }}.yml"
-        - profile_manifests/local_vars.yml
-
 - name: Copy cord_profile to head node from config node
   hosts: head
   roles:

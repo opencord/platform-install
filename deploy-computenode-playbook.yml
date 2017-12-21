@@ -18,15 +18,6 @@
 # deploy-computenode-playbook.yml
 # deploys compute nodes with Juju, creates config
 
-- name: Include vars
-  hosts: all
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "profile_manifests/{{ cord_profile }}.yml"
-        - profile_manifests/local_vars.yml
-
 - name: Deploy compute nodes, create configuration
   hosts: head
   roles:

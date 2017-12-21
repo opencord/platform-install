@@ -22,15 +22,6 @@
 # eventually fail. Until it is fixed, once monitoring service synchronizer is ready, run this
 # ansible playbook which has only tasks for instantiating the monitoring service models.
 
-- name: Include vars
-  hosts: all
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "profile_manifests/{{ cord_profile }}.yml"
-        - profile_manifests/local_vars.yml
-
 - name: Create monitoringservice config
   hosts: head
   roles:

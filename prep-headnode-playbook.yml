@@ -16,15 +16,6 @@
 # prep-headnode-playbook.yml
 # Preps the head node of a CORD pod for thr est of the install
 
-- name: Include vars
-  hosts: head, config
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "profile_manifests/{{ cord_profile }}.yml"
-        - profile_manifests/local_vars.yml
-
 - name: Prep head node
   hosts: head
   roles:

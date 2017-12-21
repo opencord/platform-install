@@ -14,20 +14,6 @@
 
 ---
 
-- name: Include vars
-  hosts: all
-  tasks:
-    - name: Include variables
-      include_vars: "{{ item }}"
-      with_items:
-        - "{{ playbook_dir }}/profile_manifests/{{ cord_profile }}.yml"
-        - "{{ playbook_dir }}/profile_manifests/local_vars.yml"
-  tags:
-    - rcord
-    - ecord
-    - ecord-global
-    - mcord
-
 - name: Add xos onboarded containers to inventory to test
   hosts: head
   roles:
