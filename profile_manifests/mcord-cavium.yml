@@ -29,22 +29,20 @@ use_fabric: True
 use_maas: True
 
 # XOS config
-xos_tosca_config_templates:
+xos_new_tosca_config_templates:
   - vtn-service.yaml
   - fabric-service.yaml
   - management-net.yaml
   - shared-net.yaml
   - wan-net.yaml
   - vsg-net.yaml
-  - xos-gui-extensions.yml
-
-xos_new_tosca_config_templates:
   - s11-net.yaml
   - flat-net-s1u.yaml
   - flat-net-s1mme.yaml
   - spgw-net.yaml
   - sgi-net.yaml
   - mcord-cavium-services.yml
+  - xos-gui-extensions.yml
   - service-graph-constraints.yaml
 
 xos_other_templates:
