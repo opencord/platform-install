@@ -23,6 +23,16 @@
     cache_valid_time: 3600
   with_items:
     - unbound
+  register: unbound_install
+
+- name: Stop unbound until configured
+  when: unbound_install.changed
+  service:
+    name: unbound
+    enabled: no
+    state: stopped
+  tags:
+    - skip_ansible_lint # need to down service before configured
 
 - name: create unbound.conf from template
   template:
@@ -33,7 +43,6 @@
     group: "{{ unbound_group }}"
     # validate='unbound-checkconf %s' - can't use, checks path, not just config.
   notify:
-   - start-unbound
    - reload-unbound
 
 - name: flush unbound handlers
