@@ -30,7 +30,7 @@ use_maas: True
 
 # XOS config
 
-xos_new_tosca_config_templates:
+xos_tosca_config_templates:
   - vtn-service.yaml
   - fabric-service.yaml
   - management-net.yaml

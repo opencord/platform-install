@@ -18,8 +18,6 @@
 # onboard-profile-playbook.yml
 # Configure XOS with profile-specific config
 
-- include: add-onboard-containers-playbook.yml
-
 - name: Check XOS Ready
   hosts: head
   connection: docker
@@ -35,13 +33,7 @@
         - "profile_manifests/{{ cord_profile }}.yml"
         - profile_manifests/local_vars.yml
 
-- name: Apply profile config (new engine)
-  hosts: head
-  roles:
-    - xos-config-new-tosca
-
 - name: Apply profile config
-  hosts: xos_ui
-  connection: docker
+  hosts: head
   roles:
     - xos-config

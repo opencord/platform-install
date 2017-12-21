@@ -37,8 +37,6 @@ xos_tosca_config_templates:
   - wan-net.yaml
   - vsg-net.yaml
   - xos-gui-extensions.yml
-
-xos_new_tosca_config_templates:
   - s11-net.yaml
   - flat-net-s1u.yaml
   - flat-net-s1mme.yaml

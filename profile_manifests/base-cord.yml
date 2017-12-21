@@ -29,17 +29,13 @@ use_fabric: True
 use_maas: True
 
 # XOS config
-xos_new_tosca_config_templates:
+xos_tosca_config_templates:
   - vtn-service.yaml
   - fabric-service.yaml
   - management-net.yaml
   - addressmanager-service.yaml
   - public-net.yaml
   - xos-gui-extensions.yml
-
-# An example of adding TOSCA for a service using the new engine.
-#xos_new_tosca_config_templates:
-#  - template-service.yaml
 
 xos_other_templates:
   - fabric-network-cfg.json

@@ -30,7 +30,7 @@ use_maas: True
 use_apt_cache: True
 
 # XOS config
-xos_new_tosca_config_templates:
+xos_tosca_config_templates:
   - onos-global-service.yaml
   - carrierethernet-global-app.yaml
   - service-graph-constraints.yaml
