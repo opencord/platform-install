@@ -35,7 +35,7 @@
     method: POST
     headers:
       xos-username: "{{ xos_admin_user }}"
-      xos-password: "{{ xos_admin_pass }}"
+      xos-password: "{{ maas_xos_admin_pass }}"
     body: "{{ lookup('file', '/tmp/' + item ) }}"
     status_code: 200
   with_items:
@@ -52,7 +52,7 @@
     method: POST
     headers:
       xos-username: "{{ xos_admin_user }}"
-      xos-password: "{{ xos_admin_pass }}"
+      xos-password: "{{ maas_xos_admin_pass }}"
     body: "{{ lookup('file', '/tmp/' + item ) }}"
   with_items:
     - vtn-service.yaml
