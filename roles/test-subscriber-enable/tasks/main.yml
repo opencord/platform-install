@@ -18,7 +18,15 @@
 # test-subscriber-enable/tasks/main.yml
 
 - name: Run TOSCA to add test-subscriber
-  command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/test-subscriber.yaml"
+  uri:
+    url: "{{ xos_tosca_url }}/run"
+    method: POST
+    headers:
+      xos-username: "{{ xos_admin_user }}"
+      xos-password: "{{ head_xos_admin_pass }}"
+    body: "{{ lookup('file', head_cord_profile_dir + '/' + item ) }}"
+    status_code: 200
+  with_items:
+    - "test-subscriber.yaml"
   tags:
     - skip_ansible_lint # TOSCA loading should be idempotent
-
