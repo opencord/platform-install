@@ -30,7 +30,6 @@ topology_template:
       type: tosca.nodes.CeilometerService
       requirements:
       properties:
-          view_url: /admin/monitoring/ceilometerservice/$id$/
           kind: ceilometer
           ceilometer_enable_pub_sub: true
           public_key: { get_artifact: [ SELF, pubkey, LOCAL_FILE] }
@@ -42,7 +41,6 @@ topology_template:
 #      type: tosca.nodes.SFlowService
 #      requirements:
 #      properties:
-#          view_url: /admin/monitoring/sflowservice/$id$/
 #          kind: sflow
 #          sflow_port: 6343
 #          sflow_api_port: 33333
