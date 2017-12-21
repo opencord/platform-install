@@ -29,11 +29,8 @@
   roles:
     - test-subscriber-config
 
-- include: add-onboard-containers-playbook.yml
-
 - name: Enable the test subscriber
-  hosts: xos_ui
-  connection: docker
+  hosts: head
   roles:
     - test-subscriber-enable
 

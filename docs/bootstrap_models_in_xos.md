@@ -3,7 +3,7 @@
 All the data model bootstrapping in XOS is done via TOSCA in platform install. 
 There two ansible roles involved in that:
 - `cord-profile` responsible to generate the recipes
-- `xos-config-new-tosca` responsible for onboarding the recipes
+- `xos-config` responsible for onboarding the recipes
 
 Here is a list of changes you'll need to make in order to add a new recipe to your profiles:
 
@@ -34,10 +34,10 @@ You can use here all the variables defined in the [build glossary](../build_glos
 
 In `platform-install/profile_manifests` locate the profile that your using and open it.
 
-Locate a section called `xos_new_tosca_config_templates` (if it's missing create it), 
+Locate a section called `xos_tosca_config_templates` (if it's missing create it), 
 and add there the list of templates you want to be generated and onboarded, eg:
 ```
-xos_new_tosca_config_templates:
+xos_tosca_config_templates:
   - site.yml
 ```
 
