@@ -30,7 +30,6 @@ topology_template:
     service#vrouter:
       type: tosca.nodes.VRouterService
       properties:
-          view_url: /admin/vrouter/
           no-delete: true
           no-create: true
           rest_hostname: onos-fabric.{{ site_suffix }}
