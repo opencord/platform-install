@@ -21,8 +21,7 @@
   roles:
     - xos-ready
 
-- name: Apply profile config (new engine)
+- name: Apply profile config
   hosts: head
   roles:
-    - xos-config-new-tosca
-
+    - xos-config

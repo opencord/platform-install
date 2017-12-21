@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,30 +13,52 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # xos-config/tasks/main.yml
 
-# TODO move this to the TOSCA container
+- name: Bootstrap XOS database - create site, deployment, admin user
+  uri:
+    url: "{{ xos_tosca_url }}/run"
+    method: POST
+    headers:
+      xos-username: "{{ xos_admin_user }}"
+      xos-password: "{{ head_xos_admin_pass }}"
+    body: "{{ lookup('file', head_cord_profile_dir + '/' + item ) }}"
+    status_code: 200
+  register: result
+  until: result | success
+  retries: 40
+  delay: 2
+  with_items:
+    - "fixtures.yaml"
+    - "deployment.yaml"
 
-# - name: Bootstrap XOS database - create site, deployment, admin user
-#   command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/{{ item }}"
-#   with_items:
-#     - "fixtures.yaml"
-#     - "deployment.yaml"
-#   tags:
-#     - skip_ansible_lint # TOSCA loading should be idempotent
+- name: Configure XOS with OpenStack config
+  uri:
+    url: "{{ xos_tosca_url }}/run"
+    method: POST
+    headers:
+      xos-username: "{{ xos_admin_user }}"
+      xos-password: "{{ head_xos_admin_pass }}"
+    body: "{{ lookup('file', head_cord_profile_dir + '/' + item ) }}"
+    status_code: 200
+  register: result
+  until: result | success
+  retries: 40
+  delay: 2
+  with_items:
+    - openstack.yaml
 
-# - name: Configure XOS with OpenStack config
-#   command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/{{ item }}"
-#   with_items:
-#     - openstack.yaml
-#   tags:
-#     - skip_ansible_lint # TOSCA loading should be idempotent
-
-- name: Configure XOS with profile specific TOSCA
-  command: "python /opt/xos/tosca/run.py {{ xos_admin_user }} /opt/cord_profile/{{ item }}"
-  with_items: "{{ xos_tosca_config_templates }}"
-  tags:
-    - skip_ansible_lint # TOSCA loading should be idempotent
-
+- name: Configure XOS with profile specific TOSCA (new Engine)
+  uri:
+    url: "{{ xos_tosca_url }}/run"
+    method: POST
+    headers:
+      xos-username: "{{ xos_admin_user }}"
+      xos-password: "{{ head_xos_admin_pass }}"
+    body: "{{ lookup('file', head_cord_profile_dir + '/' + item ) }}"
+    status_code: 200
+  register: result
+  until: result | success
+  retries: 40
+  delay: 2
+  with_items: "{{ xos_new_tosca_config_templates }}"

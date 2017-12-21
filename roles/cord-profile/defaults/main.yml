@@ -66,8 +66,6 @@ xos_gui_service_graph_constraints: []
 
 xos_tosca_config_templates: []
 
-xos_new_tosca_config_templates: []
-
 xos_other_templates: []
 
 # XOS Config (xos_config.yaml)
@@ -102,6 +100,7 @@ keystone_admin_password: "{{ lookup('password', credentials_dir ~ '/cord_keyston
 # used in deployment.yaml.j2
 xos_admin_user: "xosadmin@opencord.org"
 xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+head_xos_admin_pass: "{{ lookup('file', head_credentials_dir ~ '/' ~ xos_admin_user) }}"
 xos_admin_first: XOS
 xos_admin_last: Admin
 
