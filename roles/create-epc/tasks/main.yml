@@ -20,7 +20,7 @@
   uri:
     url: http://localhost/xosapi/v1/vepc/vepcserviceinstances
     user: "{{ xos_admin_user }}"
-    password: "{{ xos_admin_pass }}"
+    password: "{{ head_xos_admin_pass }}"
     return_content: yes
   register: result
 
@@ -28,7 +28,7 @@
   uri:
     url: http://localhost/xosapi/v1/vepc/vepcservices
     user: "{{ xos_admin_user }}"
-    password: "{{ xos_admin_pass }}"
+    password: "{{ head_xos_admin_pass }}"
     return_content: yes
   register: vepcservice
   when: not result.json["items"]
@@ -37,7 +37,7 @@
   uri:
     url: http://localhost/xosapi/v1/vepc/vepcserviceinstances
     user: "{{ xos_admin_user }}"
-    password: "{{ xos_admin_pass }}"
+    password: "{{ head_xos_admin_pass }}"
     method: POST
     body:
       blueprint: "{{ epc_blueprint }}"
