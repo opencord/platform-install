@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +14,6 @@
 # limitations under the License.
 
 
----
 # compute-node-enable/defaults/main.yml
 
 xos_tosca_url: "http://xos-tosca/xos-tosca"
@@ -24,5 +23,5 @@ head_credentials_dir: "/opt/credentials"
 head_cord_profile_dir: "/opt/cord_profile"
 
 xos_admin_user: "xosadmin@opencord.org"
-xos_admin_pass: "{{ lookup('password', head_credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+head_xos_admin_pass: "{{ lookup('file', head_credentials_dir ~ '/' ~ xos_admin_user) }}"
 
