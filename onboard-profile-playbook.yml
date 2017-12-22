@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,16 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # onboard-profile-playbook.yml
 # Configure XOS with profile-specific config
 
-- include: add-onboard-containers-playbook.yml
-
 - name: Check XOS Ready
   hosts: head
-  connection: docker
   roles:
     - xos-ready
 
@@ -31,8 +26,3 @@
   roles:
     - xos-config-new-tosca
 
-- name: Apply profile config
-  hosts: xos_ui
-  connection: docker
-  roles:
-    - xos-config

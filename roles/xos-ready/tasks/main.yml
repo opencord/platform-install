@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,15 +13,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # xos-ready/tasks/main.yml
 
-- name: Wait for XOS Chameleon to be ready after service onboarding #this means core is ready
-  shell: curl localhost:{{ xos_chameleon_port }}/xosapi/v1/modeldefs
-  register: result
-  until: result.stdout.find("items") != -1
-  retries: 30
-  delay: 20
-  tags:
-    - skip_ansible_lint # running a sub job
+- name: Wait for XOS Chameleon to be ready after service onboarding
+  uri:
+    url: "http://localhost:{{ xos_chameleon_port }}/xosapi/v1/modeldefs"
+    method: GET
+    status_code: 200
+    return_content: yes
+  register: xosready_chameleon
+  until: xosready_chameleon.content.find("items") != -1
+  retries: 40
+  delay: 15
+
+- name: Wait for XOS TOSCA engine to be ready after service onboarding
+  uri:
+    url: "{{ xos_tosca_url }}"
+    method: GET
+    status_code: 200
+  retries: 40
+  delay: 15
+

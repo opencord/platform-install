@@ -24,7 +24,7 @@
     method: POST
     headers:
       xos-username: "{{ xos_admin_user }}"
-      xos-password: "{{ xos_admin_pass }}"
+      xos-password: "{{ head_xos_admin_pass }}"
     body: "{{ lookup('file', head_cord_profile_dir + '/test-exampleservice.yaml' ) }}"
     status_code: 200
   tags:

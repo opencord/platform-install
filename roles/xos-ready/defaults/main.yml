@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,11 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # xos-ready/defaults/main.yml
 
-xos_ui_port: 9000
-xos_grpc_insecure_port: 50055
-xos_grpc_secure_port: 50051
+site_name: placeholder-sitename
+site_suffix: "{{ site_name }}.test"
+
 xos_chameleon_port: 9101
+
+xos_tosca_url: "http://xos-tosca/xos-tosca"
+

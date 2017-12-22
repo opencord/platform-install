@@ -22,7 +22,7 @@ head_credentials_dir: "/opt/credentials"
 head_cord_profile_dir: "/opt/cord_profile"
 
 xos_admin_user: "xosadmin@opencord.org"
-xos_admin_pass: "{{ lookup('password', head_credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+head_xos_admin_pass: "{{ lookup('file', head_credentials_dir ~ '/' ~ xos_admin_user) }}"
 
 xos_tosca_config_templates: []
 

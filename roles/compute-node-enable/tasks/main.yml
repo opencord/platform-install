@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # compute-node-enable/tasks/main.yml
 
 - name: Load TOSCA to add OpenStack compute nodes
@@ -23,7 +21,7 @@
     method: POST
     headers:
       xos-username: "{{ xos_admin_user }}"
-      xos-password: "{{ xos_admin_pass }}"
+      xos-password: "{{ head_xos_admin_pass }}"
     body: "{{ lookup('file', head_cord_profile_dir + '/' + item ) }}"
     status_code: 200
   with_items:
@@ -42,7 +40,7 @@
     method: POST
     headers:
       xos-username: "{{ xos_admin_user }}"
-      xos-password: "{{ xos_admin_pass }}"
+      xos-password: "{{ head_xos_admin_pass }}"
     body: "{{ lookup('file', head_cord_profile_dir + '/' + item ) }}"
     status_code: 200
   with_items:
