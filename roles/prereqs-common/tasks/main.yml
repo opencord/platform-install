@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # prereqs-common/tasks/main.yml
 
-- name: "Check here on failure: 'https://wiki.opencord.org/display/CORD/Troubleshooting+a+Build'"
+- name: "Check here on failure: 'https://guide.opencord.org/troubleshooting.html#prereqs-common-failures'"
   pause:
     seconds: 10
 
