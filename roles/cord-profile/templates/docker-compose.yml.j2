@@ -28,6 +28,7 @@ networks:
 {% endfor %}
 
 services:
+{% if use_elasticstack %}
   elk:
     image: {{ pull_docker_registry }}sebp/elk:{{ pull_docker_tag }}
     ports:
@@ -37,6 +38,7 @@ services:
 {% for network in xos_docker_networks %}
       - {{ network }}
 {% endfor %} 
+{% endif %}
   consul:
     image: {{ pull_docker_registry }}gliderlabs/consul-server:{{ pull_docker_tag }}
     command: "-advertise=${MYHOST} -server -bootstrap"
