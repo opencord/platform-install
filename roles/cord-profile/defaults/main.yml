@@ -139,3 +139,5 @@ cord_vtn_app_version: "1.4.0-SNAPSHOT"
 # used in carrierethernet-*.yaml.j2
 carrierethernet_domainid_prefix: "{{ site_name }}"
 
+# used in platform-install / roles/cord-profile/templates/docker-compose.yml.j2
+use_elasticstack: False
