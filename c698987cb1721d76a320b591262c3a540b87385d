@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e29f9afb_8121885f",
+        "filename": "roles/cord-profile/templates/docker-compose.yml.j2",
+        "patchSetId": 9
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2017-12-22T19:22:23Z",
+      "side": 1,
+      "message": "1. Wrap with a `{% if use_elasticstack %} ... {% endif %}` block\n2. Set `use_elasticstack: False` in `roles/cord-profile/defaults/main.yml`\n3. Set `use_elasticstack: True` in cord/single scenarios",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 13
+      },
+      "revId": "c698987cb1721d76a320b591262c3a540b87385d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
