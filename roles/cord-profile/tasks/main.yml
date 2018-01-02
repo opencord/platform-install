@@ -138,3 +138,9 @@
     - openstack.yaml
     - admin-openrc.sh
 
+- name: ElasticSearch mmap limit
+  sysctl:
+    name: vm.max_map_count
+    value: 262144
+    state: present
+    reload: yes
