@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "55bbe2de_44ce26f5",
+        "filename": "roles/compute-node-enable/tasks/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-01-02T16:10:41Z",
+      "side": 1,
+      "message": "TL;DR: I agree with you, but making this happen would be a lot of work that goes beyond the scope of this changeset.\n\nThis problem is rooted in how MaaS is integrated.\n\nWhat\u0027s happening here is loading TOSCA files into XOS.  Ideally, the cycle would be:\n\n  1. Create/generate TOSCA on config system\n  2. Load TOSCA into XOS from the config system\n\nBut how the system currently works is\n\n  1. Create/generate TOSCA on config system\n  2. Copy config to head node\n  3. Copy XOS login/password information to head node\n  4. Load TOSCA into XOS from head node, using login/password info\n\nThe reason for this is that the MaaS compute node provisioner runs in a container on the head node, and thus has no access to the config or login/pw information. \n\nWhat this patch does is clean up variables that had different defaults settings (which throws errors when generating documentation), and change it so that you couldn\u0027t accidentally generate a password from within that provisioner container, which has been happened in some rare cases.\n\nI agree that this is a hack we want to get away from, but I don\u0027t see how we can do this prior to disintegrating MaaS from the provisioning system, or changing the way OpenStack compute nodes are added to XOS.",
+      "parentUuid": "cef5786e_c4407c2c",
+      "range": {
+        "startLine": 24,
+        "startChar": 24,
+        "endLine": 24,
+        "endChar": 43
+      },
+      "revId": "e0fb763c9429ba35ca758001b04f03e961652866",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "eda631d7_a004fb69",
         "filename": "roles/compute-node-enable/tasks/main.yml",
         "patchSetId": 7
