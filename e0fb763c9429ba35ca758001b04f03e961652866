@@ -97,6 +97,30 @@
     },
     {
       "key": {
+        "uuid": "41091fd2_e07775a6",
+        "filename": "roles/compute-node-enable/tasks/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2018-01-02T21:53:42Z",
+      "side": 1,
+      "message": "what makes the `head_xos_admin_path` unique? will this file not exist on all compute nodes? i when this runs on any compute node in the future how would this work?",
+      "parentUuid": "79667e10_f1431592",
+      "range": {
+        "startLine": 24,
+        "startChar": 24,
+        "endLine": 24,
+        "endChar": 43
+      },
+      "revId": "e0fb763c9429ba35ca758001b04f03e961652866",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "eda631d7_a004fb69",
         "filename": "roles/compute-node-enable/tasks/main.yml",
         "patchSetId": 7
