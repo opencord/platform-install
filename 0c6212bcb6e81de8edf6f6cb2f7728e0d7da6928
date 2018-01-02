@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "07e4a7f2_b45afd1f",
+        "filename": "prep-headnode-playbook.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-01-02T16:18:47Z",
+      "side": 1,
+      "message": "Why put this in it\u0027s own role?",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 12
+      },
+      "revId": "0c6212bcb6e81de8edf6f6cb2f7728e0d7da6928",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b28a2f9b_0aa17da1",
+        "filename": "roles/sysctl/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-01-02T16:18:47Z",
+      "side": 1,
+      "message": "Why not put this in cord-profile/tasks/main.yml\n\nAlso, maybe add `when: use_elasticstack` so it only gets set when elasticstack is used?",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 15
+      },
+      "revId": "0c6212bcb6e81de8edf6f6cb2f7728e0d7da6928",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
