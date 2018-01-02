@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "d0639c4d_5dbaf6d3",
+        "filename": "roles/compute-node-enable/tasks/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2018-01-02T17:07:27Z",
+      "side": 1,
+      "message": "The problem is that if we keep making changes that don\u0027t address the core issue then it will be harder to unwind and correct later. We are just incurring more technical debt and making it sufficiently complex to undo.\n\nThe provisioner should be using an ssh key to connect to the servers and thus it should not need credentials, so I am a bit confused as to the need.\n\nThe ssh-key is volume mounted into the container I believe.",
+      "parentUuid": "55bbe2de_44ce26f5",
+      "range": {
+        "startLine": 24,
+        "startChar": 24,
+        "endLine": 24,
+        "endChar": 43
+      },
+      "revId": "e0fb763c9429ba35ca758001b04f03e961652866",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "eda631d7_a004fb69",
         "filename": "roles/compute-node-enable/tasks/main.yml",
         "patchSetId": 7
