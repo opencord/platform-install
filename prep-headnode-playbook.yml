@@ -66,3 +66,8 @@
   roles:
     - apache-proxy
 
+- name: Sysctl defaults
+  hosts: head
+  become: yes
+  roles:
+    - sysctl
