@@ -1,0 +1,297 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cef5786e_c4407c2c",
+        "filename": "roles/compute-node-enable/tasks/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2018-01-02T15:43:51Z",
+      "side": 1,
+      "message": "continue to dislike the distinction of a head node. there should be no difference between any of the compute nodes. what we call the \"head\" node is simply a compute node with some capability distributed to it.\n\nWhy is there a need to make a distinction here?",
+      "range": {
+        "startLine": 24,
+        "startChar": 24,
+        "endLine": 24,
+        "endChar": 43
+      },
+      "revId": "e0fb763c9429ba35ca758001b04f03e961652866",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "eda631d7_a004fb69",
+        "filename": "roles/compute-node-enable/tasks/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2018-01-02T15:43:51Z",
+      "side": 1,
+      "message": "the head node does node exist. it is a compute node with some capability distributed to it.",
+      "revId": "e0fb763c9429ba35ca758001b04f03e961652866",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e0ce544b_a6fa2e95",
+        "filename": "roles/create-epc/defaults/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2018-01-02T15:43:51Z",
+      "side": 1,
+      "message": "the head node does node exist. it is a compute node with some capability distributed to it.",
+      "range": {
+        "startLine": 22,
+        "startChar": 40,
+        "endLine": 22,
+        "endChar": 60
+      },
+      "revId": "e0fb763c9429ba35ca758001b04f03e961652866",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fe6fd8f5_a33788dd",
+        "filename": "roles/create-epc/tasks/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2018-01-02T15:43:51Z",
+      "side": 1,
+      "message": "the head node does node exist. it is a compute node with some capability distributed to it.",
+      "range": {
+        "startLine": 23,
+        "startChar": 18,
+        "endLine": 23,
+        "endChar": 37
+      },
+      "revId": "e0fb763c9429ba35ca758001b04f03e961652866",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "636d38fd_0ebf282f",
+        "filename": "roles/create-epc/tasks/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2018-01-02T15:43:51Z",
+      "side": 1,
+      "message": "the head node does node exist. it is a compute node with some capability distributed to it.",
+      "range": {
+        "startLine": 31,
+        "startChar": 18,
+        "endLine": 31,
+        "endChar": 37
+      },
+      "revId": "e0fb763c9429ba35ca758001b04f03e961652866",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7e91c62d_fe085e2c",
+        "filename": "roles/create-epc/tasks/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2018-01-02T15:43:51Z",
+      "side": 1,
+      "message": "the head node does node exist. it is a compute node with some capability distributed to it.",
+      "range": {
+        "startLine": 40,
+        "startChar": 18,
+        "endLine": 40,
+        "endChar": 37
+      },
+      "revId": "e0fb763c9429ba35ca758001b04f03e961652866",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9eee89a7_d142d71d",
+        "filename": "roles/epc-synced/defaults/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2018-01-02T15:43:51Z",
+      "side": 1,
+      "message": "the head node does node exist. it is a compute node with some capability distributed to it.",
+      "range": {
+        "startLine": 22,
+        "startChar": 40,
+        "endLine": 22,
+        "endChar": 60
+      },
+      "revId": "e0fb763c9429ba35ca758001b04f03e961652866",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "53b6213a_9653e7a5",
+        "filename": "roles/epc-synced/tasks/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2018-01-02T15:43:51Z",
+      "side": 1,
+      "message": "the head node does node exist. it is a compute node with some capability distributed to it.",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 41
+      },
+      "revId": "e0fb763c9429ba35ca758001b04f03e961652866",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bbb31d36_56a7153e",
+        "filename": "roles/test-exampleservice/defaults/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2018-01-02T15:43:51Z",
+      "side": 1,
+      "message": "the head node does node exist. it is a compute node with some capability distributed to it.",
+      "range": {
+        "startLine": 25,
+        "startChar": 40,
+        "endLine": 25,
+        "endChar": 60
+      },
+      "revId": "e0fb763c9429ba35ca758001b04f03e961652866",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b6d0af6a_d5b29a0f",
+        "filename": "roles/test-exampleservice/tasks/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2018-01-02T15:43:51Z",
+      "side": 1,
+      "message": "the head node does node exist. it is a compute node with some capability distributed to it.",
+      "range": {
+        "startLine": 27,
+        "startChar": 24,
+        "endLine": 27,
+        "endChar": 43
+      },
+      "revId": "e0fb763c9429ba35ca758001b04f03e961652866",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1ac70d9b_48277b8d",
+        "filename": "roles/xos-config-new-tosca/tasks/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2018-01-02T15:43:51Z",
+      "side": 1,
+      "message": "the head node does node exist. it is a compute node with some capability distributed to it.",
+      "range": {
+        "startLine": 24,
+        "startChar": 24,
+        "endLine": 24,
+        "endChar": 43
+      },
+      "revId": "e0fb763c9429ba35ca758001b04f03e961652866",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "22b52dc0_6ffd21c3",
+        "filename": "roles/xos-config-new-tosca/tasks/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2018-01-02T15:43:51Z",
+      "side": 1,
+      "message": "the head node does node exist. it is a compute node with some capability distributed to it.",
+      "range": {
+        "startLine": 39,
+        "startChar": 24,
+        "endLine": 39,
+        "endChar": 43
+      },
+      "revId": "e0fb763c9429ba35ca758001b04f03e961652866",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5102be4f_548b5ed0",
+        "filename": "roles/xos-config-new-tosca/tasks/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2018-01-02T15:43:51Z",
+      "side": 1,
+      "message": "the head node does node exist. it is a compute node with some capability distributed to it.",
+      "range": {
+        "startLine": 53,
+        "startChar": 24,
+        "endLine": 53,
+        "endChar": 43
+      },
+      "revId": "e0fb763c9429ba35ca758001b04f03e961652866",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
