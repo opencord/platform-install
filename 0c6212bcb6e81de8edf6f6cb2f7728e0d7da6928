@@ -45,6 +45,30 @@
       "revId": "0c6212bcb6e81de8edf6f6cb2f7728e0d7da6928",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0981e23c_592d596d",
+        "filename": "roles/sysctl/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000035
+      },
+      "writtenOn": "2018-01-02T16:26:56Z",
+      "side": 1,
+      "message": "1- It\u0027s pretty common to have to make sysctl configuration changes, so I thought I\u0027d cordon off a module that people can add such changes to in the future.\n\n2- max_map_count is just a ceiling on how many VMAs a process can map. It does not cause extra memory to be consumed just because it is set. It is not unreasonably high and doesn\u0027t change the behavior of regular applications. So changing the default seems fine.",
+      "parentUuid": "b28a2f9b_0aa17da1",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 15
+      },
+      "revId": "0c6212bcb6e81de8edf6f6cb2f7728e0d7da6928",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
