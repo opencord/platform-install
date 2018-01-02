@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "79667e10_f1431592",
+        "filename": "roles/compute-node-enable/tasks/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-01-02T18:06:31Z",
+      "side": 1,
+      "message": "You\u0027re welcome to tackle that technical debt issue at any time.  :)\n\nThis isn\u0027t an SSH key issue - it has to do with XOS API endpoints and the passwords to access them - these are volume mounted in the docker container.\n\n`xos_admin_pass` is a path to where the password is generated when the configuration is created.\n\n`head_xos_admin_path` is the location where that password is copied to on the head node.  Previously there was a `maas_xos_admin_pass` that served a similar role.",
+      "parentUuid": "d0639c4d_5dbaf6d3",
+      "range": {
+        "startLine": 24,
+        "startChar": 24,
+        "endLine": 24,
+        "endChar": 43
+      },
+      "revId": "e0fb763c9429ba35ca758001b04f03e961652866",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "eda631d7_a004fb69",
         "filename": "roles/compute-node-enable/tasks/main.yml",
         "patchSetId": 7
