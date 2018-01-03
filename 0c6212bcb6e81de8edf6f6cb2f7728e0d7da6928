@@ -69,6 +69,30 @@
       "revId": "0c6212bcb6e81de8edf6f6cb2f7728e0d7da6928",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f274c09_28866c2a",
+        "filename": "roles/sysctl/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000035
+      },
+      "writtenOn": "2018-01-03T02:40:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b28a2f9b_0aa17da1",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 15
+      },
+      "revId": "0c6212bcb6e81de8edf6f6cb2f7728e0d7da6928",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
