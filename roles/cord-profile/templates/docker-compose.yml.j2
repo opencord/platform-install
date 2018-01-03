@@ -243,7 +243,7 @@ services:
 {% for network in xos_docker_networks %}
      - {{ network }}
 {% endfor %}
-    command: python /opt/xos/manage.py runserver 0.0.0.0:9000
+    command: bash -c "service filebeat start; python /opt/xos/manage.py runserver 0.0.0.0:9000"
     ports:
       - "9000:9000"
     links:
@@ -278,7 +278,7 @@ services:
 {% for network in xos_docker_networks %}
      - {{ network }}
 {% endfor %}
-    command: bash -c "cd coreapi; bash ./start_coreapi.sh"
+    command: bash -c "service filebeat start; cd coreapi; bash ./start_coreapi.sh"
     ports:
       - "50051:50051"
       - "50055:50055"
