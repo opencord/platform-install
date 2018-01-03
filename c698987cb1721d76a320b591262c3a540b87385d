@@ -22,6 +22,30 @@
       "revId": "c698987cb1721d76a320b591262c3a540b87385d",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a6228ae_5f0cc6e2",
+        "filename": "roles/cord-profile/templates/docker-compose.yml.j2",
+        "patchSetId": 9
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000035
+      },
+      "writtenOn": "2018-01-03T18:08:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e29f9afb_8121885f",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 13
+      },
+      "revId": "c698987cb1721d76a320b591262c3a540b87385d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
