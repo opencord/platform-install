@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2996ba92_bbf828ca",
+        "filename": "roles/apache-proxy/files/cord-http.conf",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-01-04T19:25:15Z",
+      "side": 1,
+      "message": "Would: \n\n    ProxyPass /api http://xos:5601/api\n    ProxyPassReverse /api http://xos:5601/api\n\nwork for all of these?",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 0
+      },
+      "revId": "05b3fa743a0001dc2e14c4ead8f2ed68ceb1356b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "31be10f8_109216a5",
+        "filename": "roles/apache-proxy/files/cord-http.conf",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-01-04T19:25:15Z",
+      "side": 1,
+      "message": "Same as above - just `ProxyPass /plugins ...`",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 73
+      },
+      "revId": "05b3fa743a0001dc2e14c4ead8f2ed68ceb1356b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
