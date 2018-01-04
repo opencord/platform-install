@@ -24,6 +24,10 @@
       xos-password: "{{ head_xos_admin_pass }}"
     body: "{{ lookup('file', head_cord_profile_dir + '/' + item ) }}"
     status_code: 200
+  register: result
+  until: result | success
+  retries: 40
+  delay: 2
   with_items:
     - "fixtures.yaml"
     - "deployment.yaml"
@@ -39,6 +43,10 @@
       xos-password: "{{ head_xos_admin_pass }}"
     body: "{{ lookup('file', head_cord_profile_dir + '/' + item ) }}"
     status_code: 200
+  register: result
+  until: result | success
+  retries: 40
+  delay: 2
   with_items:
     - openstack.yaml
   tags:
@@ -53,6 +61,10 @@
       xos-password: "{{ head_xos_admin_pass }}"
     body: "{{ lookup('file', head_cord_profile_dir + '/' + item ) }}"
     status_code: 200
+  register: result
+  until: result | success
+  retries: 40
+  delay: 2
   with_items: "{{ xos_new_tosca_config_templates }}"
   tags:
     - skip_ansible_lint # TOSCA loading should be idempotent
