@@ -51,7 +51,7 @@
       - { vm: vspgwu, network: flat_network_s1u }
       - { vm: vspgwu, network: sgi_network }
       - { vm: vspgwu, network: spgw_network }
-    epc_blueprint: build
+    epc_blueprint: mcord_5
     epc_sync_objects:
       - vspgwu/vspgwutenants
       - vspgwc/vspgwctenants
