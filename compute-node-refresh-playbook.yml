@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,19 +14,22 @@
 # limitations under the License.
 
 
----
 # compute-node-refresh-playbook.yml
 # Re-adds compute nodes to a XOS after a teardown cycle
 # This analogous to the legacy `make vtn` command in service-profile
 # On physical/CiaB w/MaaS:
 #  ansible-playbook -i /etc/maas/ansible/pod-inventory --extra-vars=@/opt/cord/build/genconfig/config.yml compute-node-refresh-playbook.yml
 
+- name: Get setup information from compute nodes
+  hosts: compute
+  tasks:
+    - name: run setup on compute nodes
+      setup:
+
 - name: Recreate compute node configuration
   hosts: head
   roles:
     - compute-node-config
-
-- include: add-onboard-containers-playbook.yml
 
 - name: Enable compute nodes in XOS
   hosts: head
