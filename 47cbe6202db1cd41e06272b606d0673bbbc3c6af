@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "196332a6_f8925e74",
+        "filename": "roles/test-subscriber-enable/defaults/main.yml",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-01-08T21:34:26Z",
+      "side": 1,
+      "message": "We\u0027re re-defining `xos_admin_pass` in multiple places with different values, which breaks the glossary\n\nThis should be using `head_xos_admin_pass` here and any place where a playbook is run via SSH directly on the head node.  \n\nThis is per: https://gerrit.opencord.org/c/7756/\n\nExamples:\n  https://github.com/opencord/platform-install/blob/master/roles/xos-config-new-tosca/defaults/main.yml#L20-L25\n  https://github.com/opencord/platform-install/blob/master/roles/xos-config-new-tosca/tasks/main.yml#L22-L24",
+      "range": {
+        "startLine": 26,
+        "startChar": 39,
+        "endLine": 27,
+        "endChar": 118
+      },
+      "revId": "47cbe6202db1cd41e06272b606d0673bbbc3c6af",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
