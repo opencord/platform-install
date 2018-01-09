@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "91916768_ead9f45f",
+        "filename": "roles/cord-profile/templates/vtn-service.yaml.j2",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2018-01-09T00:04:27Z",
+      "side": 1,
+      "message": "This file has moved into the [rme]cord repositories",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 2
+      },
+      "revId": "47cbe6202db1cd41e06272b606d0673bbbc3c6af",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "196332a6_f8925e74",
         "filename": "roles/test-subscriber-enable/defaults/main.yml",
         "patchSetId": 5
