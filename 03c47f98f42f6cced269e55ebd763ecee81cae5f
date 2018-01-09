@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9ca72eb0_a40d9483",
+        "filename": "roles/cord-profile/defaults/main.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-01-09T18:07:01Z",
+      "side": 1,
+      "message": "revert this - `cord-profile` is created on the config node, not the head node.",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 88
+      },
+      "revId": "03c47f98f42f6cced269e55ebd763ecee81cae5f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c41d02ee_86dd3aa0",
+        "filename": "roles/cord-profile/templates/initial_data.yaml.j2",
+        "patchSetId": 6
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-01-09T18:07:01Z",
+      "side": 1,
+      "message": "revert",
+      "range": {
+        "startLine": 30,
+        "startChar": 16,
+        "endLine": 30,
+        "endChar": 41
+      },
+      "revId": "03c47f98f42f6cced269e55ebd763ecee81cae5f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
