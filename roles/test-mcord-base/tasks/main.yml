@@ -26,6 +26,21 @@
   tags:
     - skip_ansible_lint # running a sub job
 
+- name: Wait for VMs to appear in Nova
+  shell: bash -c "source /opt/cord_profile/admin-openrc.sh; nova list --all-tenants|grep '{{ item }}' > /dev/null"
+  register: result
+  until: result | success
+  retries: 10
+  delay: 60
+  with_items: "{{ test_services }}"
+  tags:
+    - skip_ansible_lint # running a sub job
+
+- name: Delete any VMs that are in ERROR state (XOS will re-create them)
+  shell: bash -c "source /opt/cord_profile/admin-openrc.sh; for vm in `nova list --all-tenants|grep 'ERROR'|awk '{ print $2 }'`; do nova delete $vm; done"
+  tags:
+    - skip_ansible_lint # running a sub job
+
 - name: Wait for VMs to come up
   shell: bash -c "source /opt/cord_profile/admin-openrc.sh; nova list --all-tenants|grep '{{ item }}.*ACTIVE' > /dev/null"
   register: result
