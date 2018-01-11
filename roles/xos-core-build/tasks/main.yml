@@ -54,6 +54,7 @@
     --rm
     -v {{ build_cord_dir | realpath }}:/opt/cord
     -v {{ build_cord_dir ~ "/orchestration/xos/containers/xos/BUILD" | realpath }}:/opt/xos_corebuilder/BUILD
+    -v {{ head_cord_profile_dir }}/xos_config.yaml:/opt/xos/xos_config.yaml:ro
     xosproject/xos-corebuilder:{{ build_docker_tag }}
     {{ recipes_string }}
   tags:
