@@ -20,6 +20,8 @@
 build_cord_dir: "{{ playbook_dir ~ '/../..' }}"
 build_docker_tag: "candidate"
 
+config_cord_profile_dir: "/opt/cord_profile"
+
 profile_library: ""
 
 xos_services: []
