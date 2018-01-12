@@ -329,7 +329,6 @@ services:
       - registrator
 {% endfor %}
 
-{% if not frontend_only %}
 {% for svc in xos_services %}
 {% if svc.synchronizer is not defined or svc.synchronizer %}
   {{ svc.name }}-synchronizer:
@@ -345,6 +344,7 @@ services:
 {% endif %}
     links:
       - consul:consul
+      - xos_core:xos-core
 {% if use_redis %}
       - xos_redis:redis
 {% endif %}
@@ -370,4 +370,3 @@ services:
 
 {% endif %}
 {% endfor %}
-{% endif %}
