@@ -1,0 +1,3 @@
+image:
+  xos_db: xosproject/xos-postgres
+  xos_tag: 'latest'
