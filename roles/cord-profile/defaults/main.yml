@@ -29,7 +29,7 @@ head_credentials_dir: "/opt/credentials"
 
 # For storing OpenStack images
 image_dir: /opt/images
-
+xos_images: []
 
 # Set to True if you want to copy the admin-openrc.sh openstack config file
 use_openstack: True
@@ -63,6 +63,7 @@ xos_services: []
 xos_gui_service_graph_constraints: []
 
 xos_tosca_config_templates: []
+xos_new_tosca_config_templates: []
 
 xos_other_templates: []
 
