@@ -20,8 +20,8 @@ spec:
             - containerPort: 5432 
               protocol: TCP
           env:
-            - name: MAGIC_NUMBER
+            - name: SERVICE_5432_NAME 
               valueFrom:
                 configMapKeyRef:
                   name: {{ template "xos-core.full_name" . }}
-                  key: magic-number
+                  key: service_5432_name
