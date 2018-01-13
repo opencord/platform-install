@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ac2edee3_08ed17e2",
+        "filename": "helm/xos-core/templates/config-map.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2018-01-13T00:45:35Z",
+      "side": 1,
+      "message": "shouldn\u0027t this be xos-db?",
+      "range": {
+        "startLine": 4,
+        "startChar": 8,
+        "endLine": 4,
+        "endChar": 45
+      },
+      "revId": "f137863cdc1f1cbcd8b09f458f31c4f0f34bfee0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3acbe3a6_e2ccc751",
+        "filename": "helm/xos-core/templates/config-map.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2018-01-13T00:45:35Z",
+      "side": 1,
+      "message": "this is registrator specific so I don\u0027t think we need it in kb8s",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 29
+      },
+      "revId": "f137863cdc1f1cbcd8b09f458f31c4f0f34bfee0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e2893c93_db5a60b1",
+        "filename": "helm/xos-core/values.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2018-01-13T00:45:35Z",
+      "side": 1,
+      "message": "At a certain point we should make this an array, so that it\u0027s easier to iterate",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 19
+      },
+      "revId": "f137863cdc1f1cbcd8b09f458f31c4f0f34bfee0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
