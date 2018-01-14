@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,10 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # collect-diag-playbook.yml
-# Collects diagnostic information for the currently running cord-pod config
+# Collects diagnostic information for the currently running POD
 
 - name: Create diag_dir fact
   hosts: head
@@ -36,13 +34,15 @@
     - compute-diag
 
 - name: Collect compute node diagnostics on head node
-  hosts: compute
+  hosts: head
   tasks:
-    - name: rsync diag_dir from compute nodes
-      synchronize:
-        src: "/tmp/{{ hostvars[groups['head'][0]]['diag_dir'] }}/{{ inventory_hostname }}"
-        dest: "~/{{ hostvars[groups['head'][0]]['diag_dir'] }}/"
-        recursive: yes
-        mode: pull
-      delegate_to: "{{ groups['head'][0] }}"
+    - name: rsync diag_dir from compute nodes to head node
+      when: groups['compute'] | length > 0
+      command: >
+        rsync -a
+          "ubuntu@{{ item }}:/tmp/{{ hostvars[groups['head'][0]]['diag_dir'] }}/{{ item }}"
+          "~/{{ hostvars[groups['head'][0]]['diag_dir'] }}/"
+      with_items: "{{ groups['compute'] }}"
+      tags:
+        - skip_ansible_lint # the synchronize module can't set the remote username with delegate_to
 
