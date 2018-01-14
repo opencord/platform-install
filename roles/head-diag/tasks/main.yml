@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,14 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # head-diag/tasks/main.yml
 
 - name: Create diag_dir subdirs
   file:
-    dest="~/{{ diag_dir }}/{{ item }}"
-    state=directory
+    dest: "~/{{ diag_dir }}/{{ item }}"
+    state: directory
   with_items:
   - head
   - juju
@@ -35,16 +33,25 @@
   args:
     creates: "~/{{ diag_dir }}/head/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
-   - "ifconfig -a"
-   - "route -n"
    - "arp -n"
-   - "date"
    - "brctl show"
-   - "cat /etc/resolv.conf"
    - "cat /etc/lsb-release"
-   - "sudo virsh list"
-   - "sudo lxc list"
+   - "cat /etc/resolv.conf"
+   - "date -u"
+   - "df -k"
+   - "free"
+   - "ifconfig -a"
+   - "ip addr list"
+   - "ip link list"
+   - "ip neighbor"
+   - "ip route"
+   - "ps aux"
+   - "route -n"
    - "sudo docker ps -a"
+   - "sudo iptables -S"
+   - "sudo iptables -t nat -S"
+   - "sudo lxc list"
+   - "sudo virsh list"
 
 - name: Juju diag collection
   shell: "{{ item }} > ~/{{ diag_dir }}/juju/{{ item | regex_replace('[^\\w-]', '_')}}"
@@ -131,18 +138,35 @@
    - "summary"
 
 - name: Docker diag collection - Find names for all running Docker containers
-  command: sudo docker ps --format '{{'{{'}} .Names {{'}}'}}'
+  command: sudo docker ps -a --format '{{'{{'}} .Names {{'}}'}}'
   ignore_errors: yes
   register: docker_containers
   tags:
     - skip_ansible_lint # collecting docker container names
 
 - name: Docker diag collection - Collect logs from Docker containers
-  shell: "sudo docker logs {{ item }} > ~/{{ diag_dir }}/docker/{{ item | regex_replace('[^\\w-]', '_')}} 2>&1"
+  shell: "sudo docker logs {{ item }} > ~/{{ diag_dir }}/docker/{{ item | regex_replace('[^\\w-]', '_')}}.logs 2>&1"
   ignore_errors: yes
   args:
-    creates: "~/{{ diag_dir }}/docker/{{ item | regex_replace('[^\\w-]', '_')}}"
+    creates: "~/{{ diag_dir }}/docker/{{ item | regex_replace('[^\\w-]', '_')}}.logs"
   with_items: "{{ docker_containers.stdout_lines }}"
   tags:
     - skip_ansible_lint # ansible-lint interprets the \n incorrectly
+
+- name: Docker diag collection - inspect Docker containers
+  shell: "sudo docker inspect {{ item }} > ~/{{ diag_dir }}/docker/{{ item | regex_replace('[^\\w-]', '_')}}.inspect 2>&1"
+  ignore_errors: yes
+  args:
+    creates: "~/{{ diag_dir }}/docker/{{ item | regex_replace('[^\\w-]', '_')}}.inspect"
+  with_items: "{{ docker_containers.stdout_lines }}"
+  tags:
+    - skip_ansible_lint # ansible-lint interprets the \n incorrectly
+
+# much cleaner to use !unsafe to avoid j2 parsing of golang {{ and }} templates
+# but ansible-lint doesn't support it: https://github.com/willthames/ansible-lint/issues/291
+- name: Docker diag collection - Collect memory and CPU stats from docker containers
+  shell: "sudo docker stats --no-stream --format \"table {{'{{'}}.Name{{'}}'}}\t{{'{{'}}.Container{{'}}'}}\t{{'{{'}}.CPUPerc{{'}}'}}\t{{'{{'}}.MemUsage{{'}}'}}\t{{'{{'}}.MemPerc{{'}}'}}\" > ~/{{ diag_dir }}/docker/stats 2>&1"
+  ignore_errors: yes
+  args:
+    creates: "~/{{ diag_dir }}/docker/stats"
 

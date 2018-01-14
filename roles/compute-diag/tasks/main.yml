@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # compute-diag/tasks/main.yml
 
 - name: Create diag_dir subdir
@@ -29,14 +27,34 @@
   args:
     creates: "compute_diag_dir.stat.path/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
-   - "date"
    - "arp -n"
    - "brctl show"
-   - "cat /etc/resolv.conf"
    - "cat /etc/lsb-release"
+   - "cat /etc/resolv.conf"
+   - "date -u"
+   - "df -k"
+   - "free"
    - "ifconfig -a"
+   - "ip addr list"
+   - "ip link list"
+   - "ip neighbor"
+   - "ip route"
+   - "ps aux"
    - "route -n"
-   - "sudo ovs-vsctl show"
+   - "sudo iptables -S"
+   - "sudo iptables -t nat -S"
+   - "sudo ovs-appctl bridge/dump-flows br-int"
+   - "sudo ovs-appctl fdb/show br-int"
+   - "sudo ovs-appctl vlog/list"
+   - "sudo ovs-dpctl dump-flows"
+   - "sudo ovs-ofctl dump-flows br-int"
+   - "sudo ovs-ofctl dump-ports br-int"
+   - "sudo ovs-ofctl dump-ports-desc br-int"
+   - "sudo ovs-ofctl dump-tables br-int"
+   - "sudo ovs-ofctl show br-int"
    - "sudo ovs-vsctl get-controller br-int"
-
+   - "sudo ovs-vsctl list interface"
+   - "sudo ovs-vsctl list-br"
+   - "sudo ovs-vsctl list-ports br-int"
+   - "sudo ovs-vsctl show"
 
