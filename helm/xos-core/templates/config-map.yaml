@@ -5,4 +5,4 @@ metadata:
   labels:
     {{- include "xos-core.release_labels" . | indent 4 }}
 data:
-  service_5432_name: 'xos-db'
+  Service_5432_name: 'xos-db'
