@@ -24,6 +24,10 @@
       xos-password: "{{ head_xos_admin_pass }}"
     body: "{{ lookup('file', head_cord_profile_dir + '/' + item ) }}"
     status_code: 200
+  register: result
+  until: result | success
+  retries: 40
+  delay: 2
   with_items:
     - openstack.yaml
     - openstack-compute.yaml
@@ -43,6 +47,10 @@
       xos-password: "{{ head_xos_admin_pass }}"
     body: "{{ lookup('file', head_cord_profile_dir + '/' + item ) }}"
     status_code: 200
+  register: result
+  until: result | success
+  retries: 40
+  delay: 2
   with_items:
     - vtn-service.yaml
     - openstack-compute-vtn.yaml

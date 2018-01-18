@@ -27,6 +27,10 @@
       xos-password: "{{ head_xos_admin_pass }}"
     body: "{{ lookup('file', head_cord_profile_dir + '/test-exampleservice.yaml' ) }}"
     status_code: 200
+  register: result
+  until: result | success
+  retries: 40
+  delay: 2
   tags:
     - skip_ansible_lint # TOSCA loading should be idempotent
 
