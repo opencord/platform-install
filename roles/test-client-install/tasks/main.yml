@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
-# maas-test-client-install/tasks/main.yml
+# test-client-install/tasks/main.yml
 
 - name: Create testclient LXD profile
   lxd_profile:
@@ -42,7 +40,7 @@
     devices:
       eth0:
         nictype: macvlan
-        parent: fabric
+        parent: "{{ headnode_fabric_bridge }}"
         type: nic
 
 - name: Create testclient container

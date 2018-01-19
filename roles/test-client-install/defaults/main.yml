@@ -13,14 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# test-subscriber-enable/defaults/main.yml
+# test-client-install/defaults/main.yml
 
-xos_tosca_url: "http://xos-tosca/xos-tosca"
-
-head_credentials_dir: "/opt/credentials"
-
-head_cord_profile_dir: "/opt/cord_profile"
-
-xos_admin_user: "xosadmin@opencord.org"
-head_xos_admin_pass: "{{ lookup('file', head_credentials_dir ~ '/' ~ xos_admin_user) }}"
+headnode_fabric_bridge: fabric
 
