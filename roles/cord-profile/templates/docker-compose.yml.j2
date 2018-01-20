@@ -215,12 +215,12 @@ services:
     ports:
       - "3000:3000"
     links:
-      - xos_ui:xos
+      - xos_core:xos
 {% if use_redis %}
       - xos_redis:redis
 {% endif %}
     depends_on:
-      - xos_ui
+      - xos_core
 {% if use_redis %}
       - xos_redis
 {% endif %}
@@ -237,6 +237,7 @@ services:
       SERVICE_3000_NAME: "xos-ws"
     restart: unless-stopped
 
+<<<<<<< HEAD
   xos_ui:
     image: {{ pull_docker_registry }}xosproject/xos-ui:{{ pull_docker_tag }}
     networks:
@@ -272,6 +273,8 @@ services:
       SERVICE_9000_NAME: "xos-ui-deprecated"
     restart: unless-stopped
 
+=======
+>>>>>>> [CORD-2453] Remove the unused xos_ui container
   xos_core:
     image: {{ pull_docker_registry }}xosproject/xos-ui:{{ pull_docker_tag }}
     networks:
