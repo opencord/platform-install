@@ -247,7 +247,7 @@ services:
     ports:
       - "9000:9000"
     links:
-      - xos_db:xos_db
+      - xos_db:xos-db
       - consul:consul
 {% if use_redis %}
       - xos_redis:redis
@@ -283,7 +283,7 @@ services:
       - "50051:50051"
       - "50055:50055"
     links:
-      - xos_db:xos_db
+      - xos_db:xos-db
       - consul:consul
 {% if use_redis %}
       - xos_redis:redis
