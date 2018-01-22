@@ -26,7 +26,7 @@
     status_code: 200
   register: result
   until: result | success
-  retries: 40
+  retries: 100
   delay: 2
   with_items:
     - "fixtures.yaml"
@@ -43,7 +43,7 @@
     status_code: 200
   register: result
   until: result | success
-  retries: 40
+  retries: 100
   delay: 2
   with_items:
     - openstack.yaml
@@ -59,6 +59,6 @@
     status_code: 200
   register: result
   until: result | success
-  retries: 40
+  retries: 100
   delay: 2
   with_items: "{{ xos_new_tosca_config_templates }}"
