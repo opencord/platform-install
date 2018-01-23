@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # file: head-prep/tasks/main.yml
 
 - name:  Install prerequisites for using PPA repos
@@ -45,19 +43,27 @@
     - bridge-utils
     - dnsutils
     - git
-    - juju-core
     - libssl-dev
-    - libvirt-bin
     - python-dev
     - python-dnspython
-    - python-glanceclient
-    - python-keystoneclient
     - python-lxml
     - python-netaddr
-    - python-neutronclient
-    - python-novaclient
     - python-pip
     - sshpass
+
+- name: Install juju and openstack related packages
+  when: use_openstack
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - juju-core
+    - libvirt-bin
+    - python-glanceclient
+    - python-keystoneclient
+    - python-neutronclient
+    - python-novaclient
     - virt-top
 
 - name: Make sure Ansible is newest version
