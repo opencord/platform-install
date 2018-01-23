@@ -22,6 +22,30 @@
       "revId": "508b48d7302f7e598a4c98bc71770851e65a4f47",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7e7a1358_85561ba4",
+        "filename": "roles/compute-node-enable/tasks/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-01-23T06:12:45Z",
+      "side": 1,
+      "message": "My concern is that I\u0027ve seen the previous step (waiting for Chameleon) take between 21 and 33 retries at 15 seconds each. Assuming the 12 retry difference is due to dynamic load occasionally happening during the Chameleon step, that\u0027s 180 seconds worth of variability that could hit during the TOSCA step. How about we settle at 50% over that, which would be 270 seconds. Round down to 50 retries at 5 seconds each \u003d 250 seconds.",
+      "parentUuid": "eb7a9315_394f428d",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 11
+      },
+      "revId": "508b48d7302f7e598a4c98bc71770851e65a4f47",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
