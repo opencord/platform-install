@@ -1,0 +1,83 @@
+{#
+Copyright 2017-present Open Networking Foundation
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+#}
+
+
+tosca_definitions_version: tosca_simple_yaml_1_0
+
+imports:
+   - custom_types/xos.yaml
+   - custom_types/slice.yaml
+   - custom_types/network.yaml
+   - custom_types/networkslice.yaml
+   - custom_types/internetemulatorservice.yaml
+   - custom_types/internetemulatorserviceinstance.yaml
+
+description: configure an internetemulatorserviceinstance
+
+topology_template:
+  node_templates:
+
+    management_network:
+      type: tosca.nodes.Network
+      properties:
+        must-exist: true
+        name: management
+
+    sgi_network:
+      type: tosca.nodes.Network
+      properties:
+        must-exist: true
+        name: sgi_network
+
+    {{ site_name }}_internetemulator:
+      type: tosca.nodes.Slice
+      properties:
+          name: {{ site_name }}_internetemulator
+          must-exist: true
+
+    internetemulator_slice_management_network:
+      type: tosca.nodes.NetworkSlice
+      requirements:
+        - network:
+            node: management_network
+            relationship: tosca.relationships.BelongsToOne
+        - slice:
+            node: {{ site_name }}_internetemulator
+            relationship: tosca.relationships.BelongsToOne
+
+    internetemulator_slice_sgi_network:
+      type: tosca.nodes.NetworkSlice
+      requirements:
+        - network:
+            node: sgi_network
+            relationship: tosca.relationships.BelongsToOne
+        - slice:
+            node: {{ site_name }}_internetemulator
+            relationship: tosca.relationships.BelongsToOne
+
+    internetemulator_service:
+      type: tosca.nodes.InternetEmulatorService
+      properties:
+        name: internetemulator_service
+
+    internetemulator_serviceinstance:
+      type: tosca.nodes.InternetEmulatorServiceInstance
+      properties:
+        name: VLC video server
+      requirements:
+        - owner:
+            node: internetemulator_service
+            relationship: tosca.relationships.BelongsToOne
