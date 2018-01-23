@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "eb7a9315_394f428d",
+        "filename": "roles/compute-node-enable/tasks/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-01-23T05:39:48Z",
+      "side": 1,
+      "message": "This is nearly an order of magnitude jump, from 80s to 750s (12.5m).\n\nSeeing as other errors (such as malformed TOSCA) will get the full timeout length, this like it could make testing difficult.\n\nMaybe:\n\n   retries: 30\n   delay: 5\n\nFor 150s (2.5m), which is roughly double the time as before, but not so much to cause problems when testing?",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 11
+      },
+      "revId": "508b48d7302f7e598a4c98bc71770851e65a4f47",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
