@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,11 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # head-prep/defaults/main.yml
 
-use_maas: false
+use_maas: False
+use_openstack: True
 
 ssh_pki_dir: "{{ playbook_dir }}/ssh_pki"
 ssh_keytype: rsa
