@@ -331,7 +331,7 @@ services:
         max-file: "5"
     environment:
       SERVICE_NAME: "xos-{{ svc.name }}-synchronizer"
-    restart: unless-stopped
+    restart: on-failure
 
 {% endif %}
 {% endfor %}
