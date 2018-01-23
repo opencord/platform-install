@@ -21,11 +21,8 @@
   roles:
     - xos-ready
 
-- include: add-onboard-containers-playbook.yml
-
-- name: Enable compute nodes
-  hosts: xos_ui
-  connection: docker
+- name:  Enable Compute Node
+  hosts: head
   roles:
     - compute-node-enable
 
