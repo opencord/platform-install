@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,21 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
-# pod-test-playbook.yml
-# Tests CiaB cord-pod XOS configuration
+# ecord-test-subscriber-playbook.yml
+# Configures and enables an E-CORD subscriber
 
 - name: Create test subscriber
   hosts: head
   roles:
     - test-ecord-subscriber-config
 
-- include: add-onboard-containers-playbook.yml
-
 - name: Enable the test subscriber
-  hosts: xos_ui
-  connection: docker
+  hosts: head
   roles:
     - test-ecord-subscriber-enable
 
