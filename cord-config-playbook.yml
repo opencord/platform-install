@@ -31,3 +31,8 @@
   roles:
     - cord-profile
 
+- name: Generate config for dynamic services
+  hosts: config
+  roles:
+    - xos-services-config
+

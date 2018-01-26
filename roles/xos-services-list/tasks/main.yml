@@ -12,4 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-head_cord_profile_dir: /opt/cord_profile
+- name: Inizialize docker-compose.yml list
+  set_fact:
+    onboarding_recipes: ['docker-compose.yml']
+- name: Read docker-compose.yml files for services
+  find:
+    paths: "{{ head_cord_profile_dir }}/dynamic_load/"
+    patterns: '*docker-compose.yml'
+  register: onboarding_recipes_files
+- name: Add docker-compose.yml files for services to the list
+  set_fact:
+    onboarding_recipes: "{{ onboarding_recipes }} + ['{{ item.path }}']"
+  with_items: "{{ onboarding_recipes_files.files }}"
+- debug:
+    var: onboarding_recipes

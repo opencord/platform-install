@@ -1,4 +1,3 @@
-
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,22 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
-# xos-up/tasks/main.yml
-
-- name: Create docker networks
-  docker_network:
-    name: "{{ item }}"
-  with_items: "{{ xos_docker_networks }}"
-
-- name: List xos services
-  include_role:
-    name: xos-services-list
-
-- name: Bring up XOS services
-  docker_service:
-    files: "{{ onboarding_recipes }}"
-    project_name: "{{ cord_profile | regex_replace('\\W','') }}"
-    project_src: "{{ head_cord_profile_dir }}"
-    pull: "{{ always_pull_xos_images | default('false') }}"
+head_cord_profile_dir: '/opt/cord_profile'
