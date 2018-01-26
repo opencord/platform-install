@@ -19,8 +19,13 @@
 # Removes XOS Docker containers
 # NOTE: ignoring errors so that incomplete builds can be removed
 
+- name: List xos services
+  include_role:
+    name: xos-services-list
+
 - name: Stop and remove XOS containers
   docker_service:
+    files: "{{ onboarding_recipes }}"
     project_name: "{{ cord_profile | regex_replace('\\W','') }}"
     project_src: "{{ head_cord_profile_dir }}"
     state: absent

@@ -21,18 +21,6 @@
   roles:
     - xos-ready
 
-- name: Generate config for dynamic services
-  hosts: head
-  roles:
-    - xos-services-config
-
-# NOTE the images are built by imagebuilder for services defined in xos_dynamic_services
-# we'll need to manually build the one for real dynamic services
-- name: Run dynamic services
-  hosts: head
-  roles:
-    - xos-services-up
-
 - name: Apply profile config
   hosts: head
   roles:
