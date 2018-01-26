@@ -22,8 +22,12 @@
     name: "{{ item }}"
   with_items: "{{ xos_docker_networks }}"
 
+- include_role:
+    name: xos-services-list
+
 - name: Bring up XOS services
   docker_service:
+    files: "{{ onboarding_recipes }}"
     project_name: "{{ cord_profile | regex_replace('\\W','') }}"
     project_src: "{{ head_cord_profile_dir }}"
     pull: "{{ always_pull_xos_images | default('false') }}"
