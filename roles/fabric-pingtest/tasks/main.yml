@@ -18,8 +18,8 @@
   command: ping -c 20 {{ item }}
   with_items:
   - 10.6.1.1
-  - 10.6.1.129
-  - 10.6.1.193
+  - 10.7.1.1
+  - 10.8.1.1
   changed_when: false
   tags:
     - skip_ansible_lint # running a sub job
