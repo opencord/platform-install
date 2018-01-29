@@ -1,0 +1,58 @@
+---
+# Copyright 2017-present Open Networking Foundation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# cord-helm-charts/tasks/main.yml
+# Creates Helm charts for CORD services
+
+- name: Create cord_profile/helm directory and chart subdirectories
+  file:
+    dest: "{{ config_cord_helm_dir }}"
+    state: directory
+    mode: 0755
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+
+- name: Create chart subdirectories
+  file:
+    dest: "{{ config_cord_helm_dir }}/{{ item }}"
+    state: directory
+    mode: 0755
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+  with_items:
+    - "xos-core"
+    - "xos-core/templates"
+    - "xos-services"
+    - "xos-services/templates"
+
+- name: Copy XOS Core templates
+  copy:
+    src: "core_templates/"
+    dest: "{{ config_cord_helm_dir }}/xos-core/templates/"
+    mode: 0755
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+
+- name: Create chart configuration from templates
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ config_cord_helm_dir }}/xos-core/{{ item }}"
+    mode: 0755
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+  with_items:
+    - Chart.yaml
+    - values.yaml
+
