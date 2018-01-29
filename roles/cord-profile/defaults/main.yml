@@ -155,8 +155,8 @@ fabric_network_cfg_json: "/opt/cord_profile/fabric-network-cfg.json"
 onos_mavenrepo_url: "{{ 'http://mavenrepo.' ~ site_suffix ~ ':8080' }}"
 
 # Need to track each ONOS application's version separately
-cord_config_app_version: "1.4.0-SNAPSHOT"
-cord_vtn_app_version: "1.4.0-SNAPSHOT"
+cord_config_app_version: "1.3.1"
+cord_vtn_app_version: "1.5.0"
 
 # used in carrierethernet-*.yaml.j2
 carrierethernet_domainid_prefix: "{{ site_name }}"
