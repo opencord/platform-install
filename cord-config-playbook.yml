@@ -1,5 +1,4 @@
 ---
-
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,13 +25,10 @@
     - pki-cert
     - ssh-pki
 
-- name: Create CORD profile
+- name: Create CORD profile, Helm charts, and dynamic services config
   hosts: config
   roles:
     - cord-profile
-
-- name: Generate config for dynamic services
-  hosts: config
-  roles:
+    - { role: cord-helm-charts, when: use_k8s | default(False) }
     - xos-services-config
 
