@@ -12,24 +12,59 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install httpie
-  pip:
-    name: httpie
-    state: present
-  become: yes
-
-# This step could be implemented more cleanly (i.e., broken into multiple
-# tasks, use "uri" module).  It was done this way to mirror what is
-# in the documentation (quickstart_physical.md).
-- name: Rebuild and reinstall ONOS fabric configuration
-  shell: "{{ item }}"
-  args:
-    chdir: /opt/cord_profile
-  with_items:
-    - "cord generate > fabric-network-cfg.json"
-    - "http -a onos:rocks DELETE http://onos-fabric:8181/onos/v1/network/configuration/"
-    - "docker-compose -p {{ cord_profile }} exec -T xos_ui python /opt/xos/tosca/run.py xosadmin@opencord.org /opt/cord_profile/fabric-service.yaml"
-    - "http -a onos:rocks POST http://onos-fabric:8181/onos/v1/applications/org.onosproject.vrouter/active"
-    - "http -a onos:rocks POST http://onos-fabric:8181/onos/v1/applications/org.onosproject.segmentrouting/active"
+- name: Generate fabric-network-cfg.json
+  shell: cord generate
+  register: cord_generate
   tags:
-    - skip_ansible_lint # running a sub job
+    - skip_ansible_lint
+
+- name: Set cord_profile_src_dir
+  set_fact:
+    cord_profile_src_dir: "../../orchestration/profiles/{{ cord_use_case }}"
+
+- name: Set fabric_network_cfg_json
+  set_fact:
+    fabric_network_cfg_json: "{{ cord_generate.stdout }}"
+
+- name: Regenerate fabric-service.yaml
+  template:
+    src: "{{ cord_profile_src_dir }}/templates/fabric-service.yaml.j2"
+    dest: "{{ head_cord_profile_dir }}/fabric-service.yaml"
+
+- name: Slurp fabric-service.yaml
+  slurp:
+    src: "{{ head_cord_profile_dir }}/fabric-service.yaml"
+  register: slurpfile
+
+- name: Delete old ONOS fabric configuration
+  uri:
+    url: "http://onos-fabric:8181/onos/v1/network/configuration/"
+    method: DELETE
+    user: onos
+    password: rocks
+    status_code: 200, 204
+
+- name: Upload new fabric configuration to XOS
+  uri:
+    url: "{{ xos_tosca_url }}/run"
+    method: POST
+    headers:
+      xos-username: "{{ xos_admin_user }}"
+      xos-password: "{{ xos_admin_pass }}"
+    body: "{{ slurpfile['content'] | b64decode }}"
+    status_code: 200
+  register: result
+  until: result | success
+  retries: 5
+  delay: 5
+
+- name: Re-activate ONOS apps
+  uri:
+    url: "{{ item }}"
+    method: POST
+    user: onos
+    password: rocks
+    status_code: 200
+  with_items:
+    - "http://onos-fabric:8181/onos/v1/applications/org.onosproject.vrouter/active"
+    - "http://onos-fabric:8181/onos/v1/applications/org.onosproject.segmentrouting/active"
