@@ -147,9 +147,9 @@ management_hosts_net_cidr: "{{ vtn_net_management_host_cidr }}"
 management_hosts_net_range_xos_low: "{{ vtn_net_management_host_range_xos_low }}"
 management_hosts_net_range_xos_high: "{{ vtn_net_management_host_range_xos_high }}"
 
-# used in fabric.yaml.j2
+# used in fabric-service.yaml.j2
 use_fabric: False
-fabric_network_cfg_json: "/opt/cord_profile/fabric-network-cfg.json"
+fabric_network_cfg_json: {}
 
 # base URL of maven repo where ONOS apps are retrieved
 onos_mavenrepo_url: "{{ 'http://mavenrepo.' ~ site_suffix ~ ':8080' }}"
