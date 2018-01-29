@@ -1,0 +1,85 @@
+---
+# Copyright 2017-present Open Networking Foundation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# helm/tasks/main.yml
+# Installs Helm for kubernetes
+
+# should probably check that downloaded matched installed version, but would
+# need checksum of binary inside the tarball, which isn't published
+- name: Check to see if Helm is installed
+  stat:
+    path: "{{ helm_bin_path }}"
+  register: helm_bin
+
+- name: Create a tempdir for Helm download
+  when: not helm_bin.stat.exists or not helm_bin.stat.executable
+  tempfile:
+    state: directory
+    suffix: helm
+  register: helm_tempdir
+
+- name: Download and verify Helm archive
+  when: not helm_bin.stat.exists or not helm_bin.stat.executable
+  get_url:
+    url: "{{ helm_dl_url }}"
+    checksum: "{{ helm_dl_checksum }}"
+    dest: "{{ helm_tempdir.path }}/helm.tgz"
+
+- name: Unarchive Helm
+  when: not helm_bin.stat.exists or not helm_bin.stat.executable
+  unarchive:
+    remote_src: true
+    src: "{{ helm_tempdir.path }}/helm.tgz"
+    dest: "{{ helm_tempdir.path }}/"
+
+- name: Move helm binary into place
+  when: not helm_bin.stat.exists or not helm_bin.stat.executable
+  become: yes
+  copy:
+    src: "{{ helm_tempdir.path }}/{{ ansible_system | lower }}-{{ cpu_arch }}/helm"
+    dest: "{{ helm_bin_path }}"
+    owner: root
+    group: root
+    mode: 0755
+
+# The helm binary is now installed.  Start up tiller on k8s.
+# `helm init --wait` should handle these waits below, but is broken
+# as of 2018-02-06, see: https://github.com/kubernetes/helm/issues/3379
+
+- name: Initialize Helm and wait for it to be ready
+  command: "helm init"
+  tags:
+    - skip_ansible_lint # while helm may be installed, k8s might have been wiped so tiller needs to be reinstalled
+
+- name: "Wait for 'helm init' to set up Tiller"
+  pause:
+    seconds: 60
+
+# needed to give permissions and avoid the cryptic
+#   "Error: no available release name found" message
+# per: https://github.com/kubernetes/helm/issues/3055
+- name: Give RBAC permissions to tiller
+  command: "kubectl {{ item }}"
+  with_items:
+    - 'create serviceaccount --namespace kube-system tiller'
+    - 'create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller'
+    - 'patch deploy --namespace kube-system tiller-deploy -p ''{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'''
+  tags:
+    - skip_ansible_lint # have to run these to set up tiller, as k8s might not be up
+
+- name: "Wait for Helm/Tiller to be ready"
+  pause:
+    seconds: 30
+
