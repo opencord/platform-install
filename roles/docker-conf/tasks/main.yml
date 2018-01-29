@@ -1,0 +1,92 @@
+---
+# Copyright 2017-present Open Networking Foundation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# docker-conf/tasks/main.yml
+
+- name: Configure dockerd to use registry
+  become: yes
+  template:
+    src: daemon.json.j2
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - docker-restart
+
+- name: Copy over dockerd SSL keys
+  become: yes
+  copy:
+    src: "{{ item.src }}"
+    dest:  "/etc/docker/{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner: root
+    group: root
+  with_items:
+    - src: "{{ pki_dir }}/root_ca/certs/ca_cert.pem"
+      dest: "ca_cert.pem"
+      mode: "0444"
+    - src: "{{ pki_dir }}/{{ site_name }}_im_ca/certs/docker.{{ site_suffix }}_cert_chain.pem"
+      dest: "docker_server.pem"
+      mode: "0444"
+    - src: "{{ pki_dir }}/{{ site_name }}_im_ca/private/docker.{{ site_suffix }}_key.pem"
+      dest: "docker_server_key.pem"
+      mode: "0400"
+  notify:
+    - docker-restart
+
+- name: Create dockerd config that requires SSL auth
+  become: yes
+  template:
+    src: "docker.j2"
+    dest: "/etc/default/docker"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - docker-restart
+
+- name: Create the ~/.docker directory
+  file:
+    dest:  "{{ ansible_user_dir }}/.docker"
+    state: directory
+    owner:  "{{ ansible_user_id }}"
+
+- name: Copy over docker client SSL keys
+  copy:
+    src: "{{ item.src }}"
+    dest:  "{{ ansible_user_dir }}/.docker/{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner:  "{{ ansible_user_id }}"
+    group:  "{{ ansible_user_gid }}"
+  with_items:
+    - src: "{{ pki_dir }}/root_ca/certs/ca_cert.pem"
+      dest: "ca.pem"
+      mode: "0444"
+    - src: "{{ pki_dir }}/{{ site_name }}_im_ca/certs/dockerclient_cert_chain.pem"
+      dest: "cert.pem"
+      mode: "0444"
+    - src: "{{ pki_dir }}/{{ site_name }}_im_ca/private/dockerclient_key.pem"
+      dest: "key.pem"
+      mode: "0400"
+
+- name: Login to the pod's docker registry
+  docker_login:
+    registry: "https://registry.{{ site_suffix }}:{{ docker_registry_ext_port }}"
+    tls_verify: yes
+    reauthorize: yes
+    username: "{{ docker_registry_admin_user }}"
+    password: "{{ docker_registry_admin_pass }}"
+

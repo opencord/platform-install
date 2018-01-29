@@ -41,3 +41,13 @@
   roles:
     - compute-prep
 
+- name: Install docker and configure it
+  hosts: compute
+  roles:
+    - docker-install
+
+- name: Configure docker to use pod registry
+  hosts: compute
+  roles:
+    - docker-conf
+
