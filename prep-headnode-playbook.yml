@@ -33,6 +33,13 @@
   roles:
     - docker-install
 
+- name: Install docker registry and configure docker to use it
+  hosts: head
+  become: yes
+  roles:
+    - docker-registry
+    - docker-conf
+
 - name: Configure network interfaces
   hosts: head
   become: yes
