@@ -65,6 +65,7 @@
     - docker-compose==1.15.0
     - gitpython
     - graphviz
+    - bcrypt
 
 - name: Make current user part of the Docker group
   become: yes
