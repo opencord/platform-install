@@ -41,3 +41,13 @@
   roles:
     - compute-prep
 
+- name: Install docker and configure it
+  hosts: head
+  roles:
+    - docker-install
+
+- name: Configure docker to use headnode registry
+  hosts: head
+  roles:
+    - docker-registry-conf
+
