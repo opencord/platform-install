@@ -13,22 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# cord-config-playbook.yml
-# Creates all configuration for a CORD pod
+# install-kubernetes-tools-playbook.yml
+# Installs kubernetes on the config node
 
-- name: Create SSL Root CA, Intermediate CA, Server certs, SSH CA and keypairs
+- name: Install kubernetes tools
   hosts: config
   roles:
-    - { role: create-configdirs-become, when: create_configdirs_become | default(True) }
-    - pki-root-ca
-    - pki-intermediate-ca
-    - pki-cert
-    - ssh-pki
-
-- name: Create CORD profile, Helm charts, and dynamic services config
-  hosts: config
-  roles:
-    - cord-profile
-    - { role: cord-helm-charts, when: use_k8s | default(False) }
-    - xos-services-config
+    - kubectl
+    - helm
 

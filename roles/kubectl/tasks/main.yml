@@ -13,22 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# cord-config-playbook.yml
-# Creates all configuration for a CORD pod
+# kubectl/tasks/main.yml
+# Installs Kubectl for kubernetes
 
-- name: Create SSL Root CA, Intermediate CA, Server certs, SSH CA and keypairs
-  hosts: config
-  roles:
-    - { role: create-configdirs-become, when: create_configdirs_become | default(True) }
-    - pki-root-ca
-    - pki-intermediate-ca
-    - pki-cert
-    - ssh-pki
-
-- name: Create CORD profile, Helm charts, and dynamic services config
-  hosts: config
-  roles:
-    - cord-profile
-    - { role: cord-helm-charts, when: use_k8s | default(False) }
-    - xos-services-config
+- name: Download and install kubectl
+  become: yes
+  get_url:
+    url: "{{ kubectl_dl_url }}"
+    checksum: "{{ kubectl_dl_checksum }}"
+    dest: "{{ kubectl_bin_path }}"
+    owner: root
+    group: root
+    mode: 0755
 

@@ -13,22 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# cord-config-playbook.yml
-# Creates all configuration for a CORD pod
+# kubeadm/defaults/main.yml
 
-- name: Create SSL Root CA, Intermediate CA, Server certs, SSH CA and keypairs
-  hosts: config
-  roles:
-    - { role: create-configdirs-become, when: create_configdirs_become | default(True) }
-    - pki-root-ca
-    - pki-intermediate-ca
-    - pki-cert
-    - ssh-pki
+kubernetes_version: "1.9.2"
 
-- name: Create CORD profile, Helm charts, and dynamic services config
-  hosts: config
-  roles:
-    - cord-profile
-    - { role: cord-helm-charts, when: use_k8s | default(False) }
-    - xos-services-config
+# These vars need to be determined on a per-OS/arch/dl basis
+cpu_arch: "amd64"
+kubectl_dl_checksum: "sha256:455999c8232c57748f4cee4b5446ee39fe8af093434d732ddcd628a02f3d9118"
+
+kubectl_dl_url: "https://storage.googleapis.com/kubernetes-release/release/v{{ kubernetes_version }}/bin/{{ ansible_system | lower }}/{{ cpu_arch }}/kubectl"
+
+kubectl_bin_path: "/usr/local/bin/kubectl"
 
