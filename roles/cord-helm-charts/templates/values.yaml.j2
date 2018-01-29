@@ -1,0 +1,12 @@
+images:
+  xos_core:
+    repository: "{{ docker_registry }}/xosproject/xos-ui"
+    tag: "{{ docker_tag }}"
+  xos_db:
+    repository: "{{ docker_registry }}/xosproject/xos-postgres"
+    tag: "{{ docker_tag }}"
+
+services:
+  - name: vsg
+    repository: "{{ docker_registry }}/xosproject/vsg-synchronizer"
+    tag: "{{ docker_tag }}"
