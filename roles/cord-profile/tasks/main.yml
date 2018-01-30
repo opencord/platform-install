@@ -119,7 +119,6 @@
     - xos_config_synchronizer.yaml
     - initial_data.yaml
     - deployment.yaml
-    - xos.yaml
     - gateway-config.yml
     - style.config.js
     - app.config.js
