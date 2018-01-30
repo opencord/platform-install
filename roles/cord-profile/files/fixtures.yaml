@@ -19,21 +19,14 @@ tosca_definitions_version: tosca_simple_yaml_1_0
 description: Some basic fixtures
 
 imports:
-  - custom_types/deploymentrole.yaml
   - custom_types/flavor.yaml
   - custom_types/siterole.yaml
   - custom_types/slicerole.yaml
   - custom_types/networkparametertype.yaml
   - custom_types/networktemplate.yaml
-  - custom_types/xos.yaml
 
 topology_template:
   node_templates:
-
-    xos:
-      type: tosca.nodes.XOS
-      properties:
-        name: xos
 
 # -----------------------------------------------------------------------------
 # Network Parameter Types
@@ -86,11 +79,6 @@ topology_template:
       type: tosca.nodes.SiteRole
       properties:
         role: tech
-
-    deploymentrole#admin:
-      type: tosca.nodes.DeploymentRole
-      properties:
-        role: admin
 
     slicerole#admin:
       type: tosca.nodes.SliceRole
