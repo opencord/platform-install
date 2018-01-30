@@ -15,5 +15,5 @@
 
 # test-client-install/defaults/main.yml
 
-headnode_fabric_bridge: fabric
+headnode_fabric_bridge: fabricbridge
 

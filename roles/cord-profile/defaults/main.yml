@@ -139,16 +139,7 @@ use_addresspool_public: False
 addresspool_public_cidr: "10.8.1.0/24"
 addresspool_public_hwaddr_prefix: "0EFE"
 
-## LEGACY - remove when profiles have been updated to use new vars (see above)
-# used in management-net.yaml.j2
-management_network_cidr: "{{ vtn_net_management_local_cidr }}"
-
-use_management_hosts: "{{ use_vtn_net_management_host }}"
-management_hosts_net_cidr: "{{ vtn_net_management_host_cidr }}"
-management_hosts_net_range_xos_low: "{{ vtn_net_management_host_range_xos_low }}"
-management_hosts_net_range_xos_high: "{{ vtn_net_management_host_range_xos_high }}"
-
-# used in fabric-service.yaml.j2
+# used in fabric.yaml.j2
 use_fabric: False
 fabric_network_cfg_json: {}
 
