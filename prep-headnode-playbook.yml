@@ -32,7 +32,7 @@
   hosts: head
   become: yes
   roles:
-    - { role: interface-config, when: not use_maas }
+    - interface-config
 
 - name: DNS server on head node
   hosts: head

@@ -31,19 +31,15 @@ use_fabric: False
 # VTN adds it to `br-int`, when provided as the `dataPlaneIntf`
 # default values:
 #  - `fabric` is default when using MaaS
-#  - `vethfabric1` is default for OpenCloud (setup with interface-config role)
+#  - `fabricbond` is default for all other configs (created with interface-config role)
 
-vtn_integration_bridge_interface: fabric
+vtn_integration_bridge_interface: fabricbond
 
 computenode_fabric_interfaces:
   - "{{ vtn_integration_bridge_interface }}"
   - br-int
 
 # used in openstack-compute-vtn.yaml.j2, referencing network in management-net.yaml.j2
-# default values:
-#  - 'veth3' default with MaaS
-#  - 'vethmgmt1' with OpenCloud
-
 use_vtn_net_management_host: False
-vtn_net_management_host_interface: veth3
+vtn_net_management_host_interface: vethmgmt1
 

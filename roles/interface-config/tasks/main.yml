@@ -38,7 +38,7 @@
   when: management_net_config.changed
   command: "ifup {{ item }}"
   with_flattened:
-   - mgmtbridge
+   - "{{ management_net_bridge }}"
    - mgmtbond
    - "{{ management_net_interfaces }}"
    - vethmgmt0

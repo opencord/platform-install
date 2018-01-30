@@ -31,7 +31,7 @@ fabric_gateway_hwaddr: "a4:23:05:06:01:01"
 
 # management network configuration
 management_net_cidr: "10.1.0.0/24"
-management_net_bridge: "mgmtbr"
+management_net_bridge: "mgmtbridge"
 
 dns_servers:
   - "{{ management_net_cidr | ipaddr('1') | ipaddr('address') }}"

@@ -22,7 +22,7 @@ head_lxd_list: []
 
 # For programatic generation of MAC addresses for LXD containers
 management_net_cidr: "10.1.0.0/24"
-management_net_bridge: "mgmtbr"
+management_net_bridge: "mgmtbridge"
 
 vtn_net_management_host_hwaddr_prefix: "06A6"
 vtn_net_management_host_cidr: "{{ management_net_cidr }}"
