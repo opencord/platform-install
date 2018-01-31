@@ -44,7 +44,7 @@
         type: nic
         parent: "{{ management_net_bridge }}"
         nictype: bridged
-        hwaddr: "{{ item.hwaddr | default( vtn_net_management_host_hwaddr_prefix ~ ( vtn_net_management_host_cidr | ipaddr(item.ipv4_last_octet) | ipaddr('address') | ip4_hex )) | hwaddr('unix') }}"
+        hwaddr: "{{ item.hwaddr | default( vtn_net_management_host_hwaddr_prefix ~ ( vtn_net_management_host_cidr | ipaddr(item.ipv4_last_octet) | ipaddr('address') | ip4_hex )) | hwaddr('linux') }}"
       certs:
         type: disk
         path: /usr/local/share/ca-certificates/cord/

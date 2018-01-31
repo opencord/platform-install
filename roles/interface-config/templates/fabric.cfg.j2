@@ -35,7 +35,7 @@ iface fabricbridge inet static
   network {{ vtn_net_public_cidr | ipaddr('network') }}
   netmask {{ vtn_net_public_cidr | ipaddr('netmask') }}
   broadcast {{ vtn_net_public_cidr | ipaddr('broadcast') }}
-  hwaddress ether {{ ( vtn_net_public_hwaddr_prefix ~ ( vtn_ip | ip4_hex )) | hwaddr('unix') }}
+  hwaddress ether {{ ( vtn_net_public_hwaddr_prefix ~ ( vtn_ip | ip4_hex )) | hwaddr('linux') }}
   post-down ip link del fabricbridge
 
 {% if use_addresspool_vsg %}
@@ -70,7 +70,7 @@ iface fabricbond inet static
   network {{ vtn_net_public_cidr | ipaddr('network') }}
   netmask {{ vtn_net_public_cidr | ipaddr('netmask') }}
   broadcast {{ vtn_net_public_cidr | ipaddr('broadcast') }}
-  hwaddress ether {{ ( vtn_net_public_hwaddr_prefix ~ ( vtn_ip | ip4_hex )) | hwaddr('unix') }}
+  hwaddress ether {{ ( vtn_net_public_hwaddr_prefix ~ ( vtn_ip | ip4_hex )) | hwaddr('linux') }}
   bond-miimon 100
   bond-slaves none
   bond-mode active-backup

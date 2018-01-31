@@ -50,7 +50,7 @@ subnet {{ subnet.cidr | ipaddr('network') }} netmask {{ subnet.cidr | ipaddr('ne
     option host-name "{{ node.name }}";
 {% set host_ipaddr = (subnet.cidr | ipaddr(node.ipv4_last_octet) | ipaddr('address')) %}
     fixed-address {{ host_ipaddr }};
-    hardware ethernet {{ node.hwaddr | default(vtn_net_management_host_hwaddr_prefix ~ (host_ipaddr | ip4_hex)) | hwaddr('unix') }};
+    hardware ethernet {{ node.hwaddr | default(vtn_net_management_host_hwaddr_prefix ~ (host_ipaddr | ip4_hex)) | hwaddr('linux') }};
 {% if node.pxe_filename is defined %}
     filename "{{ node.pxe_filename }}";
     next-server {{ subnet.tftp_server | default(subnet.cidr | ipaddr('1') | ipaddr('address')) }};
@@ -67,7 +67,7 @@ subnet {{ subnet.cidr | ipaddr('network') }} netmask {{ subnet.cidr | ipaddr('ne
     option host-name "{{ node.name }}";
 {% set host_ipaddr = (subnet.cidr | ipaddr(node.ipv4_last_octet) | ipaddr('address')) %}
     fixed-address {{ host_ipaddr }};
-    hardware ethernet {{ node.hwaddr | default(vtn_net_management_host_hwaddr_prefix ~ (host_ipaddr | ip4_hex)) | hwaddr('unix') }};
+    hardware ethernet {{ node.hwaddr | default(vtn_net_management_host_hwaddr_prefix ~ (host_ipaddr | ip4_hex)) | hwaddr('linux') }};
 {% if node.pxe_filename is defined %}
     filename "{{ subnet.pxe_filename }}";
     next-server {{ subnet.tftp_server | default(subnet.cidr | ipaddr('1') | ipaddr('address')) }};

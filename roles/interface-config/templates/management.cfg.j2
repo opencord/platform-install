@@ -11,7 +11,7 @@ iface mgmtbridge inet static
   network {{ vtn_net_management_host_cidr | ipaddr('network') }}
   netmask {{ vtn_net_management_host_cidr | ipaddr('netmask') }}
   broadcast {{ vtn_net_management_host_cidr | ipaddr('broadcast') }}
-  hwaddress ether {{ ( vtn_net_management_host_hwaddr_prefix ~ ( mgmtbr_ip | ip4_hex )) | hwaddr('unix') }}
+  hwaddress ether {{ ( vtn_net_management_host_hwaddr_prefix ~ ( mgmtbr_ip | ip4_hex )) | hwaddr('linux') }}
   dns-search {{ site_suffix }}
   dns-nameservers {{ dns_servers | join(" ") }}
   post-down ip link del mgmtbridge
