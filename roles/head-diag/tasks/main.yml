@@ -136,6 +136,9 @@
    - "netcfg"
    - "ports"
    - "summary"
+   - "links"
+   - "sr-ecmp-spg"
+   - "sr-next-hops"
 
 - name: Docker diag collection - Find names for all running Docker containers
   command: sudo docker ps -a --format '{{'{{'}} .Names {{'}}'}}'
