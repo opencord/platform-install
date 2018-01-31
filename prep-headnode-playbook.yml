@@ -28,11 +28,6 @@
     - common-prep
     - pki-install
 
-- name: Install docker and configure it
-  hosts: head
-  roles:
-    - docker-install
-
 - name: Configure network interfaces
   hosts: head
   become: yes
@@ -59,6 +54,18 @@
   become: yes
   roles:
     - { role: apt-cacher-ng, when: use_apt_cache | default(True) }
+
+- name: Install docker and configure it
+  hosts: head
+  roles:
+    - docker-install
+
+- name: Install docker registry, and configure docker client to use it
+  hosts: head
+  become: yes
+  roles:
+    - { role: docker-registry, when: use_secure_docker_registry | default(True) }
+    - { role: docker-registry-client, when: use_secure_docker_registry | default(True) }
 
 - name: Install apache proxy
   hosts: head

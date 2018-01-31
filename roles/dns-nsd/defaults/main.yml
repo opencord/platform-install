@@ -54,6 +54,7 @@ nsd_zones:
       - { name: "cordloghost", dest: "{{ headnode_dns }}" }
       - { name: "consul", dest: "{{ headnode_dns }}" }
       - { name: "docker", dest: "{{ headnode_dns }}" }
+      - { name: "docker-registry", dest: "{{ headnode_dns }}" }
       - { name: "mavenrepo", dest: "{{ headnode_dns }}" }
       - { name: "ns", dest: "{{ headnode_dns }}" }
       - { name: "ns1", dest: "{{ headnode_dns }}" }

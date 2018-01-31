@@ -1,0 +1,18 @@
+---
+version: '2'
+
+services:
+  registry:
+    restart: always
+    image: {{ docker_registry_image }}
+    ports:
+      - {{ docker_registry_ext_port }}:5000
+    environment:
+      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/docker_registry.pem
+      REGISTRY_HTTP_TLS_KEY: /certs/docker_registry_key.pem
+      REGISTRY_HTTP_TLS_CLIENTCAS: "[ '/certs/ca_cert.pem' ]"
+      REGISTRY_HTTP_SECRET: {{ docker_registry_http_secret }}
+    volumes:
+      - {{ docker_registry_dir }}/data:/var/lib/registry
+      - {{ docker_registry_dir }}/certs:/certs
+

@@ -1,0 +1,47 @@
+---
+# Copyright 2017-present Open Networking Foundation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# docker-registry-client/tasks/main.yml
+# Configure a node to be able to access the docker registry
+
+- name: Create directories for registry access client SSL keys
+  file:
+    state: directory
+    dest: "{{ item }}"
+    owner: root
+    group: docker
+    mode: 0755
+  with_items:
+    - "/etc/docker/certs.d/"
+    - "/etc/docker/certs.d/{{ docker_registry }}"
+
+- name: Copy over registry access client SSL keys
+  copy:
+    src: "{{ item.src }}"
+    dest: "/etc/docker/certs.d/{{ docker_registry }}/{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner: root
+    group: docker
+  with_items:
+    - src: "{{ pki_dir }}/root_ca/certs/ca_cert.pem"
+      dest: "ca.crt"
+      mode: "0444"
+    - src: "{{ pki_dir }}/{{ site_name }}_im_ca/certs/dockerclient_cert_chain.pem"
+      dest: "client.cert"
+      mode: "0444"
+    - src: "{{ pki_dir }}/{{ site_name }}_im_ca/private/dockerclient_key.pem"
+      dest: "client.key"
+      mode: "0400"
+

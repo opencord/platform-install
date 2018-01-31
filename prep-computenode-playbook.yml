@@ -41,3 +41,14 @@
   roles:
     - compute-prep
 
+- name: Install docker and configure it
+  hosts: compute
+  roles:
+    - { role: docker-install, when: use_secure_docker_registry | default(True) }
+
+- name: Configure docker to use head docker registry
+  hosts: compute
+  become: yes
+  roles:
+    - { role: docker-registry-client, when: use_secure_docker_registry | default(True) }
+
