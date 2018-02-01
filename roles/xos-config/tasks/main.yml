@@ -61,4 +61,4 @@
   until: result | success
   retries: 50
   delay: 5
-  with_items: "{{ xos_new_tosca_config_templates }}"
+  with_items: "{{ xos_tosca_config_templates + xos_new_tosca_config_templates }}"

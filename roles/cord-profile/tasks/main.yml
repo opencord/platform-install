@@ -130,17 +130,15 @@
   set_fact:
     cord_profile_src_dir: "../../orchestration/profiles/{{ cord_use_case }}"
 
+- debug:
+    msg: "[WARNING] xos_new_tosca_config_templates is deprecated"
+  when: xos_new_tosca_config_templates
+
 - name: Create profile specific templated TOSCA config files
   template:
     src: "{{ cord_profile_src_dir }}/templates/{{ item }}.j2"
     dest: "{{ config_cord_profile_dir }}/{{ item }}"
-  with_items: "{{ xos_tosca_config_templates }}"
-
-- name: Create profile specific templated TOSCA config files (new Engine)
-  template:
-    src: "{{ cord_profile_src_dir }}/templates/{{ item }}.j2"
-    dest: "{{ config_cord_profile_dir }}/{{ item }}"
-  with_items: "{{ xos_new_tosca_config_templates }}"
+  with_items: "{{ xos_tosca_config_templates + xos_new_tosca_config_templates }}"
 
 - name: Create profile specific templated non-TOSCA files
   template:
