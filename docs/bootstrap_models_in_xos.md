@@ -1,18 +1,32 @@
-# How to add a TOSCA recipe to platform-install
+# TOSCA Development
 
-All the data model bootstrapping in XOS is done via TOSCA in platform install. 
-There two ansible roles involved in that:
-- `cord-profile` responsible to generate the recipes
-- `xos-config` responsible for onboarding the recipes
+TOSCA is typically used to provision the services loaded into
+CORD as part of some profile. This is a two-step process:
+(1) during the build stage, TOSCA templates are rendered using
+variables set in the `podconfig`, `scenario`, and `default` roles
+into fully qualified TOSCA recipes, and (2) as the last step of the
+deploy stage, these TOSCA recipes are onboarded into XOS (which
+provisions the service profile accordingly). These two steps are
+implemented by a pair of Ansible roles:
 
-Here is a list of changes you'll need to make in order to add a new recipe to your profiles:
+- `cord-profile` responsible for generating the TOSCA recipes from templates
+- `xos-config` responsible for onboarding the TOSCA recipes into XOS
 
-## Create a new template in `cord-profile`
+The following describes how to create a new TOSCA template and make
+it available to provision CORD. This is done in the context of the profile
+you want to provision, where profiles are defined in
+`orchestration/profiles/<profilename>`.
 
-You can create as many templates as needed under `/platform-install/roles/cord-profile/templates`. 
-These are ansible templates, and they use the `jinja2` syntax. 
+## Create a New Template
 
-For example a basic template can be `site.yml.j2`:
+You can create as many templates as needed for your profile in
+directory `orchestration/profiles/<profilename>/templates`.
+There are also some platform-wide TOSCA templates defined
+in `/platform-install/roles/cord-profile/templates` but these
+are typically not modified on a profile-by-profile basis.
+
+These templates use the `jinja2` syntax, so for example, a
+basic template might be `site.yml.j2`:
 
 ```
 tosca_definitions_version: tosca_simple_yaml_1_0
@@ -28,14 +42,17 @@ topology_template:
       type: tosca.nodes.Site
 ```
 
-You can use here all the variables defined in the [build glossary](../build_glossary.md).
+Your templates can use all the variables defined in
+the [build glossary](../build_glossary.md).
 
-## Add the template to your profile manifest
+## Add the Template to your Profile Manifest
 
-In `platform-install/profile_manifests` locate the profile that your using and open it.
+Locate and open the profile manifest you want to affect:
+`orchestration/profiles/<profilename>/<profilename>.yml`.
 
 Locate a section called `xos_tosca_config_templates` (if it's missing create it), 
-and add there the list of templates you want to be generated and onboarded, eg:
+and add there the list of templates you want to be generated and
+onboarded; for example:
 ```
 xos_tosca_config_templates:
   - site.yml
