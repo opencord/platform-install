@@ -31,6 +31,8 @@
     url: "{{ xos_tosca_url }}"
     method: GET
     status_code: 200
+    return_content: yes
+  register: xosready_tosca
+  until: xosready_tosca.status == 200
   retries: 40
   delay: 15
-
