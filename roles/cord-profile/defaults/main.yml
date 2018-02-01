@@ -64,6 +64,7 @@ xos_dynamic_services: []
 xos_gui_service_graph_constraints: []
 
 xos_tosca_config_templates: []
+xos_new_tosca_config_templates: [] # Deprecated
 
 xos_other_templates: []
 
