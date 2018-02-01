@@ -25,7 +25,6 @@ xos_admin_user: "xosadmin@opencord.org"
 head_xos_admin_pass: "{{ lookup('file', head_credentials_dir ~ '/' ~ xos_admin_user) }}"
 
 xos_tosca_config_templates: []
-
-xos_new_tosca_config_templates: []
+xos_new_tosca_config_templates: [] # Deprecated
 
 use_openstack: True
