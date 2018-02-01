@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "daf50937_88307f70",
+        "filename": "docs/bootstrap_models_in_xos.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2018-02-01T18:30:57Z",
+      "side": 1,
+      "message": "To expand a bit: All profiles having to do with configuring services for a profile are now in the new location.  The old location only holds \"platform\" templates (e.g., for the base docker-compose.yml file).",
+      "parentUuid": "cb5229f1_486ffc60",
+      "range": {
+        "startLine": 18,
+        "startChar": 50,
+        "endLine": 18,
+        "endChar": 96
+      },
+      "revId": "75ba45ba7ba808dbf5f4ac7ed9d53eb05c7db1ef",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "740c4cc9_de6de744",
         "filename": "docs/bootstrap_models_in_xos.md",
         "patchSetId": 1
@@ -68,6 +92,53 @@
       "revId": "75ba45ba7ba808dbf5f4ac7ed9d53eb05c7db1ef",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d0fbd1ec_ab02d5ad",
+        "filename": "docs/bootstrap_models_in_xos.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2018-02-01T18:30:57Z",
+      "side": 1,
+      "message": "`orchestration/profiles/\u003cuse-case\u003e/\u003cprofilename\u003e.yml`\n\nE.g., use-case\u003dmcord, profilename\u003dmcord-cavium",
+      "parentUuid": "740c4cc9_de6de744",
+      "range": {
+        "startLine": 41,
+        "startChar": 3,
+        "endLine": 41,
+        "endChar": 67
+      },
+      "revId": "75ba45ba7ba808dbf5f4ac7ed9d53eb05c7db1ef",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a2568e28_9342e4f9",
+        "filename": "docs/bootstrap_models_in_xos.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2018-02-01T18:30:57Z",
+      "side": 1,
+      "message": "xos_new_tosca_config_templates now that we\u0027ve moved to the new engine",
+      "range": {
+        "startLine": 44,
+        "startChar": 25,
+        "endLine": 44,
+        "endChar": 51
+      },
+      "revId": "75ba45ba7ba808dbf5f4ac7ed9d53eb05c7db1ef",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
