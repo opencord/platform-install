@@ -1,13 +1,19 @@
-# How to add a TOSCA recipe to platform-install
+# TOSCA Development
 
-All the data model bootstrapping in XOS is done via TOSCA in platform install. 
-There two ansible roles involved in that:
-- `cord-profile` responsible to generate the recipes
-- `xos-config` responsible for onboarding the recipes
+TOSCA is typically used to provision the services loaded into
+CORD. This is a two-step process: (1) during the build stage,
+TOSCA templates are translated into fully qualified TOSCA recipes,
+and (2) as the last step of the deploy stage, these TOSCA recipes
+are onboarded into XOS (which provisions the services accordingly).
+These two steps are implemented by a pair of Ansible roles:
 
-Here is a list of changes you'll need to make in order to add a new recipe to your profiles:
+- `cord-profile` responsible for generating the TOSCA recipes from templates
+- `xos-config` responsible for onboarding the TOSCA recipes into XOS
 
-## Create a new template in `cord-profile`
+The following describes how to create a new TOSCA template and make it
+available to provision CORD.
+
+## Create a New Template
 
 You can create as many templates as needed under `/platform-install/roles/cord-profile/templates`. 
 These are ansible templates, and they use the `jinja2` syntax. 
@@ -30,9 +36,10 @@ topology_template:
 
 You can use here all the variables defined in the [build glossary](../build_glossary.md).
 
-## Add the template to your profile manifest
+## Add the Template to your Profile Manifest
 
-In `platform-install/profile_manifests` locate the profile that your using and open it.
+In `platform-install/profile_manifests` locate the profile that you
+are using and open it.
 
 Locate a section called `xos_tosca_config_templates` (if it's missing create it), 
 and add there the list of templates you want to be generated and onboarded, eg:
