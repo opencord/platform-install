@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "e08e50f7_92446af6",
+        "filename": "docs/bootstrap_models_in_xos.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2018-02-01T21:25:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6330fa04_3e852d43",
+      "range": {
+        "startLine": 5,
+        "startChar": 20,
+        "endLine": 5,
+        "endChar": 31
+      },
+      "revId": "75ba45ba7ba808dbf5f4ac7ed9d53eb05c7db1ef",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cb5229f1_486ffc60",
         "filename": "docs/bootstrap_models_in_xos.md",
         "patchSetId": 1
