@@ -57,7 +57,7 @@
 
 - name: Check that Juju is actually ready
   juju_facts:
-  until: 'juju_machines["juju.{{ site_suffix }}"] is defined and juju_machines["juju.{{ site_suffix }}"]["agent_state"] == "started"'
+  until: 'juju_machines["juju." ~ site_suffix ] is defined and juju_machines["juju." ~ site_suffix ]["agent_state"] == "started"'
   retries: 40
   delay: 15
 
@@ -66,7 +66,7 @@
 # list of active juju_services names: juju_services.keys()
 
 - name: Add machines to Juju
-  when: "{{ head_lxd_list | map(attribute='service') | list | reject('undefined') | map('format_string', '%s.'~site_suffix ) | difference( juju_machines.keys() ) | length }}"
+  when: head_lxd_list | map(attribute='service') | list | reject('undefined') | map('format_string', '%s.'~site_suffix ) | difference( juju_machines.keys() ) | length
   command: "juju add-machine ssh:{{ item }}"
   with_items: "{{ head_lxd_list | map(attribute='service') | list | reject('undefined') | map('format_string', '%s.'~site_suffix ) | difference( juju_machines.keys() ) }}"
   register: result
@@ -83,12 +83,12 @@
   delay: 15
 
 - name: Deploy services that are hosted in their own LXD container
-  when: "{{ lxd_service_list | difference( juju_services.keys() ) | length }}"
+  when: lxd_service_list | difference( juju_services.keys() ) | length
   command: "juju deploy {{ charm_versions[item] | default(item) }} --to {{ juju_machines[item~'.'~site_suffix]['machine_id'] }} --config={{ juju_config_path }}"
   with_items: "{{ lxd_service_list | difference( juju_services.keys() ) }}"
 
 - name: Deploy services that don't have their own container
-  when: "{{ standalone_service_list | difference( juju_services.keys() ) | length }}"
+  when: standalone_service_list | difference( juju_services.keys() ) | length
   command: "juju deploy {{ charm_versions[item] | default(item) }} --config={{ juju_config_path }}"
   with_items: "{{ standalone_service_list | difference( juju_services.keys() ) }}"
 

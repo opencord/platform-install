@@ -38,7 +38,7 @@
   roles:
     - test-vsg
 
-- include: onboard-exampleservice-playbook.yml
+- import_playbook: onboard-exampleservice-playbook.yml
 
 - name: Test ExampleService
   hosts: head
