@@ -25,6 +25,10 @@ headnode_nat_interface: eth0
 management_net_interfaces: []
 fabric_net_interfaces: []
 
+# The following value is hardcoded and should be identical to here:
+# https://github.com/opencord/maas/blob/master/config-generator/netconfig.tpl#L29
+fabric_gateway_hwaddr: "a4:23:05:06:01:01"
+
 # management network configuration
 management_net_cidr: "10.1.0.0/24"
 management_net_bridge: "mgmtbr"
