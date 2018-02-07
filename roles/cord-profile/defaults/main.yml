@@ -152,6 +152,10 @@ management_hosts_net_range_xos_high: "{{ vtn_net_management_host_range_xos_high 
 use_fabric: False
 fabric_network_cfg_json: {}
 
+# The following value is hardcoded and should be identical to here:
+# https://github.com/opencord/maas/blob/master/config-generator/netconfig.tpl#L29
+fabric_gateway_hwaddr: "a4:23:05:06:01:01"
+
 # base URL of maven repo where ONOS apps are retrieved
 onos_mavenrepo_url: "{{ 'http://mavenrepo.' ~ site_suffix ~ ':8080' }}"
 

@@ -35,7 +35,7 @@ iface fabricbridge inet static
   network {{ vtn_net_public_cidr | ipaddr('network') }}
   netmask {{ vtn_net_public_cidr | ipaddr('netmask') }}
   broadcast {{ vtn_net_public_cidr | ipaddr('broadcast') }}
-  hwaddress ether {{ ( vtn_net_public_hwaddr_prefix ~ ( vtn_ip | ip4_hex )) | hwaddr('linux') }}
+  hwaddress ether {{ fabric_gateway_hwaddr }}
   post-down ip link del fabricbridge
 
 {% if use_addresspool_vsg %}
