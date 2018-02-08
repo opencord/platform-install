@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "63efb92f_fcb1ccf2",
+        "filename": "roles/cord-helm-charts/files/core_templates/core-deployment.yaml",
+        "patchSetId": 17
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2018-02-08T23:27:41Z",
+      "side": 1,
+      "message": "What\u0027s the reason for this?",
+      "range": {
+        "startLine": 18,
+        "startChar": 10,
+        "endLine": 18,
+        "endChar": 53
+      },
+      "revId": "3c28257c28e44c15c6324b9ebcfc94cf36ac1b40",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
