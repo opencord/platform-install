@@ -56,7 +56,6 @@ nsd_zones:
     aliases:
       - { name: "apt-cache", dest: "{{ headnode_dns }}" }
       - { name: "cordloghost", dest: "{{ headnode_dns }}" }
-      - { name: "consul", dest: "{{ headnode_dns }}" }
       - { name: "docker", dest: "{{ headnode_dns }}" }
       - { name: "mavenrepo", dest: "{{ headnode_dns }}" }
       - { name: "ns", dest: "{{ headnode_dns }}" }
@@ -65,7 +64,6 @@ nsd_zones:
       - { name: "onos-fabric", dest: "{{ headnode_dns }}" }
       - { name: "xos", dest: "{{ headnode_dns }}" }
       - { name: "xos-chameleon", dest: "{{ headnode_dns }}" }
-      - { name: "xos-consul", dest: "{{ headnode_dns }}" }
       - { name: "xos-core", dest: "{{ headnode_dns }}" }
       - { name: "xos-gui", dest: "{{ headnode_dns }}" }
       - { name: "xos-tosca", dest: "{{ headnode_dns }}" }
