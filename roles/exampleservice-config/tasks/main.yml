@@ -28,11 +28,6 @@
     - exampleservice_rsa
     - exampleservice_rsa.pub
 
-- name: Copy exampleservice onboarding TOSCA files to cord_profile
-  copy:
-    src: "{{ head_cord_dir }}/orchestration/xos_services/exampleservice/xos/exampleservice-onboard.yaml"
-    dest: "{{ head_cord_profile_dir }}/exampleservice-onboard.yaml"
-
 - name: TOSCA to create exampleservice test config
   template:
     src: "test-exampleservice.yaml.j2"
