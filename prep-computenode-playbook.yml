@@ -35,12 +35,6 @@
   roles:
     - { role: dns-configure, when: not use_maas }
 
-- name: Prep compute node
-  hosts: compute
-  become: yes
-  roles:
-    - compute-prep
-
 - name: Install docker and configure it
   hosts: compute
   roles:
@@ -51,4 +45,10 @@
   become: yes
   roles:
     - { role: docker-registry-client, when: use_secure_docker_registry | default(True) }
+
+- name: Finish prep of compute node
+  hosts: compute
+  become: yes
+  roles:
+    - compute-prep
 
