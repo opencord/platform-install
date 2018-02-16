@@ -27,7 +27,7 @@ site_suffix: "{{ site_name }}.test"
 
 # Docker related settings
 docker_registry_ext_port: "5000"
-docker_registry: "registry.{{ site_suffix }}:{{ docker_registry_ext_port }}"
+docker_registry: "docker-registry.{{ site_suffix }}:{{ docker_registry_ext_port }}"
 
 docker_tag: "candidate"
 
