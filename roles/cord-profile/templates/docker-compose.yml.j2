@@ -118,7 +118,7 @@ services:
 {% for network in xos_docker_networks %}
      - {{ network }}
 {% endfor %}
-    command: python chameleon/chameleon/main.py -R 9101 -G xos-core:50055 --swagger-url /apidocs
+    command: python chameleon/chameleon/main.py -R 9101 -G xos-core:50055 --swagger-url /apidocs -r
     ports:
       - "9101:9101"
     links:
