@@ -1,0 +1,81 @@
+---
+kolla_version: "5.0.1"
+
+pip_python_openstack_client:
+  - python-ceilometerclient
+  - python-heatclient
+  - python-neutronclient
+  - python-openstackclient
+
+
+docker_registry: ""
+
+node_config_directory: "/etc/kolla"
+
+kolla_ansible_path: "/usr/local/share/kolla-ansible"
+
+kolla_vip_address: "192.168.100.200"
+
+openstack_version: "pike"
+
+kolla_distro: "centos"
+
+kolla_type: "source"
+
+kolla_network_interface: "eth1"
+
+api_interface: "eth1"
+
+kolla_neutron_external_interface: "eth2"
+
+kolla_neutron_plugin_agent: "openvswitch"
+
+node1_name: compute1
+node2_name: compute2
+node3_name: compute3
+
+
+docker_apt_url: "{{ 'http://obs.linaro.org/ERP:/17.12/Debian_9' if ansible_architecture == 'aarch64' else 'https://apt.dockerproject.org' }}"
+docker_apt_key_file: "{{ 'Release.key' if ansible_architecture == 'aarch64' else 'gpg' }}"
+docker_apt_key_id: "{{ 'C32DA102AD89C2BE' if ansible_architecture == 'aarch64' else 'F76221572C52609D' }}"
+
+docker_yum_url: "https://yum.dockerproject.org"
+docker_gpg_fingerprint: "58118E89F3A912897C070ADBF76221572C52609D"
+
+customize_etc_hosts: True
+
+create_kolla_user: True
+
+enable_host_ntp: True
+
+change_selinux: True
+
+kolla_user: vagrant
+
+selinux_state: "permissive"
+
+docker_storage_driver: ""
+
+debian_pkg_install:
+ - docker-ce
+ - git
+ - python-setuptools
+ - ntp
+
+redhat_pkg_install:
+ - epel-release
+ - docker-engine-1.12.0
+ - git
+ - python-setuptools
+ - ntp
+
+ubuntu_pkg_removals:
+ - lxd
+ - lxc
+ - libvirt-bin
+ - open-iscsi
+
+redhat_pkg_removals:
+ - libvirt
+ - libvirt-daemon
+ - iscsi-initiator-utils
