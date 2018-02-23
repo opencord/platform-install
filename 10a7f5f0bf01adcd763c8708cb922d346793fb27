@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "864f4e02_ff9d532b",
+        "filename": "roles/kolla-setup/tasks/install.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-02-23T20:45:04Z",
+      "side": 1,
+      "message": "The Jenkins job will fail your patchsets as we run `ansible-lint` on them, which checks for EOL space, and use of `command` and `shell` when it could be an ansible module. \n\n`scripts/lintcheck.sh` will run this on the entire platform-install repo. You can get ansible-lint from pip.  More info: https://github.com/willthames/ansible-lint\n\nWe run a license/copyright check as well, so you\u0027ll need to add the apache license blurb seen elsehwere to most of the files.",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 1
+      },
+      "revId": "10a7f5f0bf01adcd763c8708cb922d346793fb27",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7adc4071_1a346015",
+        "filename": "roles/kolla-setup/templates/globals.yml.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-02-23T20:45:04Z",
+      "side": 1,
+      "message": "This should probably be `{{ management_network_bridge }}` which is the internal management network interface name: https://guide.opencord.org/build_glossary.html#managementnetbridge",
+      "range": {
+        "startLine": 73,
+        "startChar": 18,
+        "endLine": 73,
+        "endChar": 25
+      },
+      "revId": "10a7f5f0bf01adcd763c8708cb922d346793fb27",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
