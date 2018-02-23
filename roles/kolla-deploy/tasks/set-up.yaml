@@ -1,0 +1,12 @@
+---
+- name: Create cinder-volumes
+  script: "{{ role_path }}/files/set-cinder.sh"
+  changed_when: false
+
+- name: Pull openstack images
+  command: kolla-ansible -i /etc/kolla/multinode pull
+  changed_when: false
+
+- name: Pull openstack images
+  command: kolla-ansible -i /etc/kolla/multinode deploy
+  changed_when: false
