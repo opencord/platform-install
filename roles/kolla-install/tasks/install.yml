@@ -1,0 +1,60 @@
+---
+- name: Run update apt packages
+  apt:
+    update_cache: yes
+
+- name: Install ubuntu dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python-pip
+    - python-dev
+    - libffi-dev
+    - gcc
+    - libssl-dev
+    - python-selinux
+    - ansible
+
+- name: Install kolla-ansible
+  pip:
+    name: kolla-ansible
+    version: "{{ kolla_version }}"
+
+#- name: Create cinder-volumes
+#  script: "{{ role_path }}/files/set-cinder.sh"
+- name: Ensuring config directories exist
+  file:
+    path: "/etc/kolla"
+    state: "directory"
+    recurse: yes
+
+- name: check kolla passwords.yml file exist
+  stat:
+    path: /etc/kolla/passwords.yml
+  register: check_kolla_passwords_file
+
+- name: copy kolla passwords.yml
+  copy:
+    src: "{{ kolla_ansible_path }}/etc_examples/kolla/passwords.yml"
+    dest: "/etc/kolla/passwords.yml"
+    remote_src: yes
+  when: not check_kolla_passwords_file.stat.exists
+
+- name: check kolla password
+  shell: cat /etc/kolla/passwords.yml | grep keystone_admin_password | awk '{print $2}'
+  changed_when: false
+  register: keystone_admin_password
+
+- name: Setting passwords
+  command: kolla-genpwd
+  when: keystone_admin_password.stdout | length == 0
+
+- name: Copying over config.json files for services
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/kolla/{{ item }}"
+  with_items:
+    - "globals.yml"
+    - "multinode"
+
