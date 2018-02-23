@@ -1,0 +1,27 @@
+---
+kolla_version: "5.0.1"
+
+pip_python_openstack_client:
+  - python-ceilometerclient
+  - python-heatclient
+  - python-neutronclient
+  - python-openstackclient
+
+
+kolla_ansible_path: "/usr/share/kolla-ansible"
+
+kolla_vip_address: "192.168.100.200"
+
+openstack_version: "pike"
+
+kolla_distro: "centos"
+
+kolla_type: "source"
+
+kolla_network_interface: "eth1"
+
+kolla_neutron_external_interface: "eth2"
+
+node1_name: "compute1"
+node2_name: "compute2"
+node3_name: "compute3"

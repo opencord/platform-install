@@ -1,0 +1,59 @@
+---
+- name: Run update apt packages
+  apt:
+    update_cache: yes
+
+- name: Install ubuntu dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python-pip
+    - python-dev
+    - libffi-dev
+    - gcc
+    - libssl-dev
+    - python-selinux
+    - ansible
+
+- name: Install kolla-ansible
+  pip:
+    name: kolla-ansible
+    version: "{{ kolla_verison }}"
+
+- name: Create cinder-volumes
+  script: "{{ role_path }}/files/set-cinder.sh"
+
+- name: check kolla passwords.yml file exist
+  stat:
+    path: /etc/kolla/passwords.yml
+  register: check_kolla_passwords_file
+
+- name: copy kolla passwords.yml
+  copy:
+    src: "{{ kolla_ansible_path }}/etc_examples/kolla/passwords.yml"
+    dest: "/etc/kolla"
+    remote_src: yes
+  when: not check_kolla_passwords_file.stat.exists
+
+- name: check kolla password
+  shell: cat /etc/kolla/passwords.yml | grep keystone_admin_password | awk '{print $2}'
+  changed_when: false
+  register: keystone_admin_password
+
+- name: Setting passwords
+  command: kolla-genpwd
+  when: keystone_admin_password.stdout | length == 0
+
+- name: Copy globals.yml to /etc/kolla directory
+  copy: "{{ role_path }}/templates/globals.yml.j2"
+  dest: /etc/kolla/globals.yml
+
+- name: Copy multinode to /etc/kolla directory
+  copy: "{{ role_path }}/templates/multinode.j2"
+  dest: /etc/kolla/multinode
+
+- name: Bootstrap servers with kolla deploy dependencie
+  command: kolla-ansible -i /etc/kolla/multinode bootstrap-servers
+  changed_when: False
+
