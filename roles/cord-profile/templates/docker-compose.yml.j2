@@ -200,7 +200,6 @@ services:
       - {{ head_cord_profile_dir }}:/opt/cord_profile:ro
       - {{ head_cord_profile_dir }}/im_cert_chain.pem:/usr/local/share/ca-certificates/local_certs.crt:ro
       - {{ head_cord_profile_dir }}/initial_data.yaml:/opt/xos/core/migrations/initial_data.yaml:ro
-      - /var/run/docker.sock:/var/run/docker.sock
     logging:
       driver: "json-file"
       options:
