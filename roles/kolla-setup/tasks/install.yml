@@ -1,0 +1,42 @@
+---
+- name: Run update apt packages
+  apt:
+    update_cache: yes
+
+- name: Install ubuntu dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python-pip
+    - python-dev
+    - libffi-dev
+    - gcc
+    - libssl-dev
+    - python-selinux
+    - ansible
+
+- name: Install kolla-ansible
+  pip:
+    name: kolla-ansible
+    version: 5.0.1
+
+- name: Copy globals.yml and passwords.yml to /etc/kolla directory
+  copy:
+    src: /usr/share/kolla-ansible/etc_examples/kolla
+    dest: /etc/kolla/
+
+- name: Create cinder-volumes
+  script: "{{ role_path }}/files/set-cinder.sh"
+
+- name: Setting passwords
+  command: kolla-genpwd
+  changed_when: False
+
+- name: Copy globals.yml to /etc/kolla directory
+  copy: "{{ role_path }}/templates/globals.yml.j2"
+  dest: /etc/kolla/globals.yml
+
+- name: Bootstrap servers with kolla deploy dependencie
+  command: kolla-ansible -i ./multinode bootstrap-servers
+  changed_when: False
