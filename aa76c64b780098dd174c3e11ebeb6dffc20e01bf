@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0ce5fb67_42801550",
+        "filename": "roles/kolla-setup/tasks/set-up.yaml",
+        "patchSetId": 9
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2018-02-26T17:10:20Z",
+      "side": 1,
+      "message": "The standard way to do this would be with the \"yum\" and \"apt\" Ansible modules, along with a \"when\" operator: \n\nwhen: ansible_os_family \u003d\u003d \"Debian\"\n\nI see this style is used later.",
+      "range": {
+        "startLine": 3,
+        "startChar": 2,
+        "endLine": 3,
+        "endChar": 5
+      },
+      "revId": "aa76c64b780098dd174c3e11ebeb6dffc20e01bf",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "62528425_dc294292",
+        "filename": "roles/kolla-setup/tasks/set-up.yaml",
+        "patchSetId": 9
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2018-02-26T17:10:20Z",
+      "side": 1,
+      "message": "specify a version here.  Can include versions in with_items list.",
+      "range": {
+        "startLine": 59,
+        "startChar": 11,
+        "endLine": 59,
+        "endChar": 17
+      },
+      "revId": "aa76c64b780098dd174c3e11ebeb6dffc20e01bf",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2446d46e_a9714e01",
+        "filename": "roles/kolla-setup/tasks/set-up.yaml",
+        "patchSetId": 9
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2018-02-26T17:10:20Z",
+      "side": 1,
+      "message": "Can use Ansible \"yum\" module here?",
+      "range": {
+        "startLine": 105,
+        "startChar": 11,
+        "endLine": 105,
+        "endChar": 14
+      },
+      "revId": "aa76c64b780098dd174c3e11ebeb6dffc20e01bf",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c42e0a6a_a691f933",
+        "filename": "roles/kolla-setup/tasks/set-up.yaml",
+        "patchSetId": 9
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2018-02-26T17:10:20Z",
+      "side": 1,
+      "message": "Use Ansible \"systemd\" module here",
+      "range": {
+        "startLine": 200,
+        "startChar": 11,
+        "endLine": 200,
+        "endChar": 20
+      },
+      "revId": "aa76c64b780098dd174c3e11ebeb6dffc20e01bf",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "28a290e6_10d569ca",
+        "filename": "roles/kolla-setup/tasks/set-up.yaml",
+        "patchSetId": 9
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2018-02-26T17:10:20Z",
+      "side": 1,
+      "message": "Standard way to do this is with a handler",
+      "range": {
+        "startLine": 239,
+        "startChar": 2,
+        "endLine": 239,
+        "endChar": 33
+      },
+      "revId": "aa76c64b780098dd174c3e11ebeb6dffc20e01bf",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
