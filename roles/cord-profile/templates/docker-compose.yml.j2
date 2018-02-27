@@ -197,7 +197,8 @@ services:
 {% endif %}
     volumes:
       - {{ head_cord_profile_dir }}/xos_config.yaml:/opt/xos/xos_config.yaml:ro
-      - {{ head_cord_profile_dir }}:/opt/cord_profile:ro
+      - {{ head_cord_profile_dir }}/core_api_cert.pem:/opt/cord_profile/core_api_cert.pem:ro
+      - {{ head_cord_profile_dir }}/core_api_key.pem:/opt/cord_profile/core_api_key.pem:ro
       - {{ head_cord_profile_dir }}/im_cert_chain.pem:/usr/local/share/ca-certificates/local_certs.crt:ro
       - {{ head_cord_profile_dir }}/initial_data.yaml:/opt/xos/core/migrations/initial_data.yaml:ro
     logging:
