@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "6d961ce2_11383dea",
+        "filename": "roles/kolla-setup/tasks/set-up.yaml",
+        "patchSetId": 9
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000346
+      },
+      "writtenOn": "2018-02-27T01:22:20Z",
+      "side": 1,
+      "message": "i will remove this style",
+      "parentUuid": "0ce5fb67_42801550",
+      "range": {
+        "startLine": 3,
+        "startChar": 2,
+        "endLine": 3,
+        "endChar": 5
+      },
+      "revId": "aa76c64b780098dd174c3e11ebeb6dffc20e01bf",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "62528425_dc294292",
         "filename": "roles/kolla-setup/tasks/set-up.yaml",
         "patchSetId": 9
