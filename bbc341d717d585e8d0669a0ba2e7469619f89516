@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e45acdc_e68a7a6f",
+        "filename": "roles/kolla-install/defaults/main.yml",
+        "patchSetId": 12
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-02-27T09:32:03Z",
+      "side": 1,
+      "message": "If this is supposed to be the management interface, `{{ management_network_bridge }}`  is the correct interface to use.  This will map to the management bridge with an IP address assigned that contains the bond that has the physical network interfaces in it. \n\nYou might need to set the value in `defaults/main.yml`, which should be `management_net_bridge: mgmtbridge` per: https://guide.opencord.org/build_glossary.html#managementnetbridge",
+      "range": {
+        "startLine": 25,
+        "startChar": 25,
+        "endLine": 26,
+        "endChar": 0
+      },
+      "revId": "bbc341d717d585e8d0669a0ba2e7469619f89516",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "94b6076a_f7aa2efa",
+        "filename": "roles/kolla-install/defaults/main.yml",
+        "patchSetId": 12
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-02-27T09:32:03Z",
+      "side": 1,
+      "message": "Is this correct when using `onosvtn` as the plugin?",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 41
+      },
+      "revId": "bbc341d717d585e8d0669a0ba2e7469619f89516",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c5ffca7c_9a9dfdbc",
+        "filename": "roles/kolla-install/tasks/install.yml",
+        "patchSetId": 12
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-02-27T09:32:03Z",
+      "side": 1,
+      "message": "Please delete this (and the corresponding script) if it won\u0027t be used.",
+      "range": {
+        "startLine": 22,
+        "startChar": 34,
+        "endLine": 25,
+        "endChar": 48
+      },
+      "revId": "bbc341d717d585e8d0669a0ba2e7469619f89516",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c31f4011_aa1f27dd",
+        "filename": "roles/kolla-install/tasks/install.yml",
+        "patchSetId": 12
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-02-27T09:32:03Z",
+      "side": 1,
+      "message": "We generate the keystone passwords dynamically, as XOS needs to know about it.  One example: \n\nhttps://github.com/opencord/platform-install/blob/master/roles/juju-setup/defaults/main.yml#L31\n\nWhich is then used here:\n\nhttps://github.com/opencord/platform-install/blob/master/roles/juju-setup/templates/juju_config.yml.j2#L32\n\nPlease set the variable in the same way to that value.",
+      "range": {
+        "startLine": 30,
+        "startChar": 16,
+        "endLine": 52,
+        "endChar": 0
+      },
+      "revId": "bbc341d717d585e8d0669a0ba2e7469619f89516",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
