@@ -19,7 +19,7 @@
 
 - name: Intialize recipe list
   set_fact:
-    recipes: ['/opt/cord/orchestration/xos/xos/core/core-onboard.yaml']
+    recipes: []
 
 - name: Check to see which recipes exist
   stat:
