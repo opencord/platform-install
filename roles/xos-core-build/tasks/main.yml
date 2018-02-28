@@ -19,7 +19,7 @@
 
 - name: Intialize recipe list
   set_fact:
-    recipes: ['/opt/cord/orchestration/xos/xos/core/core-onboard.yaml']
+    recipes: []
 
 - name: Check to see which recipes exist
   stat:
@@ -66,6 +66,7 @@
     -v {{ build_cord_dir ~ "/orchestration/xos/containers/xos/BUILD" | realpath }}:/opt/xos_corebuilder/BUILD
     xosproject/xos-corebuilder:{{ build_docker_tag }}
     {{ recipes_string }}
+  when: recipes_string != ""
   tags:
    - skip_ansible_lint # running a build task
 
