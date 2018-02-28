@@ -54,24 +54,6 @@ topology_template:
 
 # Test subscriber
 
-    # Let's add a user who can be administrator of the household
-    johndoe@myhouse.com:
-      type: tosca.nodes.User
-      properties:
-        password: letmein
-        firstname: john
-        lastname: doe
-        username: johndoe@myhouse.com
-        email: johndoe@myhouse.com
-      requirements:
-        - site:
-            node: {{ site_name }}
-            relationship: tosca.relationships.BelongsToOne
-        # NOTE: is this useful? can't find this relation in the old TOSCA
-        # - dependency:
-        #     node: {{ site_name }}_vsg
-        #     relationship: tosca.relationships.DependsOn
-
     # A subscriber
     my_house:
       type: tosca.nodes.CordSubscriberRoot
@@ -82,13 +64,10 @@ topology_template:
         cdn_enable: false
         url_filter_enable: false
         url_filter_level: R
-      # NOTE this appears not to be used
-      # requirements:
-      #   - house_admin:
-      #       node: johndoe@myhouse.com
-      #       relationship: tosca.relationships.AdminPrivilege
+        s_tag: 222
+        c_tag: 111
 
-    # NOTE needs to be moved to a new model (now they are JSON encoded)
+    # TODO needs to be moved to a new model (now they are JSON encoded)
     # Mom's PC:
     #   type: tosca.nodes.CORDUser
     #   properties:
@@ -128,31 +107,3 @@ topology_template:
     #     - household:
     #         node: My House
     #         relationship: tosca.relationships.SubscriberDevice
-
-    si#volt:
-      type: tosca.nodes.VOLTTenant
-      properties:
-        name: My Volt
-        service_specific_id: "123"
-        s_tag: 222
-        c_tag: 111
-      requirements:
-        - owner:
-            node: service#volt
-            relationship: tosca.relationships.BelongsToOne
-        # - subscriber:
-        #     node: my_house
-        #     relationship: tosca.relationships.BelongsToSubscriber
-        # - dependency:
-        #     node: {{ site_name }}_vsg
-        #     relationship: tosca.relationships.DependsOn
-
-    My_Volt_My_House:
-        type: tosca.nodes.ServiceInstanceLink
-        requirements:
-          - provider_service_instance:
-              node: si#volt
-              relationship: tosca.relationships.BelongsToOne
-          - subscriber_service_instance:
-              node: my_house
-              relationship: tosca.relationships.BelongsToOne
