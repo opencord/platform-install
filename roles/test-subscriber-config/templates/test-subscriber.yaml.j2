@@ -26,19 +26,21 @@ imports:
   - custom_types/slice.yaml
   - custom_types/user.yaml
   - custom_types/voltservice.yaml
+  - custom_types/voltdevice.yaml
+  - custom_types/voltdeviceport.yaml
   - custom_types/serviceinstancelink.yaml
 
 topology_template:
   node_templates:
 
-# site, fully created in deployment.yaml
+    # site, fully created in deployment.yaml
     {{ site_name }}:
       type: tosca.nodes.Site
       properties:
         name: {{ site_name }}
         must-exist: true
 
-# vsg slice, volt service, fully created in cord-services.yaml
+    # vsg slice, volt service, fully created in cord-services.yaml
     {{ site_name }}_vsg:
       type: tosca.nodes.Slice
       properties:
@@ -51,7 +53,28 @@ topology_template:
         name: volt
         must-exist: true
 
-# Test subscriber
+    # Setup an OLT Device
+    volt_device:
+      type: tosca.nodes.VOLTDevice
+      properties:
+        name: test-volt-device
+        device_id: volt-1
+        host: 8.8.8.8
+        port: 2194
+      requirements:
+        - volt_service:
+            node: service#volt
+            relationship: tosca.relationships.BelongsToOne
+
+    volt_port:
+      type: tosca.nodes.VOLTDevicePort
+      properties:
+        port_id: volt-port-1
+        s_tag: 222
+      requirements:
+        - volt_device:
+            node: volt_device
+            relationship: tosca.relationships.BelongsToOne
 
     # A subscriber
     my_house:
@@ -63,8 +86,9 @@ topology_template:
         cdn_enable: false
         url_filter_enable: false
         url_filter_level: R
-        s_tag: 222
         c_tag: 111
+        olt_device: volt-1
+        olt_port: volt-port-1
 
     # TODO needs to be moved to a new model (now they are JSON encoded)
     # Mom's PC:
