@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "f2d75bc8_0abb0725",
+        "filename": "roles/kolla-install/defaults/main.yml",
+        "patchSetId": 12
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000346
+      },
+      "writtenOn": "2018-03-02T11:26:53Z",
+      "side": 1,
+      "message": "we use onosvtn plugin, i will test it",
+      "parentUuid": "94b6076a_f7aa2efa",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 41
+      },
+      "revId": "bbc341d717d585e8d0669a0ba2e7469619f89516",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c5ffca7c_9a9dfdbc",
         "filename": "roles/kolla-install/tasks/install.yml",
         "patchSetId": 12
@@ -59,6 +83,30 @@
       "writtenOn": "2018-02-27T09:32:03Z",
       "side": 1,
       "message": "Please delete this (and the corresponding script) if it won\u0027t be used.",
+      "range": {
+        "startLine": 22,
+        "startChar": 34,
+        "endLine": 25,
+        "endChar": 48
+      },
+      "revId": "bbc341d717d585e8d0669a0ba2e7469619f89516",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9dbeba85_ad9663ae",
+        "filename": "roles/kolla-install/tasks/install.yml",
+        "patchSetId": 12
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000346
+      },
+      "writtenOn": "2018-03-02T11:26:53Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "c5ffca7c_9a9dfdbc",
       "range": {
         "startLine": 22,
         "startChar": 34,
