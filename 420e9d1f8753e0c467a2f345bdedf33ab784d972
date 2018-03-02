@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "62cd5f82_8c5ae338",
+        "filename": "roles/kolla-setup/tasks/set-up.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000346
+      },
+      "writtenOn": "2018-03-02T11:26:53Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 4,
+        "startChar": 20,
+        "endLine": 4,
+        "endChar": 21
+      },
+      "revId": "420e9d1f8753e0c467a2f345bdedf33ab784d972",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
