@@ -1,4 +1,4 @@
-
+---
 {#
 Copyright 2017-present Open Networking Foundation
 
@@ -14,7 +14,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 #}
-
 
 version: '2'
 
@@ -37,7 +36,7 @@ services:
     networks:
 {% for network in xos_docker_networks %}
       - {{ network }}
-{% endfor %} 
+{% endfor %}
 {% endif %}
   xos_db:
     image: {{ pull_docker_registry }}xosproject/xos-postgres:{{ pull_docker_tag }}
@@ -249,9 +248,6 @@ services:
       - {{ head_cord_profile_dir }}/im_cert_chain.pem:/usr/local/share/ca-certificates/local_certs.crt:ro
 {% if svc.keypair is defined %}
       - {{ head_cord_profile_dir }}/key_import/{{ svc.keypair }}:/opt/xos/services/{{ svc.name }}/keys/{{ svc.keypair }}:ro
-{% endif %}
-{% if svc.name == "openstack" %}
-      - {{ head_cord_profile_dir }}/images:/opt/xos/images:ro
 {% endif %}
     logging:
       driver: "json-file"
