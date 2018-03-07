@@ -157,7 +157,6 @@ services:
     ports:
       - "3000:3000"
     links:
-      - xos_core:xos
 {% if use_redis %}
       - xos_redis:redis
 {% endif %}
