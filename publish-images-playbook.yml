@@ -28,5 +28,4 @@
 - name: Publish Docker images to registry
   hosts: build
   roles:
-    - xos-core-publish
     - imagebuilder-publish
