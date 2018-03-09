@@ -18,3 +18,4 @@
 deploy_docker_registry: ""
 deploy_docker_tag: "candidate"
 
+build_docker_tag: "candidate"
