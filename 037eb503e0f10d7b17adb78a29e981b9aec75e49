@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ca799f53_6741fc96",
+        "filename": "roles/cord-helm-charts/files/core_templates/_helpers.tpl",
+        "patchSetId": 6
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000297
+      },
+      "writtenOn": "2018-03-12T20:05:15Z",
+      "side": 1,
+      "message": "I dont think this is right. It should looks something like {{- /* .... */ -}}: https://github.com/kubernetes/helm/blob/master/docs/chart_best_practices/templates.md#comments-yaml-comments-vs-template-comments",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 2
+      },
+      "revId": "037eb503e0f10d7b17adb78a29e981b9aec75e49",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
