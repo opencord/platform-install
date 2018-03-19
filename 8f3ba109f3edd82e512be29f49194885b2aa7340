@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "03d1e92d_eea7174a",
+        "filename": "roles/xos-rest-api-test/defaults/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-03-19T18:14:46Z",
+      "side": 1,
+      "message": "The `config_cord_dir` and `config_cord_profile_dir` are probably what to use here - they\u0027re overridden here:\n\nhttps://github.com/opencord/cord/blob/master/scenarios/local/config.yml#L20-L21\n\nAnd have defaults set in this way: \n\nhttps://guide.opencord.org/build_glossary.html#configcordprofiledir\nhttps://guide.opencord.org/build_glossary.html#configcorddir",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 8
+      },
+      "revId": "8f3ba109f3edd82e512be29f49194885b2aa7340",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
