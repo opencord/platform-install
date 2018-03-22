@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "445b0e06_0d8fe617",
+        "filename": "roles/xos-rest-api-test/tasks/main.yml",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-03-22T18:17:54Z",
+      "side": 1,
+      "message": "\"get list\" or \"find\" might be more specific.",
+      "range": {
+        "startLine": 41,
+        "startChar": 8,
+        "endLine": 41,
+        "endChar": 11
+      },
+      "revId": "3c14fd294631c2c21ab0d3a431e8d27bd5d92e4d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9cde17a5_79b89ab0",
+        "filename": "roles/xos-rest-api-test/tasks/main.yml",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-03-22T18:17:54Z",
+      "side": 1,
+      "message": "It would be clearer if we wrapped this.  See the \u003e \"Folded style\" operator in YAML - example:  https://github.com/opencord/platform-install/blob/master/roles/pki-cert/tasks/main.yml#L43-L53",
+      "range": {
+        "startLine": 48,
+        "startChar": 2,
+        "endLine": 49,
+        "endChar": 2
+      },
+      "revId": "3c14fd294631c2c21ab0d3a431e8d27bd5d92e4d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
