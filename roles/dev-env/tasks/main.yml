@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # dev-env/tasks/main.yml
 
 - name: Create SSH keypair
@@ -23,7 +21,7 @@
     generate_ssh_key: yes
     ssh_key_bits: 2048
 
-- name: Create node_key
+- name: Copy SSH public key as node_key
   copy:
     src: "{{ ansible_env.HOME }}/.ssh/id_rsa.pub"
     dest: "{{ ansible_env.HOME }}/node_key"
@@ -33,10 +31,10 @@
   apt:
     name: "{{ item }}"
     update_cache: yes
+    cache_valid_time: 3600
   with_items:
-  - "apache2"
-  - "libapache2-mod-fcgid"
-  - "apache2-mpm-worker"
+    - apache2
+    - apache2-utils
 
 - name: Configure Apache
   become: yes
@@ -44,22 +42,22 @@
     name: "{{ item }}"
     state: present
   with_items:
-  - "proxy_http"
-  - "headers"
-  - "rewrite"
-  - "proxy_wstunnel"
+    - headers
+    - proxy
+    - proxy_http
+    - proxy_wstunnel
+    - rewrite
+  notify: reload apache2
 
 - name: Copy Apache conf
   become: yes
   copy:
     src: "roles/apache-proxy/files/cord-http.conf"
     dest: "/etc/apache2/conf-enabled/cord-http.conf"
-
-- name: Reload Apache
-  become: yes
-  service:
-    name: apache2
-    state: reloaded
+    owner: root
+    group: root
+    mode: 0644
+  notify: reload apache2
 
 - name: Add hosts
   become: yes
@@ -73,3 +71,4 @@
   - "127.0.0.1 xos-chameleon"
   - "127.0.0.1 xos-core"
   - "127.0.0.1 xos-tosca"
+
