@@ -175,7 +175,7 @@ services:
     restart: unless-stopped
 
   xos_core:
-    image: {{ pull_docker_registry }}xosproject/xos-ui:{{ pull_docker_tag }}
+    image: {{ pull_docker_registry }}xosproject/xos-core:{{ pull_docker_tag }}
     networks:
 {% for network in xos_docker_networks %}
      - {{ network }}
