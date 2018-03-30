@@ -26,7 +26,7 @@
     body: "{{ lookup('file', head_cord_profile_dir + '/test-exampleservice.yaml' ) }}"
     status_code: 200
   register: result
-  until: result | success
+  until: result is success
   retries: 50
   delay: 5
   tags:
@@ -35,7 +35,7 @@
 - name: Wait for ExampleService VM to come up
   shell: bash -c "source /opt/cord_profile/admin-openrc.sh; nova list --all-tenants|grep 'exampleservice.*ACTIVE' > /dev/null"
   register: result
-  until: result | success
+  until: result is success
   retries: 10
   delay: 60
   tags:
@@ -68,7 +68,7 @@
 - name: Wait for Apache to come up inside VM
   shell: ssh -o ProxyCommand="ssh -W %h:%p -l ubuntu {{ node_name.stdout }}" ubuntu@{{ mgmt_ip.stdout }} "ls /var/run/apache2/apache2.pid" > /dev/null
   register: result
-  until: result | success
+  until: result is success
   retries: 20
   delay: 60
   tags:
@@ -84,7 +84,7 @@
   become: yes
   shell: lxc exec testclient -- route | grep default | grep "eth0.222.111"
   register: result
-  until: result | success
+  until: result is success
   retries: 20
   delay: 30
   tags:

@@ -62,7 +62,7 @@
     name: testclient
     state: stopped
   register: result
-  until: result | success
+  until: result is success
   retries: 3
   delay: 10
 

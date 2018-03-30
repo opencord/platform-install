@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # roles/cloudlab-prep/tasks/main.yml
 
 - name: create directories to mount extra filesystems
@@ -23,14 +21,13 @@
     state=directory
   with_items: "{{ cloudlab_extrafs }}"
 
-
 # FIXME: does not create lost+found, -q makes it fail without error...
 - name: Set up extra disk space
   command: /usr/testbed/bin/mkextrafs -r {{ item.dev }} -qf {{ item.mount }}
     creates={{ item.mount }}/lost+found
   with_items: "{{ cloudlab_extrafs }}"
   register: result
-  until: result | success
+  until: result is success
   retries: 3
   delay: 5
 

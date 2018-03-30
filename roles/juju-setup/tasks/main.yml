@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # roles/juju-setup/main/tasks.yml
 
 - name: Initialize Juju
@@ -37,7 +35,7 @@
 - name: Obtain Juju Facts for creating machines
   juju_facts:
   register: result
-  until: result | success
+  until: result is success
   retries: 40
   delay: 15
 
@@ -70,7 +68,7 @@
   command: "juju add-machine ssh:{{ item }}"
   with_items: "{{ head_lxd_list | map(attribute='service') | list | reject('undefined') | map('format_string', '%s.'~site_suffix ) | difference( juju_machines.keys() ) }}"
   register: result
-  until: result | success
+  until: result is success
   retries: 3
   delay: 10
 
@@ -78,7 +76,7 @@
 - name: Obtain Juju Facts after machine creation
   juju_facts:
   register: result
-  until: result | success
+  until: result is success
   retries: 3
   delay: 15
 

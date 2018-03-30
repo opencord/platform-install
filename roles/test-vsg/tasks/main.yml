@@ -20,7 +20,7 @@
 - name: Wait for vSG VM to come up
   shell: bash -c "source /opt/cord_profile/admin-openrc.sh; nova list --all-tenants|grep 'vsg.*ACTIVE' > /dev/null"
   register: result
-  until: result | success
+  until: result is success
   retries: 10
   delay: 60
   tags:
@@ -47,7 +47,7 @@
 - name: Wait for Docker container inside VM to come up
   shell: ssh -o ProxyCommand="ssh -W %h:%p -l ubuntu {{ node_name.stdout }}" ubuntu@{{ mgmt_ip.stdout }} "sudo docker ps|grep 'vsg\|vcpe'" > /dev/null
   register: result
-  until: result | success
+  until: result is success
   retries: 40
   delay: 30
   tags:
@@ -63,7 +63,7 @@
   become: yes
   shell: lxc exec testclient -- route | grep default | grep "eth0.222.111"
   register: result
-  until: result | success
+  until: result is success
   retries: 20
   delay: 30
   tags:

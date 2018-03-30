@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # lxd-finish/tasks/main.yml
 
 - name: Verify that we can log into every container
@@ -30,7 +28,7 @@
      -m uri
      -a "url=http://opencord.org validate_certs=no"
   register: result
-  until: result|success
+  until: result is success
   retries: 3
   delay: 5
   tags:

@@ -25,7 +25,7 @@
     body: "{{ lookup('file', head_cord_profile_dir + '/' + item ) }}"
     status_code: 200
   register: result
-  until: result | success
+  until: result is success
   retries: 50
   delay: 5
   with_items:
@@ -42,7 +42,7 @@
     body: "{{ lookup('file', head_cord_profile_dir + '/' + item ) }}"
     status_code: 200
   register: result
-  until: result | success
+  until: result is success
   retries: 50
   delay: 5
   with_items:
@@ -58,7 +58,7 @@
     body: "{{ lookup('file', head_cord_profile_dir + '/' + item ) }}"
     status_code: 200
   register: result
-  until: result | success
+  until: result is success
   retries: 50
   delay: 5
   with_items: "{{ xos_tosca_config_templates + xos_new_tosca_config_templates }}"
