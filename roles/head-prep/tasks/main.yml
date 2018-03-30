@@ -30,7 +30,7 @@
   with_items:
     - "{{ ansible_apt_repo | default('ppa:ansible/ansible') }}"
   register: result
-  until: result | success
+  until: result is success
   retries: 3
   delay: 10
 

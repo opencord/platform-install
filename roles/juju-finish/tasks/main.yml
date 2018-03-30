@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,15 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # juju-finish/tasks/main.yml
 
 # run another time, so services will be in juju_services list
 - name: Obtain Juju Facts after service creation
   juju_facts:
   register: result
-  until: result | success
+  until: result is success
   retries: 3
   delay: 15
 
