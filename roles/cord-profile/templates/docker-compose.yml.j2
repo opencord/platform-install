@@ -1,4 +1,4 @@
-
+---
 {#
 Copyright 2017-present Open Networking Foundation
 
@@ -14,7 +14,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 #}
-
 
 version: '2'
 
@@ -37,14 +36,18 @@ services:
     networks:
 {% for network in xos_docker_networks %}
       - {{ network }}
-{% endfor %} 
+{% endfor %}
 {% endif %}
   xos_db:
-    image: {{ pull_docker_registry }}xosproject/xos-postgres:{{ pull_docker_tag }}
+    image: {{ pull_docker_registry }}postgres:{{ pull_docker_tag }}
     networks:
 {% for network in xos_docker_networks %}
       - {{ network }}
 {% endfor %}
+    environment:
+      - POSTGRES_DB={{ xos_db_name }}
+      - POSTGRES_USER={{ xos_db_username }}
+      - POSTGRES_PASSWORD={{ xos_db_password }}
     expose:
       - "5432"
     restart: unless-stopped
