@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # docker-install/tasks/main.yml
 # note - all tasks run with become to preserve the `ansible_user_id` var
 
@@ -61,8 +59,8 @@
   pip:
     name: "{{ item }}"
   with_items:
-    - docker==2.6.1
-    - docker-compose==1.15.0
+    - docker==3.2.1
+    - docker-compose==1.20.1
     - gitpython
     - graphviz
 
