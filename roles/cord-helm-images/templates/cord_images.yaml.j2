@@ -1,0 +1,15 @@
+---
+# cord_images.yaml
+# created with platform-install/roles/cord-helm-images/templates/cord_images.yaml.j2
+# Nested versions are to workaround helm variable scoping rules with sub-charts
+
+{% for image in helm_images %}
+{% set helm_image_name = (image.base ~ "Image") | regex_search("([\w-]*)$") | regex_replace("[-]+", "_" )%}
+{{ helm_image_name }}: '{{ docker_registry }}{{ image.base }}:{{ image.tags | first | default( docker_tag ) }}'
+{% if image.base | regex_search('synchronizer$') %}
+{% set helm_nested_image = image.base | regex_replace('^xosproject/(.+)-synchronizer$', '\\1') %}
+{{ helm_nested_image }}:
+  {{ helm_image_name }}: '{{ docker_registry }}{{ image.base }}:{{ image.tags | first | default( docker_tag ) }}'
+{% endif %}
+{% endfor %}
+

@@ -13,11 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# start-xos-helm-playbook.yml
-# Start and XOS containers with helm
+# minikube/defaults/main.yml
 
-- name: Start XOS containers with helm
-  hosts: config
-  roles:
-    - start-xos-helm
+minikube_version: "0.26.1"
+
+# These vars need to be determined on a per-OS/arch/dl basis
+cpu_arch: "amd64"
+minikube_dl_checksum: "sha256:4a97ff448347eb374e1c48b4578cc3cf61af51cca4ff002101a57e77ffaa1575"
+
+minikube_dl_url: "https://storage.googleapis.com/minikube/releases/v{{ minikube_version }}/minikube_{{ minikube_version | regex_replace('(.*)\\.(\\d)', '\\1-\\2') }}.deb"
 
