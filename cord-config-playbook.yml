@@ -29,6 +29,5 @@
   hosts: config
   roles:
     - cord-profile
-    - { role: cord-helm-charts, when: use_k8s | default(False) }
     - xos-services-config
 
