@@ -13,10 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# start-xos-helm/defaults/main.yml
+# cord-helm-images-playbook.yml
 
-build_cord_dir: "{{ playbook_dir ~ '/../..' }}"
+- name: Include vars
+  hosts: build
+  tasks:
+    - name: Include variables
+      include_vars: "../ib_actions.yml"
 
-config_cord_profile_dir: "/opt/cord_profile"
-config_cord_helm_dir: "{{ config_cord_profile_dir }}/helm"
+- name: Create list of images for helm
+  hosts: build
+  roles:
+    - cord-helm-images
 
