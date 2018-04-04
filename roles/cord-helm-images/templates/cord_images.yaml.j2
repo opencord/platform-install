@@ -1,0 +1,8 @@
+---
+# cord_images.yaml
+# created with platform-install/roles/cord-helm-images/templates/cord_images.yaml.j2
+
+{% for image in helm_images %}
+{% set helm_image_name = (image.base ~ "Image") | regex_search("([\w-]*)$") | regex_replace("[-]+", "_" )%}
+{{ helm_image_name }}: '{{ docker_registry }}{{ image.base }}:{{ image.tags | first | default( docker_tag ) }}'
+{% endfor %}
