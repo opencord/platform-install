@@ -13,21 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# cord-helm-charts/defaults/main.yml
+# cord-helm-config-playbook.yml
+# Creates configuration files for running helm on a k8s enabled CORD pod
 
-config_cord_profile_dir: "/opt/cord_profile"
-config_cord_helm_dir: "{{ config_cord_profile_dir }}/helm"
+- name: Create SSL Root CA, Intermediate CA, Server certs, SSH CA and keypairs
+  hosts: config
+  roles:
+    - { role: create-configdirs-become, when: create_configdirs_become | default(True) }
+    - pki-root-ca
+    - pki-intermediate-ca
+    - pki-cert
+    - ssh-pki
 
-head_cord_profile_dir: "/opt/cord_profile"
-head_cord_helm_dir: "{{ head_cord_profile_dir }}/helm"
-
-# site name
-site_name: placeholder-sitename
-site_suffix: "{{ site_name }}.test"
-
-# Docker related settings
-docker_registry_ext_port: "5000"
-docker_registry: "docker-registry.{{ site_suffix }}:{{ docker_registry_ext_port }}"
-
-docker_tag: "candidate"
+- name: Create a helm values.yaml file for bringing up CORD helm charts
+  hosts: config
+  roles:
+    - helm-values
 
