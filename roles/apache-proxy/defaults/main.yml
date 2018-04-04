@@ -13,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# start-xos-helm-playbook.yml
-# Start and XOS containers with helm
+# apache-proxy/defaults/main.yml
 
-- name: Start XOS containers with helm
-  hosts: config
-  roles:
-    - start-xos-helm
+portnumber_xos_ws: 3000
+portnumber_xos_gui: 4000
+portnumber_chameleon: 9101
 

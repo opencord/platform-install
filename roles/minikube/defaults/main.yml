@@ -13,21 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# cord-helm-charts/defaults/main.yml
+# minikube/defaults/main.yml
 
-config_cord_profile_dir: "/opt/cord_profile"
-config_cord_helm_dir: "{{ config_cord_profile_dir }}/helm"
+minikube_version: "0.26.1"
 
-head_cord_profile_dir: "/opt/cord_profile"
-head_cord_helm_dir: "{{ head_cord_profile_dir }}/helm"
+# These vars need to be determined on a per-OS/arch/dl basis
+cpu_arch: "amd64"
+minikube_dl_checksum: "sha256:4a97ff448347eb374e1c48b4578cc3cf61af51cca4ff002101a57e77ffaa1575"
 
-# site name
-site_name: placeholder-sitename
-site_suffix: "{{ site_name }}.test"
-
-# Docker related settings
-docker_registry_ext_port: "5000"
-docker_registry: "docker-registry.{{ site_suffix }}:{{ docker_registry_ext_port }}"
-
-docker_tag: "candidate"
+minikube_dl_url: "https://storage.googleapis.com/minikube/releases/v{{ minikube_version }}/minikube_{{ minikube_version | regex_replace('(.*)\.(\d)', '\\1-\\2') }}.deb"
 

@@ -1,0 +1,18 @@
+---
+# xos-core values.yaml file generated for helm by CORD build system
+# created by platform-install/roles/cord-helm-values/templates/xos-core_values.yaml.j2
+
+# XOS Admin user config
+xosAdminUser: "{{ xos_admin_user }}"
+xosAdminPassword: "{{ xos_admin_pass }}"
+xosAdminFirstname: "{{ xos_admin_first }}"
+xosAdminLastname: "{{ xos_admin_last }}"
+
+# Site config
+cordSiteHumanName: "{{ site_humanname }}"
+cordSiteName: "{{ site_name }}"
+
+secrets:
+  im_cert_chain: {{ lookup('file', '{{ pki_dir }}/{{ site_name }}_im_ca/certs/im_cert_chain.pem') | b64encode }}
+  core_api_cert: {{ lookup('file', '{{ pki_dir }}/{{ site_name }}_im_ca/certs/xos-core.{{ site_suffix }}_cert_chain.pem') | b64encode }}
+  core_api_key: {{ lookup('file', '{{ pki_dir }}/{{ site_name }}_im_ca/private/xos-core.{{ site_suffix }}_key.pem') | b64encode }}

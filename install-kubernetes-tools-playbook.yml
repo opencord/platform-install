@@ -19,6 +19,6 @@
 - name: Install kubernetes tools
   hosts: config
   roles:
+    - { role: minikube, when: use_minikube | default(false) }
     - kubectl
     - helm
-
