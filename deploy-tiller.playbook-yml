@@ -13,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# start-xos-helm/tasks/main.yml
+# deploy-tiller-playbook.yml
+# Starts tiller with helm
 
-- name: Start XOS via Helm
-  command: "helm install --wait xos-core"
-  args:
-    chdir: "{{ config_cord_helm_dir }}"
-  tags:
-    - skip_ansible_lint # running a command, ansible helm module isn't mature
-
+- name: Deploy tiller with helm
+  hosts: config
+  roles:
+    - tiller

@@ -13,21 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# cord-helm-charts/defaults/main.yml
+# apache-proxy/defaults/main.yml
 
-config_cord_profile_dir: "/opt/cord_profile"
-config_cord_helm_dir: "{{ config_cord_profile_dir }}/helm"
-
-head_cord_profile_dir: "/opt/cord_profile"
-head_cord_helm_dir: "{{ head_cord_profile_dir }}/helm"
-
-# site name
-site_name: placeholder-sitename
-site_suffix: "{{ site_name }}.test"
-
-# Docker related settings
-docker_registry_ext_port: "5000"
-docker_registry: "docker-registry.{{ site_suffix }}:{{ docker_registry_ext_port }}"
-
-docker_tag: "candidate"
+portnumber_xos_ws: 3000
+portnumber_xos_gui: 4000
+portnumber_chameleon: 9101
 

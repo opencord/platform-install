@@ -1,4 +1,4 @@
-{{- /*
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,13 +12,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-*/ -}}
 
-{{- define "xos-core.release_labels" }}
-app: {{ printf "%s-%s" .Release.Name .Chart.Name | trunc 63 }}
-version: {{ .Chart.Version }}
-release: {{ .Release.Name }}
-{{- end }}
-{{- define "xos-core.full_name" -}}
-{{- printf "%s-%s" .Release.Name .Chart.Name | trunc 63 -}}
-{{- end -}}
+# minikube/defaults/main.yml
+
+minikube_version: "0.26.1"
+
+# These vars need to be determined on a per-OS/arch/dl basis
+cpu_arch: "amd64"
+minikube_dl_checksum: "sha256:3c956459ee8dad9452c97d54463f982d1d511a9afaa0f3851d88320bd5dcf58a"
+
+minikube_dl_url: "https://storage.googleapis.com/minikube/releases/v{{ minikube_version }}/minikube-{{ ansible_system | lower }}-{{ cpu_arch }}"
+
+minikube_bin_path: "/usr/local/bin/minikube"
+

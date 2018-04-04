@@ -13,11 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# start-xos-helm-playbook.yml
-# Start and XOS containers with helm
+# cord-helm-config-playbook.yml
+# Creates configuration files for running helm on a k8s enabled CORD pod
 
-- name: Start XOS containers with helm
+- name: Create SSL Root CA, Intermediate CA, Server certs, SSH CA and keypairs
   hosts: config
   roles:
-    - start-xos-helm
+    - { role: create-configdirs-become, when: create_configdirs_become | default(True) }
+    - pki-root-ca
+    - pki-intermediate-ca
+    - pki-cert
+    - ssh-pki
+
+- name: Create CORD-specific helm values configuration files
+  hosts: config
+  roles:
+    - cord-helm-values
 
