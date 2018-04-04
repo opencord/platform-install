@@ -1,3 +1,4 @@
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,17 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: v1
-kind: Service
-metadata:
-  name: "xos-db"
-  labels:
-    {{- include "xos-core.release_labels" . | indent 4 }}
-spec:
-  type: NodePort
-  ports:
-  - port: 5432
-    targetPort: 5432
-    protocol: TCP
-  selector:
-    app: "xos-db"
+# minikube/tasks/main.yml
+# Installs minikube for kubernetes
+
+- name: Download minikube debian package
+  become: yes
+  get_url:
+    url: "{{ minikube_dl_url }}"
+    checksum: "{{ minikube_dl_checksum }}"
+    dest: "/tmp/minikube.deb"
+
+- name: Install minikube debian package
+  become: yes
+  apt:
+    deb: "/tmp/minikube.deb"
+
+- name: Install socat (for port forwarding)
+  become: yes
+  apt:
+    name: socat
+    update_cache: yes
+    cache_valid_time: 3600
+
