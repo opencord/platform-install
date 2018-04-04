@@ -1,3 +1,4 @@
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,22 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: v1
-kind: Service
-metadata:
-  name: "xos-core"
-  labels:
-    {{- include "xos-core.release_labels" . | indent 4 }}
-spec:
-  type: NodePort
-  ports:
-  - port: 50051
-    name: secure
-    targetPort: 50051
-    protocol: TCP
-  - port: 50055
-    name: insecure
-    targetPort: 50055
-    protocol: TCP
-  selector:
-    app: "xos-core"
+# cord-helm-config-playbook.yml
+# Creates configuration files for running helm on a k8s enabled CORD pod
+
+- name: Create SSL Root CA, Intermediate CA, Server certs, SSH CA and keypairs
+  hosts: config
+  roles:
+    - { role: create-configdirs-become, when: create_configdirs_become | default(True) }
+    - pki-root-ca
+    - pki-intermediate-ca
+    - pki-cert
+    - ssh-pki
+
+- name: Create CORD-specific helm values configuration files
+  hosts: config
+  roles:
+    - cord-helm-values
+
