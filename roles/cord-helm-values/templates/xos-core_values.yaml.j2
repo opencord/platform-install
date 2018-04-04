@@ -1,0 +1,127 @@
+---
+# xos-core values.yaml file generated for helm by CORD build system
+# created by platform-install/roles/cord-helm-values/templates/xos-core_values.yaml.j2
+
+xosAdminUser: &adminuser "{{ xos_admin_user }}"
+xosAdminPassword: &adminpass "{{ xos_admin_pass }}"
+
+# xos-core config
+
+configs:
+  core_config:
+    name: xos-core
+    database:
+      name: xos
+      username: postgres
+      password: password
+    logging:
+      version: 1
+      handlers:
+        console:
+          class: logging.StreamHandler
+        file:
+          class: logging.handlers.RotatingFileHandler
+          filename: /var/log/xos.log
+          maxBytes: 10485760
+          backupCount: 5
+      loggers:
+        '':
+          handlers:
+              - console
+              - file
+          level: DEBUG
+    xos_dir: /opt/xos
+
+  db_config: 'xos-db'
+
+  gateway_config:
+    default:
+    xos:
+      host: xost
+      port: 9000
+    redis:
+      host: redis
+      port: 6379
+    gateway:
+      port: 3000
+
+  gui_app: |
+
+    angular.module('app')
+    .constant('AppConfig', {
+      apiEndpoint: '/xosapi/v1',
+      websocketClient: '/'
+    });
+
+  gui_style: |
+
+    angular.module('app')
+    .constant('StyleConfig', {
+      projectName: 'R-CORD',
+      favicon: 'cord-favicon.png',
+      background: 'cord-bg.jpg',
+      payoff: 'Your VNF orchestrator',
+      logo: 'cord-logo.png',
+      routes: [
+          {
+              label: 'Slices',
+              state: 'xos.core.slice',
+          },
+          {
+              label: 'Nodes',
+              state: 'xos.core.node',
+          },
+          {
+              label: 'Instances',
+              state: 'xos.core.instance',
+          },
+      ]
+    });
+
+  initial_data_config:
+    - model: core.Site
+      fields:
+        name: "{{ site_humanname }}"
+        abbreviated_name: "{{ site_name }}"
+        login_base: "{{ site_name }}"
+        site_url: "http://opencord.org/"
+        hosts_nodes: true
+
+    - model: core.User
+      fields:
+        email: "{{ xos_admin_user }}"
+        password: "{{ xos_admin_pass }}"
+        firstname: "{{ xos_admin_first }}"
+        lastname: "{{ xos_admin_last }}"
+        is_admin: True
+      relations:
+        site:
+          fields:
+            name: "{{ site_name }}"
+          model: core.Site
+
+  tosca_config:
+    name: xos-tosca
+    gprc_endpoint: "xos-core"
+    local_cert: /usr/local/share/ca-certificates/local_certs.crt
+    logging:
+      version: 1
+      handlers:
+        console:
+          class: logging.StreamHandler
+        file:
+          class: logging.handlers.RotatingFileHandler
+          filename: /var/log/xos.log
+          maxBytes: 10485760
+          backupCount: 5
+      loggers:
+        '':
+          handlers:
+              - console
+              - file
+          level: DEBUG
+
+secrets:
+  im_cert_chain: {{ lookup('file', '{{ pki_dir }}/{{ site_name }}_im_ca/certs/im_cert_chain.pem') | b64encode }}
+  core_api_cert: {{ lookup('file', '{{ pki_dir }}/{{ site_name }}_im_ca/certs/xos-core.{{ site_suffix }}_cert_chain.pem') | b64encode }}
+  core_api_key: {{ lookup('file', '{{ pki_dir }}/{{ site_name }}_im_ca/private/xos-core.{{ site_suffix }}_key.pem') | b64encode }}
