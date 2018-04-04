@@ -1,4 +1,4 @@
-
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,12 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
----
 # create-configdirs-privileged/defaults/main.yml
 
 # where the cord_profile directory is on the config node
 config_cord_profile_dir: "/opt/cord_profile"
+config_cord_values_dir: "{{ ( playbook_dir ~ '/../../../cord_values' ) | realpath }}"
 
 pki_dir: "{{ playbook_dir }}/pki"
 ssh_pki_dir: "{{ playbook_dir }}/ssh_pki"
