@@ -1,3 +1,4 @@
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,22 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: v1
-kind: Service
-metadata:
-  name: "xos-core"
-  labels:
-    {{- include "xos-core.release_labels" . | indent 4 }}
-spec:
-  type: NodePort
-  ports:
-  - port: 50051
-    name: secure
-    targetPort: 50051
-    protocol: TCP
-  - port: 50055
-    name: insecure
-    targetPort: 50055
-    protocol: TCP
-  selector:
-    app: "xos-core"
+# deploy-tiller-playbook.yml
+# Starts tiller with helm
+
+- name: Deploy tiller with helm
+  hosts: config
+  roles:
+    - tiller
