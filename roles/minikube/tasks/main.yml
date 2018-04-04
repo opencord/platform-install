@@ -13,21 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# cord-helm-charts/defaults/main.yml
+# minikube/tasks/main.yml
+# Installs minikube for kubernetes
 
-config_cord_profile_dir: "/opt/cord_profile"
-config_cord_helm_dir: "{{ config_cord_profile_dir }}/helm"
+- name: Download minikube debian package
+  become: yes
+  get_url:
+    url: "{{ minikube_dl_url }}"
+    checksum: "{{ minikube_dl_checksum }}"
+    dest: "/tmp/minikube.deb"
 
-head_cord_profile_dir: "/opt/cord_profile"
-head_cord_helm_dir: "{{ head_cord_profile_dir }}/helm"
+- name: Install minikube debian package
+  become: yes
+  apt:
+    deb: "/tmp/minikube.deb"
 
-# site name
-site_name: placeholder-sitename
-site_suffix: "{{ site_name }}.test"
-
-# Docker related settings
-docker_registry_ext_port: "5000"
-docker_registry: "docker-registry.{{ site_suffix }}:{{ docker_registry_ext_port }}"
-
-docker_tag: "candidate"
+- name: Install socat (for port forwarding)
+  become: yes
+  apt:
+    name: socat
+    update_cache: yes
+    cache_valid_time: 3600
 

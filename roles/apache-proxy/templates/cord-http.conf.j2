@@ -33,20 +33,20 @@
     </Location>
 
     # Cord GUI and WS
-    ProxyPass /xos http://xos-gui:4000
-    ProxyPass /xos/socket.io http://xos-ws:3000/socket.io
-    ProxyPass /socket.io http://xos-ws:3000/socket.io
+    ProxyPass /xos http://xos-gui:{{ portnumber_xos_gui }}
+    ProxyPass /xos/socket.io http://xos-ws:{{ portnumber_xos_ws }}/socket.io
+    ProxyPass /socket.io http://xos-ws:{{ portnumber_xos_ws }}/socket.io
     <Location /socket.io>
         RewriteEngine on
         RewriteCond %{HTTP:UPGRADE} ^WebSocket$ [NC]
         RewriteCond %{HTTP:CONNECTION} ^Upgrade$ [NC]
-        RewriteRule .* ws://xos-ws:3000%{REQUEST_URI} [P]
+        RewriteRule .* ws://xos-ws:{{ portnumber_xos_ws }}%{REQUEST_URI} [P]
     </Location>
 
     # Chameleon swagger
-    ProxyPass /apidocs/ http://xos-chameleon:9101/apidocs/
-    ProxyPass /v1/swagger.json http://xos-chameleon:9101/apidocs/v1/swagger.json
-    
+    ProxyPass /apidocs/ http://xos-chameleon:{{ portnumber_chameleon }}/apidocs/
+    ProxyPass /v1/swagger.json http://xos-chameleon:{{ portnumber_chameleon }}/apidocs/v1/swagger.json
+
     # TOSCA
     ProxyPass /xos-tosca http://xos-tosca:9102
 
@@ -108,7 +108,7 @@
     ProxyPass /serviceGrid/ http://xos:9000/serviceGrid/
 
     # Rest APIs
-    ProxyPass /xosapi/ http://xos-chameleon:9101/xosapi/
+    ProxyPass /xosapi/ http://xos-chameleon:{{ portnumber_chameleon }}/xosapi/
 </IfModule>
 
 <IfModule rewrite_module>
