@@ -13,11 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# start-xos-helm-playbook.yml
-# Start and XOS containers with helm
+# minikube/tasks/main.yml
+# Installs minikube for kubernetes
 
-- name: Start XOS containers with helm
-  hosts: config
-  roles:
-    - start-xos-helm
+- name: Download minikube debian package
+  become: yes
+  get_url:
+    url: "{{ minikube_dl_url }}"
+    checksum: "{{ minikube_dl_checksum }}"
+    dest: "/tmp/minikube.deb"
+
+- name: Install minikube debian package
+  become: yes
+  apt:
+    deb: "/tmp/minikube.deb"
+
+- name: Install socat (for port forwarding)
+  become: yes
+  apt:
+    name: socat
+    update_cache: yes
+    cache_valid_time: 3600
 
