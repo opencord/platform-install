@@ -13,13 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# cord-helm-charts/defaults/main.yml
+# helm-values/defaults/main.yml
 
 config_cord_profile_dir: "/opt/cord_profile"
 config_cord_helm_dir: "{{ config_cord_profile_dir }}/helm"
-
-head_cord_profile_dir: "/opt/cord_profile"
-head_cord_helm_dir: "{{ head_cord_profile_dir }}/helm"
 
 # site name
 site_name: placeholder-sitename
@@ -31,3 +28,13 @@ docker_registry: "docker-registry.{{ site_suffix }}:{{ docker_registry_ext_port 
 
 docker_tag: "candidate"
 
+# XOS related settings
+xos_admin_user: "xosadmin@opencord.org"
+xos_admin_pass: "{{ lookup('password', credentials_dir ~ '/xosadmin@opencord.org chars=ascii_letters,digits') }}"
+xos_admin_first: XOS
+xos_admin_last: Admin
+
+# deployment settings
+site_name: placeholder-sitename
+site_humanname: "Placeholder Site HumanName"
+site_suffix: "{{ site_name }}.test"

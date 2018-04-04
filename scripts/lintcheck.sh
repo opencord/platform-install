@@ -25,7 +25,7 @@ command -v ansible-lint  >/dev/null 2>&1 || { echo "ansible-lint not found, plea
 WORKSPACE=${WORKSPACE:-.}
 
 echo "=> Linting Ansible Code with" `ansible-lint --version`
-for f in `find $WORKSPACE -name "*.yml"`; do
+for f in `find $WORKSPACE -name "*.yml" -o -name "*.yaml"`; do
     echo "==> CHECKING: $f"
     ansible-lint -p $f
     rc=$?

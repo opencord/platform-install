@@ -1,3 +1,4 @@
+---
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,22 +13,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: v1
-kind: Service
-metadata:
-  name: "xos-core"
-  labels:
-    {{- include "xos-core.release_labels" . | indent 4 }}
-spec:
-  type: NodePort
-  ports:
-  - port: 50051
-    name: secure
-    targetPort: 50051
-    protocol: TCP
-  - port: 50055
-    name: insecure
-    targetPort: 50055
-    protocol: TCP
-  selector:
-    app: "xos-core"
+# helm-values/tasks/main.yml
+# Creates a values.yaml for use with helm for bringing up CORD services
+
+- name: Create cord_profile/helm directory and chart subdirectories
+  file:
+    dest: "{{ config_cord_helm_dir }}"
+    state: directory
+    mode: 0755
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+
+- name: Create chart configuration from templates
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ config_cord_helm_dir }}/cord-{{ item }}"
+    mode: 0755
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+  with_items:
+    - values.yaml
+
