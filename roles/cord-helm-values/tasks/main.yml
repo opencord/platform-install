@@ -13,46 +13,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# cord-helm-charts/tasks/main.yml
-# Creates Helm charts for CORD services
+# cord-helm-values/tasks/main.yml
+# Creates values files for use with helm for bringing up CORD services
 
-- name: Create cord_profile/helm directory and chart subdirectories
+- name: Create cord_values directory
   file:
-    dest: "{{ config_cord_helm_dir }}"
+    dest: "{{ config_cord_values_dir }}"
     state: directory
     mode: 0755
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_gid }}"
 
-- name: Create chart subdirectories
-  file:
-    dest: "{{ config_cord_helm_dir }}/{{ item }}"
-    state: directory
-    mode: 0755
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_gid }}"
-  with_items:
-    - "xos-core"
-    - "xos-core/templates"
-    - "xos-services"
-    - "xos-services/templates"
-
-- name: Copy XOS Core templates
-  copy:
-    src: "core_templates/"
-    dest: "{{ config_cord_helm_dir }}/xos-core/templates/"
-    mode: 0755
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_gid }}"
-
-- name: Create chart configuration from templates
+- name: Create CORD helm chart values.yaml files from templates
   template:
     src: "{{ item }}.j2"
-    dest: "{{ config_cord_helm_dir }}/xos-core/{{ item }}"
+    dest: "{{ config_cord_values_dir }}/{{ item }}"
     mode: 0755
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_gid }}"
   with_items:
-    - Chart.yaml
-    - values.yaml
+    - "xos-core_values.yaml"
+    - "onos_values.yaml"
+    - "rcord-lite_values.yaml"
 

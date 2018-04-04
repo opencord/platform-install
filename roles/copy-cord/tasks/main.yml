@@ -27,7 +27,8 @@
   file:
     dest: "{{ head_cord_dir }}"
     state: directory
-    recurse: yes
+    recurse: true
+    follow: false
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_gid }}"
 
