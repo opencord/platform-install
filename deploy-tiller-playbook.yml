@@ -13,11 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# start-xos-helm-playbook.yml
-# Start and XOS containers with helm
+# deploy-tiller-playbook.yml
+# Starts tiller with helm
 
-- name: Start XOS containers with helm
+- name: Deploy tiller with helm
   hosts: config
   roles:
-    - start-xos-helm
-
+    - tiller

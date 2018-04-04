@@ -54,32 +54,3 @@
     group: root
     mode: 0755
 
-# The helm binary is now installed.  Start up tiller on k8s.
-# `helm init --wait` should handle these waits below, but is broken
-# as of 2018-02-06, see: https://github.com/kubernetes/helm/issues/3379
-
-- name: Initialize Helm and wait for it to be ready
-  command: "helm init"
-  tags:
-    - skip_ansible_lint # while helm may be installed, k8s might have been wiped so tiller needs to be reinstalled
-
-- name: "Wait for 'helm init' to set up Tiller"
-  pause:
-    seconds: 60
-
-# needed to give permissions and avoid the cryptic
-#   "Error: no available release name found" message
-# per: https://github.com/kubernetes/helm/issues/3055
-- name: Give RBAC permissions to tiller
-  command: "kubectl {{ item }}"
-  with_items:
-    - 'create serviceaccount --namespace kube-system tiller'
-    - 'create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller'
-    - 'patch deploy --namespace kube-system tiller-deploy -p ''{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'''
-  tags:
-    - skip_ansible_lint # have to run these to set up tiller, as k8s might not be up
-
-- name: "Wait for Helm/Tiller to be ready"
-  pause:
-    seconds: 30
-

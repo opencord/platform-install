@@ -13,12 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# start-xos-helm/tasks/main.yml
+# cord-helm-images/defaults/main.yml
 
-- name: Start XOS via Helm
-  command: "helm install --wait xos-core"
-  args:
-    chdir: "{{ config_cord_helm_dir }}"
-  tags:
-    - skip_ansible_lint # running a command, ansible helm module isn't mature
+config_cord_values_dir: "{{ ( playbook_dir ~ '/../../../cord_values' ) | realpath }}"
+
+# site name
+site_name: placeholder-sitename
+site_humanname: "Placeholder Site HumanName"
+site_suffix: "{{ site_name }}.test"
+
+# Docker related settings
+docker_registry_ext_port: "5000"
+docker_registry: "docker-registry.{{ site_suffix }}:{{ docker_registry_ext_port }}/"
+
+docker_tag: "candidate"
 

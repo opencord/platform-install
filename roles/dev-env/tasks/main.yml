@@ -51,8 +51,8 @@
 
 - name: Copy Apache conf
   become: yes
-  copy:
-    src: "roles/apache-proxy/files/cord-http.conf"
+  template:
+    src: "roles/apache-proxy/templates/cord-http.conf.j2"
     dest: "/etc/apache2/conf-enabled/cord-http.conf"
     owner: root
     group: root
