@@ -22,12 +22,12 @@ description: Creates a CORD test subscriber, created by platform-install
 
 imports:
   - custom_types/cordsubscriberroot.yaml
+  - custom_types/ponport.yaml
   - custom_types/site.yaml
   - custom_types/slice.yaml
   - custom_types/user.yaml
   - custom_types/voltservice.yaml
-  - custom_types/voltdevice.yaml
-  - custom_types/voltdeviceport.yaml
+  - custom_types/oltdevice.yaml
   - custom_types/serviceinstancelink.yaml
 
 topology_template:
@@ -55,7 +55,7 @@ topology_template:
 
     # Setup an OLT Device
     volt_device:
-      type: tosca.nodes.VOLTDevice
+      type: tosca.nodes.OLTDevice
       properties:
         name: test-volt-device
         device_id: volt-1
@@ -67,7 +67,7 @@ topology_template:
             relationship: tosca.relationships.BelongsToOne
 
     volt_port:
-      type: tosca.nodes.VOLTDevicePort
+      type: tosca.nodes.PONPort
       properties:
         port_id: volt-port-1
         s_tag: 222
