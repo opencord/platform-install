@@ -54,7 +54,7 @@ topology_template:
         must-exist: true
 
     # Setup an OLT Device
-    volt_device:
+    olt_device:
       type: tosca.nodes.OLTDevice
       properties:
         name: volt-1
@@ -65,14 +65,14 @@ topology_template:
             node: service#volt
             relationship: tosca.relationships.BelongsToOne
 
-    volt_port:
+    pon_port:
       type: tosca.nodes.PONPort
       properties:
         name: volt-port-1
         s_tag: 222
       requirements:
-        - volt_device:
-            node: volt_device
+        - olt_device:
+            node: olt_device
             relationship: tosca.relationships.BelongsToOne
 
     # A subscriber
