@@ -57,8 +57,7 @@ topology_template:
     volt_device:
       type: tosca.nodes.OLTDevice
       properties:
-        name: test-volt-device
-        device_id: volt-1
+        name: volt-1
         host: 8.8.8.8
         port: 2194
       requirements:
@@ -69,7 +68,7 @@ topology_template:
     volt_port:
       type: tosca.nodes.PONPort
       properties:
-        port_id: volt-port-1
+        name: volt-port-1
         s_tag: 222
       requirements:
         - volt_device:
