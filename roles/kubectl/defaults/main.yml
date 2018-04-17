@@ -15,11 +15,11 @@
 
 # kubeadm/defaults/main.yml
 
-kubernetes_version: "1.9.3"
+kubernetes_version: "1.9.5"
 
 # These vars need to be determined on a per-OS/arch/dl basis
 cpu_arch: "amd64"
-kubectl_dl_checksum: "sha256:81eb30e62a12d6e0527a6a3c2a9501b56d65777bf66684739b16a0afe826c8f8"
+kubectl_dl_checksum: "sha256:9c67b6e80e9dd3880511c7d912c5a01399c1d74aaf4d71989c7d5a4f2534bcd5"
 
 kubectl_dl_url: "https://storage.googleapis.com/kubernetes-release/release/v{{ kubernetes_version }}/bin/{{ ansible_system | lower }}/{{ cpu_arch }}/kubectl"
 
