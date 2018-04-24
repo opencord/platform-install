@@ -20,12 +20,12 @@
     dest: "~/{{ diag_dir }}/{{ item }}"
     state: directory
   with_items:
-  - head
-  - juju
-  - openstack
-  - onos-cord
-  - onos-fabric
-  - docker
+    - head
+    - juju
+    - openstack
+    - onos-cord
+    - onos-fabric
+    - docker
 
 - name: Head node diag collection
   shell: "{{ item }} > ~/{{ diag_dir }}/head/{{ item | regex_replace('[^\\w-]', '_')}}"
@@ -33,25 +33,25 @@
   args:
     creates: "~/{{ diag_dir }}/head/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
-   - "arp -n"
-   - "brctl show"
-   - "cat /etc/lsb-release"
-   - "cat /etc/resolv.conf"
-   - "date -u"
-   - "df -k"
-   - "free"
-   - "ifconfig -a"
-   - "ip addr list"
-   - "ip link list"
-   - "ip neighbor"
-   - "ip route"
-   - "ps aux"
-   - "route -n"
-   - "sudo docker ps -a"
-   - "sudo iptables -S"
-   - "sudo iptables -t nat -S"
-   - "sudo lxc list"
-   - "sudo virsh list"
+    - "arp -n"
+    - "brctl show"
+    - "cat /etc/lsb-release"
+    - "cat /etc/resolv.conf"
+    - "date -u"
+    - "df -k"
+    - "free"
+    - "ifconfig -a"
+    - "ip addr list"
+    - "ip link list"
+    - "ip neighbor"
+    - "ip route"
+    - "ps aux"
+    - "route -n"
+    - "sudo docker ps -a"
+    - "sudo iptables -S"
+    - "sudo iptables -t nat -S"
+    - "sudo lxc list"
+    - "sudo virsh list"
 
 - name: Juju diag collection
   shell: "{{ item }} > ~/{{ diag_dir }}/juju/{{ item | regex_replace('[^\\w-]', '_')}}"
@@ -59,9 +59,9 @@
   args:
     creates: "~/{{ diag_dir }}/juju/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
-   - "juju status --format=summary"
-   - "juju status --format=tabular"
-   - "juju status --format=json"
+    - "juju status --format=summary"
+    - "juju status --format=tabular"
+    - "juju status --format=json"
 
 - name: OpenStack diag collection
   shell: "source /opt/cord_profile/admin-openrc.sh && {{ item }} > ~/{{ diag_dir }}/openstack/{{ item | regex_replace('[^\\w-]', '_')}}"
@@ -70,15 +70,15 @@
     executable: "/bin/bash"
     creates: "~/{{ diag_dir }}/openstack/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
-   - "glance image-list"
-   - "nova list --all-tenants"
-   - "nova host-list"
-   - "nova hypervisor-list"
-   - "keystone tenant-list"
-   - "keystone user-list"
-   - "neutron net-list"
-   - "neutron subnet-list"
-   - "neutron port-list"
+    - "glance image-list"
+    - "nova list --all-tenants"
+    - "nova host-list"
+    - "nova hypervisor-list"
+    - "keystone tenant-list"
+    - "keystone user-list"
+    - "neutron net-list"
+    - "neutron subnet-list"
+    - "neutron port-list"
 
 - name: ONOS-CORD diag collection - REST API
   shell: "curl -X GET -u karaf:karaf http://onos-cord:8182/onos/v1/{{ item }} | python -m json.tool > ~/{{ diag_dir }}/onos-cord/rest_{{ item | regex_replace('[^\\w-]', '_') }}"
@@ -89,27 +89,58 @@
   with_items:
    - "hosts"
 
+# see also the onos-diagnostic script:
+# https://github.com/opennetworkinglab/onos/blob/master/tools/package/runtime/bin/onos-diagnostics
 - name: ONOS-CORD diag collection - ONOS CLI
   shell: "sshpass -p 'karaf' ssh -p 8102 karaf@onos-cord {{ item }} > ~/{{ diag_dir }}/onos-cord/{{ item | regex_replace('[^\\w-]', '_') }}"
   ignore_errors: yes
   args:
     creates: "~/{{ diag_dir }}/onos-cord/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
-   - "apps -s -a"
-   - "bundle:list"
-   - "cordvtn-node-check compute1"
-   - "cordvtn-nodes"
-   - "cordvtn-networks"
-   - "cordvtn-ports"
-   - "dhcp-list"
-   - "devices"
-   - "flows"
-   - "hosts"
-   - "log:display"
-   - "nodes"
-   - "netcfg"
-   - "ports"
-   - "summary"
+    - "apps -s -a"
+    - "bundle:list"
+    - "cfg get"
+    - "cordvtn-networks"
+    - "cordvtn-node-check compute1"
+    - "cordvtn-nodes"
+    - "cordvtn-ports"
+    - "devices"
+    - "dhcp-list"
+    - "dhcp-relay"
+    - "feature:list"
+    - "feature:repo-list"
+    - "flows -s"
+    - "fpm-connections"
+    - "groups"
+    - "hosts"
+    - "intents"
+    - "interfaces"
+    - "links"
+    - "log:display"
+    - "masters"
+    - "mcast-host-routes"
+    - "mcast-host-show"
+    - "netcfg"
+    - "nodes"
+    - "obj-next-ids"
+    - "obj-pending-nexts"
+    - "packet-processors"
+    - "packet-requests"
+    - "ports -e"
+    - "portstats -nz"
+    - "roles"
+    - "routes"
+    - "scr:list"
+    - "sr-device-subnets"
+    - "sr-ecmp-spg"
+    - "sr-link-state"
+    - "sr-mcast-leader"
+    - "sr-mcast-next"
+    - "sr-mcast-tree"
+    - "sr-next-hops"
+    - "sr-pw-list"
+    - "sr-should-program"
+    - "summary"
 
 - name: ONOS-FABRIC diag collection - REST API
   shell: "curl -X GET -u karaf:karaf http://onos-fabric:8182/onos/v1/{{ item }} | python -m json.tool > ~/{{ diag_dir }}/onos-fabric/rest_{{ item | regex_replace('[^\\w-]', '_') }}"
@@ -118,7 +149,7 @@
     creates: "~/{{ diag_dir }}/onos-fabric/rest_{{ item | regex_replace('[^\\w-]', '_')}}"
     warn: False # get_url or uri can't easily redirect to a file
   with_items:
-   - "hosts"
+    - "hosts"
 
 - name: ONOS-FABRIC diag collection - ONOS CLI
   shell: "sshpass -p 'karaf' ssh -p 8101 karaf@onos-fabric {{ item }} > ~/{{ diag_dir }}/onos-fabric/{{ item | regex_replace('[^\\w-]', '_') }}"
@@ -126,19 +157,45 @@
   args:
     creates: "~/{{ diag_dir }}/onos-fabric/{{ item | regex_replace('[^\\w-]', '_')}}"
   with_items:
-   - "apps -s -a"
-   - "bundle:list"
-   - "devices"
-   - "flows"
-   - "hosts"
-   - "log:display"
-   - "nodes"
-   - "netcfg"
-   - "ports"
-   - "summary"
-   - "links"
-   - "sr-ecmp-spg"
-   - "sr-next-hops"
+    - "apps -s -a"
+    - "bundle:list"
+    - "cfg get"
+    - "devices"
+    - "dhcp-relay"
+    - "feature:list"
+    - "feature:repo-list"
+    - "flows -s"
+    - "fpm-connections"
+    - "groups"
+    - "hosts"
+    - "intents"
+    - "interfaces"
+    - "links"
+    - "log:display"
+    - "masters"
+    - "mcast-host-routes"
+    - "mcast-host-show"
+    - "netcfg"
+    - "nodes"
+    - "obj-next-ids"
+    - "obj-pending-nexts"
+    - "packet-processors"
+    - "packet-requests"
+    - "ports -e"
+    - "portstats -nz"
+    - "roles"
+    - "routes"
+    - "scr:list"
+    - "sr-device-subnets"
+    - "sr-ecmp-spg"
+    - "sr-link-state"
+    - "sr-mcast-leader"
+    - "sr-mcast-next"
+    - "sr-mcast-tree"
+    - "sr-next-hops"
+    - "sr-pw-list"
+    - "sr-should-program"
+    - "summary"
 
 - name: Docker diag collection - Find names for all running Docker containers
   command: sudo docker ps -a --format '{{'{{'}} .Names {{'}}'}}'
