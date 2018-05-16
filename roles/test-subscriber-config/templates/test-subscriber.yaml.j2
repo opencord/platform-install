@@ -21,14 +21,14 @@ tosca_definitions_version: tosca_simple_yaml_1_0
 description: Creates a CORD test subscriber, created by platform-install
 
 imports:
-  - custom_types/cordsubscriberroot.yaml
+  - custom_types/oltdevice.yaml
   - custom_types/ponport.yaml
+  - custom_types/rcordsubscriber.yaml
+  - custom_types/serviceinstancelink.yaml
   - custom_types/site.yaml
   - custom_types/slice.yaml
   - custom_types/user.yaml
   - custom_types/voltservice.yaml
-  - custom_types/oltdevice.yaml
-  - custom_types/serviceinstancelink.yaml
 
 topology_template:
   node_templates:
@@ -79,7 +79,7 @@ topology_template:
 
     # A subscriber
     my_house:
-      type: tosca.nodes.CordSubscriberRoot
+      type: tosca.nodes.RCORDSubscriber
       properties:
         name: My House
         service_specific_id: "123"
@@ -90,6 +90,7 @@ topology_template:
         c_tag: 111
         olt_device: volt-1
         olt_port: volt-port-1
+
 
     # TODO needs to be moved to a new model (now they are JSON encoded)
     # Mom's PC:
