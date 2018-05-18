@@ -77,6 +77,17 @@ topology_template:
             node: olt_device
             relationship: tosca.relationships.BelongsToOne
 
+    onu:
+      type: tosca.nodes.ONUDevice
+      properties:
+        serial_number: BRCM1234
+        vendor: Broadcom
+        device_type: broadcom_onu
+      requirements:
+        - pon_port:
+            node: pon_port
+            relationship: tosca.relationships.BelongsToOne
+            
     # A subscriber
     my_house:
       type: tosca.nodes.RCORDSubscriber
@@ -88,8 +99,7 @@ topology_template:
         url_filter_enable: false
         url_filter_level: R
         c_tag: 111
-        olt_device: volt-1
-        olt_port: volt-port-1
+        onu_device: BRCM1234
 
 
     # TODO needs to be moved to a new model (now they are JSON encoded)
